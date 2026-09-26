@@ -3,11 +3,11 @@
     "version": "v13.3",
     "kind": "stock_scores_6axis",
     "source": "scoring_orchestrator + data/fundamentals.json + public/data/returns.json",
-    "generated_at": "2026-09-26T01:46:43.143680+00:00",
+    "generated_at": "2026-09-26T15:02:51.673030+00:00",
     "not_for_trading": true,
     "note": "partial-real hybrid / not full real / not full generated / volatility_252d derived from returns.json / momentum and passthrough technical-deferred neutral / financial-sector bounded distortion documented"
   },
-  "last_updated": "2026-09-26T01:46:43.143680+00:00",
+  "last_updated": "2026-09-26T15:02:51.673030+00:00",
   "tickers": [
     "6098.T",
     "8306.T",
@@ -3271,8 +3271,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.436002925614973,
-              "normalized": 12.799414877005404,
+              "raw_value": 0.4360029225128866,
+              "normalized": 12.799415497422686,
               "description": "ボラティリティ 0.44 — 高ボラ（スコア13）"
             },
             {
@@ -4259,7 +4259,7 @@
     "observation: momentum components and 4 passthrough (moat_score / earnings_stab / guidance / tam_expansion) are technical-deferred → scorer MISSING_RAW_VALUES neutral",
     "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion (documented hybrid limitation)",
     "observation: fundamentals snapshot generated_at=2026-05-19T16:52:29.781230+00:00",
-    "observation: returns snapshot generated_at=2026-09-26T01:46:24.772064"
+    "observation: returns snapshot generated_at=2026-09-26T15:02:32.024138"
   ],
   "status": "ok"
 }

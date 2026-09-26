@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-26T10:46:42.886052+09:00",
-  "sourceUpdatedAt": "2026-09-26T00:00:35+00:00",
+  "updatedAt": "2026-09-27T00:02:51.423528+09:00",
+  "sourceUpdatedAt": "2026-09-26T14:04:17+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
-      "topPositiveTitle": "Hedge Funds Cut Bullish Yen Bets as BOJ Held Back on Rate Vows",
+      "topPositiveTitle": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
       "items": [
         {
           "title": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
@@ -27,71 +27,58 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Hedge Funds Cut Bullish Yen Bets as BOJ Held Back on Rate Vows",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-25T20:06:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/hedge-funds-cut-bullish-yen-bets-as-boj-held-back-on-rate-vows",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.17,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.198,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Wall Street’s Nike (NKE) Fandom at 25-Year Low as Bank of America Cuts to Sell",
-      "topPositiveTitle": "Wall Street Week | China’s Trade Reckoning, Syracuse’s Second Chance, Humanoids in Healthcare",
+      "topNegativeTitle": "How Syracuse's Semiconductor Gamble May Help Save the Rust Belt",
+      "topPositiveTitle": "高市首相 スタートアップ企業に17の戦略分野けん引を期待",
       "items": [
         {
-          "title": "Wall Street’s Nike (NKE) Fandom at 25-Year Low as Bank of America Cuts to Sell",
+          "title": "How Syracuse's Semiconductor Gamble May Help Save the Rust Belt",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T18:04:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/wall-street-s-nike-nke-fandom-at-25-year-low-as-bank-of-america-cuts-to-sell",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-26T14:04:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/can-a-single-factory-save-an-american-city-video",
           "tags": [
-            "market",
-            "us_broad"
+            "jp_semiconductor",
+            "market"
           ]
         },
         {
-          "title": "Dollar’s Best Run Since March Has Wall Street Rethink View",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T07:26:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/dollar-s-best-rally-since-march-is-set-to-last-as-fortunes-shift",
+          "title": "高市首相 スタートアップ企業に17の戦略分野けん引を期待",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-25T10:55:04+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260925de52439",
           "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
+            "jp_semiconductor",
+            "market"
+          ],
+          "titleJa": "高市首相 スタートアップ企業に17の戦略分野けん引を期待"
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Wall Street Week | China’s Trade Reckoning, Syracuse’s Second Chance, Humanoids in Healthcare",
+      "topPositiveTitle": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
+      "items": [
         {
           "title": "Wall Street Week | China’s Trade Reckoning, Syracuse’s Second Chance, Humanoids in Healthcare",
           "source": "Bloomberg Markets",
@@ -105,28 +92,13 @@
           ]
         },
         {
-          "title": "Wall Street’s ‘80/20’ Shift Finds Fresh Fuel in Stock Bounceback",
-          "source": "Bloomberg Markets",
+          "title": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T20:48:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/wall-street-s-80-20-shift-finds-fresh-fuel-in-stock-bounceback",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-25T19:51:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/fed-s-hammack-says-yields-reflect-growth-us-debt-and-rate-path",
           "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Great Bond Shakeout Locks In a 5% World ‘Until Something Breaks’",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T20:39:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/great-bond-shakeout-locks-in-a-5-world-video",
-          "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
@@ -171,16 +143,30 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
+      "topPositiveTitle": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
+      "items": [
+        {
+          "title": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T02:42:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/billionaire-charoen-s-asset-world-targets-1-billion-reit-ipo",
+          "tags": [
+            "market",
+            "reit",
+            "trust"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -195,16 +181,28 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
+      "avgSentiment": -0.047,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-      "topPositiveTitle": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
+      "topNegativeTitle": "McDonald’s Sell-Off Hits 30% as Big Mac Inflation Spurs Pushback",
+      "topPositiveTitle": "Trump-Xi Summit Yields Coal-Buying Pledge as Tariff Talks Extend",
       "items": [
+        {
+          "title": "McDonald’s Sell-Off Hits 30% as Big Mac Inflation Spurs Pushback",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-26T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/mcdonald-s-sell-off-hits-30-as-big-mac-inflation-spurs-pushback",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
           "source": "Bloomberg Economics",
@@ -217,6 +215,33 @@
             "macro_risk",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Russia Ukraine War Becomes Economic Battle",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T13:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran War Endgame Remains Elusive",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T12:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/iran-war-endgame-remains-elusive-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -232,71 +257,20 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "David Booth on Investing, Dimensional and Staying Calm | The David Rubenstein Show",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-24T15:33:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-24/the-david-rubenstein-show-david-booth-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-24T22:13:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Trump Shared Concerns Over Weak Yen With Japan’s Takaichi",
-      "topPositiveTitle": "Hedge Funds Cut Bullish Yen Bets as BOJ Held Back on Rate Vows",
+      "topNegativeTitle": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
+      "topPositiveTitle": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
       "items": [
-        {
-          "title": "Trump Shared Concerns Over Weak Yen With Japan’s Takaichi",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T02:20:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/japan-s-katayama-says-trump-shared-yen-concerns-with-takaichi-mugc3g4o",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar’s Best Run Since March Has Wall Street Rethink View",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T07:26:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/dollar-s-best-rally-since-march-is-set-to-last-as-fortunes-shift",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
           "source": "Bloomberg Economics",
@@ -308,33 +282,19 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Hedge Funds Cut Bullish Yen Bets as BOJ Held Back on Rate Vows",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-25T20:06:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/hedge-funds-cut-bullish-yen-bets-as-boj-held-back-on-rate-vows",
-          "tags": [
-            "fx",
-            "jp_broad",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.096,
-      "negativeCount": 2,
+      "avgSentiment": 0.278,
+      "negativeCount": 1,
       "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-      "topPositiveTitle": "Hedge Funds Cut Bullish Yen Bets as BOJ Held Back on Rate Vows",
+      "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
       "items": [
         {
           "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
@@ -346,19 +306,6 @@
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOE’s Bailey Warns It’s Getting Harder to Avoid Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T10:18:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/boe-s-bailey-warns-it-s-getting-harder-to-avoid-rate-hikes",
-          "tags": [
-            "commodity",
             "market",
             "rates"
           ]
@@ -389,14 +336,26 @@
           ]
         },
         {
-          "title": "Wall Street’s ‘80/20’ Shift Finds Fresh Fuel in Stock Bounceback",
+          "title": "Trump-Xi Summit Yields Coal-Buying Pledge as Tariff Talks Extend",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T20:48:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/wall-street-s-80-20-shift-finds-fresh-fuel-in-stock-bounceback",
+          "publishedAt": "2026-09-26T04:52:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-says-china-to-buy-10-million-tons-of-coal-in-2027-and-2028",
           "tags": [
-            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-25T19:51:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/fed-s-hammack-says-yields-reflect-growth-us-debt-and-rate-path",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -405,27 +364,28 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.2,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "avgSentiment": 0.333,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Bailey Warns It’s Getting Harder to Avoid Rate Hikes",
-      "topPositiveTitle": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
+      "topNegativeTitle": "Russia Ukraine War Becomes Economic Battle",
+      "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
       "items": [
         {
-          "title": "BOE’s Bailey Warns It’s Getting Harder to Avoid Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T10:18:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/boe-s-bailey-warns-it-s-getting-harder-to-avoid-rate-hikes",
+          "title": "Russia Ukraine War Becomes Economic Battle",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T13:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
           "tags": [
             "commodity",
-            "market",
-            "rates"
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -443,59 +403,30 @@
           ]
         },
         {
-          "title": "Wall Street’s ‘80/20’ Shift Finds Fresh Fuel in Stock Bounceback",
+          "title": "Higher Bond Yields Mark a Return to Normal",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T20:48:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/wall-street-s-80-20-shift-finds-fresh-fuel-in-stock-bounceback",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-26T12:33:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/higher-bond-yields-mark-a-return-to-normal-video",
           "tags": [
             "commodity",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Great Bond Shakeout Locks In a 5% World ‘Until Something Breaks’",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T20:39:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/great-bond-shakeout-locks-in-a-5-world-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-24T22:13:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "rates"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.113,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-      "topPositiveTitle": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
+      "topPositiveTitle": "Russia Ukraine War Becomes Economic Battle",
       "items": [
         {
           "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
@@ -512,12 +443,12 @@
           ]
         },
         {
-          "title": "ECB’s Vujcic Says Energy Prices Will Stay ‘Higher for Longer’",
-          "source": "Bloomberg Economics",
+          "title": "Russia Ukraine War Becomes Economic Battle",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T19:27:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/ecb-s-vujcic-says-energy-prices-will-stay-higher-for-longer",
+          "publishedAt": "2026-09-26T13:10:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -526,12 +457,37 @@
           ]
         },
         {
-          "title": "Stocks Climb as Oil Retreats on US-Iran Deal Hopes: Markets Wrap",
+          "title": "Iran War Endgame Remains Elusive",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-24T22:13:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-24/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T12:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/iran-war-endgame-remains-elusive-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Xi Summit Leaves Big Issues Unresolved",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T11:55:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/trump-xi-summit-leaves-big-issues-unresolved-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ECB’s Vujcic Says Energy Prices Will Stay ‘Higher for Longer’",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-25T19:27:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-25/ecb-s-vujcic-says-energy-prices-will-stay-higher-for-longer",
           "tags": [
             "commodity",
             "geopolitical",
