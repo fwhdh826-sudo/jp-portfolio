@@ -1,34 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-27T00:02:51.423528+09:00",
-  "sourceUpdatedAt": "2026-09-26T14:04:17+00:00",
+  "updatedAt": "2026-09-27T10:38:11.467987+09:00",
+  "sourceUpdatedAt": "2026-09-27T01:31:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
-      "topPositiveTitle": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
-      "items": [
-        {
-          "title": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T09:58:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/japan-s-finance-minister-says-takaichi-is-not-a-reflationist",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.17,
@@ -69,54 +55,54 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Week | China’s Trade Reckoning, Syracuse’s Second Chance, Humanoids in Healthcare",
-      "topPositiveTitle": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
+      "topNegativeTitle": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
+      "topPositiveTitle": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
       "items": [
         {
-          "title": "Wall Street Week | China’s Trade Reckoning, Syracuse’s Second Chance, Humanoids in Healthcare",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T23:43:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-25/wall-street-week-china-s-trade-reckoning-syracuse-s-second-chance-humanoids-in-healthcare",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
+          "title": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-25T19:51:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/fed-s-hammack-says-yields-reflect-growth-us-debt-and-rate-path",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-jobs-report-seen-showing-90-000-payrolls-4-1-unemployment-rate",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
+      "topPositiveTitle": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
+      "items": [
+        {
+          "title": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/china-s-consumer-stocks-face-lost-decade-as-ai-steals-spotlight",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -181,18 +167,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "McDonald’s Sell-Off Hits 30% as Big Mac Inflation Spurs Pushback",
-      "topPositiveTitle": "Trump-Xi Summit Yields Coal-Buying Pledge as Tariff Talks Extend",
+      "topNegativeTitle": "McDonald’s Selloff Hits 30% as Big Mac Inflation Spurs Pushback",
+      "topPositiveTitle": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
       "items": [
         {
-          "title": "McDonald’s Sell-Off Hits 30% as Big Mac Inflation Spurs Pushback",
+          "title": "McDonald’s Selloff Hits 30% as Big Mac Inflation Spurs Pushback",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -204,17 +190,15 @@
           ]
         },
         {
-          "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/manulife-sees-canada-rate-hike-next-month-as-inflation-pressures-build",
+          "title": "Bond Market Volatility Signals Risks for Corporate Debt Investors",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/rate-market-fear-gauge-is-warning-for-corporates-credit-weekly",
           "tags": [
-            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
@@ -245,39 +229,38 @@
           ]
         },
         {
-          "title": "ECB’s Vujcic Says Energy Prices Will Stay ‘Higher for Longer’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T19:27:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/ecb-s-vujcic-says-energy-prices-will-stay-higher-for-longer",
+          "title": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-26T04:52:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-says-china-to-buy-10-million-tons-of-coal-in-2027-and-2028",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
-      "topPositiveTitle": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
+      "topNegativeTitle": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
+      "topPositiveTitle": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
       "items": [
         {
-          "title": "Bessent Discussed ‘Desirability’ of Strong Yen With Katayama",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-25T15:15:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/bessent-discussed-desirability-of-strong-yen-with-katayama",
+          "title": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-26T18:21:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-26/bangladesh-targets-up-to-1-billion-in-debut-sovereign-bond-sale",
           "tags": [
             "fx",
             "market"
@@ -286,57 +269,18 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.278,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.665,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
+      "topNegativeTitle": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
       "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
       "items": [
         {
-          "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/manulife-sees-canada-rate-hike-next-month-as-inflation-pressures-build",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Euro Zone’s Inflation Rate Is About to Reach Highest Since 2023",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T15:19:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/euro-zone-s-inflation-rate-is-about-to-reach-highest-since-2023",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Japan’s Finance Minister Says Takaichi Isn’t ‘Reflationist’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T09:58:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/japan-s-finance-minister-says-takaichi-is-not-a-reflationist",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Trump-Xi Summit Yields Coal-Buying Pledge as Tariff Talks Extend",
+          "title": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -349,27 +293,27 @@
           ]
         },
         {
-          "title": "Fed’s Hammack Says Yields Reflect Growth, US Debt and Rate Path",
-          "source": "Bloomberg Economics",
+          "title": "Higher Bond Yields Mark a Return to Normal",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-25T19:51:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/fed-s-hammack-says-yields-reflect-growth-us-debt-and-rate-path",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-26T12:33:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-26/higher-bond-yields-mark-a-return-to-normal-video",
           "tags": [
+            "commodity",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Russia Ukraine War Becomes Economic Battle",
       "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
@@ -381,20 +325,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-26T13:10:37+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Vujcic Says Energy Prices Will Stay ‘Higher for Longer’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T19:27:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/ecb-s-vujcic-says-energy-prices-will-stay-higher-for-longer",
           "tags": [
             "commodity",
             "geopolitical",
@@ -418,30 +348,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.066,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
+      "topNegativeTitle": "Russia Ukraine War Becomes Economic Battle",
       "topPositiveTitle": "Russia Ukraine War Becomes Economic Battle",
       "items": [
-        {
-          "title": "Manulife Sees Canada Rate Hike Next Month as Inflation Pressures Build",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-25T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/manulife-sees-canada-rate-hike-next-month-as-inflation-pressures-build",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Russia Ukraine War Becomes Economic Battle",
           "source": "Bloomberg Markets",
@@ -480,20 +396,6 @@
             "geopolitical",
             "market"
           ]
-        },
-        {
-          "title": "ECB’s Vujcic Says Energy Prices Will Stay ‘Higher for Longer’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-25T19:27:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-25/ecb-s-vujcic-says-energy-prices-will-stay-higher-for-longer",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -506,7 +408,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
