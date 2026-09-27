@@ -1,31 +1,45 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-28T00:43:04.410297+09:00",
-  "sourceUpdatedAt": "2026-09-27T15:19:12+00:00",
+  "updatedAt": "2026-09-28T08:56:50.627678+09:00",
+  "sourceUpdatedAt": "2026-09-27T23:30:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+      "topPositiveTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+      "items": [
+        {
+          "title": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T23:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/boj-rate-hike-in-october-is-real-possibility-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
-      "topPositiveTitle": "高市首相 スタートアップ企業に17の戦略分野けん引を期待",
+      "topPositiveTitle": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
       "items": [
         {
           "title": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
@@ -38,33 +52,32 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "高市首相 スタートアップ企業に17の戦略分野けん引を期待",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-25T10:55:04+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260925de52439",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ],
-          "titleJa": "高市首相 スタートアップ企業に17の戦略分野けん引を期待"
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.068,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Inflation Keeps Pressure on the Fed",
-      "topPositiveTitle": "Inflation Keeps Pressure on the Fed",
+      "topNegativeTitle": "The Bond Market Is Getting Closer to Sounding Alarm on Economy",
+      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
+        {
+          "title": "The Bond Market Is Getting Closer to Sounding Alarm on Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/the-bond-market-is-getting-closer-to-sounding-alarm-on-economy",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Inflation Keeps Pressure on the Fed",
           "source": "Bloomberg Markets",
@@ -103,19 +116,33 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-27T16:19:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/bessent-urges-fed-to-keep-open-mind-on-us-inflation-outlook",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
-      "topPositiveTitle": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
+      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
         {
           "title": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
@@ -130,14 +157,16 @@
           ]
         },
         {
-          "title": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/china-s-consumer-stocks-face-lost-decade-as-ai-steals-spotlight",
+          "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-27T16:19:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/bessent-urges-fed-to-keep-open-mind-on-us-inflation-outlook",
           "tags": [
             "market",
+            "rates",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -205,12 +234,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.083,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
       "topPositiveTitle": "Trump Rejects Iran Plan to Reopen Hormuz",
@@ -254,18 +283,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Bond Market Volatility Signals Risks for Corporate Debt Investors",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/rate-market-fear-gauge-is-warning-for-corporates-credit-weekly",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -273,9 +290,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Rubenstein on the Billion Dollar Sports Boom",
       "topPositiveTitle": "Rubenstein on the Billion Dollar Sports Boom",
@@ -291,32 +308,33 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T18:21:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/bangladesh-targets-up-to-1-billion-in-debut-sovereign-bond-sale",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.165,
+      "avgSentiment": 0.057,
       "negativeCount": 2,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
-      "topPositiveTitle": "Inflation Keeps Pressure on the Fed",
+      "topNegativeTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
+        {
+          "title": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T23:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/boj-rate-hike-in-october-is-real-possibility-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
           "source": "Bloomberg Markets",
@@ -326,18 +344,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
           "tags": [
             "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "El Niño Could Push Up Food Prices in Southern Africa",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T05:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/el-nino-could-push-up-food-prices-in-southern-africa-video",
-          "tags": [
             "market",
             "rates"
           ]
@@ -368,32 +374,32 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "RBA Set to Resume Raising Key Rate as Patience on Prices Erodes",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/rba-set-to-resume-raising-key-rate-as-patience-on-prices-erodes",
+          "tags": [
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.15,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.266,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Thai PM Anutin’s Support Drops in Latest Poll as Pressures Rise",
-      "topPositiveTitle": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
+      "topNegativeTitle": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
+      "topPositiveTitle": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
       "items": [
-        {
-          "title": "Thai PM Anutin’s Support Drops in Latest Poll as Pressures Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-09-27T03:45:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/thai-pm-anutin-s-support-drops-in-latest-poll-as-pressures-rise",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
         {
           "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
           "source": "Bloomberg Markets",
@@ -434,19 +440,45 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-27T22:03:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/latest-oil-market-news-and-analysis-for-sept-28",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-27T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.19,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 5,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "US Iran Talks Hit Familiar Sticking Points",
-      "topPositiveTitle": "US Iran Talks Hit Familiar Sticking Points",
+      "topPositiveTitle": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
       "items": [
         {
           "title": "US Iran Talks Hit Familiar Sticking Points",
@@ -523,7 +555,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
