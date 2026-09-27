@@ -28,7 +28,7 @@ REPO = Path(__file__).parents[1]
 # data/p14_legacy_replay.py's current content (PRODUCTION_SOURCE_HASHES /
 # CURRENT_TOOLING_SOURCE_HASHES split; TOOLING_SOURCE_HASHES re-pin for
 # data/p14_evidence_validate.py's own re-pin — see handover.md).
-EXPECTED_REPLAY_MODULE_SHA256 = "8a70272703d42e064666d312f59ff456122aece8083263a0b0aefacb3fef6c04"
+EXPECTED_REPLAY_MODULE_SHA256 = "4300a832ba77a858cc931c41559b3b5d9ba05781185c56376ad30d809fdeeecb"
 _E1_ARCHIVE_ENV = "P14_E1_ARCHIVE"
 _E1_ARCHIVE_NAME = "p5-b005-c-p14-e1-evidence.tar.gz"
 _CANONICAL_AUDIT_ROOT_CANDIDATES = (

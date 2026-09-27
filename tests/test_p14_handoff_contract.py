@@ -8,7 +8,11 @@ import inspect
 import json
 import multiprocessing
 import os
-from dataclasses import replace
+import subprocess
+import sys
+import textwrap
+import types
+from dataclasses import asdict, replace
 from pathlib import Path
 
 import pytest
@@ -351,8 +355,8 @@ def not_generated_quality_gate():
     }
 
 
-def build_contract():
-    capture_bytes = build_capture_input_bytes(
+def build_contract(api=handoff):
+    capture_bytes = api.build_capture_input_bytes(
         joined_candidate_input=joined_input(),
         context=context(),
         join_stats=join_stats(),
@@ -360,18 +364,18 @@ def build_contract():
         candidates_updated_at="2026-09-24T00:01:00.000Z",
     )
     capture_value = json.loads(capture_bytes)
-    joined_bytes = canonical_json_bytes(capture_value["joinedCandidateInput"])
-    context_bytes = canonical_json_bytes(capture_value["context"])
+    joined_bytes = api.canonical_json_bytes(capture_value["joinedCandidateInput"])
+    context_bytes = api.canonical_json_bytes(capture_value["context"])
     raw_bindings = (
-        RawFileBinding("candidatesStocks", True, "a" * 64, 10),
-        RawFileBinding("prescreenMetadata", True, "b" * 64, 11),
-        RawFileBinding("regimeState", False, None, None),
-        RawFileBinding("previousArtifact", True, "c" * 64, 12),
+        api.RawFileBinding("candidatesStocks", True, "a" * 64, 10),
+        api.RawFileBinding("prescreenMetadata", True, "b" * 64, 11),
+        api.RawFileBinding("regimeState", False, None, None),
+        api.RawFileBinding("previousArtifact", True, "c" * 64, 12),
     )
     module_bindings = tuple(
-        ModuleBinding(path, f"{index + 1:064x}") for index, path in enumerate(FIXED_MODULE_PATHS)
+        api.ModuleBinding(path, f"{index + 1:064x}") for index, path in enumerate(api.FIXED_MODULE_PATHS)
     )
-    expected = ExpectedBinding(
+    expected = api.ExpectedBinding(
         repository="fwhdh826-sudo/jp-portfolio",
         workflow="full_batch.yml",
         job="update-data",
@@ -388,9 +392,9 @@ def build_contract():
         engine_funnel_version="candidate-funnel-v1",
         modules=module_bindings,
         raw_files=raw_bindings,
-        joined_candidate_input=DigestBinding(digest(joined_bytes), len(joined_bytes)),
-        replay_context=DigestBinding(digest(context_bytes), len(context_bytes)),
-        capture_input=DigestBinding(digest(capture_bytes), len(capture_bytes)),
+        joined_candidate_input=api.DigestBinding(digest(joined_bytes), len(joined_bytes)),
+        replay_context=api.DigestBinding(digest(context_bytes), len(context_bytes)),
+        capture_input=api.DigestBinding(digest(capture_bytes), len(capture_bytes)),
     )
     input_identity = {
         "rawFiles": {
@@ -401,7 +405,7 @@ def build_contract():
         "replayContext": {"sha256": expected.replay_context.sha256, "bytes": expected.replay_context.bytes},
         "captureInput": {"sha256": expected.capture_input.sha256, "bytes": expected.capture_input.bytes},
     }
-    observation_bytes = build_observation_bytes(
+    observation_bytes = api.build_observation_bytes(
         policy_version=POLICY,
         run_identity=run_identity(),
         source_identity=source_identity(),
@@ -410,7 +414,7 @@ def build_contract():
         perturbed=side(perturbed=True),
     )
     receipt = {
-        "schemaVersion": RECEIPT_SCHEMA_VERSION,
+        "schemaVersion": api.RECEIPT_SCHEMA_VERSION,
         "runIdentity": run_identity(),
         "policyVersion": POLICY,
         "executedGitSha": EXECUTED_SHA,
@@ -429,10 +433,10 @@ def build_contract():
             "engineStatus": "generated",
         },
     }
-    receipt_bytes = build_batch_receipt_bytes(
+    receipt_bytes = api.build_batch_receipt_bytes(
         receipt, observation_bytes=observation_bytes, capture_input_bytes=capture_bytes
     )
-    parts, reference = build_handoff_parts(
+    parts, reference = api.build_handoff_parts(
         observation_bytes=observation_bytes,
         capture_input_bytes=capture_bytes,
         receipt_bytes=receipt_bytes,
@@ -443,6 +447,85 @@ def build_contract():
 @pytest.fixture
 def contract():
     return build_contract()
+
+
+@pytest.fixture
+def pre_ii_c_handoff():
+    """Audited II-C base blob used only as a fixed-provenance byte oracle."""
+    source = subprocess.check_output(
+        ["git", "show", "1af76c8b4f2d5712370ef64cc5eed57b77ff02aa:data/p14_handoff.py"],
+        cwd=REPO,
+    )
+    assert digest(source) == "a6de837d6259165a9459664de38d655ae5a8fe9ab1d26d3a770cfdb084435751"
+    module = types.ModuleType("pre_ii_c_handoff")
+    module.__file__ = str(REPO / "data/p14_handoff.py")
+    sys.modules[module.__name__] = module
+    try:
+        exec(compile(source, "audited-pre-ii-c-handoff", "exec"), module.__dict__)
+    finally:
+        sys.modules.pop(module.__name__, None)
+    return module
+
+
+def _terminal_receipt_bytes(parts, terminal, *, transport="READY"):
+    receipt = parts.receipt_value()
+    receipt["terminalStatus"] = terminal
+    receipt["artifactAvailable"] = terminal == "BATCH_READY"
+    if terminal == "QUALITY_GATE_FAILED":
+        receipt["report"]["qualityGate"] = failed_quality_gate()
+    elif terminal == "SCHEMA_VIOLATIONS":
+        receipt["report"]["schemaViolations"] = ["status not in allowed enum"]
+    receipt["transportStatus"] = transport
+    receipt["failureCode"] = None if transport == "READY" else transport
+    return build_batch_receipt_bytes(
+        receipt,
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+    )
+
+
+def _parts_and_reference_with_receipt(parts, reference, receipt_bytes):
+    envelope = parts.envelope_value()
+    envelope["receipt"] = {
+        "file": RECEIPT_FILE,
+        "sha256": digest(receipt_bytes),
+        "bytes": len(receipt_bytes),
+    }
+    envelope_bytes = canonical_json_bytes(envelope)
+    changed_parts = HandoffParts(
+        parts.capture_input_bytes,
+        parts.observation_bytes,
+        receipt_bytes,
+        envelope_bytes,
+    )
+    changed_reference = replace(
+        reference,
+        transport_digest=digest(envelope_bytes),
+        receipt_digest=digest(receipt_bytes),
+    )
+    return changed_parts, changed_reference
+
+
+def _assert_three_site_error(contract, receipt_bytes, code, detail):
+    expected, parts, reference = contract
+    assert_error(
+        code,
+        lambda: build_handoff_envelope_bytes(
+            observation_bytes=parts.observation_bytes,
+            capture_input_bytes=parts.capture_input_bytes,
+            receipt_bytes=receipt_bytes,
+        ),
+        detail,
+    )
+    changed_parts, changed_reference = _parts_and_reference_with_receipt(
+        parts, reference, receipt_bytes,
+    )
+    assert_error(code, lambda: make_producer_reference(changed_parts), detail)
+    assert_error(
+        code,
+        lambda: validate_handoff_parts(changed_parts, expected, changed_reference),
+        detail,
+    )
 
 
 def assert_error(code, action, detail=None):
@@ -460,6 +543,173 @@ def test_deterministic_encoding_and_observation_digest(contract):
     assert canonical_json_bytes(value) == canonical_json_bytes(reordered) == parts.observation_bytes
     assert validate_handoff_observation(parts.observation_bytes, expected).sha256 == digest(parts.observation_bytes)
     assert b"\n" not in parts.observation_bytes
+
+
+def test_ii_c_a2_fixed_provenance_bytes_match_audited_base(pre_ii_c_handoff):
+    current_expected, current_parts, current_reference = build_contract()
+    base_expected, base_parts, base_reference = build_contract(pre_ii_c_handoff)
+    assert asdict(current_expected) == asdict(base_expected)
+    assert (
+        current_parts.capture_input_bytes,
+        current_parts.observation_bytes,
+        current_parts.receipt_bytes,
+        current_parts.envelope_bytes,
+    ) == (
+        base_parts.capture_input_bytes,
+        base_parts.observation_bytes,
+        base_parts.receipt_bytes,
+        base_parts.envelope_bytes,
+    )
+    assert current_reference.to_value() == base_reference.to_value()
+
+
+@pytest.mark.parametrize(
+    "terminal",
+    ["BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"],
+)
+def test_ii_c_q1_ready_reviewed_terminals_are_accepted_at_all_three_sites(contract, terminal):
+    expected, parts, _ = contract
+    receipt_bytes = _terminal_receipt_bytes(parts, terminal)
+    envelope_bytes = build_handoff_envelope_bytes(
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+        receipt_bytes=receipt_bytes,
+    )
+    accepted_parts = HandoffParts(
+        parts.capture_input_bytes,
+        parts.observation_bytes,
+        receipt_bytes,
+        envelope_bytes,
+    )
+    reference = make_producer_reference(accepted_parts)
+    validated = validate_handoff_parts(accepted_parts, expected, reference)
+    assert validated == accepted_parts
+    receipt = json.loads(validated.receipt_bytes)
+    assert receipt["terminalStatus"] == terminal
+    assert receipt["transportStatus"] == "READY"
+
+
+@pytest.mark.parametrize(
+    "terminal",
+    ["BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"],
+)
+def test_ii_c_q2_non_ready_reviewed_terminals_fail_at_all_three_sites(contract, terminal):
+    _, parts, _ = contract
+    receipt_bytes = _terminal_receipt_bytes(parts, terminal, transport="HANDOFF_WRITE_FAILED")
+    _assert_three_site_error(contract, receipt_bytes, "BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
+
+
+@pytest.mark.parametrize(
+    ("terminal", "transport", "report_state", "expected_code", "expected_detail"),
+    [
+        ("NOT_GENERATED", "READY", "COMPLETE", "BATCH_RECEIPT_INVALID", "REPORT_STATE"),
+        ("BATCH_INPUT_ERROR", "READY", "COMPLETE", "BATCH_RECEIPT_INVALID", "REPORT_STATE"),
+        ("BATCH_EXCEPTION", "READY", "COMPLETE", "BATCH_RECEIPT_INVALID", "REPORT_STATE"),
+        ("BATCH_INPUT_ERROR", "INPUT_IDENTITY_UNAVAILABLE", "UNAVAILABLE", "BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS"),
+        ("BATCH_EXCEPTION", "INPUT_IDENTITY_UNAVAILABLE", "UNAVAILABLE", "BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS"),
+        ("UNKNOWN_TERMINAL", "READY", "COMPLETE", "HANDOFF_MALFORMED", "TYPE"),
+    ],
+)
+def test_ii_c_q3_q4_and_unknown_literal_preserve_first_firing_errors(
+    contract, terminal, transport, report_state, expected_code, expected_detail,
+):
+    _, parts, _ = contract
+    receipt = parts.receipt_value()
+    receipt.update({
+        "terminalStatus": terminal,
+        "artifactAvailable": False,
+        "transportStatus": transport,
+        "failureCode": None if transport == "READY" else transport,
+        "reportState": report_state,
+        "report": receipt["report"] if report_state == "COMPLETE" else None,
+    })
+    receipt_bytes = canonical_json_bytes(receipt)
+    _assert_three_site_error(contract, receipt_bytes, expected_code, expected_detail)
+
+
+def test_ii_c_q4_not_generated_preserves_receipt_observation_precedence(contract):
+    _, parts, _ = contract
+    receipt = {
+        "schemaVersion": RECEIPT_SCHEMA_VERSION,
+        "runIdentity": run_identity(),
+        "policyVersion": POLICY,
+        "executedGitSha": EXECUTED_SHA,
+        "observationDigest": None,
+        "captureInputDigest": digest(parts.capture_input_bytes),
+        "terminalStatus": "NOT_GENERATED",
+        "artifactAvailable": False,
+        "transportStatus": "P14_NOT_EVALUATED",
+        "failureCode": "P14_NOT_EVALUATED",
+        "reportState": "COMPLETE",
+        "report": {
+            "context": context(),
+            "joinStats": join_stats(),
+            "prescreenDuplicateCodes": [],
+            "qualityGate": not_generated_quality_gate(),
+            "engineStatus": "not_generated",
+        },
+    }
+    receipt_bytes = build_batch_receipt_bytes(
+        receipt,
+        capture_input_bytes=parts.capture_input_bytes,
+    )
+    _assert_three_site_error(
+        contract,
+        receipt_bytes,
+        "RECEIPT_OBSERVATION_MISMATCH",
+        None,
+    )
+
+
+def test_ii_c_dual_predicate_structure_and_exact_terminal_set():
+    assert handoff.EVIDENCE_HANDOFF_TERMINALS == frozenset(
+        {"BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"}
+    )
+    for function in (
+        handoff.build_handoff_envelope_bytes,
+        handoff._validate_parts_intrinsic,
+        handoff.validate_handoff_parts,
+    ):
+        tree = ast.parse(textwrap.dedent(inspect.getsource(function)))
+        receipt_validation_lines = [
+            node.lineno
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "_validate_receipt_value"
+        ]
+        predicates = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, ast.If)
+            and isinstance(node.test, ast.BoolOp)
+            and isinstance(node.test.op, ast.Or)
+            and "receipt['transportStatus'] != 'READY'" in ast.unparse(node.test)
+            and "receipt['terminalStatus'] not in EVIDENCE_HANDOFF_TERMINALS" in ast.unparse(node.test)
+        ]
+        assert len(receipt_validation_lines) == 1
+        assert len(predicates) == 1
+        assert receipt_validation_lines[0] < predicates[0].lineno
+        raises = [node for node in ast.walk(predicates[0]) if isinstance(node, ast.Raise)]
+        assert len(raises) == 1
+        assert ast.unparse(raises[0].exc) == "HandoffError('BATCH_RECEIPT_INVALID', 'TRANSPORT_STATUS')"
+
+    batch_tree = ast.parse((REPO / "data/candidate_funnel_batch.py").read_text(encoding="utf-8"))
+    session_class = next(
+        node for node in batch_tree.body
+        if isinstance(node, ast.ClassDef) and node.name == "P14CaptureSession"
+    )
+    finish = next(
+        node for node in session_class.body
+        if isinstance(node, ast.FunctionDef) and node.name == "finish"
+    )
+    conditions = [ast.unparse(node.test) for node in ast.walk(finish) if isinstance(node, ast.If)]
+    assert any(
+        "terminal in handoff.EVIDENCE_HANDOFF_TERMINALS" in condition
+        and "self.transport_status == 'READY'" in condition
+        and " and " in condition
+        for condition in conditions
+    )
 
 
 def test_transport_digest_is_deterministic_and_distinct_from_observation(contract):
@@ -908,7 +1158,7 @@ def test_batch_shaped_complete_receipt_accepts_empty_gate_notes(contract):
 
 
 def test_batch_shaped_quality_failure_receipt_is_accepted(contract):
-    _, parts, _ = contract
+    expected, parts, _ = contract
     receipt = parts.receipt_value()
     receipt.update({"terminalStatus": "QUALITY_GATE_FAILED", "artifactAvailable": False})
     receipt["report"]["qualityGate"] = failed_quality_gate()
@@ -918,15 +1168,15 @@ def test_batch_shaped_quality_failure_receipt_is_accepted(contract):
         capture_input_bytes=parts.capture_input_bytes,
     )
     assert json.loads(rebuilt)["report"]["qualityGate"]["hardFailIds"] == ["P-14"]
-    assert_error(
-        "BATCH_RECEIPT_INVALID",
-        lambda: build_handoff_envelope_bytes(
-            observation_bytes=parts.observation_bytes,
-            capture_input_bytes=parts.capture_input_bytes,
-            receipt_bytes=rebuilt,
-        ),
-        "TRANSPORT_STATUS",
+    failure_parts, reference = build_handoff_parts(
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+        receipt_bytes=rebuilt,
     )
+    assert validate_handoff_parts(failure_parts, expected, reference) == failure_parts
+    assert reference.status == "READY"
+    assert len(reference.to_value()) == 11
+    assert json.loads(failure_parts.receipt_bytes)["artifactAvailable"] is False
 
 
 def test_batch_shaped_not_generated_receipt_is_accepted(contract):
@@ -958,7 +1208,7 @@ def test_batch_shaped_not_generated_receipt_is_accepted(contract):
 
 
 def test_batch_shaped_schema_violations_receipt_is_accepted(contract):
-    _, parts, _ = contract
+    expected, parts, _ = contract
     receipt = parts.receipt_value()
     receipt.update({"terminalStatus": "SCHEMA_VIOLATIONS", "artifactAvailable": False})
     receipt["report"]["schemaViolations"] = ["status not in allowed enum"]
@@ -968,6 +1218,16 @@ def test_batch_shaped_schema_violations_receipt_is_accepted(contract):
         capture_input_bytes=parts.capture_input_bytes,
     )
     assert json.loads(rebuilt)["report"]["schemaViolations"] == ["status not in allowed enum"]
+    failure_parts, reference = build_handoff_parts(
+        observation_bytes=parts.observation_bytes,
+        capture_input_bytes=parts.capture_input_bytes,
+        receipt_bytes=rebuilt,
+    )
+    assert validate_handoff_parts(failure_parts, expected, reference) == failure_parts
+    receipt_value = failure_parts.receipt_value()
+    assert reference.status == "READY"
+    assert receipt_value["report"]["qualityGate"]["overallPass"] is True
+    assert receipt_value["artifactAvailable"] is False
 
 
 def test_report_unavailable_input_failure_receipt_is_accepted():

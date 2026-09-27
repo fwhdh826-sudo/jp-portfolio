@@ -99,6 +99,9 @@ TERMINAL_STATUSES = frozenset(
         "SCHEMA_VIOLATIONS", "BATCH_INPUT_ERROR", "BATCH_EXCEPTION",
     }
 )
+EVIDENCE_HANDOFF_TERMINALS = frozenset(
+    {"BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"}
+)
 TRANSPORT_STATUSES = frozenset(
     {
         "READY", "CANONICAL_CONSTRUCTION_FAILED", "HANDOFF_WRITE_FAILED",
@@ -1349,7 +1352,10 @@ def build_handoff_envelope_bytes(
     _validate_observation_value(observation)
     _validate_capture_value(capture)
     _validate_receipt_value(receipt, observation=observation, capture=capture)
-    if receipt["transportStatus"] != "READY" or receipt["terminalStatus"] != "BATCH_READY":
+    if (
+        receipt["transportStatus"] != "READY"
+        or receipt["terminalStatus"] not in EVIDENCE_HANDOFF_TERMINALS
+    ):
         raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     observation_digest = _digest_bytes(observation_bytes)
     value = {
@@ -1447,7 +1453,10 @@ def _validate_parts_intrinsic(parts: HandoffParts) -> dict[str, Any]:
     _validate_observation_value(observation)
     _validate_capture_value(capture)
     _validate_receipt_value(receipt, observation=observation, capture=capture)
-    if receipt["transportStatus"] != "READY" or receipt["terminalStatus"] != "BATCH_READY":
+    if (
+        receipt["transportStatus"] != "READY"
+        or receipt["terminalStatus"] not in EVIDENCE_HANDOFF_TERMINALS
+    ):
         raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     expected_records = (
         (envelope["observation"], parts.observation_bytes, "OBSERVATION_DIGEST_MISMATCH"),
@@ -1544,6 +1553,11 @@ def validate_handoff_parts(
         raise HandoffError("INPUT_IDENTITY_MISMATCH")
     receipt = _decode_canonical(parts.receipt_bytes)
     _validate_receipt_value(receipt, observation=observation, capture=capture)
+    if (
+        receipt["transportStatus"] != "READY"
+        or receipt["terminalStatus"] not in EVIDENCE_HANDOFF_TERMINALS
+    ):
+        raise HandoffError("BATCH_RECEIPT_INVALID", "TRANSPORT_STATUS")
     if receipt["observationDigest"] != producer_reference.observation_digest:
         raise HandoffError("RECEIPT_OBSERVATION_MISMATCH")
     if envelope["observationSchemaVersion"] != observation["schemaVersion"]:

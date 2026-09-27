@@ -361,7 +361,7 @@ class P14CaptureSession:
                 self.receipt_bytes = None
                 return
         reference = None
-        if terminal == "BATCH_READY" and self.transport_status == "READY":
+        if terminal in handoff.EVIDENCE_HANDOFF_TERMINALS and self.transport_status == "READY":
             try:
                 parts, reference = handoff.build_handoff_parts(
                     observation_bytes=self.observation_bytes,

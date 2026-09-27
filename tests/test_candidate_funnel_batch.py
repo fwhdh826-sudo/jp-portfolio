@@ -27,6 +27,11 @@ import pytest
 import data.candidate_funnel_batch as batch
 
 II_B_BASE = "1d12bcdc9a3676d56a2625483f6fbb98ce3621e3"
+II_C_PRE_COMMIT_HEAD = "1af76c8b4f2d5712370ef64cc5eed57b77ff02aa"
+II_C_IMPLEMENTATION_PATHS = (
+    "data/candidate_funnel_batch.py",
+    "data/p14_handoff.py",
+)
 
 
 @pytest.fixture
@@ -137,6 +142,75 @@ def _key_paths(value, prefix=()):
     return set()
 
 
+def _configure_qgf_case(monkeypatch, module, case):
+    """Force one reviewed FAIL-capable gate through compute_quality_report."""
+    base, perturbed, calls = _ii_b_stub(monkeypatch, module)
+    original_quality = module.compute_quality_report
+
+    if case in {"P-07", "P-07-NULL"}:
+        original_stats = module.compute_market_score_stats
+
+        def market_stats(engine_result):
+            value = original_stats(engine_result)
+            value.update({"range": None, "iqr": None} if case == "P-07-NULL" else {"range": 0.0, "iqr": 0.0})
+            return value
+
+        monkeypatch.setattr(module, "compute_market_score_stats", market_stats)
+    if case == "P-12":
+        original_reasons = module.compute_reason_code_distribution
+
+        def reason_distribution(engine_result):
+            soft, hard, _ = original_reasons(engine_result)
+            code = sorted(module.INACTIVE_V1_SOFT_REASONS)[0]
+            soft[code] = 1
+            return soft, hard, [code]
+
+        monkeypatch.setattr(module, "compute_reason_code_distribution", reason_distribution)
+    if case == "P-13":
+        monkeypatch.setattr(module, "compute_degraded_path_actionable", lambda *args: (1, {}))
+    if case in {"P-14", "P-10+P-14"}:
+        original_release = module.compute_p14_release_evidence
+
+        def hard_release(engine_result, perturbed_result):
+            value = original_release(engine_result, perturbed_result)
+            value["final"] = {
+                "status": "FAIL",
+                "hardReasons": ["P14_TOP40_JACCARD_HARD_FAIL"],
+                "warnReasons": [],
+            }
+            return value
+
+        monkeypatch.setattr(module, "compute_p14_release_evidence", hard_release)
+    if case == "P-10+P-14":
+        monkeypatch.setattr(module, "compute_rank_drift_vs_previous", lambda *args: 1.0)
+
+    def forced_quality(**kwargs):
+        kwargs = dict(kwargs)
+        if case == "P-02":
+            kwargs["join_stats"] = {**kwargs["join_stats"], "joinRate": 0.94}
+        elif case == "P-04":
+            payload = copy.deepcopy(kwargs["candidates_stocks_payload"])
+            payload["candidates"].append(copy.deepcopy(payload["candidates"][0]))
+            kwargs["candidates_stocks_payload"] = payload
+        elif case == "PRESCREEN_DUPLICATE":
+            kwargs["prescreen_duplicate_codes"] = ["1000"]
+        elif case == "P-08":
+            engine_result = copy.deepcopy(kwargs["engine_result"])
+            engine_result["counts"]["deepReview"] = 0
+            kwargs["engine_result"] = engine_result
+        elif case in {"P-10", "P-10+P-14"}:
+            engine_result = copy.deepcopy(kwargs["engine_result"])
+            engine_result["sectorDistribution"] = {
+                "deepReview": {"S0": 40},
+                "actionable": {"S0": 12},
+            }
+            kwargs["engine_result"] = engine_result
+        return original_quality(**kwargs)
+
+    monkeypatch.setattr(module, "compute_quality_report", forced_quality)
+    return base, perturbed, calls
+
+
 @pytest.mark.parametrize("outcome", ["PASS", "WARN", "FAIL", "NOT_GENERATED"])
 @pytest.mark.parametrize("enabled", [False, True])
 def test_ii_b_public_bytes_match_audited_base(tmp_path, monkeypatch, pre_ii_b, outcome, enabled):
@@ -158,13 +232,14 @@ def test_ii_b_public_bytes_match_audited_base(tmp_path, monkeypatch, pre_ii_b, o
             "PASS": "BATCH_READY", "WARN": "BATCH_READY",
             "FAIL": "QUALITY_GATE_FAILED", "NOT_GENERATED": "NOT_GENERATED",
         }[outcome]
-        if outcome in {"PASS", "WARN"}:
+        if outcome != "NOT_GENERATED":
             assert session.transport_status == "READY"
             assert blocks[-1] == "p14_transport_status=READY\n"
             parts = batch.handoff.read_handoff_parts(session.config.root, session.binding, session.producer_reference)
             assert parts.receipt_bytes == receipts[0]
-            actual[0]["candidates"][0]["code"] = "changed"
-            actual[0]["_meta"]["qualityGate"]["notes"].append("changed")
+            if actual[0] is not None:
+                actual[0]["candidates"][0]["code"] = "changed"
+                actual[0]["_meta"]["qualityGate"]["notes"].append("changed")
             assert base["candidates"][0]["code"] == "1000"
             assert actual[1]["qualityGate"]["notes"] == []
             assert json.loads(parts.observation_bytes)["base"]["candidates"][0]["code"] == "1000"
@@ -173,9 +248,144 @@ def test_ii_b_public_bytes_match_audited_base(tmp_path, monkeypatch, pre_ii_b, o
             assert blocks == []
 
 
-def test_ii_b_seam_reuses_same_objects_and_one_perturbation(tmp_path, monkeypatch):
+def test_ii_c_a1_pre_commit_working_tree_provenance(tmp_path, monkeypatch, pre_ii_b):
     inputs = _ii_b_inputs(tmp_path)
-    base, perturbed, calls = _ii_b_stub(monkeypatch, batch)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert _key_paths(actual[0]) == _key_paths(expected[0])
+    assert _key_paths(actual[1]) == _key_paths(expected[1])
+    assert actual[0] is not None
+    assert session.transport_status == "READY"
+    assert len("".join(blocks).splitlines()) == 11
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=batch.REPO_ROOT, text=True,
+    ).strip()
+    observation = json.loads(session.observation_bytes)
+    receipt = json.loads(session.receipt_bytes)
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    envelope = json.loads(parts.envelope_bytes)
+    assert observation["sourceIdentity"]["executedGitSha"] == head
+    assert receipt["executedGitSha"] == head
+    assert envelope["executedGitSha"] == head
+    assert session.producer_reference.executed_git_sha == head
+    module_hashes = {
+        item["path"]: item["sha256"] for item in observation["sourceIdentity"]["modules"]
+    }
+    assert module_hashes == {
+        path: hashlib.sha256((batch.REPO_ROOT / path).read_bytes()).hexdigest()
+        for path in batch.handoff.FIXED_MODULE_PATHS
+    }
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["artifactAvailable"] is True
+    assert receipt["report"]["qualityGate"]["overallPass"] is True
+    observation_digest = hashlib.sha256(parts.observation_bytes).hexdigest()
+    receipt_digest = hashlib.sha256(parts.receipt_bytes).hexdigest()
+    capture_input_digest = hashlib.sha256(parts.capture_input_bytes).hexdigest()
+    transport_digest = hashlib.sha256(parts.envelope_bytes).hexdigest()
+    assert receipt["observationDigest"] == observation_digest
+    assert envelope["observation"]["sha256"] == observation_digest
+    assert envelope["receipt"]["sha256"] == receipt_digest
+    assert envelope["captureInput"]["sha256"] == capture_input_digest
+    assert session.producer_reference.observation_digest == observation_digest
+    assert session.producer_reference.receipt_digest == receipt_digest
+    assert session.producer_reference.capture_input_digest == capture_input_digest
+    assert session.producer_reference.transport_digest == transport_digest
+    assert receipts == [parts.receipt_bytes]
+
+
+def test_ii_c_a1_committed_head_identity_after_exactly_one_implementation_commit(
+    tmp_path, monkeypatch,
+):
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=batch.REPO_ROOT, text=True,
+    ).strip()
+    committed_sources = {
+        path: subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=batch.REPO_ROOT)
+        for path in II_C_IMPLEMENTATION_PATHS
+    }
+    working_sources = {
+        path: (batch.REPO_ROOT / path).read_bytes()
+        for path in II_C_IMPLEMENTATION_PATHS
+    }
+
+    if head == II_C_PRE_COMMIT_HEAD:
+        assert {
+            path for path in II_C_IMPLEMENTATION_PATHS
+            if committed_sources[path] != working_sources[path]
+        } == set(II_C_IMPLEMENTATION_PATHS)
+        return
+
+    commit_count = subprocess.check_output(
+        ["git", "rev-list", "--count", f"{II_C_PRE_COMMIT_HEAD}..HEAD"],
+        cwd=batch.REPO_ROOT,
+        text=True,
+    ).strip()
+    assert commit_count == "1"
+    assert committed_sources == working_sources
+
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    observation = json.loads(parts.observation_bytes)
+    receipt = json.loads(parts.receipt_bytes)
+    envelope = json.loads(parts.envelope_bytes)
+
+    assert artifact is not None
+    assert report["qualityGate"]["overallPass"] is True
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["artifactAvailable"] is True
+    assert session.transport_status == "READY"
+    assert len("".join(blocks).splitlines()) == 11
+    assert receipts == [parts.receipt_bytes]
+    assert observation["sourceIdentity"]["executedGitSha"] == head
+    assert receipt["executedGitSha"] == head
+    assert envelope["executedGitSha"] == head
+    assert session.producer_reference.executed_git_sha == head
+
+    module_hashes = {
+        item["path"]: item["sha256"]
+        for item in observation["sourceIdentity"]["modules"]
+    }
+    committed_module_hashes = {
+        path: hashlib.sha256(
+            subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=batch.REPO_ROOT)
+        ).hexdigest()
+        for path in batch.handoff.FIXED_MODULE_PATHS
+    }
+    assert module_hashes == committed_module_hashes
+
+    observation_digest = hashlib.sha256(parts.observation_bytes).hexdigest()
+    receipt_digest = hashlib.sha256(parts.receipt_bytes).hexdigest()
+    capture_input_digest = hashlib.sha256(parts.capture_input_bytes).hexdigest()
+    transport_digest = hashlib.sha256(parts.envelope_bytes).hexdigest()
+    assert receipt["observationDigest"] == observation_digest
+    assert envelope["observation"]["sha256"] == observation_digest
+    assert envelope["receipt"]["sha256"] == receipt_digest
+    assert envelope["captureInput"]["sha256"] == capture_input_digest
+    assert session.producer_reference.observation_digest == observation_digest
+    assert session.producer_reference.receipt_digest == receipt_digest
+    assert session.producer_reference.capture_input_digest == capture_input_digest
+    assert session.producer_reference.transport_digest == transport_digest
+
+
+@pytest.mark.parametrize("terminal", ["BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+def test_ii_c_seam_reuses_same_objects_and_one_perturbation(tmp_path, monkeypatch, terminal):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    base, perturbed, calls = _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
     session, _, _ = _ii_b_session(tmp_path)
     events = []
     perturb = batch._perturb_candidates
@@ -203,6 +413,8 @@ def test_ii_b_seam_reuses_same_objects_and_one_perturbation(tmp_path, monkeypatc
     assert events == ["perturb", "canonical", "v1"]
     assert len(calls) == 2
     assert calls[0][0] is not calls[1][0]
+    assert json.loads(session.receipt_bytes)["terminalStatus"] == terminal
+    assert session.producer_reference is not None
 
 
 @pytest.mark.parametrize("outcome", ["PASS", "WARN", "FAIL"])
@@ -285,7 +497,12 @@ def test_ii_b_schema_violations_terminal_receipt(tmp_path, monkeypatch, pre_ii_b
     assert receipt["artifactAvailable"] is False
     assert receipt["report"]["qualityGate"]["overallPass"] is True
     assert receipt["report"]["schemaViolations"] == ["schemaVersion mismatch"]
-    assert session.producer_reference is None and blocks == []
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    assert parts.receipt_bytes == receipts[0]
 
 
 @pytest.mark.parametrize("failure", ["input", "engine", "v1"])
@@ -758,6 +975,9 @@ def test_ii_b_main_enabled_harness_preserves_publication_gate(tmp_path, monkeypa
     assert json.loads(session.receipt_bytes)["report"] == expected[1]
     if expected[0] is not None:
         assert _public_bytes(published[0]) == _public_bytes(expected[0])
+    else:
+        assert published == []
+    if outcome != "NOT_GENERATED":
         output = (tmp_path / "runner-output").read_text()
         assert output.endswith("p14_transport_status=READY\n")
         assert output.count("p14_transport_status=") == 1
@@ -765,8 +985,38 @@ def test_ii_b_main_enabled_harness_preserves_publication_gate(tmp_path, monkeypa
         assert session.producer_reference.executed_git_sha != "1" * 40
         assert json.loads(session.observation_bytes)["runIdentity"]["gitSha"] == "1" * 40
     else:
-        assert published == []
         assert not (tmp_path / "runner-output").exists()
+    capsys.readouterr()
+
+
+def test_ii_c_schema_violation_ready_reference_does_not_publish(tmp_path, monkeypatch, pre_ii_b, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    for module in (pre_ii_b, batch):
+        _ii_b_stub(monkeypatch, module)
+        monkeypatch.setattr(module, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    run = batch.run_batch
+    sessions, published = [], []
+
+    def controlled_run(**kwargs):
+        sessions.append(kwargs["p14_capture"])
+        return run(**inputs, **kwargs)
+
+    monkeypatch.setattr(batch, "run_batch", controlled_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 1
+    assert expected[0] is None
+    assert published == []
+    session = sessions[0]
+    assert session.producer_reference is not None
+    receipt = json.loads(session.receipt_bytes)
+    assert receipt["terminalStatus"] == "SCHEMA_VIOLATIONS"
+    assert receipt["artifactAvailable"] is False
+    assert receipt["report"]["qualityGate"]["overallPass"] is True
+    output = (tmp_path / "runner-output").read_text()
+    assert output.endswith("p14_transport_status=READY\n")
+    assert len(output.splitlines()) == 11
     capsys.readouterr()
 
 
@@ -819,7 +1069,166 @@ def test_ii_b_non_p14_gate_failure_receipt(tmp_path, monkeypatch):
     assert artifact is None and report["qualityGate"]["hardFailIds"] == ["P-10"]
     assert json.loads(receipts[0])["terminalStatus"] == "QUALITY_GATE_FAILED"
     assert json.loads(receipts[0])["report"] == report
-    assert session.producer_reference is None and blocks == []
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    assert parts.receipt_bytes == receipts[0]
+    assert json.loads(parts.receipt_bytes)["report"]["qualityGate"]["p14ReleaseEvidence"]["final"]["status"] in {"PASS", "WARN"}
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_fail_ids", "p15_numeric"),
+    [
+        ("P-02", {"P-02"}, False),
+        ("P-04", {"P-04"}, False),
+        ("PRESCREEN_DUPLICATE", {"PRESCREEN_DUPLICATE"}, False),
+        ("P-07", {"P-07"}, False),
+        ("P-07-NULL", {"P-07"}, False),
+        ("P-08", {"P-08"}, False),
+        ("P-10", {"P-10"}, False),
+        ("P-12", {"P-12"}, False),
+        ("P-13", {"P-13"}, False),
+        ("P-14", {"P-14"}, False),
+        ("P-10+P-14", {"P-10", "P-14"}, True),
+    ],
+)
+def test_ii_c_qgf_receipt_matrix_uses_real_quality_and_finish_paths(
+    tmp_path, monkeypatch, pre_ii_b, case, expected_fail_ids, p15_numeric,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    _configure_qgf_case(monkeypatch, pre_ii_b, case)
+    expected = pre_ii_b.run_batch(**inputs)
+    _configure_qgf_case(monkeypatch, batch, case)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert actual[0] is None
+    quality = actual[1]["qualityGate"]
+    assert expected_fail_ids.issubset(quality["hardFailIds"])
+    assert quality["overallPass"] is False
+    assert session.transport_status == "READY"
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    attempt = session.config.root / "run-12345" / "attempt-2"
+    names = {path.name for path in attempt.iterdir()}
+    assert names == {
+        batch.handoff.CLAIM_FILE,
+        batch.handoff.CLAIM_CONSUMED_FILE,
+        batch.handoff.CAPTURE_INPUT_FILE,
+        batch.handoff.RECEIPT_FILE,
+        batch.handoff.HANDOFF_FILE,
+        f"observation-{session.producer_reference.observation_digest}.json",
+    }
+    assert parts.receipt_bytes == receipts[0]
+    receipt = json.loads(parts.receipt_bytes)
+    assert receipt["terminalStatus"] == "QUALITY_GATE_FAILED"
+    assert receipt["artifactAvailable"] is False
+    assert receipt["transportStatus"] == "READY"
+    assert expected_fail_ids.issubset(receipt["report"]["qualityGate"]["hardFailIds"])
+    p14_status = receipt["report"]["qualityGate"]["p14ReleaseEvidence"]["final"]["status"]
+    if "P-14" in expected_fail_ids:
+        assert p14_status == "FAIL"
+        assert "P-14" in receipt["report"]["qualityGate"]["hardFailIds"]
+    else:
+        assert p14_status in {"PASS", "WARN"}
+        assert "P-14" not in receipt["report"]["qualityGate"]["hardFailIds"]
+    gate_ids = {gate["id"] for gate in receipt["report"]["qualityGate"]["gates"]}
+    assert {f"P-{number:02d}" for number in range(1, 16)}.issubset(gate_ids)
+    assert "PRESCREEN_DUPLICATE" in gate_ids
+    p15 = _gate(receipt["report"]["qualityGate"], "P-15")["value"]
+    assert (type(p15) is float) is p15_numeric
+
+
+def test_ii_c_fail_capable_gate_set_has_source_derived_drift_tripwire():
+    tree = ast.parse(inspect.getsource(batch.compute_quality_report))
+    fail_capable = {
+        ast.literal_eval(node.args[0])
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "_gate"
+        and len(node.args) >= 5
+        and any(
+            isinstance(child, ast.Constant) and child.value == "FAIL"
+            for child in ast.walk(node.args[4])
+        )
+    }
+    fail_capable.add("P-14")  # status is returned by the frozen decision-aware evaluator.
+    assert fail_capable == {
+        "P-02", "P-04", "PRESCREEN_DUPLICATE", "P-07", "P-08",
+        "P-10", "P-12", "P-13", "P-14",
+    }
+
+
+@pytest.mark.parametrize("terminal", ["QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+@pytest.mark.parametrize("injection", ["holdings", "arbitraryUnknownKey", "token"])
+def test_ii_c_failure_handoff_privacy_remains_fail_closed(
+    tmp_path, monkeypatch, terminal, injection,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    original_quality = batch.compute_quality_report
+
+    def unsafe_quality(**kwargs):
+        value = original_quality(**kwargs)
+        if injection == "token":
+            value["gates"][0]["note"] = "ghp_" + "A" * 36
+        else:
+            value[injection] = {"nested": "private"}
+        return value
+
+    monkeypatch.setattr(batch, "compute_quality_report", unsafe_quality)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is None
+    assert report["qualityGate"]["overallPass"] is (terminal == "SCHEMA_VIOLATIONS")
+    assert session.transport_status == "RECEIPT_CONSTRUCTION_FAILED"
+    assert session.producer_reference is None
+    assert blocks == []
+    assert not session.config.root.exists()
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == terminal
+    assert receipt["transportStatus"] == "RECEIPT_CONSTRUCTION_FAILED"
+    assert receipt["reportState"] == "UNAVAILABLE"
+    assert receipt["report"] is None
+
+
+@pytest.mark.parametrize("terminal", ["QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+def test_ii_c_failure_handoff_write_failure_never_emits_reference(
+    tmp_path, monkeypatch, terminal,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+
+    def failed_write(*args, **kwargs):
+        raise batch.handoff.HandoffError("HANDOFF_WRITE_FAILED")
+
+    monkeypatch.setattr(batch.handoff, "write_handoff_parts", failed_write)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is None
+    assert report["qualityGate"]["overallPass"] is (terminal == "SCHEMA_VIOLATIONS")
+    assert session.transport_status == "HANDOFF_WRITE_FAILED"
+    assert session.producer_reference is None
+    assert blocks == []
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == terminal
+    assert receipt["transportStatus"] == "HANDOFF_WRITE_FAILED"
+    assert receipt["artifactAvailable"] is False
 
 
 def test_ii_b_unverifiable_report_uses_minimal_failure_receipt(tmp_path, monkeypatch, pre_ii_b):
