@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-27T10:38:11.467987+09:00",
-  "sourceUpdatedAt": "2026-09-27T01:31:00+00:00",
+  "updatedAt": "2026-09-28T00:43:04.410297+09:00",
+  "sourceUpdatedAt": "2026-09-27T15:19:12+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,23 +17,23 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.17,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "How Syracuse's Semiconductor Gamble May Help Save the Rust Belt",
+      "topNegativeTitle": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
       "topPositiveTitle": "高市首相 スタートアップ企業に17の戦略分野けん引を期待",
       "items": [
         {
-          "title": "How Syracuse's Semiconductor Gamble May Help Save the Rust Belt",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-26T14:04:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/can-a-single-factory-save-an-american-city-video",
+          "title": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-27T02:51:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/south-korea-tax-windfall-seen-above-50-trillion-won-yonhap",
           "tags": [
             "jp_semiconductor",
             "market"
@@ -58,13 +58,40 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
-      "topPositiveTitle": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
+      "topNegativeTitle": "Inflation Keeps Pressure on the Fed",
+      "topPositiveTitle": "Inflation Keeps Pressure on the Fed",
       "items": [
+        {
+          "title": "Inflation Keeps Pressure on the Fed",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:43:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Data Center Boom Faces Wall Street Skepticism",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:14:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/data-center-boom-faces-wall-street-skepticism-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
           "source": "Bloomberg Economics",
@@ -83,13 +110,25 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
-      "topPositiveTitle": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
+      "topNegativeTitle": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
+      "topPositiveTitle": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
       "items": [
+        {
+          "title": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:00:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/ai-whiplash-jolts-stocks-as-sentiment-lurches-from-fear-to-greed",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "China’s Consumer Stocks Face Lost Decade as AI Steals Spotlight",
           "source": "Bloomberg Markets",
@@ -117,6 +156,31 @@
       "items": []
     },
     "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
+      "topPositiveTitle": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
+      "items": [
+        {
+          "title": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T11:34:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/barrick-mining-reaches-deal-with-mali-unions-averting-strikes",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -127,32 +191,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
-      "topPositiveTitle": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
-      "items": [
-        {
-          "title": "Billionaire Charoen’s Asset World Targets $1 Billion REIT IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T02:42:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/billionaire-charoen-s-asset-world-targets-1-billion-reit-ipo",
-          "tags": [
-            "market",
-            "reit",
-            "trust"
-          ]
-        }
-      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -167,24 +205,52 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "McDonald’s Selloff Hits 30% as Big Mac Inflation Spurs Pushback",
-      "topPositiveTitle": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
+      "topNegativeTitle": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
+      "topPositiveTitle": "Trump Rejects Iran Plan to Reopen Hormuz",
       "items": [
         {
-          "title": "McDonald’s Selloff Hits 30% as Big Mac Inflation Spurs Pushback",
+          "title": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-26T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/mcdonald-s-sell-off-hits-30-as-big-mac-inflation-spurs-pushback",
+          "publishedAt": "2026-09-27T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
           "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "A Hockey Legend, a New Bridge, and the Trade War Tearing Neighbors Apart",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:04:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/the-bridge-that-epitomizes-the-us-canada-trade-war-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -200,46 +266,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Russia Ukraine War Becomes Economic Battle",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T13:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran War Endgame Remains Elusive",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T12:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/iran-war-endgame-remains-elusive-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-26T04:52:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-says-china-to-buy-10-million-tons-of-coal-in-2027-and-2028",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
@@ -247,13 +273,25 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
-      "topPositiveTitle": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
+      "topNegativeTitle": "Rubenstein on the Billion Dollar Sports Boom",
+      "topPositiveTitle": "Rubenstein on the Billion Dollar Sports Boom",
       "items": [
+        {
+          "title": "Rubenstein on the Billion Dollar Sports Boom",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:44:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/rubenstein-on-the-billion-dollar-sports-boom-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Bangladesh Targets Up to $1 Billion in Debut Sovereign Bond Sale",
           "source": "Bloomberg Markets",
@@ -269,23 +307,23 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.665,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
-      "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
+      "topNegativeTitle": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
+      "topPositiveTitle": "Inflation Keeps Pressure on the Fed",
       "items": [
         {
-          "title": "Trump-Xi Summit Yields Coal Pledge as Tariff Talks Extend",
+          "title": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-26T04:52:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-says-china-to-buy-10-million-tons-of-coal-in-2027-and-2028",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
           "tags": [
             "macro_risk",
             "market",
@@ -293,56 +331,108 @@
           ]
         },
         {
-          "title": "Higher Bond Yields Mark a Return to Normal",
+          "title": "El Niño Could Push Up Food Prices in Southern Africa",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-26T12:33:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/higher-bond-yields-mark-a-return-to-normal-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T05:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/el-nino-could-push-up-food-prices-in-southern-africa-video",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Inflation Keeps Pressure on the Fed",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:43:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
           "tags": [
             "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Data Center Boom Faces Wall Street Skepticism",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:14:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/data-center-boom-faces-wall-street-skepticism-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.15,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Russia Ukraine War Becomes Economic Battle",
-      "topPositiveTitle": "Higher Bond Yields Mark a Return to Normal",
+      "topNegativeTitle": "Thai PM Anutin’s Support Drops in Latest Poll as Pressures Rise",
+      "topPositiveTitle": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
       "items": [
         {
-          "title": "Russia Ukraine War Becomes Economic Battle",
+          "title": "Thai PM Anutin’s Support Drops in Latest Poll as Pressures Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-09-27T03:45:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/thai-pm-anutin-s-support-drops-in-latest-poll-as-pressures-rise",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T13:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
+          "publishedAt": "2026-09-27T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/tremors-from-ai-to-oil-boost-popular-hedge-fund-dispersion-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Inflation Keeps Pressure on the Fed",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T13:43:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Higher Bond Yields Mark a Return to Normal",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-26T12:33:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/higher-bond-yields-mark-a-return-to-normal-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
           ]
         }
       ]
@@ -351,20 +441,57 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 5,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Russia Ukraine War Becomes Economic Battle",
-      "topPositiveTitle": "Russia Ukraine War Becomes Economic Battle",
+      "topNegativeTitle": "US Iran Talks Hit Familiar Sticking Points",
+      "topPositiveTitle": "US Iran Talks Hit Familiar Sticking Points",
       "items": [
         {
-          "title": "Russia Ukraine War Becomes Economic Battle",
+          "title": "US Iran Talks Hit Familiar Sticking Points",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T13:10:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/russia-ukraine-war-becomes-economic-battle-video",
+          "publishedAt": "2026-09-27T14:02:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/us-iran-talks-hit-familiar-sticking-points-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/tremors-from-ai-to-oil-boost-popular-hedge-fund-dispersion-trade",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "IAEA Says Iran Nuclear Oversight Can Resume Fast",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:37:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/iaea-says-iran-nuclear-oversight-can-resume-fast-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-27T12:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -373,27 +500,15 @@
           ]
         },
         {
-          "title": "Iran War Endgame Remains Elusive",
+          "title": "A Hockey Legend, a New Bridge, and the Trade War Tearing Neighbors Apart",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T12:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/iran-war-endgame-remains-elusive-video",
+          "publishedAt": "2026-09-27T12:04:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-27/the-bridge-that-epitomizes-the-us-canada-trade-war-video",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Xi Summit Leaves Big Issues Unresolved",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T11:55:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-26/trump-xi-summit-leaves-big-issues-unresolved-video",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         }
