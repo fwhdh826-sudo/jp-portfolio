@@ -1778,3 +1778,387 @@ def test_reference_output_is_single_line_safe(contract):
     for value in reference.to_value().values():
         assert type(value) is str
         assert "\n" not in value and "\r" not in value
+
+
+def _phase_iii_write(root, expected, parts):
+    claim = claim_attempt(root, expected.run_id, expected.run_attempt)
+    write_handoff_parts(claim, parts)
+    return Path(claim.attempt_directory)
+
+
+def _phase_iii_read(root, reference, expected):
+    return handoff.read_handoff_part_bytes(
+        root,
+        reference,
+        run_id=expected.run_id,
+        run_attempt=expected.run_attempt,
+        policy_version=expected.policy_version,
+        executed_git_sha=expected.executed_git_sha,
+    )
+
+
+def _phase_iii_terminal_parts(parts, reference, terminal):
+    receipt_bytes = _terminal_receipt_bytes(parts, terminal)
+    return _parts_and_reference_with_receipt(parts, reference, receipt_bytes)
+
+
+@pytest.mark.parametrize(
+    "terminal",
+    ["BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"],
+)
+def test_phase_iii_verified_read_builds_expected_binding_and_validates_all_terminals(
+    contract, tmp_path, terminal,
+):
+    expected, original_parts, original_reference = contract
+    parts, reference = _phase_iii_terminal_parts(
+        original_parts, original_reference, terminal,
+    )
+    root = tmp_path / "handoff-root"
+    _phase_iii_write(root, expected, parts)
+
+    loaded = _phase_iii_read(root, reference, expected)
+    joined_digest, context_digest = handoff.expected_input_digests_from_capture(
+        loaded.capture_input_bytes
+    )
+    consumer_expected = replace(
+        expected,
+        joined_candidate_input=joined_digest,
+        replay_context=context_digest,
+        capture_input=DigestBinding(
+            reference.capture_input_digest, len(loaded.capture_input_bytes)
+        ),
+    )
+
+    assert consumer_expected == expected
+    assert loaded == parts
+    assert validate_handoff_parts(loaded, consumer_expected, reference) == parts
+    assert read_handoff_parts(root, consumer_expected, reference) == loaded
+    assert loaded.receipt_value()["terminalStatus"] == terminal
+
+
+@pytest.mark.parametrize(
+    ("argument", "value", "code"),
+    [
+        ("run_id", "54321", "RUN_ID_MISMATCH"),
+        ("run_attempt", "3", "RUN_ATTEMPT_MISMATCH"),
+        ("policy_version", "p14-decision-aware-v2", "POLICY_BINDING_MISMATCH"),
+        ("executed_git_sha", "3" * 40, "SOURCE_IDENTITY_MISMATCH"),
+    ],
+)
+def test_phase_iii_reference_identity_faults_precede_storage_access(
+    contract, tmp_path, argument, value, code,
+):
+    expected, _, reference = contract
+    arguments = {
+        "run_id": expected.run_id,
+        "run_attempt": expected.run_attempt,
+        "policy_version": expected.policy_version,
+        "executed_git_sha": expected.executed_git_sha,
+    }
+    arguments[argument] = value
+    assert_error(
+        code,
+        lambda: handoff.read_handoff_part_bytes(
+            tmp_path / "missing", reference, **arguments
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    ("part_name", "code", "detail"),
+    [
+        ("observation", "OBSERVATION_DIGEST_MISMATCH", None),
+        ("capture", "INPUT_IDENTITY_MISMATCH", None),
+        ("receipt", "BATCH_RECEIPT_INVALID", "DIGEST_MISMATCH"),
+        ("envelope", "TRANSPORT_DIGEST_MISMATCH", None),
+    ],
+)
+def test_phase_iii_reference_digest_faults_fail_before_payload_decode(
+    contract, tmp_path, part_name, code, detail,
+):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    paths = {
+        "observation": directory / f"observation-{reference.observation_digest}.json",
+        "capture": directory / CAPTURE_INPUT_FILE,
+        "receipt": directory / RECEIPT_FILE,
+        "envelope": directory / HANDOFF_FILE,
+    }
+    paths[part_name].write_bytes(b"\xffnot-json")
+
+    assert_error(code, lambda: _phase_iii_read(root, reference, expected), detail)
+
+
+def test_phase_iii_transport_digest_retains_first_fault_priority(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    (directory / HANDOFF_FILE).write_bytes(b"bad-envelope")
+    (directory / f"observation-{reference.observation_digest}.json").write_bytes(
+        b"bad-observation"
+    )
+    assert_error(
+        "TRANSPORT_DIGEST_MISMATCH",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_storage_rejects_claim_marker_mismatch(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    consumed = json.loads((directory / CLAIM_CONSUMED_FILE).read_bytes())
+    consumed["ownerNonce"] = "f" * 64 if consumed["ownerNonce"] != "f" * 64 else "e" * 64
+    (directory / CLAIM_CONSUMED_FILE).write_bytes(canonical_json_bytes(consumed))
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_storage_requires_private_attempt_directory(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    directory.chmod(0o755)
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_storage_requires_exact_file_set(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    (directory / "unexpected.json").write_bytes(b"{}")
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_storage_rejects_symlinked_part(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    capture_path = directory / CAPTURE_INPUT_FILE
+    target = tmp_path / "capture-target.json"
+    target.write_bytes(parts.capture_input_bytes)
+    capture_path.unlink()
+    capture_path.symlink_to(target)
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_storage_rejects_non_regular_part(contract, tmp_path):
+    expected, parts, reference = contract
+    root = tmp_path / "handoff-root"
+    directory = _phase_iii_write(root, expected, parts)
+    receipt_path = directory / RECEIPT_FILE
+    receipt_path.unlink()
+    receipt_path.mkdir()
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: _phase_iii_read(root, reference, expected),
+    )
+
+
+def test_phase_iii_capture_derives_only_joined_and_context_canonical_digests(contract):
+    expected, parts, _ = contract
+    joined_digest, context_digest = handoff.expected_input_digests_from_capture(
+        parts.capture_input_bytes
+    )
+    capture = parts.capture_input_value()
+    joined_bytes = canonical_json_bytes(capture["joinedCandidateInput"])
+    context_bytes = canonical_json_bytes(capture["context"])
+    assert joined_digest == DigestBinding(digest(joined_bytes), len(joined_bytes))
+    assert context_digest == DigestBinding(digest(context_bytes), len(context_bytes))
+    assert (joined_digest, context_digest) == (
+        expected.joined_candidate_input,
+        expected.replay_context,
+    )
+
+
+@pytest.mark.parametrize(
+    ("payload", "code", "detail"),
+    [
+        (b"{", "HANDOFF_MALFORMED", "JSON_SYNTAX"),
+        (b"{}\n", "HANDOFF_MALFORMED", "NONCANONICAL_ENCODING"),
+    ],
+)
+def test_phase_iii_capture_digest_derivation_uses_strict_decode(payload, code, detail):
+    assert_error(
+        code,
+        lambda: handoff.expected_input_digests_from_capture(payload),
+        detail,
+    )
+
+
+def test_phase_iii_capture_digest_derivation_rejects_schema_and_unknown_shape(contract):
+    _, parts, _ = contract
+    wrong_schema = parts.capture_input_value()
+    wrong_schema["schemaVersion"] = "p14-capture-input-2"
+    assert_error(
+        "UNSUPPORTED_CAPTURE_INPUT_SCHEMA",
+        lambda: handoff.expected_input_digests_from_capture(
+            canonical_json_bytes(wrong_schema)
+        ),
+    )
+    unknown_shape = parts.capture_input_value()
+    unknown_shape["unexpected"] = None
+    assert_error(
+        "HANDOFF_UNKNOWN_KEY",
+        lambda: handoff.expected_input_digests_from_capture(
+            canonical_json_bytes(unknown_shape)
+        ),
+    )
+
+
+def test_phase_iii_capture_digest_derivation_reuses_nested_shape_validation(contract):
+    _, parts, _ = contract
+    malformed = parts.capture_input_value()
+    malformed["joinedCandidateInput"][0]["price"] = []
+    assert_error(
+        "HANDOFF_MALFORMED",
+        lambda: handoff.expected_input_digests_from_capture(
+            canonical_json_bytes(malformed)
+        ),
+        "TYPE",
+    )
+
+
+def test_phase_iii_install_file_no_overwrite_matches_private_primitive(tmp_path):
+    public_directory = tmp_path / "public-wrapper"
+    private_directory = tmp_path / "private-primitive"
+    public_directory.mkdir(mode=0o700)
+    private_directory.mkdir(mode=0o700)
+    payload = b"exact-payload"
+
+    handoff.install_file_no_overwrite(public_directory, "payload.bin", payload)
+    handoff._atomic_no_overwrite(private_directory, "payload.bin", payload)
+    public_path = public_directory / "payload.bin"
+    private_path = private_directory / "payload.bin"
+    assert public_path.read_bytes() == private_path.read_bytes() == payload
+    assert (public_path.stat().st_mode & 0o777) == (private_path.stat().st_mode & 0o777) == 0o600
+    assert_error(
+        "DUPLICATE_PRODUCER_OUTPUT",
+        lambda: handoff.install_file_no_overwrite(
+            public_directory, "payload.bin", b"replacement"
+        ),
+    )
+    assert_error(
+        "DUPLICATE_PRODUCER_OUTPUT",
+        lambda: handoff._atomic_no_overwrite(
+            private_directory, "payload.bin", b"replacement"
+        ),
+    )
+    assert public_path.read_bytes() == private_path.read_bytes() == payload
+
+
+def test_phase_iii_require_private_directory_matches_private_primitive(tmp_path):
+    directory = tmp_path / "private"
+    directory.mkdir(mode=0o700)
+    assert handoff.require_private_directory(directory) is None
+    assert handoff._require_private_directory(directory) is None
+    directory.chmod(0o755)
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: handoff.require_private_directory(directory),
+    )
+    assert_error(
+        "HANDOFF_LOCATION_INVALID",
+        lambda: handoff._require_private_directory(directory),
+    )
+
+
+def test_phase_iii_public_api_signatures_have_no_defaults():
+    read_signature = inspect.signature(handoff.read_handoff_part_bytes)
+    assert tuple(read_signature.parameters) == (
+        "root", "producer_reference", "run_id", "run_attempt",
+        "policy_version", "executed_git_sha",
+    )
+    assert all(
+        parameter.default is inspect.Parameter.empty
+        for parameter in read_signature.parameters.values()
+    )
+    assert all(
+        read_signature.parameters[name].kind is inspect.Parameter.KEYWORD_ONLY
+        for name in ("run_id", "run_attempt", "policy_version", "executed_git_sha")
+    )
+    for function, names in (
+        (handoff.expected_input_digests_from_capture, ("capture_input_bytes",)),
+        (handoff.install_file_no_overwrite, ("directory", "file_name", "payload")),
+        (handoff.require_private_directory, ("path",)),
+    ):
+        signature = inspect.signature(function)
+        assert tuple(signature.parameters) == names
+        assert all(
+            parameter.default is inspect.Parameter.empty
+            for parameter in signature.parameters.values()
+        )
+
+
+def test_phase_iii_new_apis_preserve_purity_and_dependency_boundary():
+    sources = "\n".join(
+        inspect.getsource(function)
+        for function in (
+            handoff.read_handoff_part_bytes,
+            handoff.expected_input_digests_from_capture,
+            handoff.install_file_no_overwrite,
+            handoff.require_private_directory,
+        )
+    )
+    for forbidden in (
+        "candidate_funnel_engine", "candidate_funnel_batch", "run_full_batch",
+        "subprocess", "urllib", "requests", "socket", "os.environ",
+        "build_capture_input_bytes", "build_observation_bytes", "compute_confidence_invariant",
+        "terminalStatus", "EVIDENCE_HANDOFF_TERMINALS",
+    ):
+        assert forbidden not in sources
+
+
+def test_phase_iii_existing_function_bodies_match_authoritative_baseline():
+    baseline_source = subprocess.check_output(
+        [
+            "git", "show",
+            "9d631f45a9e02fc95c9093285910de1fd5ef0a18:data/p14_handoff.py",
+        ],
+        cwd=REPO,
+        text=True,
+    )
+    current_source = (REPO / "data/p14_handoff.py").read_text(encoding="utf-8")
+
+    def bodies(source):
+        result = {}
+
+        def collect(nodes, prefix=""):
+            for node in nodes:
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    qualified_name = f"{prefix}{node.name}"
+                    result[qualified_name] = ast.dump(
+                        ast.Module(body=node.body, type_ignores=[]),
+                        include_attributes=False,
+                    )
+                    collect(node.body, f"{qualified_name}.<locals>.")
+                elif isinstance(node, ast.ClassDef):
+                    collect(node.body, f"{prefix}{node.name}.")
+
+        collect(ast.parse(source).body)
+        return result
+
+    baseline_bodies = bodies(baseline_source)
+    current_bodies = bodies(current_source)
+    new_apis = {
+        "read_handoff_part_bytes",
+        "expected_input_digests_from_capture",
+        "install_file_no_overwrite",
+        "require_private_directory",
+    }
+    assert set(current_bodies) - set(baseline_bodies) == new_apis
+    assert set(baseline_bodies) <= set(current_bodies)
+    for name, body in baseline_bodies.items():
+        assert current_bodies[name] == body, name

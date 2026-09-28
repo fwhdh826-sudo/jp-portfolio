@@ -1826,3 +1826,102 @@ def read_handoff_parts(
         envelope_bytes=_read_regular_file(directory, HANDOFF_FILE),
     )
     return validate_handoff_parts(parts, expected_binding, producer_reference)
+
+
+def read_handoff_part_bytes(
+    root: str | os.PathLike[str],
+    producer_reference: ProducerReference | Mapping[str, Any] | None,
+    *,
+    run_id: str,
+    run_attempt: str,
+    policy_version: str,
+    executed_git_sha: str,
+) -> HandoffParts:
+    _require_positive_decimal(run_id, "run id")
+    _require_positive_decimal(run_attempt, "run attempt")
+    _require_identity_string(policy_version)
+    _require_git_sha(executed_git_sha, "executed git sha")
+    if producer_reference is None:
+        root_path = _validate_storage_root(Path(root))
+        directory = root_path / f"run-{run_id}" / f"attempt-{run_attempt}"
+        if not directory.exists() or not (directory / HANDOFF_FILE).exists():
+            raise HandoffError("HANDOFF_MISSING")
+        raise HandoffError("PRODUCER_REFERENCE_MISSING")
+    if not isinstance(producer_reference, ProducerReference):
+        try:
+            producer_reference = ProducerReference.from_value(producer_reference)
+        except (HandoffError, TypeError, ValueError, KeyError) as exc:
+            raise HandoffError("PRODUCER_REFERENCE_MISSING") from exc
+    if producer_reference.status != "READY":
+        raise HandoffError("PRODUCER_REFERENCE_MISSING")
+    if producer_reference.run_id != run_id:
+        raise HandoffError("RUN_ID_MISMATCH")
+    if producer_reference.run_attempt != run_attempt:
+        raise HandoffError("RUN_ATTEMPT_MISMATCH")
+    if producer_reference.policy_version != policy_version:
+        raise HandoffError("POLICY_BINDING_MISMATCH")
+    if producer_reference.observation_schema_version != OBSERVATION_SCHEMA_VERSION:
+        raise HandoffError("UNSUPPORTED_OBSERVATION_SCHEMA")
+    if producer_reference.handoff_schema_version != HANDOFF_SCHEMA_VERSION:
+        raise HandoffError("UNSUPPORTED_HANDOFF_SCHEMA")
+    if producer_reference.executed_git_sha != executed_git_sha:
+        raise HandoffError("SOURCE_IDENTITY_MISMATCH")
+    root_path = _validate_storage_root(Path(root))
+    directory = root_path / f"run-{run_id}" / f"attempt-{run_attempt}"
+    if not directory.exists():
+        raise HandoffError("STALE_HANDOFF")
+    _require_private_directory(directory)
+    if not (directory / HANDOFF_FILE).exists():
+        raise HandoffError("STALE_HANDOFF")
+    expected_names = {
+        CLAIM_FILE, CLAIM_CONSUMED_FILE, CAPTURE_INPUT_FILE, RECEIPT_FILE, HANDOFF_FILE,
+        f"observation-{producer_reference.observation_digest}.json",
+    }
+    try:
+        actual_names = {path.name for path in directory.iterdir()}
+    except OSError as exc:
+        raise HandoffError("HANDOFF_LOCATION_INVALID") from exc
+    if actual_names != expected_names:
+        raise HandoffError("HANDOFF_LOCATION_INVALID")
+    claim_marker = _claim_marker_value(directory / CLAIM_FILE)
+    consumed_marker = _claim_marker_value(directory / CLAIM_CONSUMED_FILE)
+    if claim_marker != consumed_marker:
+        raise HandoffError("HANDOFF_LOCATION_INVALID")
+    parts = HandoffParts(
+        capture_input_bytes=_read_regular_file(directory, CAPTURE_INPUT_FILE),
+        observation_bytes=_read_regular_file(
+            directory, f"observation-{producer_reference.observation_digest}.json"
+        ),
+        receipt_bytes=_read_regular_file(directory, RECEIPT_FILE),
+        envelope_bytes=_read_regular_file(directory, HANDOFF_FILE),
+    )
+    if _digest_bytes(parts.envelope_bytes) != producer_reference.transport_digest:
+        raise HandoffError("TRANSPORT_DIGEST_MISMATCH")
+    if _digest_bytes(parts.observation_bytes) != producer_reference.observation_digest:
+        raise HandoffError("OBSERVATION_DIGEST_MISMATCH")
+    if _digest_bytes(parts.receipt_bytes) != producer_reference.receipt_digest:
+        raise HandoffError("BATCH_RECEIPT_INVALID", "DIGEST_MISMATCH")
+    if _digest_bytes(parts.capture_input_bytes) != producer_reference.capture_input_digest:
+        raise HandoffError("INPUT_IDENTITY_MISMATCH")
+    return parts
+
+
+def expected_input_digests_from_capture(
+    capture_input_bytes: bytes,
+) -> tuple[DigestBinding, DigestBinding]:
+    capture = _decode_canonical(capture_input_bytes)
+    _validate_capture_value(capture)
+    joined_candidate_input = canonical_json_bytes(capture["joinedCandidateInput"])
+    replay_context = canonical_json_bytes(capture["context"])
+    return (
+        DigestBinding(_digest_bytes(joined_candidate_input), len(joined_candidate_input)),
+        DigestBinding(_digest_bytes(replay_context), len(replay_context)),
+    )
+
+
+def install_file_no_overwrite(directory: Path, file_name: str, payload: bytes) -> None:
+    _atomic_no_overwrite(directory, file_name, payload)
+
+
+def require_private_directory(path: Path) -> None:
+    _require_private_directory(path)
