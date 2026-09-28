@@ -1,36 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-28T19:02:48.681362+09:00",
-  "sourceUpdatedAt": "2026-09-28T10:01:26+00:00",
+  "updatedAt": "2026-09-29T03:40:16.956950+09:00",
+  "sourceUpdatedAt": "2026-09-28T18:34:32+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
-      "topPositiveTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
-      "items": [
-        {
-          "title": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/boj-rate-hike-in-october-is-real-possibility-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -42,19 +16,76 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
-      "avgSentiment": -0.047,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
+    "jp_semiconductor": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
-      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+      "topPositiveTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
       "items": [
         {
-          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:02:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
+          "tags": [
+            "dividend",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.182,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 11,
+      "isStale": false,
+      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+      "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+      "items": [
+        {
+          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-28T11:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -65,58 +96,31 @@
             "geopolitical",
             "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "An Inversion of the US Yield Curve Becomes New Risk as Fed Hikes",
+          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/the-bond-market-is-getting-closer-to-sounding-alarm-on-economy",
+          "publishedAt": "2026-09-28T01:50:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Investors Need to Assume $100 Oil Until Yearend, Principal's Shah",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T08:53:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/investors-need-to-assume-100-oil-until-yearend-shah-video",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Jobs Report Seen Showing 90,000 Payrolls, 4.1% Unemployment Rate",
+          "title": "Kganyago Sees Significant 2027 Slowdown in South African CPI",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-26T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-26/us-jobs-report-seen-showing-90-000-payrolls-4-1-unemployment-rate",
+          "publishedAt": "2026-09-28T12:06:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/kganyago-sees-significant-slowdown-in-south-african-cpi-in-2027",
           "tags": [
             "market",
             "us_broad"
@@ -125,38 +129,39 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
-      "topPositiveTitle": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
+      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+      "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "items": [
         {
-          "title": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
+          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-28T09:37:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/jpmorgan-s-matejka-says-tech-stocks-look-ripe-for-re-engagement",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:02:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
           "tags": [
+            "dividend",
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+          "title": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-09-27T16:19:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/bessent-urges-fed-to-keep-open-mind-on-us-inflation-outlook",
+          "publishedAt": "2026-09-28T17:25:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-cook-says-ai-gains-won-t-offset-near-term-inflation",
           "tags": [
             "market",
-            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -164,98 +169,124 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
-      "topPositiveTitle": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
-      "items": [
-        {
-          "title": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T08:37:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/morgan-stanley-says-bond-selloff-nowhere-near-problematic",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": -0.5,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-      "topPositiveTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+      "topPositiveTitle": "Burkina Faso Opens Gold Refinery in Push to Retain More Value",
       "items": [
         {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-27T23:59:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
             "commodity",
             "geopolitical",
             "gold",
-            "macro_risk",
             "market",
-            "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Burkina Faso Opens Gold Refinery in Push to Retain More Value",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:58:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/burkina-faso-opens-gold-refinery-in-push-to-retain-more-value",
+          "tags": [
+            "gold",
+            "market"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.145,
-      "negativeCount": 5,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
-      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
+      "topNegativeTitle": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
+      "topPositiveTitle": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
       "items": [
         {
-          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+          "title": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-28T15:41:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/rising-rates-pressure-property-values-video",
+          "tags": [
+            "market",
+            "rates",
+            "reit",
+            "trust"
+          ]
+        }
+      ]
+    },
+    "dividend": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+      "topPositiveTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+      "items": [
+        {
+          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:02:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
+          "tags": [
+            "dividend",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.19,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+      "topPositiveTitle": "Cliffs’ Stelco Set to Idle Some Steel Operations on Tariff Woes",
+      "items": [
+        {
+          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -266,97 +297,79 @@
             "geopolitical",
             "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bonds Are on the Cusp of Sending a Distress Signal on Economy",
-          "source": "Bloomberg Markets",
+          "title": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T10:01:26+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-28/bonds-are-on-the-cusp-of-sending-a-distress-signal-on-economy",
+          "publishedAt": "2026-09-28T16:12:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/canadian-confidence-in-neutral-as-oil-fuels-inflation-concerns",
           "tags": [
+            "commodity",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
+          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T08:37:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/morgan-stanley-says-bond-selloff-nowhere-near-problematic",
+          "publishedAt": "2026-09-28T01:50:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
-          "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
             "market",
-            "rates"
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Cliffs’ Stelco Set to Idle Some Steel Operations on Tariff Woes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:48:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/cliffs-s-stelco-set-to-idle-some-steel-operations-on-tariff-woes",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Colombia Reaches Out to IMF to Help Resolve Fiscal Crisis",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T12:39:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/colombia-seeking-imf-help-amid-fiscal-crisis-espriella-says",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
-      "topPositiveTitle": "Yen Gains After Japan’s Currency Czar Warns Against Weakness",
+      "topNegativeTitle": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
+      "topPositiveTitle": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
       "items": [
         {
-          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
+          "title": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Yen Gains After Japan’s Currency Czar Warns Against Weakness",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-09-28T09:03:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/yen-gains-after-japan-s-currency-czar-warns-against-weakness",
           "tags": [
@@ -367,27 +380,41 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.082,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "avgSentiment": -0.001,
+      "negativeCount": 3,
+      "positiveCount": 4,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+      "topNegativeTitle": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
       "items": [
         {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-28T11:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-27T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market",
             "rates",
@@ -407,40 +434,27 @@
           ]
         },
         {
-          "title": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/boj-rate-hike-in-october-is-real-possibility-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
+          "title": "Man Group Says 5.5% Yields Risk Cracking AI Capex, US Consumer",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T16:56:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/man-group-says-5-5-yields-risk-cracking-ai-capex-us-consumer",
           "tags": [
-            "fx",
-            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "RBA Set to Raise Key Rate as Patience on Inflation Dwindles",
+          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-27T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/rba-set-to-resume-raising-key-rate-as-patience-on-prices-erodes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T13:48:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -448,18 +462,48 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.023,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "avgSentiment": -0.186,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
-      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
+      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
       "items": [
         {
-          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-28T11:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -470,79 +514,80 @@
             "geopolitical",
             "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Investors Need to Assume $100 Oil Until Yearend, Principal's Shah",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T08:53:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/investors-need-to-assume-100-oil-until-yearend-shah-video",
+          "title": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T16:12:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/canadian-confidence-in-neutral-as-oil-fuels-inflation-concerns",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "TotalEnergies Lifts Payout as Rising Oil Prices Boost Profit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T06:58:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/totalenergies-lifts-buybacks-as-rising-oil-prices-boost-profit",
-          "tags": [
-            "commodity",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 28",
+          "title": "Putin Imposes Sweeping New Reporting Limits on Russian Energy",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-27T22:03:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/latest-oil-market-news-and-analysis-for-sept-28",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T17:20:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/putin-imposes-sweeping-new-reporting-limits-on-russian-energy",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.068,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "avgSentiment": -0.286,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
-      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
+      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
       "items": [
         {
-          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-28T11:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -553,65 +598,35 @@
             "geopolitical",
             "macro_risk",
             "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Heineken Sees Vietnam, India, China as Growth Markets",
+          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T06:50:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/heineken-sees-vietnam-india-china-as-growth-markets-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Sept. 28",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-27T22:03:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/latest-oil-market-news-and-analysis-for-sept-28",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-09-28T01:50:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Iran Refuses to Soften Demands as Trump Rejects Hormuz Offer",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T16:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/iran-refuses-to-soften-demands-as-trump-rejects-offer-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
           ]
         }
       ]
