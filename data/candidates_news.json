@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-28T08:56:50.627678+09:00",
-  "sourceUpdatedAt": "2026-09-27T23:30:00+00:00",
+  "updatedAt": "2026-09-28T10:49:46.449668+09:00",
+  "sourceUpdatedAt": "2026-09-28T01:34:22+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -56,16 +56,31 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.068,
-      "negativeCount": 1,
+      "avgSentiment": -0.11,
+      "negativeCount": 2,
       "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "The Bond Market Is Getting Closer to Sounding Alarm on Economy",
+      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
       "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
+        {
+          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "The Bond Market Is Getting Closer to Sounding Alarm on Economy",
           "source": "Bloomberg Markets",
@@ -116,46 +131,20 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-27T16:19:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/bessent-urges-fed-to-keep-open-mind-on-us-inflation-outlook",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
+      "topNegativeTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
-        {
-          "title": "AI Whiplash Jolts Stocks as Sentiment Lurches From Fear to Greed",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/ai-whiplash-jolts-stocks-as-sentiment-lurches-from-fear-to-greed",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
           "source": "Bloomberg Economics",
@@ -185,26 +174,29 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
-      "topPositiveTitle": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
+      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+      "topPositiveTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
       "items": [
         {
-          "title": "Barrick Mining Reaches Deal With Mali Unions, Averting Strikes",
+          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T11:34:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/barrick-mining-reaches-deal-with-mali-unions-averting-strikes",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
+            "commodity",
             "gold",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -234,50 +226,35 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
-      "topPositiveTitle": "Trump Rejects Iran Plan to Reopen Hormuz",
+      "topNegativeTitle": "Nomura's Wang: US Can Absorb More Rate Hikes",
+      "topPositiveTitle": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
       "items": [
         {
-          "title": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
+          "title": "Nomura's Wang: US Can Absorb More Rate Hikes",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
+          "publishedAt": "2026-09-28T00:51:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nomura-s-wang-us-can-absorb-more-rate-hikes-video",
           "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "A Hockey Legend, a New Bridge, and the Trade War Tearing Neighbors Apart",
+          "title": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:04:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/the-bridge-that-epitomizes-the-us-canada-trade-war-video",
+          "publishedAt": "2026-09-28T00:54:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/seoul-demands-ukraine-apology-over-north-korea-pow-disclosure",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -287,24 +264,25 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Rubenstein on the Billion Dollar Sports Boom",
-      "topPositiveTitle": "Rubenstein on the Billion Dollar Sports Boom",
+      "topNegativeTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
+      "topPositiveTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
       "items": [
         {
-          "title": "Rubenstein on the Billion Dollar Sports Boom",
+          "title": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:44:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/rubenstein-on-the-billion-dollar-sports-boom-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-27T23:57:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/oil-ai-demand-give-ringgit-room-to-rally-strategists-say",
           "tags": [
+            "commodity",
             "fx",
             "market"
           ]
@@ -312,16 +290,31 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.057,
+      "avgSentiment": -0.047,
       "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
+      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
       "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
+        {
+          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "BOJ Rate Hike in October Is Real Possibility, Ex-Official Says",
           "source": "Bloomberg Economics",
@@ -336,14 +329,13 @@
           ]
         },
         {
-          "title": "Emerging Market Investors Shun Riskiest Bonds as US Yields Soar",
+          "title": "Booms Don't Last Forever: Japan's Katayama",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-27T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T00:04:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/booms-don-t-last-forever-japan-s-katayama-video",
           "tags": [
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -374,32 +366,48 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "RBA Set to Resume Raising Key Rate as Patience on Prices Erodes",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-27T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/rba-set-to-resume-raising-key-rate-as-patience-on-prices-erodes",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.266,
-      "negativeCount": 0,
+      "avgSentiment": 0.032,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
-      "topPositiveTitle": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
+      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+      "topPositiveTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
       "items": [
+        {
+          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-09-27T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
           "source": "Bloomberg Markets",
@@ -428,20 +436,6 @@
           ]
         },
         {
-          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Latest Oil Market News and Analysis for Sept. 28",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -453,12 +447,25 @@
             "geopolitical",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.032,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 5,
+      "sourceCount": 1,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 28",
+      "items": [
         {
-          "title": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
+          "title": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
           "publishedAt": "2026-09-27T22:15:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -466,20 +473,32 @@
             "geopolitical",
             "market"
           ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.19,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 1,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "US Iran Talks Hit Familiar Sticking Points",
-      "topPositiveTitle": "Oil Gains, Stock Futures Dip as Trump Rebuffs Iran: Markets Wrap",
-      "items": [
+        },
+        {
+          "title": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T00:54:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/seoul-demands-ukraine-apology-over-north-korea-pow-disclosure",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "David Perdue: US Taiwan Policy Unchanged After Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T00:48:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/david-perdue-us-taiwan-policy-unchanged-after-talks-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "US Iran Talks Hit Familiar Sticking Points",
           "source": "Bloomberg Markets",
@@ -502,45 +521,6 @@
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "IAEA Says Iran Nuclear Oversight Can Resume Fast",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:37:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/iaea-says-iran-nuclear-oversight-can-resume-fast-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Rejects Iran Plan to Reopen Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/trump-rejects-iran-plan-to-reopen-hormuz-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "A Hockey Legend, a New Bridge, and the Trade War Tearing Neighbors Apart",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T12:04:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/the-bridge-that-epitomizes-the-us-canada-trade-war-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
