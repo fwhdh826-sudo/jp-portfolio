@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-28T10:49:46.449668+09:00",
-  "sourceUpdatedAt": "2026-09-28T01:34:22+00:00",
+  "updatedAt": "2026-09-28T19:02:48.681362+09:00",
+  "sourceUpdatedAt": "2026-09-28T10:01:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,58 +31,62 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
-      "topPositiveTitle": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
-      "items": [
-        {
-          "title": "South Korea Tax Windfall Seen Above 50 Trillion Won: Yonhap",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-27T02:51:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/south-korea-tax-windfall-seen-above-50-trillion-won-yonhap",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.11,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": -0.047,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
       "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
         {
-          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-27T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-27T23:59:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "The Bond Market Is Getting Closer to Sounding Alarm on Economy",
+          "title": "An Inversion of the US Yield Curve Becomes New Risk as Fed Hikes",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -94,29 +98,15 @@
           ]
         },
         {
-          "title": "Inflation Keeps Pressure on the Fed",
+          "title": "Investors Need to Assume $100 Oil Until Yearend, Principal's Shah",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:43:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
+          "publishedAt": "2026-09-28T08:53:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/investors-need-to-assume-100-oil-until-yearend-shah-video",
           "tags": [
             "commodity",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Data Center Boom Faces Wall Street Skepticism",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:14:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/data-center-boom-faces-wall-street-skepticism-video",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -137,14 +127,26 @@
     "us_growth": {
       "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
-      "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
+      "topNegativeTitle": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
+      "topPositiveTitle": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
       "items": [
+        {
+          "title": "JPMorgan’s Matejka Says Tech Stocks Look Ripe for Re-Engagement",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-28T09:37:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/jpmorgan-s-matejka-says-tech-stocks-look-ripe-for-re-engagement",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
           "source": "Bloomberg Economics",
@@ -162,38 +164,54 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -1.0,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
-      "topPositiveTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+      "topNegativeTitle": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
+      "topPositiveTitle": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
       "items": [
         {
-          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "title": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T08:37:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/morgan-stanley-says-bond-selloff-nowhere-near-problematic",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+      "topPositiveTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+      "items": [
+        {
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-27T23:59:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -226,6 +244,90 @@
       "items": []
     },
     "macro_risk": {
+      "avgSentiment": -0.145,
+      "negativeCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
+      "items": [
+        {
+          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-27T22:15:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bonds Are on the Cusp of Sending a Distress Signal on Economy",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T10:01:26+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-28/bonds-are-on-the-cusp-of-sending-a-distress-signal-on-economy",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Says Bond Selloff 'Nowhere Near Problematic'",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T08:37:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/morgan-stanley-says-bond-selloff-nowhere-near-problematic",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "fx": {
       "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
@@ -233,56 +335,31 @@
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Nomura's Wang: US Can Absorb More Rate Hikes",
-      "topPositiveTitle": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
+      "topNegativeTitle": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
+      "topPositiveTitle": "Yen Gains After Japan’s Currency Czar Warns Against Weakness",
       "items": [
         {
-          "title": "Nomura's Wang: US Can Absorb More Rate Hikes",
+          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T00:51:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nomura-s-wang-us-can-absorb-more-rate-hikes-video",
+          "publishedAt": "2026-09-27T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
           "tags": [
+            "fx",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
+          "title": "Yen Gains After Japan’s Currency Czar Warns Against Weakness",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T00:54:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/seoul-demands-ukraine-apology-over-north-korea-pow-disclosure",
+          "publishedAt": "2026-09-28T09:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/yen-gains-after-japan-s-currency-czar-warns-against-weakness",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
-      "topPositiveTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
-      "items": [
-        {
-          "title": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-27T23:57:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/oil-ai-demand-give-ringgit-room-to-rally-strategists-say",
-          "tags": [
-            "commodity",
             "fx",
             "market"
           ]
@@ -290,29 +367,43 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
+      "avgSentiment": -0.082,
+      "negativeCount": 4,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+      "topNegativeTitle": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
       "topPositiveTitle": "Bessent Urges Fed to Keep ‘Open Mind’ on US Inflation Outlook",
       "items": [
         {
-          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.5,
           "publishedAt": "2026-09-27T23:59:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "JPMorgan Defies Consensus With Three Thai Rate Hikes in 2027",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T05:34:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/jpmorgan-defies-consensus-with-three-thai-rate-hikes-in-2027",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -329,110 +420,99 @@
           ]
         },
         {
-          "title": "Booms Don't Last Forever: Japan's Katayama",
+          "title": "Traders Grow Wary on Emerging Dollar Bonds as US Yields Soar",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T00:04:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/booms-don-t-last-forever-japan-s-katayama-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-27T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/emerging-market-investors-shun-riskiest-bonds-as-us-yields-soar",
           "tags": [
+            "fx",
+            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Inflation Keeps Pressure on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:43:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Data Center Boom Faces Wall Street Skepticism",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:14:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/data-center-boom-faces-wall-street-skepticism-video",
+          "title": "RBA Set to Raise Key Rate as Patience on Inflation Dwindles",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-27T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/rba-set-to-resume-raising-key-rate-as-patience-on-prices-erodes",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.032,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 6,
+      "avgSentiment": 0.023,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
-      "topPositiveTitle": "Oil, AI Demand Give Ringgit Room to Rally, Strategists Say",
+      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
       "items": [
         {
-          "title": "Gold Declines as Hormuz Impasse Keeps Rate-Hike Bets Elevated",
+          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-27T22:15:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/tremors-from-ai-to-oil-boost-popular-hedge-fund-dispersion-trade",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Inflation Keeps Pressure on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T13:43:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/inflation-keeps-pressure-on-the-fed-video",
-          "tags": [
-            "commodity",
+            "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Investors Need to Assume $100 Oil Until Yearend, Principal's Shah",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T08:53:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/investors-need-to-assume-100-oil-until-yearend-shah-video",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "TotalEnergies Lifts Payout as Rising Oil Prices Boost Profit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T06:58:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/totalenergies-lifts-buybacks-as-rising-oil-prices-boost-profit",
+          "tags": [
+            "commodity",
+            "market"
           ]
         },
         {
@@ -451,36 +531,55 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.032,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.068,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 28",
+      "topNegativeTitle": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
+      "topPositiveTitle": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
       "items": [
         {
-          "title": "Bonds Resume Slide as Oil Rises on Iran Tensions: Markets Wrap",
+          "title": "US Stocks and Treasuries Fall as Oil Pushes Higher: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-27T22:15:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Seoul Demands Ukraine Apology Over North Korea POW Disclosure",
+          "title": "Gold Slumps as Costlier Crude Oil Sends Treasury Yields Higher",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-09-27T23:59:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Heineken Sees Vietnam, India, China as Growth Markets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T00:54:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/seoul-demands-ukraine-apology-over-north-korea-pow-disclosure",
+          "publishedAt": "2026-09-28T06:50:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/heineken-sees-vietnam-india-china-as-growth-markets-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -488,40 +587,31 @@
           ]
         },
         {
-          "title": "David Perdue: US Taiwan Policy Unchanged After Talks",
+          "title": "Latest Oil Market News and Analysis for Sept. 28",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T00:48:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/david-perdue-us-taiwan-policy-unchanged-after-talks-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Iran Talks Hit Familiar Sticking Points",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T14:02:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-27/us-iran-talks-hit-familiar-sticking-points-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Tremors From AI to Oil Boost Popular Hedge Fund Dispersion Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-27T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/tremors-from-ai-to-oil-boost-popular-hedge-fund-dispersion-trade",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-27T22:03:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-27/latest-oil-market-news-and-analysis-for-sept-28",
           "tags": [
             "commodity",
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "Bond Selloff Resumes as Oil Rises After Trump Spurns Iran Offer",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-28T01:50:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
