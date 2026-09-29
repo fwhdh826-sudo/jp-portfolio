@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-29T11:38:58.480569+09:00",
-  "sourceUpdatedAt": "2026-09-29T02:31:04+00:00",
+  "updatedAt": "2026-09-29T19:01:39.662036+09:00",
+  "sourceUpdatedAt": "2026-09-29T09:45:30+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,84 +29,79 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.11,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": 0.202,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-      "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+      "topNegativeTitle": "Treasuries Head Into Seasonally Poor October After Selloff",
+      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
+          "title": "Treasuries Head Into Seasonally Poor October After Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T05:32:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/traditionally-terrible-october-looms-for-beleaguered-treasuries",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Drift as Focus Turns to Labor Data and AI: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T00:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T01:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Kganyago Sees Significant 2027 Slowdown in South African CPI",
+          "title": "Fed’s Watchdog Warns of Classified File Breach by Former Staffer",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T12:06:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/kganyago-sees-significant-slowdown-in-south-african-cpi-in-2027",
+          "publishedAt": "2026-09-28T15:45:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-watchdog-warns-of-classified-file-breach-by-former-staffer",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Subprime Auto Loans Make Wall Street Rich as Borrowers Struggle",
+          "title": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T22:23:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/subprime-car-loans-pay-off-even-as-borrowers-struggle-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-29T09:34:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/thailand-eyes-pivot-to-short-term-debt-as-bond-volatility-rises",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-28T17:25:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-cook-says-ai-gains-won-t-offset-near-term-inflation",
           "tags": [
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
@@ -138,6 +133,31 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
+      "topPositiveTitle": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
+      "items": [
+        {
+          "title": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-29T07:18:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/european-stocks-rise-as-julius-baer-jumps-on-end-to-swiss-probe",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -148,35 +168,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-      "topPositiveTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-      "items": [
-        {
-          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T00:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -191,53 +182,77 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": -0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.332,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-      "topPositiveTitle": "Colombia Reaches Out to IMF to Help Resolve Fiscal Crisis",
+      "topNegativeTitle": "Swiss Regulator Ends Proceedings Against Julius Baer",
+      "topPositiveTitle": "Swiss Regulator Ends Proceedings Against Julius Baer",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
+          "title": "Swiss Regulator Ends Proceedings Against Julius Baer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-28T22:11:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-09-29T09:27:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-29/bn-s-tom-metcalf-on-julius-baer",
           "tags": [
-            "commodity",
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.036,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
+      "isStale": false,
+      "topNegativeTitle": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
+      "items": [
+        {
+          "title": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T08:44:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/uk-mortgage-approvals-fall-to-32-month-low-as-loan-costs-bite",
+          "tags": [
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "India Stock Bulls Pin Hopes on Corporate Earnings as Market Selloff Deepens",
+          "title": "BlueBay RBC: Global Bond Market Selloff is 'Overdone'",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T02:31:04+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-29/india-stock-bulls-pin-hopes-on-corporate-earnings-as-market-selloff-deepens",
+          "publishedAt": "2026-09-29T08:07:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-29/global-bonds-selloff-is-overdone-rbc-bluebay-video",
           "tags": [
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Treasuries Head Into Seasonally Poor October After Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T05:32:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/traditionally-terrible-october-looms-for-beleaguered-treasuries",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -254,28 +269,14 @@
           ]
         },
         {
-          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
+          "title": "Texas Allows Wider Use of Dyed Diesel as War Boosts Fuel Costs",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T01:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Colombia Reaches Out to IMF to Help Resolve Fiscal Crisis",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T12:39:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/colombia-seeking-imf-help-amid-fiscal-crisis-espriella-says",
+          "publishedAt": "2026-09-29T09:32:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/texas-allows-wider-use-of-dyed-diesel-as-war-boosts-fuel-costs",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -290,11 +291,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
-      "topPositiveTitle": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
+      "topNegativeTitle": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
+      "topPositiveTitle": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
       "items": [
         {
-          "title": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
+          "title": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -308,57 +309,51 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.038,
-      "negativeCount": 3,
-      "positiveCount": 3,
+      "avgSentiment": 0.168,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-      "topPositiveTitle": "Why Earnings Growth Remain a Key Buffer Against Yield Risks",
+      "topNegativeTitle": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
+      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-28T22:11:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Australia’s Household Spending Is Flat as Outlays for Sport Slip",
-          "source": "Bloomberg Markets",
+          "title": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T01:48:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-s-household-spending-is-flat-as-outlays-for-sport-slip",
+          "publishedAt": "2026-09-29T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/spanish-inflation-unexpectedly-hits-5-backing-higher-ecb-rates",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
+          "title": "Philippines Starts Sale of Retail Bonds Amid Elevated Rates",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T00:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T05:35:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/philippines-retail-bond-auction-draws-billions-as-rates-rise",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T04:31:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -375,13 +370,14 @@
           ]
         },
         {
-          "title": "Rethinking Fed Rate Path Sends Bond Yields Higher, But a Data Test Is Looming",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-28/rethinking-fed-rate-path-sends-bond-yields-higher-but-a-data-test-is-looming",
+          "title": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-29T09:34:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/thailand-eyes-pivot-to-short-term-debt-as-bond-volatility-rises",
           "tags": [
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -390,47 +386,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.093,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": 0.057,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
+      "topNegativeTitle": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
+      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
       "items": [
-        {
-          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-28T22:11:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T00:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
           "source": "Bloomberg Economics",
@@ -445,16 +410,39 @@
           ]
         },
         {
-          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
+          "title": "Lufthansa Predicts Challenging Year With Oil, Fleet Issues",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T01:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/lufthansa-sees-another-transitional-year-with-oil-fleet-issues",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T04:31:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Stocks Drift as Focus Turns to Labor Data and AI: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
@@ -475,69 +463,65 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.136,
-      "negativeCount": 2,
+      "avgSentiment": 0.134,
+      "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
+      "topNegativeTitle": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
       "items": [
         {
-          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
-          "source": "Bloomberg Markets",
+          "title": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T00:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
+          "publishedAt": "2026-09-29T08:44:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/uk-mortgage-approvals-fall-to-32-month-low-as-loan-costs-bite",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T01:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Flashlight Capital Urges Secom to Raise Stake in Korea’s S-1",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/flashlight-capital-urges-secom-to-raise-stake-in-korea-s-s-1",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 29",
+          "title": "Texas Allows Wider Use of Dyed Diesel as War Boosts Fuel Costs",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-28T22:02:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/latest-oil-market-news-and-analysis-for-sept-29",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T09:32:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/texas-allows-wider-use-of-dyed-diesel-as-war-boosts-fuel-costs",
           "tags": [
-            "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US-Canada Trade War Is Escalating",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T05:04:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/why-the-us-canada-trade-war-is-escalating",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia’s Military Spending Set to Surge by 27% as War Escalates",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-29T08:11:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/russia-s-military-spending-set-to-surge-by-27-as-war-escalates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -566,7 +550,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
