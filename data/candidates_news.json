@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-29T10:14:06.877441+09:00",
-  "sourceUpdatedAt": "2026-09-29T00:25:13+00:00",
+  "updatedAt": "2026-09-29T11:38:58.480569+09:00",
+  "sourceUpdatedAt": "2026-09-29T02:31:04+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,26 +29,25 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.099,
-      "negativeCount": 4,
+      "avgSentiment": -0.11,
+      "negativeCount": 3,
       "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
       "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
             "rates",
@@ -66,22 +65,6 @@
             "commodity",
             "geopolitical",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T04:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -113,32 +96,32 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Subprime Auto Loans Make Wall Street Rich as Borrowers Struggle",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T22:23:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/subprime-car-loans-pay-off-even-as-borrowers-struggle-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Copper Set to Give Australia’s Mining Stock Rally a New Engine",
+      "topNegativeTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "items": [
-        {
-          "title": "Copper Set to Give Australia’s Mining Stock Rally a New Engine",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-28T21:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/copper-set-to-give-australia-s-mining-stock-rally-a-new-engine",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
           "source": "Bloomberg Economics",
@@ -155,33 +138,16 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-      "topPositiveTitle": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-      "items": [
-        {
-          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T04:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": -0.33,
@@ -237,30 +203,41 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.277,
+      "avgSentiment": -0.332,
       "negativeCount": 4,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
       "topPositiveTitle": "Colombia Reaches Out to IMF to Help Resolve Fiscal Crisis",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "India Stock Bulls Pin Hopes on Corporate Earnings as Market Selloff Deepens",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T02:31:04+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-29/india-stock-bulls-pin-hopes-on-corporate-earnings-as-market-selloff-deepens",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -274,22 +251,6 @@
             "commodity",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T04:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
           ]
         },
         {
@@ -322,42 +283,66 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
+      "topPositiveTitle": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
+      "items": [
+        {
+          "title": "Japan’s Katayama Reiterates Weak Yen Concern After Bessent Call",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-29T02:26:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/japan-s-katayama-reiterates-weak-yen-concern-after-bessent-call",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.031,
-      "negativeCount": 4,
+      "avgSentiment": 0.038,
+      "negativeCount": 3,
       "positiveCount": 3,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
       "topPositiveTitle": "Why Earnings Growth Remain a Key Buffer Against Yield Risks",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Australia’s Household Spending Is Flat as Outlays for Sport Slip",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T01:48:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-s-household-spending-is-flat-as-outlays-for-sport-slip",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -377,68 +362,53 @@
           ]
         },
         {
-          "title": "JPMorgan Defies Consensus With Three Thai Rate Hikes in 2027",
+          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T05:34:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/jpmorgan-defies-consensus-with-three-thai-rate-hikes-in-2027",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T13:48:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
         },
         {
-          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T04:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
+          "title": "Rethinking Fed Rate Path Sends Bond Yields Higher, But a Data Test Is Looming",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-28/rethinking-fed-rate-path-sends-bond-yields-higher-but-a-data-test-is-looming",
           "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Swinging Between Fear And Greed, Inside the US Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T21:00:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/swinging-between-fear-and-greed-inside-the-us-markets",
-          "tags": [
-            "market",
-            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.046,
+      "avgSentiment": -0.093,
       "negativeCount": 4,
       "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
       "items": [
         {
-          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+          "title": "Treasuries Stabilize After Selloff, Stocks Decline: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market",
             "rates",
@@ -505,32 +475,16 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.046,
-      "negativeCount": 4,
+      "avgSentiment": 0.136,
+      "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topNegativeTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
       "items": [
-        {
-          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-28T22:11:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
           "source": "Bloomberg Markets",
@@ -542,22 +496,6 @@
             "commodity",
             "geopolitical",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T04:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -588,6 +526,33 @@
           "tags": [
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 29",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-28T22:02:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/latest-oil-market-news-and-analysis-for-sept-29",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-28T16:59:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/zimbabwe-cuts-rates-against-global-tide-as-iran-risks-persist",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "rates"
           ]
         }
       ]
