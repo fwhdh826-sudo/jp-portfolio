@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-29T19:01:39.662036+09:00",
-  "sourceUpdatedAt": "2026-09-29T09:45:30+00:00",
+  "updatedAt": "2026-09-30T01:56:41.921287+09:00",
+  "sourceUpdatedAt": "2026-09-29T16:45:52+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,79 +29,76 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.202,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.209,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Head Into Seasonally Poor October After Selloff",
-      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
+      "topNegativeTitle": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
+      "topPositiveTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
       "items": [
         {
-          "title": "Treasuries Head Into Seasonally Poor October After Selloff",
+          "title": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T05:32:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/traditionally-terrible-october-looms-for-beleaguered-treasuries",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Drift as Focus Turns to Labor Data and AI: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-09-28T22:11:04+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Watchdog Warns of Classified File Breach by Former Staffer",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T15:45:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-watchdog-warns-of-classified-file-breach-by-former-staffer",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T09:34:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/thailand-eyes-pivot-to-short-term-debt-as-bond-volatility-rises",
-          "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+          "title": "Meredith Whitney Warns of Weakness in US Economy’s ‘Underbelly’",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-28T17:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-cook-says-ai-gains-won-t-offset-near-term-inflation",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-29T16:06:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/meredith-whitney-warns-of-weakness-in-us-economy-s-underbelly",
           "tags": [
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Drop as Traders Parse Consumer Confidence, JOLTS Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-09-29T11:59:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/us-stock-futures-rise-as-traders-await-key-economic-data",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Barr Says More Hikes Likely Needed as Growth Picks Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T16:40:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/fed-s-barr-says-more-hikes-likely-needed-as-growth-picks-up",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Banxico ve margen para bajar tasas pese a decisiones de la Fed",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T13:44:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/banxico-ve-margen-para-bajar-tasas-pese-a-decisiones-de-la-fed",
+          "tags": [
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -114,16 +111,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
-      "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+      "topNegativeTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
+      "topPositiveTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
       "items": [
         {
-          "title": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
+          "title": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-09-28T17:25:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/fed-s-cook-says-ai-gains-won-t-offset-near-term-inflation",
+          "publishedAt": "2026-09-29T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/fed-s-bowman-touts-ai-benefits-risks-for-bank-cybersecurity",
           "tags": [
             "market",
             "us_broad",
@@ -133,31 +130,6 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
-      "topPositiveTitle": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
-      "items": [
-        {
-          "title": "European Stocks Rise as Julius Baer Gains on End to Swiss Probe",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T07:18:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/european-stocks-rise-as-julius-baer-jumps-on-end-to-swiss-probe",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -168,6 +140,33 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Gains as Traders Weigh Fed Rate Path Amid High Yields",
+      "topPositiveTitle": "Gold Gains as Traders Weigh Fed Rate Path Amid High Yields",
+      "items": [
+        {
+          "title": "Gold Gains as Traders Weigh Fed Rate Path Amid High Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -182,288 +181,19 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Swiss Regulator Ends Proceedings Against Julius Baer",
-      "topPositiveTitle": "Swiss Regulator Ends Proceedings Against Julius Baer",
-      "items": [
-        {
-          "title": "Swiss Regulator Ends Proceedings Against Julius Baer",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-09-29T09:27:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-29/bn-s-tom-metcalf-on-julius-baer",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.036,
-      "negativeCount": 4,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
-      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
-      "items": [
-        {
-          "title": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T08:44:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/uk-mortgage-approvals-fall-to-32-month-low-as-loan-costs-bite",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "BlueBay RBC: Global Bond Market Selloff is 'Overdone'",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T08:07:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-29/global-bonds-selloff-is-overdone-rbc-bluebay-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Head Into Seasonally Poor October After Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T05:32:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/traditionally-terrible-october-looms-for-beleaguered-treasuries",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T16:12:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/canadian-confidence-in-neutral-as-oil-fuels-inflation-concerns",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Texas Allows Wider Use of Dyed Diesel as War Boosts Fuel Costs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T09:32:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/texas-allows-wider-use-of-dyed-diesel-as-war-boosts-fuel-costs",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
-      "topPositiveTitle": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
-      "items": [
-        {
-          "title": "Japan’s Katayama Repeats Weak Yen Concern After Bessent Call",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-29T02:26:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/japan-s-katayama-reiterates-weak-yen-concern-after-bessent-call",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.168,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
-      "topPositiveTitle": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
-      "items": [
-        {
-          "title": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/spanish-inflation-unexpectedly-hits-5-backing-higher-ecb-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Philippines Starts Sale of Retail Bonds Amid Elevated Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T05:35:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/philippines-retail-bond-auction-draws-billions-as-rates-rise",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T04:31:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T13:48:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Thailand Eyes Pivot to Short-Term Debt as Bond Volatility Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T09:34:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/thailand-eyes-pivot-to-short-term-debt-as-bond-volatility-rises",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.057,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
-      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
-      "items": [
-        {
-          "title": "Canadian Confidence in Neutral as Oil Fuels Inflation Fears",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-28T16:12:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/canadian-confidence-in-neutral-as-oil-fuels-inflation-concerns",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Lufthansa Predicts Challenging Year With Oil, Fleet Issues",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/lufthansa-sees-another-transitional-year-with-oil-fleet-issues",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T04:31:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stocks Drift as Focus Turns to Labor Data and AI: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T22:11:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T13:48:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.1,
       "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 2,
@@ -471,7 +201,7 @@
       "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
-      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
+      "topPositiveTitle": "US 30-Year Treasury Yield Rises to Highest Level Since 2002",
       "items": [
         {
           "title": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
@@ -487,14 +217,13 @@
           ]
         },
         {
-          "title": "Texas Allows Wider Use of Dyed Diesel as War Boosts Fuel Costs",
+          "title": "Demand Boost for US Crops Still Unclear After China Tariff Cuts",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T09:32:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/texas-allows-wider-use-of-dyed-diesel-as-war-boosts-fuel-costs",
+          "publishedAt": "2026-09-29T07:53:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/demand-boost-for-us-crops-still-unclear-after-china-tariff-cuts",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -513,7 +242,7 @@
           ]
         },
         {
-          "title": "Russia’s Military Spending Set to Surge by 27% as War Escalates",
+          "title": "Russia Set to Surge Defense Spending by 27% as War Escalates",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -526,17 +255,264 @@
           ]
         },
         {
-          "title": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
-          "source": "Bloomberg Economics",
+          "title": "US 30-Year Treasury Yield Rises to Highest Level Since 2002",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-28T16:59:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/zimbabwe-cuts-rates-against-global-tide-as-iran-risks-persist",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-29T14:34:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/us-30-year-treasury-yield-approaches-highest-level-since-2002",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "National Bank of Canada on the Economic Outlook",
+      "topPositiveTitle": "National Bank of Canada on the Economic Outlook",
+      "items": [
+        {
+          "title": "National Bank of Canada on the Economic Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T16:09:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-29/national-bank-of-canada-on-the-economic-outlook-video",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.138,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
+      "topPositiveTitle": "US 30-Year Treasury Yield Rises to Highest Level Since 2002",
+      "items": [
+        {
+          "title": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/spanish-inflation-unexpectedly-hits-5-backing-higher-ecb-rates",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "National Bank of Canada on the Economic Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T16:09:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-29/national-bank-of-canada-on-the-economic-outlook-video",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T04:31:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Gains as Traders Weigh Fed Rate Path Amid High Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": -0.332,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
+      "topPositiveTitle": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
+      "items": [
+        {
+          "title": "Stocks Fall as Long-Term Yields Hit 24-Year High: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BOE’s Taylor Says Inflation Contained, Urges Caution on Hikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T16:07:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/boe-s-taylor-says-inflation-contained-urges-caution-on-hikes",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 29",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T22:02:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/latest-oil-market-news-and-analysis-for-sept-29",
           "tags": [
             "commodity",
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Australia Raises Key Rate to 15-Year High to Cool Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T04:31:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/australia-raises-key-rate-to-15-year-high-to-restrain-inflation",
+          "tags": [
+            "commodity",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "高市首相 モンゴル首相と会談 空港拡張支援などで一致",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T16:33:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260929de53217",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "高市首相 モンゴル首相と会談 空港拡張支援などで一致"
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": -0.083,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+      "topPositiveTitle": "Russia Set to Surge Defense Spending by 27% as War Escalates",
+      "items": [
+        {
+          "title": "UK Mortgage Approvals Hit 32-Month Low as Loan Costs Bite",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T08:44:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/uk-mortgage-approvals-fall-to-32-month-low-as-loan-costs-bite",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Sept. 29",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T22:02:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/latest-oil-market-news-and-analysis-for-sept-29",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US-Canada Trade War Is Escalating",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T05:04:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/why-the-us-canada-trade-war-is-escalating",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia Set to Surge Defense Spending by 27% as War Escalates",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-29T08:11:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/russia-s-military-spending-set-to-surge-by-27-as-war-escalates",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
@@ -550,7 +526,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
