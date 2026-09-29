@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-29T03:40:16.956950+09:00",
-  "sourceUpdatedAt": "2026-09-28T18:34:32+00:00",
+  "updatedAt": "2026-09-29T10:14:06.877441+09:00",
+  "sourceUpdatedAt": "2026-09-29T00:25:13+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,83 +17,70 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-      "topPositiveTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-      "items": [
-        {
-          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:02:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
-          "tags": [
-            "dividend",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.182,
+      "avgSentiment": -0.099,
       "negativeCount": 4,
       "positiveCount": 1,
-      "neutralCount": 6,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
       "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "items": [
         {
-          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-28T11:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-27T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
             "macro_risk",
             "market",
             "rates",
@@ -108,6 +95,7 @@
           "publishedAt": "2026-09-28T01:50:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
@@ -129,26 +117,24 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+      "topNegativeTitle": "Copper Set to Give Australia’s Mining Stock Rally a New Engine",
       "topPositiveTitle": "Fed’s Cook Says AI Gains Won’t Offset Near-Term Inflation",
       "items": [
         {
-          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
+          "title": "Copper Set to Give Australia’s Mining Stock Rally a New Engine",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:02:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-28T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/copper-set-to-give-australia-s-mining-stock-rally-a-new-engine",
           "tags": [
-            "dividend",
-            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -169,6 +155,64 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+      "topPositiveTitle": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+      "items": [
+        {
+          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
+      "topPositiveTitle": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
+      "items": [
+        {
+          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -180,118 +224,36 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-      "topPositiveTitle": "Burkina Faso Opens Gold Refinery in Push to Retain More Value",
-      "items": [
-        {
-          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Burkina Faso Opens Gold Refinery in Push to Retain More Value",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:58:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/burkina-faso-opens-gold-refinery-in-push-to-retain-more-value",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
-    },
-    "reit": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
-      "topPositiveTitle": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
-      "items": [
-        {
-          "title": "Rising Rates Pressure Property Values as REIT M&A Deals Pick Up",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-28T15:41:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/rising-rates-pressure-property-values-video",
-          "tags": [
-            "market",
-            "rates",
-            "reit",
-            "trust"
-          ]
-        }
-      ]
-    },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-      "topPositiveTitle": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-      "items": [
-        {
-          "title": "Nvidia Boosts Share Buyback Authorization by $150 Billion",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:02:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/nvidia-boosts-share-buyback-authorization-video",
-          "tags": [
-            "dividend",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.19,
-      "negativeCount": 3,
+      "avgSentiment": -0.277,
+      "negativeCount": 4,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
-      "topPositiveTitle": "Cliffs’ Stelco Set to Idle Some Steel Operations on Tariff Woes",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topPositiveTitle": "Colombia Reaches Out to IMF to Help Resolve Fiscal Crisis",
       "items": [
         {
-          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-27T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
@@ -315,6 +277,22 @@
           ]
         },
         {
+          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
@@ -322,22 +300,11 @@
           "publishedAt": "2026-09-28T01:50:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Cliffs’ Stelco Set to Idle Some Steel Operations on Tariff Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:48:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/cliffs-s-stelco-set-to-idle-some-steel-operations-on-tariff-woes",
-          "tags": [
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -355,67 +322,55 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
-      "topPositiveTitle": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
-      "items": [
-        {
-          "title": "Japan’s Fresh Warning Against Weak Yen Fuels Intervention Worry",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-09-28T09:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/yen-gains-after-japan-s-currency-czar-warns-against-weakness",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.001,
-      "negativeCount": 3,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "avgSentiment": 0.031,
+      "negativeCount": 4,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
-      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topPositiveTitle": "Why Earnings Growth Remain a Key Buffer Against Yield Risks",
       "items": [
         {
-          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-28T11:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-27T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -434,27 +389,29 @@
           ]
         },
         {
-          "title": "Man Group Says 5.5% Yields Risk Cracking AI Capex, US Consumer",
+          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T16:56:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/man-group-says-5-5-yields-risk-cracking-ai-capex-us-consumer",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
           "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
-          "source": "Bloomberg Economics",
+          "title": "Swinging Between Fear And Greed, Inside the US Markets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T13:48:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
+          "publishedAt": "2026-09-28T21:00:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-28/swinging-between-fear-and-greed-inside-the-us-markets",
           "tags": [
-            "commodity",
             "market",
             "rates"
           ]
@@ -462,57 +419,43 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.186,
+      "avgSentiment": -0.046,
       "negativeCount": 4,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
       "items": [
         {
-          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-28T11:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-27T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -532,70 +475,88 @@
           ]
         },
         {
-          "title": "Putin Imposes Sweeping New Reporting Limits on Russian Energy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T17:20:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/putin-imposes-sweeping-new-reporting-limits-on-russian-energy",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": -0.286,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
-      "isStale": false,
-      "topNegativeTitle": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
-      "topPositiveTitle": "Zimbabwe Cuts Rates Against Global Tide as Iran Risks Persist",
-      "items": [
-        {
-          "title": "Gold Slumps to Seven-Week Low in ‘Extremely Tough’ Market",
+          "title": "Treasuries Selloff Deepens as Trump Spurns Iran’s Latest Offer",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-27T23:59:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/gold-declines-as-hormuz-impasse-keeps-rate-hike-bets-elevated",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T01:50:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
             "commodity",
             "geopolitical",
-            "gold",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Tumble as US-Iran Stalemate Stokes Inflation Concerns",
+          "title": "ECB’s Lagarde Says Higher Yields to Slow Growth, Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-28T13:48:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/ecb-s-lagarde-says-higher-yields-to-slow-growth-and-inflation",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": -0.046,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 7,
+      "isStale": false,
+      "topNegativeTitle": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 29",
+      "items": [
+        {
+          "title": "Treasuries Stabilize After Selloff, Stocks Slip: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-28T11:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-28/us-stocks-decline-as-middle-east-stalemate-pushes-oil-higher",
+          "publishedAt": "2026-09-28T22:11:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Stocks Fall as US-Iran Standoff Boosts Bond Yields: Markets Wrap",
+          "title": "Gold Trades Near Seven-Week Low as Rate-Hike Pressure Mounts",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-27T22:15:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-29T00:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-trades-near-seven-week-low-as-rate-hike-pressure-mounts",
           "tags": [
             "commodity",
             "geopolitical",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "EM Debt Turns Negative for Year as Treasury Selloff Bites",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-28T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-28/emerging-stocks-slide-as-oil-gains-on-renewed-mideast-tensions",
+          "tags": [
+            "geopolitical",
+            "global_broad",
             "macro_risk",
             "market",
             "rates",
@@ -610,6 +571,7 @@
           "publishedAt": "2026-09-28T01:50:20+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-28/bond-selloff-resumes-as-oil-rises-after-trump-spurns-iran-offer",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market",
@@ -617,14 +579,13 @@
           ]
         },
         {
-          "title": "Iran Refuses to Soften Demands as Trump Rejects Hormuz Offer",
+          "title": "Flashlight Capital Urges Secom to Raise Stake in Korea’s S-1",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-28T16:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-28/iran-refuses-to-soften-demands-as-trump-rejects-offer-video",
+          "publishedAt": "2026-09-29T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/flashlight-capital-urges-secom-to-raise-stake-in-korea-s-s-1",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
