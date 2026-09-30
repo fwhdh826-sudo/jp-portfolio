@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-30T18:54:28.667293+09:00",
-  "sourceUpdatedAt": "2026-09-30T09:32:55+00:00",
+  "updatedAt": "2026-10-01T01:54:07.650090+09:00",
+  "sourceUpdatedAt": "2026-09-30T16:33:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,48 +17,61 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "South Korea Tax Revenue to Hit Fresh Record on Global Chip Boom",
-      "topPositiveTitle": "South Korea Tax Revenue to Hit Fresh Record on Global Chip Boom",
-      "items": [
-        {
-          "title": "South Korea Tax Revenue to Hit Fresh Record on Global Chip Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/south-korea-tax-revenue-to-hit-fresh-record-on-global-chip-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.25,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": 0.427,
+      "negativeCount": 0,
+      "positiveCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
-      "topPositiveTitle": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
+      "topNegativeTitle": "Fed Votes to Overhaul Stress Tests in Win for Big Banks",
+      "topPositiveTitle": "US Consumer Spending Jumps by Most in a Year",
       "items": [
         {
-          "title": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T18:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/fed-s-williams-sees-one-more-interest-rate-hike-in-late-2026",
+          "title": "Fed Votes to Overhaul Stress Tests in Win for Big Banks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T13:01:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-votes-to-overhaul-stress-tests-in-major-wall-street-bank-win",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T23:58:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Long-Bond Yields Renew 24-Year High on Resilient US Spending",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T12:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/traders-pull-back-on-october-fed-hike-bets-after-cool-pce-data",
           "tags": [
             "market",
             "rates",
@@ -66,14 +79,13 @@
           ]
         },
         {
-          "title": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
+          "title": "Stocks Rise as Inflation Surprise Curbs Fed Bets: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:18:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/dollar-powers-to-best-month-since-june-on-fed-s-inflation-fight",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-29T22:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
             "market",
             "rates",
             "us_broad"
@@ -91,19 +103,6 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-29T22:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
@@ -111,13 +110,25 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
-      "topPositiveTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
+      "topNegativeTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
+      "topPositiveTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
       "items": [
+        {
+          "title": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T12:58:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/bank-of-england-warns-gilt-market-faces-growing-spillover-risks",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
           "source": "Bloomberg Economics",
@@ -146,16 +157,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+      "topPositiveTitle": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+      "items": [
+        {
+          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T23:58:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -170,90 +196,61 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": -0.066,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
+      "topNegativeTitle": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
+      "topPositiveTitle": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
       "items": [
         {
-          "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-29T23:59:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/japan-s-output-falls-for-second-month-as-mideast-strife-drags-on",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Goldman’s Oppenheimer Says Pace of Bond Selloff Key for Stocks",
+          "title": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-30T15:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/robinhood-s-weekend-equities-trade-cal-maine-sales-miss-video",
+          "tags": [
+            "dividend",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Legal challenges to Trump’s tariffs",
+      "topPositiveTitle": "Turkish Stocks Enter Bear Market on Investment Fund Turmoil",
+      "items": [
+        {
+          "title": "Legal challenges to Trump’s tariffs",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T08:58:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/goldman-s-oppenheimer-says-pace-of-bond-selloff-key-for-stocks",
+          "publishedAt": "2026-09-30T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-09-30/legal-challenges-to-trump-s-tariffs",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
+          "title": "Turkish Stocks Enter Bear Market on Investment Fund Turmoil",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T06:47:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
+          "publishedAt": "2026-09-30T07:30:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/turkish-stocks-set-to-enter-bear-market-on-fund-turmoil",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Polish Inflation Hits 15-Month High, Bolstering Rate-Rise Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T07:43:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/polish-inflation-hits-15-month-high-bolstering-rate-rise-case",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T20:09:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/bank-of-canada-deputy-sees-dilemma-on-trade-war-energy-shock",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -261,49 +258,35 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.443,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
-      "topPositiveTitle": "SNB Continued Franc Sales in Second Quarter, Stemming Flows",
+      "topNegativeTitle": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
+      "topPositiveTitle": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
       "items": [
         {
-          "title": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
+          "title": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:18:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/dollar-powers-to-best-month-since-june-on-fed-s-inflation-fight",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Dollar to Gain From Capital Flows: Market Analysis",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T07:48:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/us-dollar-to-gain-from-capital-flows-3-minutes-mliv-video",
+          "publishedAt": "2026-09-30T16:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/mexico-s-peso-becomes-worst-in-the-world-as-carry-traders-flee",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "SNB Continued Franc Sales in Second Quarter, Stemming Flows",
+          "title": "New Mozambique Central Bank Chief Unveils Plan to Curb FX Dearth",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-09-30T07:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/snb-continued-franc-sales-in-second-quarter-stemming-flows",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T14:50:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/mozambique-s-new-central-bank-chief-holds-rates-to-assess-risks",
           "tags": [
             "fx",
             "market"
@@ -312,41 +295,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.122,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 6,
+      "avgSentiment": 0.369,
+      "negativeCount": 0,
+      "positiveCount": 6,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Colombia Seen Holding Before More Rate Hikes: Decision Guide",
-      "topPositiveTitle": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
+      "topNegativeTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
+      "topPositiveTitle": "German Inflation Jumps to Highest in Almost Three Years",
       "items": [
-        {
-          "title": "Colombia Seen Holding Before More Rate Hikes: Decision Guide",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/colombia-seen-holding-before-more-rate-hikes-decision-guide",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T18:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/fed-s-williams-sees-one-more-interest-rate-hike-in-late-2026",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
           "source": "Bloomberg Economics",
@@ -361,7 +319,7 @@
           ]
         },
         {
-          "title": "Zambia Cuts Rates as Inflation Is Expected to Remain in Target",
+          "title": "Zambia Bucks Global Trend, Delivers Deepest Rate Cut in 15 Years",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -373,174 +331,119 @@
           ]
         },
         {
-          "title": "French Inflation Accelerates to Highest in Two Years",
+          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T08:12:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/french-inflation-accelerates-to-highest-in-two-years-video",
+          "publishedAt": "2026-09-29T23:58:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
           "tags": [
-            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasury 30-Year Yield's Continuous Rise Reveals Inflation Worry",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T15:20:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/30-year-yield-s-continuous-rise-fuels-inflation-worry-video",
+          "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "US Long-Bond Yields Renew 24-Year High on Resilient US Spending",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T12:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/traders-pull-back-on-october-fed-hike-bets-after-cool-pce-data",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": 0.168,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Tullow Oil Shares Slump After Loss of Crucial Ghana Tax Dispute",
-      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
+      "topNegativeTitle": "Glencore, Peabody and Heeney Mull Coal Deals in Venezuela",
+      "topPositiveTitle": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
       "items": [
         {
-          "title": "Tullow Oil Shares Slump After Loss of Crucial Ghana Tax Dispute",
+          "title": "Glencore, Peabody and Heeney Mull Coal Deals in Venezuela",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-30T08:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/tullow-oil-shares-slump-after-loss-of-crucial-ghana-tax-dispute",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T15:40:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/glencore-peabody-and-heeney-mull-coal-deals-in-venezuela",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "BOE’s Taylor Says Inflation Contained, Urges Caution on Hikes",
+          "title": "Trump, Modi Discuss Trade, Energy Ties as New US Tariffs Loom",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T16:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/boe-s-taylor-says-inflation-contained-urges-caution-on-hikes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T15:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/trump-modi-discuss-trade-energy-ties-as-new-us-tariffs-loom",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "French Inflation Accelerates to Highest in Two Years",
-          "source": "Bloomberg Markets",
+          "title": "原油の調達多角化に向け新法案 臨時国会に提出へ",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T08:12:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/french-inflation-accelerates-to-highest-in-two-years-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Germany Tells State-Owned SEFE to Store Gas as Winter Nears",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T08:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/german-government-instructs-energy-company-sefe-to-store-gas",
+          "publishedAt": "2026-09-29T19:44:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20260929de53226",
           "tags": [
             "commodity",
             "market"
-          ]
+          ],
+          "titleJa": "原油の調達多角化に向け新法案 臨時国会に提出へ"
         },
         {
-          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T06:47:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
+          "title": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-30T14:24:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/inflation-grips-eu-s-top-economies-as-oil-prices-pummel-region",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
-      "items": [
-        {
-          "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-29T23:59:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/japan-s-output-falls-for-second-month-as-mideast-strife-drags-on",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore’s Temasek to Ramp Up Mideast Push With New Offices",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T08:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/singapore-s-temasek-to-ramp-up-middle-east-push-new-offices",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T06:47:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Polish Inflation Hits 15-Month High, Bolstering Rate-Rise Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T07:43:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/polish-inflation-hits-15-month-high-bolstering-rate-rise-case",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T20:09:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/bank-of-canada-deputy-sees-dilemma-on-trade-war-energy-shock",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     }
   },
   "meta": {
@@ -551,7 +454,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
