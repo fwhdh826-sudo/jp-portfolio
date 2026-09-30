@@ -28,13 +28,35 @@ import hashlib
 import json
 import os
 import platform
+import re
+import subprocess
 import sys
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from data import candidate_funnel_batch as batch
-from data.candidate_funnel_engine import build_candidate_funnel
+from data.candidate_funnel_engine import (
+    CANDIDATE_FUNNEL_SCHEMA_VERSION,
+    CANDIDATE_FUNNEL_SCORE_VERSION,
+    CANDIDATE_FUNNEL_VERSION,
+    build_candidate_funnel,
+)
+from data import p14_handoff as handoff
+from data.p14_observation import REPLAY_CANDIDATE_FIELDS
+from data.p14_run_evidence_bundle import (
+    ACCEPTED_POLICY_VERSIONS,
+    CONSUMER_MODULE_PATHS,
+    BundleFiles,
+    ConsumerIdentity,
+    EvidenceBundleError,
+    WorkflowStatus,
+    build_captured_bundle,
+    build_invalid_bundle,
+    install_bundle,
+    verify_bundle_files,
+)
 from data.p14_evidence_privacy_filter import (
     assert_private_paths_normalized,
     normalize_private_paths,
@@ -48,25 +70,7 @@ REPLAY_SCHEMA_VERSION = "candidate-funnel-p14-replay-1"
 WORKFLOW = "full_batch.yml"
 BOUNDARY_OUTSIDE_BAND_SIZE = 10
 
-# candidate_funnel_engine が読む public-market fields と prescreen join fields の
-# exact allowlist。source payloadを丸ごと複製せず、scoring/replacement metricの
-# offline再計算に必要な値だけを保存する（private/local/portfolio fieldは入らない）。
-REPLAY_CANDIDATE_FIELDS = (
-    "code",
-    "name",
-    "sector",
-    "price",
-    "per",
-    "pbr",
-    "roe",
-    "dividendYield",
-    "sigma252d",
-    "mom3m",
-    "dataStatus",
-    "prescreenScore",
-    "prescreenRank",
-    "prescreenPool",
-)
+# Public compatibility name; the observation module owns the exact allowlist.
 
 
 class EvidenceCaptureError(RuntimeError):
@@ -545,6 +549,272 @@ def _run_identity_from_environment() -> dict[str, Any]:
     }
 
 
+def _schema3_run_identity(value: Mapping[str, Any]) -> dict[str, str]:
+    """Validate configuration metadata before retaining it in failure evidence."""
+    keys = {
+        "repository", "workflow", "job", "runId", "runAttempt", "event",
+        "gitRef", "gitRefType", "gitSha",
+    }
+    if not isinstance(value, Mapping) or set(value) != keys:
+        raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "RUN_IDENTITY")
+    owned = dict(value)
+    if any(type(item) is not str or not item for item in owned.values()):
+        raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "RUN_IDENTITY")
+    try:
+        for item in owned.values():
+            item.encode("utf-8")
+    except UnicodeError:
+        raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "RUN_IDENTITY") from None
+    if (
+        not re.fullmatch(r"[1-9][0-9]*", owned["runId"])
+        or not re.fullmatch(r"[1-9][0-9]*", owned["runAttempt"])
+        or not re.fullmatch(r"[0-9a-f]{40}", owned["gitSha"])
+        or owned["workflow"] != WORKFLOW
+        or owned["job"] != "update-data"
+    ):
+        raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "RUN_IDENTITY")
+    if any(
+        pattern.search(item)
+        for item in owned.values()
+        for pattern in handoff.SECRET_PATTERNS + handoff.PRIVATE_PATH_PATTERNS
+    ):
+        raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "RUN_IDENTITY")
+    return owned
+
+
+def _consumer_identity(repo_root: Path) -> ConsumerIdentity:
+    """Main-only checkout identity; event SHA is a separate trust input."""
+    executed_sha = subprocess.run(
+        ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    return ConsumerIdentity(
+        executed_sha,
+        tuple((path, _sha256_bytes((repo_root / path).read_bytes())) for path in CONSUMER_MODULE_PATHS),
+    )
+
+
+def build_evidence_from_handoff(
+    *,
+    handoff_root,
+    producer_reference,
+    run_identity,
+    expected_policy_version,
+    consumer,
+    engine_versions,
+    raw_paths,
+    workflow,
+) -> BundleFiles:
+    """Compose audited handoff admission and schema-3 capture without computation.
+
+    ``engine_versions`` is the (schema, score, funnel) constant tuple;
+    ``raw_paths`` maps the four RAW_FILE_NAMES to explicit paths. Producer module
+    hashes come from this module's checkout, never from observed handoff data.
+    No workflow environment, loader, clock, join, engine, or release evaluator
+    supplies authority to this explicit API.
+    """
+    stage = "CONFIGURATION"
+    safe_run = None
+    safe_consumer = consumer if isinstance(consumer, ConsumerIdentity) else None
+    safe_workflow = workflow if isinstance(workflow, WorkflowStatus) else WorkflowStatus(None, None)
+    try:
+        if type(expected_policy_version) is not str or expected_policy_version not in ACCEPTED_POLICY_VERSIONS:
+            raise EvidenceBundleError("POLICY_BINDING_MISMATCH")
+        safe_run = _schema3_run_identity(run_identity)
+        if safe_consumer is None or not isinstance(workflow, WorkflowStatus):
+            raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "IDENTITY")
+        if (
+            type(engine_versions) is not tuple or len(engine_versions) != 3
+            or any(type(value) is not str or not value for value in engine_versions)
+            or not isinstance(raw_paths, Mapping) or set(raw_paths) != set(handoff.RAW_FILE_NAMES)
+        ):
+            raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "INPUT_BINDINGS")
+        root = None if handoff_root is None else Path(handoff_root)
+        if root is not None and not root.is_absolute():
+            raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "HANDOFF_ROOT")
+
+        stage = "REFERENCE"
+        if producer_reference is None:
+            if root is None:
+                raise handoff.HandoffError("HANDOFF_MISSING", "PRODUCER_REFERENCE_MISSING")
+            # III-A owns absence precedence and storage safety.
+            handoff.read_handoff_part_bytes(
+                root, None, run_id=safe_run["runId"], run_attempt=safe_run["runAttempt"],
+                policy_version=expected_policy_version, executed_git_sha=consumer.executed_git_sha,
+            )
+        try:
+            reference = handoff.ProducerReference.from_value(
+                producer_reference.to_value()
+                if isinstance(producer_reference, handoff.ProducerReference) else producer_reference
+            )
+        except (handoff.HandoffError, TypeError, ValueError, KeyError):
+            raise handoff.HandoffError("PRODUCER_REFERENCE_MISSING") from None
+
+        stage = "STORAGE"
+        if root is None:
+            raise handoff.HandoffError("HANDOFF_MISSING")
+        parts = handoff.read_handoff_part_bytes(
+            root, reference, run_id=safe_run["runId"], run_attempt=safe_run["runAttempt"],
+            policy_version=expected_policy_version, executed_git_sha=consumer.executed_git_sha,
+        )
+        stage = "ADMISSION"
+        joined_digest, context_digest = handoff.expected_input_digests_from_capture(parts.capture_input_bytes)
+        repo_root = Path(__file__).resolve().parents[1]
+        modules = tuple(
+            handoff.ModuleBinding(path, _sha256_bytes((repo_root / path).read_bytes()))
+            for path in handoff.FIXED_MODULE_PATHS
+        )
+        raw_files = []
+        for name in handoff.RAW_FILE_NAMES:
+            path = Path(raw_paths[name])
+            try:
+                payload = path.read_bytes()
+            except FileNotFoundError:
+                raw_files.append(handoff.RawFileBinding(name, False, None, None))
+            else:
+                raw_files.append(handoff.RawFileBinding(name, True, _sha256_bytes(payload), len(payload)))
+        expected = handoff.ExpectedBinding(
+            repository=safe_run["repository"], workflow=safe_run["workflow"], job=safe_run["job"],
+            run_id=safe_run["runId"], run_attempt=safe_run["runAttempt"], event=safe_run["event"],
+            git_ref=safe_run["gitRef"], git_ref_type=safe_run["gitRefType"], event_git_sha=safe_run["gitSha"],
+            executed_git_sha=consumer.executed_git_sha, policy_version=expected_policy_version,
+            engine_schema_version=engine_versions[0], engine_score_version=engine_versions[1],
+            engine_funnel_version=engine_versions[2], modules=modules, raw_files=tuple(raw_files),
+            joined_candidate_input=joined_digest, replay_context=context_digest,
+            capture_input=handoff.DigestBinding(reference.capture_input_digest, len(parts.capture_input_bytes)),
+        )
+        admitted = handoff.validate_handoff_parts(parts, expected, reference)
+        # Fresh owned views, only after admission; no view supplies authority.
+        admitted.observation_value()
+        admitted.capture_input_value()
+        admitted.receipt_value()
+        stage = "BUILD"
+        files = build_captured_bundle(admitted, reference, expected, consumer, workflow)
+        stage = "SELF_VERIFY"
+        report = verify_bundle_files(files)
+        if report.bundle_integrity != "PASS" or report.capture_validity != "VALID":
+            if report.errors and report.errors[0].code == "BUNDLE_PRIVACY_VIOLATION":
+                raise EvidenceBundleError("BUNDLE_PRIVACY_VIOLATION")
+            if report.errors and report.errors[0].code == "WORKFLOW_STATUS_INCONSISTENT":
+                raise EvidenceBundleError("WORKFLOW_STATUS_INCONSISTENT")
+            raise EvidenceBundleError("SELF_VERIFICATION_FAILED")
+        return files
+    except handoff.HandoffError as exc:
+        code, detail = exc.code, exc.detail
+        if code == "HANDOFF_MISSING" and stage == "REFERENCE" and producer_reference is None:
+            detail = "PRODUCER_REFERENCE_MISSING"
+        if code in {
+            "RUN_ID_MISMATCH", "RUN_ATTEMPT_MISMATCH", "POLICY_BINDING_MISMATCH",
+            "UNSUPPORTED_OBSERVATION_SCHEMA", "UNSUPPORTED_HANDOFF_SCHEMA", "SOURCE_IDENTITY_MISMATCH",
+        } and stage == "STORAGE":
+            stage = "REFERENCE"
+    except EvidenceBundleError as exc:
+        code, detail = exc.code, exc.detail
+        if code == "BUNDLE_PRIVACY_VIOLATION":
+            stage = "PRIVACY"
+        elif (
+            stage == "BUILD"
+            and code == "SELF_VERIFICATION_FAILED"
+            and detail == "WORKFLOW_STATUS_INCONSISTENT"
+        ):
+            # The builder's self-verification wrapper obscures the workflow semantic it detected.
+            code, detail, stage = "WORKFLOW_STATUS_INCONSISTENT", None, "SELF_VERIFY"
+    except (TypeError, ValueError, KeyError, UnicodeError):
+        code, detail = (
+            ("BUNDLE_BUILD_FAILED", "BINDING_INVALID") if stage == "ADMISSION"
+            else ("SELF_VERIFICATION_FAILED", None) if stage == "SELF_VERIFY"
+            else ("BUNDLE_BUILD_FAILED", None) if stage == "BUILD"
+            else ("CONSUMER_CONFIGURATION_INVALID", None)
+        )
+    except Exception:  # Safe static taxonomy; never copy exception or environment text.
+        code, detail = (
+            ("SELF_VERIFICATION_FAILED", None) if stage == "SELF_VERIFY"
+            else ("BUNDLE_BUILD_FAILED", None)
+        )
+    return build_invalid_bundle(
+        {"code": code, "detail": detail, "stage": stage}, safe_run, safe_consumer, safe_workflow,
+    )
+
+
+def _main_schema3(args, mode: str) -> int:
+    run_identity = None
+    consumer = None
+    workflow = WorkflowStatus(None, None)
+    try:
+        if mode != "enabled":
+            raise EvidenceBundleError("CONSUMER_CONFIGURATION_INVALID", "MODE")
+        if args.p14_expected_policy_version not in ACCEPTED_POLICY_VERSIONS:
+            raise EvidenceBundleError("POLICY_BINDING_MISMATCH")
+        workflow = WorkflowStatus(args.batch_status or None, args.smoke_status or None)
+        run_identity = _schema3_run_identity({
+            "repository": os.environ.get("GITHUB_REPOSITORY"), "workflow": WORKFLOW,
+            "job": os.environ.get("GITHUB_JOB"), "runId": os.environ.get("GITHUB_RUN_ID"),
+            "runAttempt": os.environ.get("GITHUB_RUN_ATTEMPT"), "event": os.environ.get("GITHUB_EVENT_NAME"),
+            "gitRef": os.environ.get("GITHUB_REF"), "gitRefType": os.environ.get("GITHUB_REF_TYPE"),
+            "gitSha": os.environ.get("GITHUB_SHA"),
+        })
+        consumer = _consumer_identity(Path(__file__).resolve().parents[1])
+        reference = {
+            "status": args.p14_transport_status, "transportDigest": args.p14_handoff_digest,
+            "observationDigest": args.p14_observation_digest, "receiptDigest": args.p14_receipt_digest,
+            "captureInputDigest": args.p14_capture_input_digest, "executedGitSha": args.p14_executed_git_sha,
+            "observationSchemaVersion": args.p14_observation_schema, "handoffSchemaVersion": args.p14_handoff_schema,
+            "policyVersion": args.p14_policy_version, "runId": args.p14_run_id, "runAttempt": args.p14_run_attempt,
+        }
+        files = build_evidence_from_handoff(
+            handoff_root=args.p14_handoff_dir,
+            producer_reference=None if all(value is None for value in reference.values()) else reference,
+            run_identity=run_identity, expected_policy_version=args.p14_expected_policy_version,
+            consumer=consumer,
+            engine_versions=(CANDIDATE_FUNNEL_SCHEMA_VERSION, CANDIDATE_FUNNEL_SCORE_VERSION, CANDIDATE_FUNNEL_VERSION),
+            raw_paths=dict(zip(handoff.RAW_FILE_NAMES, (args.candidates, args.prescreen, args.regime, args.previous))),
+            workflow=workflow,
+        )
+    except EvidenceBundleError as exc:
+        files = build_invalid_bundle(
+            {"code": exc.code, "detail": exc.detail, "stage": "CONFIGURATION"},
+            run_identity, consumer, workflow,
+        )
+    except Exception:
+        files = build_invalid_bundle(
+            {"code": "CONSUMER_CONFIGURATION_INVALID", "detail": None, "stage": "CONFIGURATION"},
+            run_identity, consumer, workflow,
+        )
+    report = None
+    try:
+        report = verify_bundle_files(files)
+        if report.bundle_integrity != "PASS":
+            raise EvidenceBundleError("SELF_VERIFICATION_FAILED")
+    except Exception:
+        # An existing INVALID record retains its earlier first fault. The
+        # installer independently verifies all files before any installation.
+        if json.loads(files["evidence.json"])["captureStatus"] != "invalid":
+            files = build_invalid_bundle(
+                {"code": "SELF_VERIFICATION_FAILED", "detail": None, "stage": "SELF_VERIFY"},
+                run_identity, consumer, workflow,
+            )
+        report = None
+    try:
+        bundle_root = install_bundle(args.out, files)
+    except EvidenceBundleError as exc:
+        print(exc.code, file=sys.stderr)
+        return 1
+    except Exception:
+        print("BUNDLE_WRITE_FAILED", file=sys.stderr)
+        return 1
+    print(f"bundle_path={bundle_root}")
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        try:
+            with Path(github_output).open("a", encoding="utf-8") as handle:
+                handle.write(f"bundle_path={bundle_root}\n")
+        except OSError:
+            print("BUNDLE_WRITE_FAILED", file=sys.stderr)
+            return 1
+    # This exit status describes captured evidence only, including QGF and SV.
+    return 0 if report is not None and report.capture_validity == "VALID" else 1
+
+
 def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, required=True)
@@ -554,7 +824,19 @@ def main(argv: list[str] | tuple[str, ...] = ()) -> int:
     parser.add_argument("--regime", type=Path, default=batch.REGIME_STATE_PATH)
     parser.add_argument("--batch-status", default="")
     parser.add_argument("--smoke-status", default="")
+    parser.add_argument("--p14-handoff-dir", type=Path)
+    parser.add_argument("--p14-expected-policy-version", default="p14-decision-aware-v1")
+    for name in (
+        "transport-status", "handoff-digest", "observation-digest", "receipt-digest",
+        "capture-input-digest", "executed-git-sha", "observation-schema", "handoff-schema",
+        "policy-version", "run-id", "run-attempt",
+    ):
+        parser.add_argument(f"--p14-{name}")
     args = parser.parse_args(argv)
+
+    mode = os.environ.get("P14_HANDOFF_MODE")
+    if mode is not None and mode != "disabled":
+        return _main_schema3(args, mode)
 
     try:
         run_identity = _run_identity_from_environment()
