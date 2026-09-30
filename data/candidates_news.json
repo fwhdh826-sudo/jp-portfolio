@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-30T09:45:23.239786+09:00",
-  "sourceUpdatedAt": "2026-09-30T00:27:29+00:00",
+  "updatedAt": "2026-09-30T11:14:27.946777+09:00",
+  "sourceUpdatedAt": "2026-09-30T01:56:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -20,9 +20,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "South Korea Tax Revenue to Hit Fresh Record on Global Chip Boom",
       "topPositiveTitle": "South Korea Tax Revenue to Hit Fresh Record on Global Chip Boom",
@@ -38,28 +38,16 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "Paramount Draws $109 Billion of Demand for High-Grade Bond Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T13:50:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/paramount-kicks-off-high-grade-bond-sale-for-warner-bros-deal",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.073,
+      "avgSentiment": 0.066,
       "negativeCount": 2,
       "positiveCount": 4,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 10,
       "isStale": false,
       "topNegativeTitle": "Meredith Whitney Warns of Weakness in US Economy’s ‘Underbelly’",
       "topPositiveTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
@@ -90,6 +78,18 @@
           ]
         },
         {
+          "title": "Stock Analyst Hiring Boom in India Defies Wall Street’s Pullback",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T01:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-analyst-hiring-boom-in-india-defies-wall-street-s-pullback",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -110,18 +110,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-29T13:44:58+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-29/banxico-ve-margen-para-bajar-tasas-pese-a-decisiones-de-la-fed",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Banxico Governor: Rate Path Can Be Charted Independently of Fed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T13:04:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/banxico-governor-rate-path-can-be-charted-independently-of-fed",
           "tags": [
             "market",
             "us_broad"
@@ -227,11 +215,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Korean Stocks Face Early End to $40 Billion Buyback Support",
-      "topPositiveTitle": "Korean Stocks Face Early End to $40 Billion Buyback Support",
+      "topNegativeTitle": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
+      "topPositiveTitle": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
       "items": [
         {
-          "title": "Korean Stocks Face Early End to $40 Billion Buyback Support",
+          "title": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -245,18 +233,18 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.5,
+      "avgSentiment": -0.167,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Output Falls For Second Month as Iran War Drags On",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Sept. 30",
+      "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
+      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
       "items": [
         {
-          "title": "Japan’s Output Falls For Second Month as Iran War Drags On",
+          "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -281,19 +269,33 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-29T22:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
-      "topPositiveTitle": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
+      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
       "items": [
         {
           "title": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
@@ -308,19 +310,33 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-09-29T22:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.055,
+      "avgSentiment": 0.145,
       "negativeCount": 2,
-      "positiveCount": 3,
+      "positiveCount": 5,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
-      "topPositiveTitle": "Can Treasury Yields Hit 6%?",
+      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
       "items": [
         {
           "title": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
@@ -362,6 +378,18 @@
           ]
         },
         {
+          "title": "Australian Inflation Slows From Prior Month Despite Fuel Spike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T01:32:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/australian-inflation-remains-elevated-as-fuel-price-rises-strike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Can Treasury Yields Hit 6%?",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -375,31 +403,16 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Gold Steady as Traders Weigh Lower Oil Against Higher Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-29T23:58:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.094,
+      "avgSentiment": 0.082,
       "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "BOE’s Taylor Says Inflation Contained, Urges Caution on Hikes",
       "topPositiveTitle": "Can Treasury Yields Hit 6%?",
@@ -411,6 +424,18 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-09-29T16:07:45+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-29/boe-s-taylor-says-inflation-contained-urges-caution-on-hikes",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "BlackRock's Hambro Sees New Commodity Cycle",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T00:49:09+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/blackrock-s-hambro-sees-new-commodity-cycle-video",
           "tags": [
             "commodity",
             "market"
@@ -455,21 +480,6 @@
             "market"
           ],
           "titleJa": "高市首相 モンゴル首相と会談 空港拡張支援などで一致"
-        },
-        {
-          "title": "Can Treasury Yields Hit 6%?",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T00:27:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/can-treasury-yields-hit-6-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
@@ -481,11 +491,11 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Output Falls For Second Month as Iran War Drags On",
+      "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
       "topPositiveTitle": "Can Treasury Yields Hit 6%?",
       "items": [
         {
-          "title": "Japan’s Output Falls For Second Month as Iran War Drags On",
+          "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -1.0,
