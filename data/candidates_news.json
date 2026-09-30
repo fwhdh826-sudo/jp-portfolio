@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-09-30T11:14:27.946777+09:00",
-  "sourceUpdatedAt": "2026-09-30T01:56:24+00:00",
+  "updatedAt": "2026-09-30T18:54:28.667293+09:00",
+  "sourceUpdatedAt": "2026-09-30T09:32:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -42,28 +42,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.066,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": 0.25,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Meredith Whitney Warns of Weakness in US Economy’s ‘Underbelly’",
-      "topPositiveTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
+      "topNegativeTitle": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
+      "topPositiveTitle": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
       "items": [
-        {
-          "title": "Meredith Whitney Warns of Weakness in US Economy’s ‘Underbelly’",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-09-29T16:06:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/meredith-whitney-warns-of-weakness-in-us-economy-s-underbelly",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
           "source": "Bloomberg Economics",
@@ -78,19 +66,7 @@
           ]
         },
         {
-          "title": "Stock Analyst Hiring Boom in India Defies Wall Street’s Pullback",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T01:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-analyst-hiring-boom-in-india-defies-wall-street-s-pullback",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
+          "title": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -104,40 +80,54 @@
           ]
         },
         {
-          "title": "Banxico ve margen para bajar tasas pese a decisiones de la Fed",
+          "title": "Crowded Short Trade in Treasury Futures Boosts Squeeze Risks",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T13:44:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/banxico-ve-margen-para-bajar-tasas-pese-a-decisiones-de-la-fed",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-29T20:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/crowded-short-trade-in-treasury-futures-boosts-risk-of-a-squeeze",
           "tags": [
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-29T22:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
-      "topPositiveTitle": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
+      "topNegativeTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
+      "topPositiveTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
       "items": [
         {
-          "title": "Fed’s Bowman Touts AI Benefits, Risks for Bank Cybersecurity",
+          "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-29T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/fed-s-bowman-touts-ai-benefits-risks-for-bank-cybersecurity",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T09:30:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ai-valuations-could-see-sharper-correction-boe-warns",
           "tags": [
             "market",
-            "us_broad",
+            "rates",
             "us_growth"
           ]
         }
@@ -156,44 +146,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Fields Said to Mull Sweeter Northern Star Bid With Cash",
-      "topPositiveTitle": "Gold Steady as Traders Weigh Lower Oil Against Higher Yields",
-      "items": [
-        {
-          "title": "Gold Fields Said to Mull Sweeter Northern Star Bid With Cash",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T19:18:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-fields-said-to-weigh-sweetening-northern-star-bid-with-cash",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steady as Traders Weigh Lower Oil Against Higher Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-29T23:58:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -208,40 +170,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
-      "topPositiveTitle": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
-      "items": [
-        {
-          "title": "Samsung, SK Hynix Almost Done With Buybacks That Boosted Kospi",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/korean-stocks-face-early-end-to-40-billion-buyback-support",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
       "items": [
         {
           "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
@@ -257,12 +206,24 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 30",
+          "title": "Goldman’s Oppenheimer Says Pace of Bond Selloff Key for Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T08:58:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/goldman-s-oppenheimer-says-pace-of-bond-selloff-key-for-stocks",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T22:02:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/latest-oil-market-news-and-analysis-for-sept-30",
+          "publishedAt": "2026-09-30T06:47:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
           "tags": [
             "commodity",
             "geopolitical",
@@ -271,34 +232,47 @@
           ]
         },
         {
-          "title": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Polish Inflation Hits 15-Month High, Bolstering Rate-Rise Case",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-29T22:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T07:43:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/polish-inflation-hits-15-month-high-bolstering-rate-rise-case",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
+          ]
+        },
+        {
+          "title": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-29T20:09:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/bank-of-canada-deputy-sees-dilemma-on-trade-war-energy-shock",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.443,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
-      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+      "topNegativeTitle": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
+      "topPositiveTitle": "SNB Continued Franc Sales in Second Quarter, Stemming Flows",
       "items": [
         {
-          "title": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
+          "title": "Dollar Enjoys Best Month Since June on Fed’s Inflation Fight",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -312,32 +286,54 @@
           ]
         },
         {
-          "title": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+          "title": "US Dollar to Gain From Capital Flows: Market Analysis",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-09-29T22:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T07:48:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/us-dollar-to-gain-from-capital-flows-3-minutes-mliv-video",
           "tags": [
             "fx",
-            "macro_risk",
-            "market",
-            "rates"
+            "market"
+          ]
+        },
+        {
+          "title": "SNB Continued Franc Sales in Second Quarter, Stemming Flows",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-09-30T07:02:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/snb-continued-franc-sales-in-second-quarter-stemming-flows",
+          "tags": [
+            "fx",
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.145,
+      "avgSentiment": 0.122,
       "negativeCount": 2,
-      "positiveCount": 5,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
-      "topPositiveTitle": "Asia Stocks Rise, Bonds Steady Before US Inflation: Markets Wrap",
+      "topNegativeTitle": "Colombia Seen Holding Before More Rate Hikes: Decision Guide",
+      "topPositiveTitle": "Stocks Rise as US Data and Micron Pose Key Tests: Markets Wrap",
       "items": [
+        {
+          "title": "Colombia Seen Holding Before More Rate Hikes: Decision Guide",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/colombia-seen-holding-before-more-rate-hikes-decision-guide",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Fed’s Williams Sees One More Interest Rate Hike in Late 2026",
           "source": "Bloomberg Economics",
@@ -352,71 +348,68 @@
           ]
         },
         {
-          "title": "Spanish Inflation Unexpectedly Hits 5%, Backing Higher Rates",
+          "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-29T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/spanish-inflation-unexpectedly-hits-5-backing-higher-ecb-rates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T09:30:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ai-valuations-could-see-sharper-correction-boe-warns",
+          "tags": [
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Zambia Cuts Rates as Inflation Is Expected to Remain in Target",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T09:26:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/zambia-cuts-rates-as-inflation-is-expected-to-remain-in-target",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Dollar Powers to Best Month Since June on Fed’s Inflation Fight",
+          "title": "French Inflation Accelerates to Highest in Two Years",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:18:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/dollar-powers-to-best-month-since-june-on-fed-s-inflation-fight",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Australian Inflation Slows From Prior Month Despite Fuel Spike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T01:32:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/australian-inflation-remains-elevated-as-fuel-price-rises-strike",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Can Treasury Yields Hit 6%?",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T00:27:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/can-treasury-yields-hit-6-video",
+          "publishedAt": "2026-09-30T08:12:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/french-inflation-accelerates-to-highest-in-two-years-video",
           "tags": [
             "commodity",
-            "geopolitical",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.082,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
       "positiveCount": 3,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Taylor Says Inflation Contained, Urges Caution on Hikes",
-      "topPositiveTitle": "Can Treasury Yields Hit 6%?",
+      "topNegativeTitle": "Tullow Oil Shares Slump After Loss of Crucial Ghana Tax Dispute",
+      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
       "items": [
+        {
+          "title": "Tullow Oil Shares Slump After Loss of Crucial Ghana Tax Dispute",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-30T08:00:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/tullow-oil-shares-slump-after-loss-of-crucial-ghana-tax-dispute",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "BOE’s Taylor Says Inflation Contained, Urges Caution on Hikes",
           "source": "Bloomberg Economics",
@@ -430,69 +423,56 @@
           ]
         },
         {
-          "title": "BlackRock's Hambro Sees New Commodity Cycle",
+          "title": "French Inflation Accelerates to Highest in Two Years",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T00:49:09+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/blackrock-s-hambro-sees-new-commodity-cycle-video",
+          "publishedAt": "2026-09-30T08:12:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/french-inflation-accelerates-to-highest-in-two-years-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Germany Tells State-Owned SEFE to Store Gas as Winter Nears",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T08:05:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/german-government-instructs-energy-company-sefe-to-store-gas",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 30",
+          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T22:02:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/latest-oil-market-news-and-analysis-for-sept-30",
+          "publishedAt": "2026-09-30T06:47:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "原油の調達多角化に向け新法案 臨時国会に提出へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T19:44:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260929de53226",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "原油の調達多角化に向け新法案 臨時国会に提出へ"
-        },
-        {
-          "title": "高市首相 モンゴル首相と会談 空港拡張支援などで一致",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T16:33:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260929de53217",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "高市首相 モンゴル首相と会談 空港拡張支援などで一致"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.223,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
-      "topPositiveTitle": "Can Treasury Yields Hit 6%?",
+      "topPositiveTitle": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
       "items": [
         {
           "title": "Japan’s Output Falls For Second Month Due to Quake, Iran Impacts",
@@ -508,12 +488,24 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Sept. 30",
+          "title": "Singapore’s Temasek to Ramp Up Mideast Push With New Offices",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T22:02:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/latest-oil-market-news-and-analysis-for-sept-30",
+          "publishedAt": "2026-09-30T08:00:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/singapore-s-temasek-to-ramp-up-middle-east-push-new-offices",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "China Oil Comeback Loses Steam as Iran War Drags On",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T06:47:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/china-crude-comeback-loses-steam-as-iran-war-enters-eighth-month",
           "tags": [
             "commodity",
             "geopolitical",
@@ -522,18 +514,30 @@
           ]
         },
         {
-          "title": "Can Treasury Yields Hit 6%?",
-          "source": "Bloomberg Markets",
+          "title": "Polish Inflation Hits 15-Month High, Bolstering Rate-Rise Case",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T00:27:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/can-treasury-yields-hit-6-video",
+          "publishedAt": "2026-09-30T07:43:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/polish-inflation-hits-15-month-high-bolstering-rate-rise-case",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bank of Canada Deputy Sees ‘Dilemma’ on Trade War, Energy Shock",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-29T20:09:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/bank-of-canada-deputy-sees-dilemma-on-trade-war-energy-shock",
           "tags": [
             "commodity",
             "geopolitical",
-            "market",
-            "rates",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         }
       ]
