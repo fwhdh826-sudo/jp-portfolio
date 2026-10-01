@@ -1,20 +1,46 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-01T01:54:07.650090+09:00",
-  "sourceUpdatedAt": "2026-09-30T16:33:16+00:00",
+  "updatedAt": "2026-10-01T09:45:12.791257+09:00",
+  "sourceUpdatedAt": "2026-10-01T00:24:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
+      "topPositiveTitle": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+      "items": [
+        {
+          "title": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T00:03:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/boj-summary-affirms-priority-is-preventing-inflation-overshoot",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T00:02:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/japan-s-biggest-manufacturers-most-optimistic-since-march-2018",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -29,35 +55,23 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.427,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 5,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fed Votes to Overhaul Stress Tests in Win for Big Banks",
-      "topPositiveTitle": "US Consumer Spending Jumps by Most in a Year",
+      "topNegativeTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
+      "topPositiveTitle": "US Stock Futures Advance, Bond Yields in Focus: Markets Wrap",
       "items": [
         {
-          "title": "Fed Votes to Overhaul Stress Tests in Win for Big Banks",
+          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T13:01:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-votes-to-overhaul-stress-tests-in-major-wall-street-bank-win",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T23:58:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
+          "publishedAt": "2026-10-01T00:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
           "tags": [
             "gold",
             "market",
@@ -66,12 +80,12 @@
           ]
         },
         {
-          "title": "US Long-Bond Yields Renew 24-Year High on Resilient US Spending",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T12:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/traders-pull-back-on-october-fed-hike-bets-after-cool-pce-data",
+          "title": "Fed’s Watchdog Finds No Criminal Violations in Renovations",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T17:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-s-watchdog-finds-no-evidence-of-criminality-in-renovations",
           "tags": [
             "market",
             "rates",
@@ -79,28 +93,40 @@
           ]
         },
         {
-          "title": "Stocks Rise as Inflation Surprise Curbs Fed Bets: Markets Wrap",
+          "title": "S&P 500 Falls at End of Worst Month Since June: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-09-29T22:12:50+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Crowded Short Trade in Treasury Futures Boosts Squeeze Risks",
-          "source": "Bloomberg Economics",
+          "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-09-29T20:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/crowded-short-trade-in-treasury-futures-boosts-risk-of-a-squeeze",
+          "publishedAt": "2026-09-30T22:10:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ccc-debt-turns-distressed-for-first-time-since-2023-bank-crisis",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "UMich’s Stevenson on Fed Report, Inflation Reading",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-30T21:26:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/umich-s-stevenson-on-fed-report-inflation-reading-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -110,9 +136,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
       "topPositiveTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
@@ -126,19 +152,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/bank-of-england-warns-gilt-market-faces-growing-spillover-risks",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T09:30:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ai-valuations-could-see-sharper-correction-boe-warns",
-          "tags": [
-            "market",
-            "rates",
             "us_growth"
           ]
         }
@@ -157,23 +170,36 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
-      "topPositiveTitle": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+      "topNegativeTitle": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
+      "topPositiveTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
       "items": [
         {
-          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+          "title": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T22:27:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/cftc-secures-30-million-judgment-tied-to-alleged-crypto-scam",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T23:58:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
+          "publishedAt": "2026-10-01T00:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
           "tags": [
             "gold",
             "market",
@@ -184,6 +210,32 @@
       ]
     },
     "reit": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
+      "topPositiveTitle": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
+      "items": [
+        {
+          "title": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T00:24:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/china-s-property-crisis-from-evergrande-collapse-to-beijing-s-latest-measures",
+          "tags": [
+            "macro_risk",
+            "market",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -195,81 +247,85 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "dividend": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
-      "topPositiveTitle": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
-      "items": [
-        {
-          "title": "Robinhood to Offer Weekend Equities Trade; Cal-Maine Falls on Sales Miss | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-30T15:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/robinhood-s-weekend-equities-trade-cal-maine-sales-miss-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
     "macro_risk": {
-      "avgSentiment": -0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Legal challenges to Trump’s tariffs",
-      "topPositiveTitle": "Turkish Stocks Enter Bear Market on Investment Fund Turmoil",
+      "topNegativeTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+      "topPositiveTitle": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
       "items": [
         {
-          "title": "Legal challenges to Trump’s tariffs",
+          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-09-30/legal-challenges-to-trump-s-tariffs",
+          "publishedAt": "2026-09-30T19:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Turkish Stocks Enter Bear Market on Investment Fund Turmoil",
+          "title": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T07:30:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/turkish-stocks-set-to-enter-bear-market-on-fund-turmoil",
+          "publishedAt": "2026-10-01T00:24:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/china-s-property-crisis-from-evergrande-collapse-to-beijing-s-latest-measures",
           "tags": [
             "macro_risk",
-            "market"
+            "market",
+            "reit"
+          ]
+        },
+        {
+          "title": "S&P 500 Falls at End of Worst Month Since June: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-29T22:12:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T22:10:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ccc-debt-turns-distressed-for-first-time-since-2023-bank-crisis",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
-      "topPositiveTitle": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
+      "topNegativeTitle": "Mexican Peso Becomes World’s Worst as Carry Traders Flee",
+      "topPositiveTitle": "RBI’s Success on Dollar Flows Raises Stakes in Inflation Fight",
       "items": [
         {
-          "title": "Mexico’s Peso Becomes Worst in the World as Carry Traders Flee",
+          "title": "Mexican Peso Becomes World’s Worst as Carry Traders Flee",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -291,52 +347,39 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "RBI’s Success on Dollar Flows Raises Stakes in Inflation Fight",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-01T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/rbi-s-success-on-dollar-flows-raises-stakes-in-inflation-fight",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.369,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 6,
-      "neutralCount": 3,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
-      "topPositiveTitle": "German Inflation Jumps to Highest in Almost Three Years",
+      "topNegativeTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
+      "topPositiveTitle": "US Stock Futures Advance, Bond Yields in Focus: Markets Wrap",
       "items": [
         {
-          "title": "AI Valuations Could See ‘Sharper Correction,’ BOE Warns",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T09:30:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ai-valuations-could-see-sharper-correction-boe-warns",
-          "tags": [
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Zambia Bucks Global Trend, Delivers Deepest Rate Cut in 15 Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T09:26:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/zambia-cuts-rates-as-inflation-is-expected-to-remain-in-target",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Wavers as Soft Inflation Eases Fed Bets Amid High Yields",
+          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T23:58:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/gold-steady-as-traders-weigh-lower-oil-against-higher-yields",
+          "publishedAt": "2026-10-01T00:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
           "tags": [
             "gold",
             "market",
@@ -345,57 +388,97 @@
           ]
         },
         {
-          "title": "Treasury 30-Year Yield's Continuous Rise Reveals Inflation Worry",
+          "title": "Why American Homeowners Are Stuck",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T15:20:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/30-year-yield-s-continuous-rise-fuels-inflation-worry-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T21:19:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-09-30/opinion-why-american-homeowners-are-stuck-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "US Long-Bond Yields Renew 24-Year High on Resilient US Spending",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T12:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/traders-pull-back-on-october-fed-hike-bets-after-cool-pce-data",
+          "title": "Colombia Raises Interest Rate to 12.25% in Surprise Central Bank Move",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T18:51:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/colombia-unexpectedly-raises-interest-rate-to-highest-since-2024",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Watchdog Finds No Criminal Violations in Renovations",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-09-30T17:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-s-watchdog-finds-no-evidence-of-criminality-in-renovations",
           "tags": [
             "market",
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T00:02:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/japan-s-biggest-manufacturers-most-optimistic-since-march-2018",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.168,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.057,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Glencore, Peabody and Heeney Mull Coal Deals in Venezuela",
+      "topNegativeTitle": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
       "topPositiveTitle": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
       "items": [
         {
-          "title": "Glencore, Peabody and Heeney Mull Coal Deals in Venezuela",
+          "title": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T15:40:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/glencore-peabody-and-heeney-mull-coal-deals-in-venezuela",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T22:27:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/cftc-secures-30-million-judgment-tied-to-alleged-crypto-scam",
           "tags": [
             "commodity",
+            "gold",
             "market"
           ]
         },
         {
-          "title": "Trump, Modi Discuss Trade, Energy Ties as New US Tariffs Loom",
+          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T19:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump, Modi Discuss Trade, Energy Ties as New Tariffs Loom",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -420,12 +503,12 @@
           "titleJa": "原油の調達多角化に向け新法案 臨時国会に提出へ"
         },
         {
-          "title": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
-          "source": "Bloomberg Economics",
+          "title": "Latest Oil Market News and Analysis for Oct. 1",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-30T14:24:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/inflation-grips-eu-s-top-economies-as-oil-prices-pummel-region",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-09-30T22:02:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/latest-oil-market-news-and-analysis-for-oct-1",
           "tags": [
             "commodity",
             "market"
@@ -434,16 +517,31 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+      "topPositiveTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+      "items": [
+        {
+          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-09-30T19:01:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     }
   },
   "meta": {
