@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-01T09:45:12.791257+09:00",
-  "sourceUpdatedAt": "2026-10-01T00:24:59+00:00",
+  "updatedAt": "2026-10-01T11:16:39.445234+09:00",
+  "sourceUpdatedAt": "2026-10-01T01:44:49+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -13,7 +13,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
-      "topPositiveTitle": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+      "topPositiveTitle": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
       "items": [
         {
           "title": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
@@ -28,7 +28,7 @@
           ]
         },
         {
-          "title": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+          "title": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -55,16 +55,43 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": -0.055,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
-      "topPositiveTitle": "US Stock Futures Advance, Bond Yields in Focus: Markets Wrap",
+      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
+      "topPositiveTitle": "UMich’s Stevenson on Fed Report, Inflation Reading",
       "items": [
+        {
+          "title": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-30T22:19:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-01T01:24:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
@@ -93,19 +120,6 @@
           ]
         },
         {
-          "title": "S&P 500 Falls at End of Worst Month Since June: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T22:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
           "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -114,18 +128,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/ccc-debt-turns-distressed-for-first-time-since-2023-bank-crisis",
           "tags": [
             "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "UMich’s Stevenson on Fed Report, Inflation Reading",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-09-30T21:26:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/umich-s-stevenson-on-fed-report-inflation-reading-video",
-          "tags": [
             "market",
             "us_broad"
           ]
@@ -251,9 +253,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
       "topPositiveTitle": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
@@ -286,19 +288,6 @@
           ]
         },
         {
-          "title": "S&P 500 Falls at End of Worst Month Since June: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T22:12:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-29/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
           "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -314,28 +303,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Mexican Peso Becomes World’s Worst as Carry Traders Flee",
+      "topNegativeTitle": "New Mozambique Central Bank Chief Unveils Plan to Curb FX Dearth",
       "topPositiveTitle": "RBI’s Success on Dollar Flows Raises Stakes in Inflation Fight",
       "items": [
-        {
-          "title": "Mexican Peso Becomes World’s Worst as Carry Traders Flee",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T16:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/mexico-s-peso-becomes-worst-in-the-world-as-carry-traders-flee",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "New Mozambique Central Bank Chief Unveils Plan to Curb FX Dearth",
           "source": "Bloomberg Economics",
@@ -363,16 +340,30 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
-      "topPositiveTitle": "US Stock Futures Advance, Bond Yields in Focus: Markets Wrap",
+      "topNegativeTitle": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
+      "topPositiveTitle": "German Inflation Jumps to Highest in Almost Three Years",
       "items": [
+        {
+          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-01T01:24:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
@@ -385,18 +376,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Why American Homeowners Are Stuck",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T21:19:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-09-30/opinion-why-american-homeowners-are-stuck-video",
-          "tags": [
-            "market",
-            "rates"
           ]
         },
         {
@@ -425,7 +404,7 @@
           ]
         },
         {
-          "title": "Japan’s Biggest Manufacturers Most Optimistic Since 2018",
+          "title": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -440,16 +419,43 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.057,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": -0.073,
+      "negativeCount": 4,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
+      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
       "topPositiveTitle": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
       "items": [
+        {
+          "title": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-09-30T22:19:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-01T01:24:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
           "source": "Bloomberg Markets",
@@ -484,31 +490,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-09-30T15:05:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/trump-modi-discuss-trade-energy-ties-as-new-us-tariffs-loom",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "原油の調達多角化に向け新法案 臨時国会に提出へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-29T19:44:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20260929de53226",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "原油の調達多角化に向け新法案 臨時国会に提出へ"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 1",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T22:02:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/latest-oil-market-news-and-analysis-for-oct-1",
           "tags": [
             "commodity",
             "market"
@@ -552,7 +533,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
