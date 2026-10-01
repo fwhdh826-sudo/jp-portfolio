@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-01T11:16:39.445234+09:00",
-  "sourceUpdatedAt": "2026-10-01T01:44:49+00:00",
+  "updatedAt": "2026-10-01T19:21:23.815551+09:00",
+  "sourceUpdatedAt": "2026-10-01T10:18:28+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -55,54 +55,25 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.055,
-      "negativeCount": 2,
+      "avgSentiment": 0.4,
+      "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
-      "topPositiveTitle": "UMich’s Stevenson on Fed Report, Inflation Reading",
+      "topNegativeTitle": "Trump Calls for Powell to Resign From Fed Board",
+      "topPositiveTitle": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
       "items": [
         {
-          "title": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-09-30T22:19:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-01T01:24:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
+          "title": "Trump Calls for Powell to Resign From Fed Board",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
+          "publishedAt": "2026-10-01T10:11:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-01/trump-calls-for-powell-to-resign-from-fed-board-video",
           "tags": [
-            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -120,15 +91,30 @@
           ]
         },
         {
-          "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
+          "title": "US Stocks Edge Up as AI Gains Contend With Yields: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T22:10:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ccc-debt-turns-distressed-for-first-time-since-2023-bank-crisis",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-09-30T22:19:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "macro_risk",
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-01T09:35:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-01/bianco-turns-bullish-on-treasuries-as-yields-climb-video",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -142,16 +128,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
-      "topPositiveTitle": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
+      "topNegativeTitle": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
+      "topPositiveTitle": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
       "items": [
         {
-          "title": "Bank of England Warns Gilt Market Faces Growing Spillover Risks",
+          "title": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T12:58:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/bank-of-england-warns-gilt-market-faces-growing-spillover-risks",
+          "publishedAt": "2026-10-01T05:24:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/boe-governor-warns-ai-boom-could-trigger-market-shocks-bbc",
           "tags": [
             "market",
             "us_growth"
@@ -160,6 +146,60 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+      "topPositiveTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+      "items": [
+        {
+          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-01T07:14:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
+      "topPositiveTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
+      "items": [
+        {
+          "title": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-01T00:08:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -170,72 +210,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
-      "topPositiveTitle": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
-      "items": [
-        {
-          "title": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T22:27:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/cftc-secures-30-million-judgment-tied-to-alleged-crypto-scam",
-          "tags": [
-            "commodity",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
-      "topPositiveTitle": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
-      "items": [
-        {
-          "title": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:24:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/china-s-property-crisis-from-evergrande-collapse-to-beijing-s-latest-measures",
-          "tags": [
-            "macro_risk",
-            "market",
-            "reit"
-          ]
-        }
-      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -250,23 +224,49 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.032,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
-      "topPositiveTitle": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
+      "topNegativeTitle": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+      "topPositiveTitle": "Turkey Wants Fund Investors to Give Back ‘Excessive’ Profits",
       "items": [
         {
-          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+          "title": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-01T09:03:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-s-grain-rerouting-falls-short-as-war-hits-black-sea-ports",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Arabia Sees Slump and Deeper Deficit as War Roils Economy",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-30T19:01:44+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T09:35:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
           "tags": [
             "commodity",
             "geopolitical",
@@ -275,63 +275,51 @@
           ]
         },
         {
-          "title": "China’s Property Crisis: From Evergrande Collapse to Beijing’s Latest Measures",
-          "source": "Bloomberg Markets",
+          "title": "Pakistan Inflation Stays Above 10% as Energy Risks Persist",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:24:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/china-s-property-crisis-from-evergrande-collapse-to-beijing-s-latest-measures",
+          "publishedAt": "2026-10-01T09:14:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/pakistan-inflation-stays-above-10-as-energy-risks-persist",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "reit"
+            "market"
           ]
         },
         {
-          "title": "CCC Debt Turns Distressed for First Time Since 2023 Crisis",
+          "title": "UK Is First Big Economy to Pay 6% on Long Debt Since Euro Crisis",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-09-30T22:10:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/ccc-debt-turns-distressed-for-first-time-since-2023-bank-crisis",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T07:26:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/uk-long-term-bond-yield-reaches-6-for-first-time-since-1998",
           "tags": [
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "New Mozambique Central Bank Chief Unveils Plan to Curb FX Dearth",
-      "topPositiveTitle": "RBI’s Success on Dollar Flows Raises Stakes in Inflation Fight",
+      "topNegativeTitle": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
+      "topPositiveTitle": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
       "items": [
         {
-          "title": "New Mozambique Central Bank Chief Unveils Plan to Curb FX Dearth",
-          "source": "Bloomberg Economics",
+          "title": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T14:50:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/mozambique-s-new-central-bank-chief-holds-rates-to-assess-risks",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "RBI’s Success on Dollar Flows Raises Stakes in Inflation Fight",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-01T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/rbi-s-success-on-dollar-flows-raises-stakes-in-inflation-fight",
+          "publishedAt": "2026-10-01T06:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/hedge-funds-boost-bets-on-euro-weakness-as-french-risks-increase",
           "tags": [
             "fx",
             "market"
@@ -340,42 +328,28 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.276,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
-      "topPositiveTitle": "German Inflation Jumps to Highest in Almost Three Years",
+      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+      "topPositiveTitle": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
       "items": [
         {
-          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
+          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-01T01:24:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-01T07:14:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
           "tags": [
             "commodity",
+            "global_broad",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steady as Softer Inflation Data Tempers Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -415,67 +389,56 @@
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.073,
-      "negativeCount": 4,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
-      "topPositiveTitle": "Inflation Grips EU’s Top Economies as Oil Prices Pummel Region",
-      "items": [
+        },
         {
-          "title": "Asian Bonds Follow Treasuries Lower, Stocks Fall: Markets Wrap",
+          "title": "US Stocks Edge Up as AI Gains Contend With Yields: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
           "publishedAt": "2026-09-30T22:19:53+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Thailand Bond Outflows Hit Six-Month High on Oil, US Yields in September",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-01T01:24:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/thailand-bond-outflows-hit-six-month-high-on-oil-us-yields-in-september",
-          "tags": [
-            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
-        },
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.122,
+      "negativeCount": 1,
+      "positiveCount": 4,
+      "neutralCount": 7,
+      "sourceCount": 3,
+      "itemCount": 12,
+      "isStale": false,
+      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+      "topPositiveTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
+      "items": [
         {
-          "title": "CFTC Secures $30 Million Judgment Tied to Alleged Crypto Scam",
+          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T22:27:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/cftc-secures-30-million-judgment-tied-to-alleged-crypto-scam",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-01T07:14:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
           "tags": [
             "commodity",
-            "gold",
-            "market"
+            "global_broad",
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-09-30T19:01:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T09:35:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
           "tags": [
             "commodity",
             "geopolitical",
@@ -484,12 +447,38 @@
           ]
         },
         {
-          "title": "Trump, Modi Discuss Trade, Energy Ties as New Tariffs Loom",
+          "title": "Pakistan Inflation Stays Above 10% as Energy Risks Persist",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T15:05:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/trump-modi-discuss-trade-energy-ties-as-new-us-tariffs-loom",
+          "publishedAt": "2026-10-01T09:14:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/pakistan-inflation-stays-above-10-as-energy-risks-persist",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Steps Up Palm Oil Buying as Tax Cut Spurs Restocking",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T08:22:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-steps-up-palm-oil-buying-as-tax-cut-spurs-restocking",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "India Oil Refiners Shift Tactics, Hire Ships to Cross Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T04:53:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-oil-refiners-change-tactics-and-hire-ships-to-cross-hormuz",
           "tags": [
             "commodity",
             "market"
@@ -498,27 +487,80 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": -0.202,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
-      "topPositiveTitle": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+      "topNegativeTitle": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+      "topPositiveTitle": "India Warns Global Risks Threaten Strong Growth, Investment",
       "items": [
         {
-          "title": "Saudis See Deeper Deficit as Wartime Spend Offsets Oil Spike",
+          "title": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-01T09:03:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-s-grain-rerouting-falls-short-as-war-hits-black-sea-ports",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Arabia Sees Slump and Deeper Deficit as War Roils Economy",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-09-30T19:01:44+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T09:35:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Pakistan Inflation Stays Above 10% as Energy Risks Persist",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T09:14:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/pakistan-inflation-stays-above-10-as-energy-risks-persist",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "India Warns Global Risks Threaten Strong Growth, Investment",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T06:15:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-warns-global-risks-threaten-strong-growth-investment",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
@@ -533,7 +575,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
