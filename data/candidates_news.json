@@ -1,46 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-01T19:21:23.815551+09:00",
-  "sourceUpdatedAt": "2026-10-01T10:18:28+00:00",
+  "updatedAt": "2026-10-02T02:26:40.041742+09:00",
+  "sourceUpdatedAt": "2026-10-01T17:02:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
-      "topPositiveTitle": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
-      "items": [
-        {
-          "title": "BOJ Summary Affirms Priority Is Avoiding Inflation Overshoot",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T00:03:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/boj-summary-affirms-priority-is-preventing-inflation-overshoot",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T00:02:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/japan-s-biggest-manufacturers-most-optimistic-since-march-2018",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -55,35 +29,60 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.4,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Trump Calls for Powell to Resign From Fed Board",
-      "topPositiveTitle": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
+      "topNegativeTitle": "Paramount’s $41 Billion of M&A Bonds Slump as Trading Begins",
+      "topPositiveTitle": "S&P 500 Bounces From Lows as Treasuries Rally: Markets Wrap",
       "items": [
         {
-          "title": "Trump Calls for Powell to Resign From Fed Board",
+          "title": "Paramount’s $41 Billion of M&A Bonds Slump as Trading Begins",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T10:11:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-01/trump-calls-for-powell-to-resign-from-fed-board-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-01T12:35:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/paramount-s-41-billion-of-m-a-bonds-slump-as-trading-begins",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Watchdog Finds No Criminal Violations in Renovations",
+          "title": "Bank Stocks Sink Further Into Correction as Citigroup Tumbles",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-01T16:16:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/bank-stocks-sink-further-into-correction-as-citigroup-tumbles-mupql1a7",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Citadel Securities’ Rubner Sees Retail Cash Reloading on Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T15:46:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/citadel-securities-rubner-sees-retail-cash-reloading-on-stocks",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Kashkari Says He Doesn’t Know How High Rates Must Go",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T17:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-s-watchdog-finds-no-evidence-of-criminality-in-renovations",
+          "publishedAt": "2026-10-01T12:00:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/fed-s-kashkari-says-he-doesn-t-know-how-high-rates-need-to-go",
           "tags": [
             "market",
             "rates",
@@ -91,80 +90,63 @@
           ]
         },
         {
-          "title": "US Stocks Edge Up as AI Gains Contend With Yields: Markets Wrap",
+          "title": "US Treasuries Appear Cheap Versus Stocks but May Have Further to Fall",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-09-30T22:19:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-01T09:35:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-01/bianco-turns-bullish-on-treasuries-as-yields-climb-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T12:57:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/don-t-be-fooled-treasuries-aren-t-cheap-yet",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
-      "topPositiveTitle": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
+      "topNegativeTitle": "Cboe Eyes VIX Perpetual Futures as Exchanges Move Beyond Crypto",
+      "topPositiveTitle": "Cboe Eyes VIX Perpetual Futures as Exchanges Move Beyond Crypto",
       "items": [
         {
-          "title": "BOE’s Bailey Warns AI Boom Could Trigger Market Shocks",
-          "source": "Bloomberg Economics",
+          "title": "Cboe Eyes VIX Perpetual Futures as Exchanges Move Beyond Crypto",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T05:24:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/boe-governor-warns-ai-boom-could-trigger-market-shocks-bbc",
+          "publishedAt": "2026-10-01T17:02:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/cboe-eyes-vix-perpetual-futures-as-exchanges-move-beyond-crypto",
           "tags": [
-            "market",
-            "us_growth"
+            "global_broad",
+            "macro_risk",
+            "market"
           ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
-      "topPositiveTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
-      "items": [
+        },
         {
-          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+          "title": "European Stocks Drop as Bond Yields Spook Investors; Banks Lag",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-10-01T07:14:38+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
           "tags": [
-            "commodity",
             "global_broad",
             "market",
             "rates"
@@ -173,31 +155,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
-      "topPositiveTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
-      "items": [
-        {
-          "title": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-01T00:08:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/gold-steady-as-softer-inflation-data-tempers-fed-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -224,23 +191,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.032,
+      "avgSentiment": -0.202,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
-      "topPositiveTitle": "Turkey Wants Fund Investors to Give Back ‘Excessive’ Profits",
+      "topNegativeTitle": "Munis See Worst Monthly Returns Since Lehman Collapse",
+      "topPositiveTitle": "Treasuries Rebound, Pulling 10-Year Yield Back From 24-Year High",
       "items": [
         {
-          "title": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+          "title": "Munis See Worst Monthly Returns Since Lehman Collapse",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-01T09:03:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-s-grain-rerouting-falls-short-as-war-hits-black-sea-ports",
+          "publishedAt": "2026-10-01T16:34:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/munis-see-worst-monthly-returns-since-lehman-brothers-collapse",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -248,12 +215,12 @@
           ]
         },
         {
-          "title": "Saudi Arabia Sees Slump and Deeper Deficit as War Roils Economy",
+          "title": "Russian Budget Plans Three Years of Record War Spending",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-30T19:01:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "publishedAt": "2026-10-01T11:44:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-plans-three-years-of-record-war-spending-under-new-budget",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -261,15 +228,14 @@
           ]
         },
         {
-          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
+          "title": "Cboe Eyes VIX Perpetual Futures as Exchanges Move Beyond Crypto",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T09:35:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
+          "publishedAt": "2026-10-01T17:02:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/cboe-eyes-vix-perpetual-futures-as-exchanges-move-beyond-crypto",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
@@ -289,88 +255,51 @@
           ]
         },
         {
-          "title": "UK Is First Big Economy to Pay 6% on Long Debt Since Euro Crisis",
+          "title": "Treasuries Rebound, Pulling 10-Year Yield Back From 24-Year High",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T07:26:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/uk-long-term-bond-yield-reaches-6-for-first-time-since-1998",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T07:29:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/treasury-10-year-yield-hits-highest-since-2002-on-rate-outlook-mup7ryq2",
           "tags": [
             "macro_risk",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
-      "topPositiveTitle": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
-      "items": [
-        {
-          "title": "Hedge Funds Boost Bets on Euro Weakness as French Risks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T06:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/hedge-funds-boost-bets-on-euro-weakness-as-french-risks-increase",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.276,
+      "avgSentiment": 0.112,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
-      "topPositiveTitle": "Bianco Turns Bullish on Treasuries Even as Yields Climb",
+      "topNegativeTitle": "Bank Stocks Sink Further Into Correction as Citigroup Tumbles",
+      "topPositiveTitle": "Investors Shed Mortgage Bond ETFs At Fastest Rate Since 2020",
       "items": [
         {
-          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
+          "title": "Bank Stocks Sink Further Into Correction as Citigroup Tumbles",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-01T07:14:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Colombia Raises Interest Rate to 12.25% in Surprise Central Bank Move",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T18:51:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/colombia-unexpectedly-raises-interest-rate-to-highest-since-2024",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Watchdog Finds No Criminal Violations in Renovations",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-09-30T17:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/fed-s-watchdog-finds-no-evidence-of-criminality-in-renovations",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-01T16:16:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/bank-stocks-sink-further-into-correction-as-citigroup-tumbles-mupql1a7",
           "tags": [
             "market",
             "rates",
@@ -378,27 +307,51 @@
           ]
         },
         {
-          "title": "Japan’s Biggest Firms Remain Confident Even as BOJ Raises Rates",
+          "title": "Bank of England Must Raise Rates to Maintain Credibility, Mann Says",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T00:02:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/japan-s-biggest-manufacturers-most-optimistic-since-march-2018",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T12:40:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/bank-of-england-must-raise-rates-to-maintain-credibility-mann-says",
           "tags": [
-            "jp_broad",
             "market",
             "rates"
           ]
         },
         {
-          "title": "US Stocks Edge Up as AI Gains Contend With Yields: Markets Wrap",
+          "title": "Fed’s Kashkari Says He Doesn’t Know How High Rates Must Go",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T12:00:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/fed-s-kashkari-says-he-doesn-t-know-how-high-rates-need-to-go",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "European Stocks Drop as Bond Yields Spook Investors; Banks Lag",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T07:14:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Treasuries Rebound, Pulling 10-Year Yield Back From 24-Year High",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-09-30T22:19:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-01T07:29:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/treasury-10-year-yield-hits-highest-since-2002-on-rate-outlook-mup7ryq2",
           "tags": [
-            "commodity",
             "macro_risk",
             "market",
             "rates",
@@ -408,44 +361,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.122,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 7,
+      "avgSentiment": 0.218,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 12,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
-      "topPositiveTitle": "Gold Holds Steady as Traders Weigh Higher Bond Yields, Oil",
+      "topNegativeTitle": "Pakistan Inflation Stays Above 10% as Energy Risks Persist",
+      "topPositiveTitle": "S&P 500 Bounces From Lows as Treasuries Rally: Markets Wrap",
       "items": [
-        {
-          "title": "UK’s FTSE 100 Drops as Oil, Bond Yields Hit European Stocks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-01T07:14:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/european-stocks-fall-as-inflation-worries-overshadow-tech-gains",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T09:35:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Pakistan Inflation Stays Above 10% as Energy Risks Persist",
           "source": "Bloomberg Economics",
@@ -461,27 +386,41 @@
           ]
         },
         {
-          "title": "India Steps Up Palm Oil Buying as Tax Cut Spurs Restocking",
-          "source": "Bloomberg Markets",
+          "title": "中国 改正「国防動員法」施行 先端技術活用など新たに盛り込む",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T08:22:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-steps-up-palm-oil-buying-as-tax-cut-spurs-restocking",
+          "publishedAt": "2026-10-01T10:59:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261001de53697",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "中国 改正「国防動員法」施行 先端技術活用など新たに盛り込む"
+        },
+        {
+          "title": "Swiss Inflation Quickens to 2-Year High Driven by Oil, Franc",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-01T06:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/swiss-inflation-quickens-to-2-year-high-driven-by-oil-and-franc",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "India Oil Refiners Shift Tactics, Hire Ships to Cross Hormuz",
+          "title": "S&P 500 Bounces From Lows as Treasuries Rally: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T04:53:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-oil-refiners-change-tactics-and-hire-ships-to-cross-hormuz",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-09-30T22:19:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-09-30/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -491,19 +430,19 @@
       "negativeCount": 2,
       "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 2,
+      "sourceCount": 3,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
-      "topPositiveTitle": "India Warns Global Risks Threaten Strong Growth, Investment",
+      "topNegativeTitle": "Munis See Worst Monthly Returns Since Lehman Collapse",
+      "topPositiveTitle": "The Biggest Jump in Global Crop Prices Since 2022 Threatens to Boost Inflation",
       "items": [
         {
-          "title": "Russia’s Grain Rerouting Falls Short as War Hits Black Sea Ports",
+          "title": "Munis See Worst Monthly Returns Since Lehman Collapse",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-01T09:03:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-s-grain-rerouting-falls-short-as-war-hits-black-sea-ports",
+          "publishedAt": "2026-10-01T16:34:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/munis-see-worst-monthly-returns-since-lehman-brothers-collapse",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -511,27 +450,13 @@
           ]
         },
         {
-          "title": "Saudi Arabia Sees Slump and Deeper Deficit as War Roils Economy",
+          "title": "Russian Budget Plans Three Years of Record War Spending",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-09-30T19:01:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-09-30/saudis-see-deeper-deficit-as-wartime-spend-offsets-oil-spike",
+          "publishedAt": "2026-10-01T11:44:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-plans-three-years-of-record-war-spending-under-new-budget",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Tanker Congestion Shunts Vital Oil Transfers Farther From Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T09:35:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/tanker-congestion-shunts-vital-oil-transfers-farther-from-hormuz",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -552,14 +477,26 @@
           ]
         },
         {
-          "title": "India Warns Global Risks Threaten Strong Growth, Investment",
-          "source": "Bloomberg Economics",
+          "title": "日イラン 外相電話会談 ホルムズ海峡めぐり建設的対応を",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-01T12:23:48+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261001de53734",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "日イラン 外相電話会談 ホルムズ海峡めぐり建設的対応を"
+        },
+        {
+          "title": "The Biggest Jump in Global Crop Prices Since 2022 Threatens to Boost Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T06:15:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/india-warns-global-risks-threaten-strong-growth-investment",
+          "publishedAt": "2026-10-01T04:49:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/the-biggest-jump-in-global-crop-prices-since-2022-threatens-to-boost-inflation",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
@@ -575,7 +512,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
