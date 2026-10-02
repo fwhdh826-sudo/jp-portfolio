@@ -1,20 +1,32 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-02T11:23:38.676512+09:00",
-  "sourceUpdatedAt": "2026-10-02T02:03:00+00:00",
+  "updatedAt": "2026-10-02T18:57:55.922768+09:00",
+  "sourceUpdatedAt": "2026-10-02T09:44:43+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Tokyo Inflation Acceleration Will Keep BOJ Alert for Overshoot",
+      "topNegativeTitle": "Japan Minister Declines to Elaborate on Remarks at BOJ Meeting",
       "topPositiveTitle": "Tokyo Inflation Acceleration Will Keep BOJ Alert for Overshoot",
       "items": [
+        {
+          "title": "Japan Minister Declines to Elaborate on Remarks at BOJ Meeting",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-02T03:55:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/japan-minister-declines-to-elaborate-on-remarks-at-boj-meeting",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "Tokyo Inflation Acceleration Will Keep BOJ Alert for Overshoot",
           "source": "Bloomberg Economics",
@@ -30,42 +42,42 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia-Backed Firmus Prices Landmark IPO at A$11 a Share",
-      "topPositiveTitle": "Nvidia-Backed Firmus Prices Landmark IPO at A$11 a Share",
-      "items": [
-        {
-          "title": "Nvidia-Backed Firmus Prices Landmark IPO at A$11 a Share",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T22:30:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/firmus-eyes-30-billion-valuation-in-australian-ipo-afr-reports",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.123,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": 0.068,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Treasuries Rebound Raises Stakes for Job Data as Rate Hikes Loom",
-      "topPositiveTitle": "Treasuries Rebound as Global Bond Rout Continues",
+      "topNegativeTitle": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
+      "topPositiveTitle": "Stocks Climb as Calm Prevails Before Payrolls: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T00:14:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gold-steadies-as-easing-us-bond-yields-reduce-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Treasuries Rebound Raises Stakes for Job Data as Rate Hikes Loom",
           "source": "Bloomberg Economics",
@@ -104,27 +116,13 @@
           ]
         },
         {
-          "title": "Fed’s Kashkari Says He Doesn’t Know How High Rates Must Go",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T12:00:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/fed-s-kashkari-says-he-doesn-t-know-how-high-rates-need-to-go",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Hold Gains After Rally, Stocks Decline: Markets Wrap",
+          "title": "Stocks Climb as Calm Prevails Before Payrolls: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-10-01T22:15:32+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-01/asian-stocks-to-fall-on-oil-rally-bonds-in-focus-markets-wrap",
           "tags": [
-            "commodity",
             "market",
             "rates",
             "us_broad"
@@ -133,105 +131,64 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Asia Bankers Hope Japan, Australia Can Lift M&A From Doldrums",
-      "topPositiveTitle": "Asia Bankers Hope Japan, Australia Can Lift M&A From Doldrums",
-      "items": [
-        {
-          "title": "Asia Bankers Hope Japan, Australia Can Lift M&A From Doldrums",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T01:54:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/asia-bankers-hope-japan-australia-can-lift-m-a-from-doldrums",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic Said to Target Mega-IPO Before Thanksgiving Holiday",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T00:40:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/anthropic-said-to-target-ipo-before-thanksgiving-holiday-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia-Backed Firmus Prices Landmark IPO at A$11 a Share",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T22:30:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/firmus-eyes-30-billion-valuation-in-australian-ipo-afr-reports",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Cboe Eyes VIX Perpetuals as Exchanges Move Beyond Crypto",
-      "topPositiveTitle": "Cboe Eyes VIX Perpetuals as Exchanges Move Beyond Crypto",
+      "topNegativeTitle": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
+      "topPositiveTitle": "Global Credit Market Starts to Sputter as Jumbo Deals Drag",
       "items": [
         {
-          "title": "Cboe Eyes VIX Perpetuals as Exchanges Move Beyond Crypto",
+          "title": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T17:02:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/cboe-eyes-vix-perpetual-futures-as-exchanges-move-beyond-crypto",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Easing US Bond Yields Reduce Rate-Hike Bets",
-      "topPositiveTitle": "Gold Steadies as Easing US Bond Yields Reduce Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Steadies as Easing US Bond Yields Reduce Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-10-02T00:14:23+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-02/gold-steadies-as-easing-us-bond-yields-reduce-rate-hike-bets",
           "tags": [
-            "commodity",
             "gold",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Global Credit Market Starts to Sputter as Jumbo Deals Drag",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T03:37:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/global-credit-market-starts-to-sputter-as-jumbo-deals-drag",
+          "tags": [
+            "gold",
+            "market"
           ]
         }
       ]
@@ -261,75 +218,48 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.002,
+      "avgSentiment": 0.223,
       "negativeCount": 1,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Russian Budget Plans Three Years of Record War Spending",
-      "topPositiveTitle": "Treasuries Rebound as Global Bond Rout Continues",
+      "topNegativeTitle": "UK Still Pays a Heavy Bond Market Price for Its Tarnished Image",
+      "topPositiveTitle": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
       "items": [
         {
-          "title": "Russian Budget Plans Three Years of Record War Spending",
-          "source": "Bloomberg Economics",
+          "title": "UK Still Pays a Heavy Bond Market Price for Its Tarnished Image",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-01T11:44:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-plans-three-years-of-record-war-spending-under-new-budget",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T09:02:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/uk-still-pays-a-heavy-bond-market-price-for-its-tarnished-image",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Cboe Eyes VIX Perpetuals as Exchanges Move Beyond Crypto",
+          "title": "BofA’s Hartnett Sees Risk-Off Mood Lasting Until Dollar Peaks",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T17:02:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/cboe-eyes-vix-perpetual-futures-as-exchanges-move-beyond-crypto",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-02T08:50:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/bofa-s-hartnett-sees-risk-off-mood-lasting-until-dollar-peaks",
           "tags": [
-            "global_broad",
+            "fx",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Belgian Deputy PM Optimistic on Budget Deal to Avoid Crisis",
+          "title": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T12:11:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/belgian-deputy-pm-optimistic-on-budget-deal-to-avoid-crisis",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Rebound as Global Bond Rout Continues",
-          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T00:52:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/treasuries-rebound-as-global-bond-rout-continues-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 2",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T22:03:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/latest-oil-market-news-and-analysis-for-oct-2",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-02T04:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/fuel-subsidies-may-top-1-trillion-as-iran-war-drags-un-says",
           "tags": [
             "commodity",
             "geopolitical",
@@ -340,28 +270,104 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": -0.17,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Takaichi Told During Trump Talks That US Trade Hurt by Weak Yen",
+      "topPositiveTitle": "BofA’s Hartnett Sees Risk-Off Mood Lasting Until Dollar Peaks",
+      "items": [
+        {
+          "title": "Takaichi Told During Trump Talks That US Trade Hurt by Weak Yen",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-02T07:51:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/takaichi-told-during-trump-talks-that-us-trade-hurt-by-weak-yen",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "BofA’s Hartnett Sees Risk-Off Mood Lasting Until Dollar Peaks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-02T08:50:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/bofa-s-hartnett-sees-risk-off-mood-lasting-until-dollar-peaks",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.123,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.049,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Logan Wants More Hikes, But Says Bond Moves Could Help",
-      "topPositiveTitle": "Treasuries Rebound as Global Bond Rout Continues",
+      "topNegativeTitle": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
+      "topPositiveTitle": "Stocks Climb as Calm Prevails Before Payrolls: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Steadies Ahead of Payroll Data That Could Give Fed Clues",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T00:14:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gold-steadies-as-easing-us-bond-yields-reduce-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Spike in Interest Rates Is Doing Plenty of Damage to Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:41:08+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-02/spike-in-interest-rates-is-doing-plenty-of-damage-to-stocks",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "JPMorgan AM: We're Getting More Constructive on Duration",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:01:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/jpmorgan-am-we-re-getting-more-constructive-on-duration-video",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Euro-Zone Inflation Tops Estimates to Hit Three-Year High",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:01:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/euro-zone-inflation-tops-estimates-to-hit-three-year-high",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Fed’s Logan Wants More Hikes, But Says Bond Moves Could Help",
           "source": "Bloomberg Economics",
@@ -374,214 +380,104 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Bank of Canada Won’t Target House Prices With Interest Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T19:05:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/bank-of-canada-won-t-target-house-prices-with-interest-rates",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bank of England Must Raise Rates to Maintain Credibility, Mann Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T12:40:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/bank-of-england-must-raise-rates-to-maintain-credibility-mann-says",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Kashkari Says He Doesn’t Know How High Rates Must Go",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T12:00:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/fed-s-kashkari-says-he-doesn-t-know-how-high-rates-need-to-go",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Hold Gains After Rally, Stocks Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-01T22:15:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/asian-stocks-to-fall-on-oil-rally-bonds-in-focus-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.172,
+      "avgSentiment": 0.149,
       "negativeCount": 1,
       "positiveCount": 3,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Getting Oil and Gas Through Hormuz Strait Is Dangerous Job for Ship Captains",
-      "topPositiveTitle": "Gold Steadies as Easing US Bond Yields Reduce Rate-Hike Bets",
+      "topNegativeTitle": "Poland Moves to Quickly Tame Fuel Prices After Nawrocki’s U-Turn",
+      "topPositiveTitle": "Odd Lots: How Airlines Hedge Higher Fuel Prices (Podcast)",
       "items": [
         {
-          "title": "Getting Oil and Gas Through Hormuz Strait Is Dangerous Job for Ship Captains",
-          "source": "Bloomberg Markets",
+          "title": "Poland Moves to Quickly Tame Fuel Prices After Nawrocki’s U-Turn",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-01T23:01:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/getting-oil-and-gas-through-hormuz-strait-is-dangerous-job-for-ship-captains",
+          "publishedAt": "2026-10-02T08:36:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/poland-moves-to-quickly-tame-fuel-prices-after-nawrocki-s-u-turn",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Treasuries Hold Gains After Rally, Stocks Decline: Markets Wrap",
+          "title": "Dangote’s $16 Billion Refinery Faces Fresh Kenya Legal Challenge",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-01T22:15:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/asian-stocks-to-fall-on-oil-rally-bonds-in-focus-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:23:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dangote-s-16-billion-refinery-faces-fresh-kenya-legal-challenge",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Easing US Bond Yields Reduce Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T00:14:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gold-steadies-as-easing-us-bond-yields-reduce-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 2",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T22:03:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/latest-oil-market-news-and-analysis-for-oct-2",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Australia Sees Export Income Rising 5% on High Energy Prices",
+          "title": "Glencore Says Trading Profits Will Top $5 Billion This Year",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T14:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/australia-sees-global-commodity-woes-lifting-export-income-by-5",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:11:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/glencore-says-trading-profits-will-top-5-billion-this-year",
           "tags": [
             "commodity",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Macron Plans G7 Leaders Call on Oil Prices as Soon as Possible",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T09:10:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/macron-plans-g7-leaders-call-on-oil-prices-as-soon-as-possible",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Gunvor Renames Itself Centalion in Shift Under New Ownership",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T08:56:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gunvor-to-rename-itself-centalion-and-redomicile-to-singapore",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.002,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Russian Budget Plans Three Years of Record War Spending",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 2",
+      "topNegativeTitle": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
+      "topPositiveTitle": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
       "items": [
         {
-          "title": "Russian Budget Plans Three Years of Record War Spending",
+          "title": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-01T11:44:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/russia-plans-three-years-of-record-war-spending-under-new-budget",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US May Add Carrier and 10,000 Troops to Mideast, Official Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T00:40:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/us-may-add-carrier-and-10-000-troops-to-middle-east-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "小野寺元防衛相がウクライナ訪問 ゼレンスキー大統領と会談",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-01T22:28:18+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53778",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "小野寺元防衛相がウクライナ訪問 ゼレンスキー大統領と会談"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 2",
-          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T22:03:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/latest-oil-market-news-and-analysis-for-oct-2",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-02T04:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/fuel-subsidies-may-top-1-trillion-as-iran-war-drags-un-says",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Australia Sees Export Income Rising 5% on High Energy Prices",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-01T14:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/australia-sees-global-commodity-woes-lifting-export-income-by-5",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         }
