@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-03T11:10:50.500884+09:00",
-  "sourceUpdatedAt": "2026-10-03T01:55:34+00:00",
+  "updatedAt": "2026-10-04T00:10:43.047258+09:00",
+  "sourceUpdatedAt": "2026-10-03T14:59:07+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,15 +29,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.071,
-      "negativeCount": 5,
-      "positiveCount": 4,
+      "avgSentiment": -0.012,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 13,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
-      "topPositiveTitle": "Treasury Yields Climb, Adding to Weekly Gains | Closing Bell",
+      "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
       "items": [
         {
           "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
@@ -47,20 +47,6 @@
           "publishedAt": "2026-10-02T21:42:53+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
           "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T20:40:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
-          "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -79,55 +65,64 @@
           ]
         },
         {
-          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
+          "title": "Larry Ellison Risk Exposed by Paramount and Oracle Debt Binges",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T13:00:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/larry-ellison-risk-exposed-by-paramount-and-oracle-debt-binges",
           "tags": [
-            "fx",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bond Traders Expect Jobs Data to Leave Fed-Hike Bets Intact",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T00:04:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/treasuries-rebound-raises-stakes-for-job-data-as-rate-hikes-loom",
+          "title": "Wall Street Week | Your Brain on AI, Rare Earth Race, College Enrollment Cliff",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T23:12:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/wall-street-week-rare-earth-race-enrollment-cliff-video",
           "tags": [
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T17:49:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
-      "topPositiveTitle": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
+      "topNegativeTitle": "Why Philosophers Are Worried About AI",
+      "topPositiveTitle": "Why Philosophers Are Worried About AI",
       "items": [
         {
-          "title": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
+          "title": "Why Philosophers Are Worried About AI",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-01T22:15:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/asian-stocks-to-fall-on-oil-rally-bonds-in-focus-markets-wrap",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-03T14:03:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-03/why-philosophers-are-worried-about-ai-video",
           "tags": [
             "market",
-            "rates",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -136,14 +131,27 @@
     "global_broad": {
       "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
-      "topPositiveTitle": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
+      "topNegativeTitle": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
+      "topPositiveTitle": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
       "items": [
+        {
+          "title": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-03T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/europe-s-stocks-are-straining-under-pressure-from-bond-yields",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
           "source": "Bloomberg Markets",
@@ -167,16 +175,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
-      "topPositiveTitle": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
+      "topNegativeTitle": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
+      "topPositiveTitle": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
       "items": [
         {
-          "title": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
-          "source": "Bloomberg Economics",
+          "title": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/most-of-peru-s-gold-now-comes-from-booming-illegal-mining-sector",
+          "publishedAt": "2026-10-03T10:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/london-gold-body-s-legal-fight-exposes-threat-to-bullion-market",
           "tags": [
             "gold",
             "market"
@@ -209,242 +217,6 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
-      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-      "items": [
-        {
-          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T20:40:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.17,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
-      "topPositiveTitle": "Hedge Funds Are Rebuilding Short Bets Against Japan’s Yen",
-      "items": [
-        {
-          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T13:00:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Hedge Funds Are Rebuilding Short Bets Against Japan’s Yen",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-02T20:10:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/hedge-funds-are-rebuilding-short-bets-against-japan-s-yen",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.176,
-      "negativeCount": 3,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
-      "topPositiveTitle": "Treasury Yields Climb, Adding to Weekly Gains | Closing Bell",
-      "items": [
-        {
-          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-02T21:42:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T20:40:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T13:00:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T17:49:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Euro-Zone Inflation Tops Estimates to Hit Three-Year High",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T09:01:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/euro-zone-inflation-tops-estimates-to-hit-three-year-high",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.134,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
-      "topPositiveTitle": "UK Firms Predict Faster Price Rises After Energy Costs Surge",
-      "items": [
-        {
-          "title": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T21:36:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/lukoil-loses-bid-to-dismiss-suit-over-franchisee-fuel-pricing",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "CME Shelves Plans for 24/7 Oil Contract Amid Industry Qualms",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T20:34:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/cme-shelves-plans-for-24-7-oil-contract-after-industry-pushback",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Macron Plans G7 Leaders Call on Oil Prices as Soon as Possible",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T09:10:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/macron-plans-g7-leaders-call-on-oil-prices-as-soon-as-possible",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Firms Predict Faster Price Rises After Energy Costs Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-02T08:58:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/uk-firms-predict-faster-price-increases-after-energy-costs-surge",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -471,6 +243,200 @@
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
         }
       ]
+    },
+    "fx": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": 0.112,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+      "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
+      "items": [
+        {
+          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-10-02T21:42:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T17:49:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-03T14:59:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/bessent-downplays-worries-on-rising-yields-ai-bubble-concerns",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-03T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/europe-s-stocks-are-straining-under-pressure-from-bond-yields",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB’s Nightmare Scenario Gets Closer as French Yields Surge",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-02T15:23:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/ecb-s-nightmare-scenario-gets-closer-as-french-bond-yields-surge",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
+      "topPositiveTitle": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
+      "items": [
+        {
+          "title": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T21:36:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/lukoil-loses-bid-to-dismiss-suit-over-franchisee-fuel-pricing",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T09:47:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/india-mulls-commodity-derivatives-changes-to-boost-liquidity",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T00:58:17+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
+      "topPositiveTitle": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
+      "items": [
+        {
+          "title": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T09:44:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/israel-s-supreme-court-overturns-election-ban-on-arab-parties",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T00:58:17+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        },
+        {
+          "title": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T09:49:22+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261003de54064",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え"
+        }
+      ]
     }
   },
   "meta": {
@@ -481,7 +447,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
