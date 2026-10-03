@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-03T01:44:59.423289+09:00",
-  "sourceUpdatedAt": "2026-10-02T16:38:04+00:00",
+  "updatedAt": "2026-10-03T11:10:50.500884+09:00",
+  "sourceUpdatedAt": "2026-10-03T01:55:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan Minister Declines to Elaborate on Remarks at BOJ Meeting",
-      "topPositiveTitle": "Japan Minister Declines to Elaborate on Remarks at BOJ Meeting",
-      "items": [
-        {
-          "title": "Japan Minister Declines to Elaborate on Remarks at BOJ Meeting",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-02T03:55:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/japan-minister-declines-to-elaborate-on-remarks-at-boj-meeting",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -42,37 +29,40 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.166,
+      "avgSentiment": 0.071,
       "negativeCount": 5,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "Bond Traders See Weak Jobs Data Letting Fed Delay Rate Hikes",
-      "topPositiveTitle": "US Stocks Advance After Cooler-Than-Expected Employment Data",
+      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+      "topPositiveTitle": "Treasury Yields Climb, Adding to Weekly Gains | Closing Bell",
       "items": [
         {
-          "title": "Bond Traders See Weak Jobs Data Letting Fed Delay Rate Hikes",
+          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-02T12:38:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/bond-traders-pull-back-on-fed-hike-bets-after-soft-jobs-data",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-10-02T21:42:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Job Growth Falls Short of Forecasts as Firms Remain Cautious",
+          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-02T15:55:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/us-job-growth-falls-short-of-forecasts-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T20:40:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
           "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -89,16 +79,14 @@
           ]
         },
         {
-          "title": "Rebecca Patterson Warns On Fragile Bond Markets",
+          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T14:45:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/rebecca-patterson-warns-on-fragile-bond-markets-video",
+          "publishedAt": "2026-10-02T13:00:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
           "tags": [
-            "global_broad",
-            "gold",
-            "macro_risk",
+            "fx",
             "market",
             "rates",
             "us_broad"
@@ -126,93 +114,62 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Beating Market FOMO: Main Street's Playbook",
-      "topPositiveTitle": "Beating Market FOMO: Main Street's Playbook",
+      "topNegativeTitle": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
+      "topPositiveTitle": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
       "items": [
         {
-          "title": "Beating Market FOMO: Main Street's Playbook",
+          "title": "Nasdaq 100 Climbs to Record as Jobs Curb Fed Bets: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-02T16:19:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/beating-market-fomo-main-street-s-playbook-video",
+          "publishedAt": "2026-10-01T22:15:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-01/asian-stocks-to-fall-on-oil-rally-bonds-in-focus-markets-wrap",
           "tags": [
             "market",
+            "rates",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Rebecca Patterson Warns On Fragile Bond Markets",
-      "topPositiveTitle": "Gabon’s Bond Yields Surge With Debt Numbers Raising Questions",
+      "topNegativeTitle": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
+      "topPositiveTitle": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
       "items": [
         {
-          "title": "Rebecca Patterson Warns On Fragile Bond Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T14:45:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/rebecca-patterson-warns-on-fragile-bond-markets-video",
-          "tags": [
-            "global_broad",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gabon’s Bond Yields Surge With Debt Numbers Raising Questions",
+          "title": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T15:10:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gabon-s-bond-yields-surge-with-debt-numbers-raising-questions",
+          "publishedAt": "2026-10-02T23:45:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/the-close-10-2-2026-video",
           "tags": [
-            "fx",
             "global_broad",
             "market",
-            "rates"
+            "us_broad"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Rebecca Patterson Warns On Fragile Bond Markets",
+      "topNegativeTitle": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
       "topPositiveTitle": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
       "items": [
-        {
-          "title": "Rebecca Patterson Warns On Fragile Bond Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T14:45:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/rebecca-patterson-warns-on-fragile-bond-markets-video",
-          "tags": [
-            "global_broad",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Most of Peru’s Gold Now Comes From Booming Illegal Mining Sector",
           "source": "Bloomberg Economics",
@@ -252,38 +209,24 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.053,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "French Bond Risk Hits Euro-Crisis Levels",
-      "topPositiveTitle": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
+      "topNegativeTitle": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
+      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
       "items": [
         {
-          "title": "French Bond Risk Hits Euro-Crisis Levels",
+          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T15:38:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/french-bond-risk-hits-euro-crisis-levels-video",
+          "publishedAt": "2026-10-02T20:40:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Rebecca Patterson Warns On Fragile Bond Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T14:45:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/rebecca-patterson-warns-on-fragile-bond-markets-video",
-          "tags": [
-            "global_broad",
-            "gold",
             "macro_risk",
             "market",
             "rates",
@@ -291,36 +234,11 @@
           ]
         },
         {
-          "title": "Credit Markets Sputter as Spreads Widen Most Since March",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T03:37:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/global-credit-market-starts-to-sputter-as-jumbo-deals-drag",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "France’s Bond Crisis Deepens",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T16:38:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/france-s-bond-crisis-deepens-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T11:53:56+00:00",
+          "publishedAt": "2026-10-03T00:58:17+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
           "tags": [
             "commodity",
@@ -333,65 +251,76 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.17,
+      "avgSentiment": 0.17,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Takaichi Told During Trump Talks That US Trade Hurt by Weak Yen",
-      "topPositiveTitle": "Gabon’s Bond Yields Surge With Debt Numbers Raising Questions",
+      "topNegativeTitle": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
+      "topPositiveTitle": "Hedge Funds Are Rebuilding Short Bets Against Japan’s Yen",
       "items": [
         {
-          "title": "Takaichi Told During Trump Talks That US Trade Hurt by Weak Yen",
-          "source": "Bloomberg Economics",
+          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-02T07:51:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/takaichi-told-during-trump-talks-that-us-trade-hurt-by-weak-yen",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-02T13:00:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Gabon’s Bond Yields Surge With Debt Numbers Raising Questions",
+          "title": "Hedge Funds Are Rebuilding Short Bets Against Japan’s Yen",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T15:10:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/gabon-s-bond-yields-surge-with-debt-numbers-raising-questions",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-02T20:10:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/hedge-funds-are-rebuilding-short-bets-against-japan-s-yen",
           "tags": [
             "fx",
-            "global_broad",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.166,
-      "negativeCount": 2,
-      "positiveCount": 5,
-      "neutralCount": 1,
+      "avgSentiment": 0.176,
+      "negativeCount": 3,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Rebecca Patterson Warns On Fragile Bond Markets",
-      "topPositiveTitle": "US Stocks Advance After Cooler-Than-Expected Employment Data",
+      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+      "topPositiveTitle": "Treasury Yields Climb, Adding to Weekly Gains | Closing Bell",
       "items": [
         {
-          "title": "Rebecca Patterson Warns On Fragile Bond Markets",
+          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.43,
+          "publishedAt": "2026-10-02T21:42:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Tries to Live With 5% Yields as Market Cracks Grow",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T14:45:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/rebecca-patterson-warns-on-fragile-bond-markets-video",
+          "publishedAt": "2026-10-02T20:40:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/wall-street-tries-to-live-with-5-yields-as-market-cracks-grow",
           "tags": [
-            "global_broad",
-            "gold",
             "macro_risk",
             "market",
             "rates",
@@ -399,16 +328,30 @@
           ]
         },
         {
-          "title": "Credit Markets Sputter as Spreads Widen Most Since March",
+          "title": "Dollar Falls as Soft Job Data Roils Timing of Fed Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T03:37:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/global-credit-market-starts-to-sputter-as-jumbo-deals-drag",
+          "publishedAt": "2026-10-02T13:00:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/dollar-falls-as-traders-pare-fed-hike-bets-after-soft-jobs-data",
           "tags": [
-            "macro_risk",
+            "fx",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T17:49:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -422,75 +365,27 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "NEC's Kevin Hassett on Sept. Jobs and Paying Down US Debt",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T16:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/nec-s-kevin-hassett-on-sept-jobs-paying-down-us-debt-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB’s Nightmare Scenario Gets Closer as French Yields Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T15:23:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/ecb-s-nightmare-scenario-gets-closer-as-french-bond-yields-surge",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.209,
+      "avgSentiment": 0.134,
       "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 2",
+      "topNegativeTitle": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
       "topPositiveTitle": "UK Firms Predict Faster Price Rises After Energy Costs Surge",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 2",
+          "title": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-01T22:03:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-01/latest-oil-market-news-and-analysis-for-oct-2",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Why Qatar Airlines Gets Cheaper Jet Fuel Outside of the Middle East",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T14:42:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/why-qatar-airlines-gets-cheaper-jet-fuel-outside-of-the-middle-east",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "G7 to Release Up to 100 Million Barrels of Diesel, Crude",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T14:04:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/g7-to-release-up-to-100-millions-of-barrels-of-diesel-and-oil",
+          "publishedAt": "2026-10-02T21:36:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/lukoil-loses-bid-to-dismiss-suit-over-franchisee-fuel-pricing",
           "tags": [
             "commodity",
             "market"
@@ -501,7 +396,7 @@
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T11:53:56+00:00",
+          "publishedAt": "2026-10-03T00:58:17+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
           "tags": [
             "commodity",
@@ -510,6 +405,18 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        },
+        {
+          "title": "CME Shelves Plans for 24/7 Oil Contract Amid Industry Qualms",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-02T20:34:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/cme-shelves-plans-for-24-7-oil-contract-after-industry-pushback",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         },
         {
           "title": "Macron Plans G7 Leaders Call on Oil Prices as Soon as Possible",
@@ -522,26 +429,38 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "UK Firms Predict Faster Price Rises After Energy Costs Surge",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-02T08:58:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-02/uk-firms-predict-faster-price-increases-after-energy-costs-surge",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.447,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-      "topPositiveTitle": "Global Food Prices Extend Gain to Highest Since End of 2022",
+      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
       "items": [
         {
           "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T11:53:56+00:00",
+          "publishedAt": "2026-10-03T00:58:17+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
           "tags": [
             "commodity",
@@ -550,32 +469,6 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "Global Food Prices Extend Gain to Highest Since End of 2022",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-02T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/global-food-prices-extend-gain-to-highest-since-end-of-2022",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Fuel Subsidies May Top $1 Trillion As Iran War Drags, UN Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-02T04:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/fuel-subsidies-may-top-1-trillion-as-iran-war-drags-un-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -588,7 +481,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
