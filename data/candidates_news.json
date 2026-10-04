@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-04T11:47:56.782135+09:00",
-  "sourceUpdatedAt": "2026-10-04T02:39:48+00:00",
+  "updatedAt": "2026-10-05T00:53:47.252013+09:00",
+  "sourceUpdatedAt": "2026-10-04T15:15:16+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,27 +17,41 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Taiwan Says US Policy Remains Unchanged",
+      "topPositiveTitle": "Taiwan Says US Policy Remains Unchanged",
+      "items": [
+        {
+          "title": "Taiwan Says US Policy Remains Unchanged",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T14:45:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/taiwan-says-us-policy-remains-unchanged-video",
+          "tags": [
+            "geopolitical",
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.113,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.268,
+      "negativeCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
+      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
       "items": [
         {
           "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
@@ -53,25 +67,55 @@
           ]
         },
         {
-          "title": "Larry Ellison Risk Exposed by Paramount and Oracle Debt Binges",
+          "title": "EM Investors Shrug Off Quarter’s Pullback, Double Down on Carry Trades",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/larry-ellison-risk-exposed-by-paramount-and-oracle-debt-binges",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-04T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/em-investors-shrug-off-quarter-s-pullback-double-down-on-carry-trades",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
-          "source": "Bloomberg Economics",
+          "title": "Jobs Slow but Inflation Keeps Fed on Alert",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-03T14:59:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/bessent-downplays-worries-on-rising-yields-ai-bubble-concerns",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T13:04:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/jobs-slow-but-inflation-keeps-fed-on-alert-video",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-04T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -80,15 +124,15 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": 0.17,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
-      "topPositiveTitle": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
+      "topPositiveTitle": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
       "items": [
         {
           "title": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
@@ -104,14 +148,16 @@
           ]
         },
         {
-          "title": "Why Philosophers Are Worried About AI",
+          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-03T14:03:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-03/why-philosophers-are-worried-about-ai-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
           "tags": [
             "market",
+            "rates",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -130,26 +176,29 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
-      "topPositiveTitle": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
+      "topNegativeTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
       "items": [
         {
-          "title": "London Gold Body’s Legal Fight Exposes Threat to Bullion Market",
+          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T10:45:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/london-gold-body-s-legal-fight-exposes-threat-to-bullion-market",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-04T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
           "tags": [
+            "commodity",
             "gold",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -179,15 +228,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
+      "avgSentiment": -0.222,
+      "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+      "topPositiveTitle": "OPEC+ Agrees to Keep Oil Output Targets Steady in November",
       "items": [
         {
           "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
@@ -200,6 +249,18 @@
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Whispers of Contagion Risk Are Returning to Europe’s Bond Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-04T11:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/whispers-of-contagion-risk-are-returning-to-europe-s-bond-market",
+          "tags": [
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -216,19 +277,31 @@
           ]
         },
         {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
+          "title": "OPEC+ Agrees to Keep Oil Output Targets Steady in November",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "publishedAt": "2026-10-04T07:49:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/opec-has-deal-outline-for-steady-november-quotas-delegates-say",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+          ]
+        },
+        {
+          "title": "Ethiopia Retakes Tigray Airport as Northern Rebels Retreat",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T07:47:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/ethiopia-recaptures-tigray-airport-as-northern-rebels-retreat",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
@@ -245,16 +318,29 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.402,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Australia Auction Clearances Hit Three-Month Low as Rates Rise",
-      "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
+      "topNegativeTitle": "EM Investors Shrug Off Quarter’s Pullback, Double Down on Carry Trades",
+      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
       "items": [
+        {
+          "title": "EM Investors Shrug Off Quarter’s Pullback, Double Down on Carry Trades",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-04T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/em-investors-shrug-off-quarter-s-pullback-double-down-on-carry-trades",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Australia Auction Clearances Hit Three-Month Low as Rates Rise",
           "source": "Bloomberg Economics",
@@ -268,13 +354,42 @@
           ]
         },
         {
-          "title": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
-          "source": "Bloomberg Economics",
+          "title": "Jobs Slow but Inflation Keeps Fed on Alert",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-03T14:59:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/bessent-downplays-worries-on-rising-yields-ai-bubble-concerns",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T13:04:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/jobs-slow-but-inflation-keeps-fed-on-alert-video",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-04T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -283,25 +398,51 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
-      "topPositiveTitle": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
+      "topNegativeTitle": "G7 Fuel Release Offers Temporary Price Relief",
+      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
       "items": [
         {
-          "title": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
+          "title": "G7 Fuel Release Offers Temporary Price Relief",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T09:47:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/india-mulls-commodity-derivatives-changes-to-boost-liquidity",
+          "publishedAt": "2026-10-04T12:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/g7-fuel-release-offers-temporary-price-relief-video",
           "tags": [
             "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Iraq Shifts Oil Strategy by Arranging Tanker to Move Past Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T10:09:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/iraq-shifts-oil-strategy-by-arranging-tanker-to-move-past-hormuz",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "OPEC+ Agrees to Keep Oil Output Targets Steady in November",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T07:49:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/opec-has-deal-outline-for-steady-november-quotas-delegates-say",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -319,6 +460,21 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        },
+        {
+          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-04T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
@@ -330,42 +486,46 @@
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Military Buildup Raises Iran Escalation Risk",
-      "topPositiveTitle": "US Military Buildup Raises Iran Escalation Risk",
+      "topNegativeTitle": "Taiwan Says US Policy Remains Unchanged",
+      "topPositiveTitle": "Taiwan Says US Policy Remains Unchanged",
       "items": [
         {
-          "title": "US Military Buildup Raises Iran Escalation Risk",
+          "title": "Taiwan Says US Policy Remains Unchanged",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T15:25:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-03/us-military-buildup-raises-iran-escalation-risk-video",
+          "publishedAt": "2026-10-04T14:45:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/taiwan-says-us-policy-remains-unchanged-video",
           "tags": [
             "geopolitical",
+            "jp_semiconductor",
             "market"
           ]
         },
         {
-          "title": "Egypt Flagged Hamas Threat Before Oct. 7",
+          "title": "OPEC+ Agrees to Keep Oil Output Targets Steady in November",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T15:09:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-03/egypt-flagged-hamas-threat-before-oct-7-video",
+          "publishedAt": "2026-10-04T07:49:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/opec-has-deal-outline-for-steady-november-quotas-delegates-say",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
+          "title": "Ethiopia Retakes Tigray Airport as Northern Rebels Retreat",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T09:44:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/israel-s-supreme-court-overturns-election-ban-on-arab-parties",
+          "publishedAt": "2026-10-04T07:47:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/ethiopia-recaptures-tigray-airport-as-northern-rebels-retreat",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -408,7 +568,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
