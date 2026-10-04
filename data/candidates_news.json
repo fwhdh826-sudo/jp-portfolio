@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-04T00:10:43.047258+09:00",
-  "sourceUpdatedAt": "2026-10-03T14:59:07+00:00",
+  "updatedAt": "2026-10-04T11:47:56.782135+09:00",
+  "sourceUpdatedAt": "2026-10-04T02:39:48+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,37 +29,25 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.012,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.113,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+      "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
       "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
       "items": [
         {
-          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-02T21:42:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Rebecca Patterson Sees Fed Dissents Coming After United Front",
+          "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T15:35:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/rebecca-patterson-sees-fed-dissents-coming-after-united-front",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-03T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/fed-ecb-minutes-to-show-inflation-fears-as-hike-bets-fade",
           "tags": [
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -77,24 +65,12 @@
           ]
         },
         {
-          "title": "Wall Street Week | Your Brain on AI, Rare Earth Race, College Enrollment Cliff",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T23:12:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/wall-street-week-rare-earth-race-enrollment-cliff-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
+          "title": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T17:49:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-03T14:59:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/bessent-downplays-worries-on-rising-yields-ai-bubble-concerns",
           "tags": [
             "market",
             "rates",
@@ -105,15 +81,28 @@
     },
     "us_growth": {
       "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Why Philosophers Are Worried About AI",
-      "topPositiveTitle": "Why Philosophers Are Worried About AI",
+      "topNegativeTitle": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
+      "topPositiveTitle": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
       "items": [
+        {
+          "title": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-04T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/ai-deal-frenzy-powers-hong-kong-fundraising-to-record-summer",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Why Philosophers Are Worried About AI",
           "source": "Bloomberg Markets",
@@ -129,43 +118,16 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
-      "topPositiveTitle": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
-      "items": [
-        {
-          "title": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-03T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/europe-s-stocks-are-straining-under-pressure-from-bond-yields",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stocks Rise As Jobs Report Eases Fed-Hike Worries",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T23:45:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/the-close-10-2-2026-video",
-          "tags": [
-            "global_broad",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0.0,
@@ -217,16 +179,42 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 3,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+      "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
       "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
       "items": [
+        {
+          "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-03T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-03/fed-ecb-minutes-to-show-inflation-fears-as-hike-bets-fade",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "AI Deal Frenzy Powers Hong Kong Fundraising to Record Summer",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-04T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/ai-deal-frenzy-powers-hong-kong-fundraising-to-record-summer",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
           "source": "NHK 経済",
@@ -257,40 +245,26 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.112,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
+      "topNegativeTitle": "Australia Auction Clearances Hit Three-Month Low as Rates Rise",
       "topPositiveTitle": "Bessent Downplays Worries on Rising Yields, AI Bubble Concerns",
       "items": [
         {
-          "title": "EM Assets Find Relief as US Jobs Data Eases Rate Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-02T21:42:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-02/em-assets-find-relief-as-us-jobs-data-eases-rate-fears-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh’s Top Fed Deputies Step in to Give Markets a Clear Message",
+          "title": "Australia Auction Clearances Hit Three-Month Low as Rates Rise",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-02T17:49:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/warsh-s-top-fed-deputies-step-in-to-give-markets-a-clear-message",
+          "publishedAt": "2026-10-04T01:34:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/australia-auction-clearances-hit-three-month-low-as-rates-rise",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -305,57 +279,20 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Europe’s Stocks Are Straining Under Pressure From Bond Yields",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-03T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/europe-s-stocks-are-straining-under-pressure-from-bond-yields",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB’s Nightmare Scenario Gets Closer as French Yields Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-02T15:23:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/ecb-s-nightmare-scenario-gets-closer-as-french-bond-yields-surge",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
+      "topNegativeTitle": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
       "topPositiveTitle": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
       "items": [
-        {
-          "title": "Lukoil Loses Bid to Dismiss Suit Over Franchisee Fuel Pricing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-02T21:36:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-02/lukoil-loses-bid-to-dismiss-suit-over-franchisee-fuel-pricing",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
         {
           "title": "India Mulls Commodity Derivatives Changes to Boost Liquidity",
           "source": "Bloomberg Markets",
@@ -389,13 +326,37 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
-      "topPositiveTitle": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
+      "topNegativeTitle": "US Military Buildup Raises Iran Escalation Risk",
+      "topPositiveTitle": "US Military Buildup Raises Iran Escalation Risk",
       "items": [
+        {
+          "title": "US Military Buildup Raises Iran Escalation Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T15:25:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-03/us-military-buildup-raises-iran-escalation-risk-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Egypt Flagged Hamas Threat Before Oct. 7",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-03T15:09:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-03/egypt-flagged-hamas-threat-before-oct-7-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Israel’s Supreme Court Overturns Election Ban on Arab Parties",
           "source": "Bloomberg Markets",
@@ -447,7 +408,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
