@@ -111,6 +111,12 @@ jobs:
       cancel-in-progress: false
       queue: max
     timeout-minutes: 30
+    # ── OPS P14 v13.4 Phase IV (D01): dormant transport wiring。producer と
+    #    consumer は本 job の単一 literal を継承する。本 ticket では production
+    #    activation をしない（有効化は別途の明示 gate）。dispatch input / repository
+    #    variable / step-level override で上書きしてはならない。
+    env:
+      P14_HANDOFF_MODE: disabled
     steps:
       - uses: actions/checkout@v4
 
@@ -402,6 +408,9 @@ jobs:
       - name: Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)
         id: candidate-funnel-build
         shell: bash
+        env:
+          P14_HANDOFF_DIR: ${{ runner.temp }}/candidate-funnel-p14/${{ github.run_id }}-${{ github.run_attempt }}
+          P14_EXPECTED_POLICY_VERSION: p14-decision-aware-v1
         run: |
           set -euo pipefail
 
@@ -530,12 +539,37 @@ jobs:
         env:
           CANDIDATE_FUNNEL_BATCH_STATUS: ${{ steps.candidate-funnel-build.outputs.publication_status }}
           CANDIDATE_FUNNEL_SMOKE_STATUS: ${{ steps.candidate-funnel-smoke.outputs.publication_status }}
+          P14_HANDOFF_DIR: ${{ runner.temp }}/candidate-funnel-p14/${{ github.run_id }}-${{ github.run_attempt }}
+          P14_TRANSPORT_STATUS: ${{ steps.candidate-funnel-build.outputs.p14_transport_status }}
+          P14_HANDOFF_DIGEST: ${{ steps.candidate-funnel-build.outputs.p14_handoff_digest }}
+          P14_OBSERVATION_DIGEST: ${{ steps.candidate-funnel-build.outputs.p14_observation_digest }}
+          P14_RECEIPT_DIGEST: ${{ steps.candidate-funnel-build.outputs.p14_receipt_digest }}
+          P14_CAPTURE_INPUT_DIGEST: ${{ steps.candidate-funnel-build.outputs.p14_capture_input_digest }}
+          P14_EXECUTED_GIT_SHA: ${{ steps.candidate-funnel-build.outputs.p14_executed_git_sha }}
+          P14_OBSERVATION_SCHEMA: ${{ steps.candidate-funnel-build.outputs.p14_observation_schema }}
+          P14_HANDOFF_SCHEMA: ${{ steps.candidate-funnel-build.outputs.p14_handoff_schema }}
+          P14_POLICY_VERSION: ${{ steps.candidate-funnel-build.outputs.p14_policy_version }}
+          P14_RUN_ID: ${{ steps.candidate-funnel-build.outputs.p14_run_id }}
+          P14_RUN_ATTEMPT: ${{ steps.candidate-funnel-build.outputs.p14_run_attempt }}
         run: >-
           python3 -m data.candidate_funnel_run_evidence
           --out "$RUNNER_TEMP/candidate-funnel-evidence/bundle"
           --previous "$RUNNER_TEMP/candidate-funnel-evidence/previous-artifact.json"
           --batch-status "$CANDIDATE_FUNNEL_BATCH_STATUS"
           --smoke-status "$CANDIDATE_FUNNEL_SMOKE_STATUS"
+          --p14-handoff-dir "$P14_HANDOFF_DIR"
+          --p14-expected-policy-version p14-decision-aware-v1
+          --p14-transport-status "$P14_TRANSPORT_STATUS"
+          --p14-handoff-digest "$P14_HANDOFF_DIGEST"
+          --p14-observation-digest "$P14_OBSERVATION_DIGEST"
+          --p14-receipt-digest "$P14_RECEIPT_DIGEST"
+          --p14-capture-input-digest "$P14_CAPTURE_INPUT_DIGEST"
+          --p14-executed-git-sha "$P14_EXECUTED_GIT_SHA"
+          --p14-observation-schema "$P14_OBSERVATION_SCHEMA"
+          --p14-handoff-schema "$P14_HANDOFF_SCHEMA"
+          --p14-policy-version "$P14_POLICY_VERSION"
+          --p14-run-id "$P14_RUN_ID"
+          --p14-run-attempt "$P14_RUN_ATTEMPT"
 
       - name: Upload candidate funnel run evidence
         if: always()
@@ -552,6 +586,57 @@ jobs:
       #    決して書かない（§19）。3-run migration review 用に aggregate evidence
       #    のみを artifact として保全する（handoff / per-symbol scalar は upload
       #    しない）。data.candidate_funnel_batch が RUNNER_TEMP へ既に書いている。
+      - name: Cleanup candidate funnel P14 handoff
+        if: always()
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          import re
+          import shutil
+          import sys
+          from pathlib import Path
+
+          def fail(code):
+              print(f"P14 handoff cleanup: {code}", file=sys.stderr)
+              sys.exit(1)
+
+          temp = os.environ.get("RUNNER_TEMP", "")
+          run_id = os.environ.get("GITHUB_RUN_ID", "")
+          attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "")
+          if not os.path.isabs(temp):
+              fail("RUNNER_TEMP_INVALID")
+          if re.fullmatch(r"[1-9][0-9]*", run_id) is None or re.fullmatch(r"[1-9][0-9]*", attempt) is None:
+              fail("RUN_IDENTITY_INVALID")
+          if os.path.lexists(temp) and not os.path.isdir(temp):
+              fail("RUNNER_TEMP_NOT_DIRECTORY")
+          parent = Path(temp) / "candidate-funnel-p14"
+          target = parent / f"{run_id}-{attempt}"
+          if parent.is_symlink():
+              fail("HANDOFF_PARENT_SYMLINK")
+          if not os.path.lexists(parent):
+              sys.exit(0)
+          if not parent.is_dir():
+              fail("HANDOFF_PARENT_NOT_DIRECTORY")
+          if target.is_symlink():
+              fail("HANDOFF_ATTEMPT_SYMLINK")
+          if not os.path.lexists(target):
+              sys.exit(0)
+          real_parent = Path(os.path.realpath(parent))
+          real_target = Path(os.path.realpath(target))
+          if real_parent != Path(os.path.realpath(temp)) / "candidate-funnel-p14":
+              fail("HANDOFF_PARENT_OUTSIDE_RUNNER_TEMP")
+          if real_target != real_parent / f"{run_id}-{attempt}" or not real_target.is_dir():
+              fail("HANDOFF_ATTEMPT_ROOT_INVALID")
+          shutil.rmtree(real_target)
+          print(f"P14 handoff cleanup: removed {real_target}")
+          PY
+
+      # NOTE (OPS P14 v13.4 Phase IV D01): 直前の「P5-B005-B4-D1a-O」コメントは次の
+      #   "Upload derived PER migration calibration evidence" step の説明である。
+      #   同コメントは frozen な "Upload candidate funnel run evidence" step block の
+      #   末尾バイトに属するため移動せず、本 cleanup step はその後ろへ挿入した。
       - name: Upload derived PER migration calibration evidence
         if: always()
         continue-on-error: true
