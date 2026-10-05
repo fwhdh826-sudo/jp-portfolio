@@ -18,12 +18,19 @@ JOBS = {"full": "update-data", "update": "update", "intraday": "patch-tier1"}
 EXPECTED_FULL_TOP_LEVEL_CONCURRENCY_SHA256 = (
     "8748350ba21894296af65487469d11af47d9242c910b949855f19e7ed5c54e08"
 )
+# OPS P14 v13.4 H01 (release-history maintenance) re-pinned exactly the three
+# "Commit and push" blocks to the reviewed history-safe bytes (forward-only data
+# commit, exact-target fetch/equality/ancestor check, explicit ordinary push and
+# independent post-push observation; no pull/rebase). The three Pages blocks stay.
+#   full     old 817633cbd2ae487ab9a793b203aacf034e0c2bea38e2f76275adaf35e751eb9e
+#   update   old d366a333641d51856bb234923fd918abfefbc397d00c410e19344bbd7529897d
+#   intraday old d95a6bddfc6b1a74d415a58c1ce1c2bef9b0840c225b88d99eadd78ff86f4e65
 EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
-    ("full", "Commit and push"): "817633cbd2ae487ab9a793b203aacf034e0c2bea38e2f76275adaf35e751eb9e",
+    ("full", "Commit and push"): "43ac1ce1c2dc6e445bc8c565e5f3914612068204d46cd4309e27c356ae18eefc",
     ("full", "Dispatch Pages for pushed data"): "24873d087c5ffa960d059bace99e4b0e767c41492f54477704852b3c1fece775",
-    ("update", "Commit and push"): "d366a333641d51856bb234923fd918abfefbc397d00c410e19344bbd7529897d",
+    ("update", "Commit and push"): "6141ab2ddeebcfa4e8b240ae43a2ab7a73caa8f6586a4569ee19d88c7e9c8ecd",
     ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
-    ("intraday", "Commit and push"): "d95a6bddfc6b1a74d415a58c1ce1c2bef9b0840c225b88d99eadd78ff86f4e65",
+    ("intraday", "Commit and push"): "bfcec8d1b298238776b30bc9c9e8abda1b734d17eb8a359dce2cf2733f7c915d",
     ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",
 }
 # OPS P14 v13.4 Phase IV D01 (dormant transport wiring) re-pinned exactly two

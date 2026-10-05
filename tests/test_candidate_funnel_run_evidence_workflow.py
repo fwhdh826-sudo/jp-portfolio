@@ -478,11 +478,13 @@ def _syn_evidence(files):
 #
 # The tests below execute the ACTUAL parsed `full_batch.yml` step bodies (bash)
 # in temporary repositories behind stub python3 / git / gh boundaries. No real
-# GitHub operation, no real `git pull --rebase`, no real push and no production
-# engine run takes place. The repository default stays `P14_HANDOFF_MODE:
-# disabled`; the real schema-3 consumer is only exercised in-process with an
-# injected test-only enabled mode, fed with the argv that the workflow's own
-# consumer command line delivered.
+# GitHub operation and no production engine run takes place; the Commit block's
+# fetch / push / ls-remote reach only a filesystem-local bare origin created inside
+# the simulation's own temporary root (H01), and history-unsafe subcommands
+# (pull / rebase / merge / force) are rejected by the git boundary. The repository
+# default stays `P14_HANDOFF_MODE: disabled`; the real schema-3 consumer is only
+# exercised in-process with an injected test-only enabled mode, fed with the argv
+# that the workflow's own consumer command line delivered.
 # ═══════════════════════════════════════════════════════════════════════════
 
 _DOC = yaml.safe_load(_TEXT)
@@ -576,18 +578,41 @@ fi
 exec "$STUB_REAL_PYTHON" "$@"
 """
 
+# H01: transport subcommands are logged and delegated to REAL git against the
+# simulation's filesystem-local bare origin (no fabricated FETCH_HEAD, OID or push
+# result). STUB_PUSH_EXIT injects a failure before the actual push and
+# STUB_GIT_FAIL_SUBCOMMAND is a logged failure seam for any other subcommand (e.g.
+# `merge-base` for the ancestor check). Pull / rebase / merge and any forced,
+# deleting or mirroring push are rejected instead of reporting success.
 _GIT_STUB = """#!/usr/bin/env bash
 subcommand="${1:-}"
 case "$subcommand" in
-  pull|push|fetch)
+  pull|rebase|merge)
     printf '%s\\n' "$*" >> "$STUB_GIT_LOG"
-    if [ "$subcommand" = "push" ] && [ "${STUB_PUSH_EXIT:-0}" != "0" ]; then
+    echo "history-unsafe git subcommand rejected by the fixture: $subcommand" >&2
+    exit 98
+    ;;
+  push)
+    printf '%s\\n' "$*" >> "$STUB_GIT_LOG"
+    for argument in "$@"; do
+      case "$argument" in
+        -f|--force*|-d|--delete|--mirror|+*)
+          echo "history-rewriting push rejected by the fixture: $argument" >&2
+          exit 98
+          ;;
+      esac
+    done
+    if [ "${STUB_PUSH_EXIT:-0}" != "0" ]; then
       exit "$STUB_PUSH_EXIT"
     fi
-    exit 0
+    exec "$STUB_REAL_GIT" "$@"
+    ;;
+  fetch|ls-remote)
+    printf '%s\\n' "$*" >> "$STUB_GIT_LOG"
     ;;
 esac
 if [ -n "${STUB_GIT_FAIL_SUBCOMMAND:-}" ] && [ "$subcommand" = "$STUB_GIT_FAIL_SUBCOMMAND" ]; then
+  printf 'seam-fail %s\\n' "$*" >> "$STUB_GIT_LOG"
   exit 91
 fi
 exec "$STUB_REAL_GIT" "$@"
@@ -644,6 +669,7 @@ class _JobSimulation:
         self.runner_temp = _mkdir(self.root / "runner-temp")
         self.bin_dir = _mkdir(self.root / "bin")
         self.git_log_path = self.root / "git.log"
+        self.origin = self.root / "origin.git"
         self.gh_log_path = self.root / "gh.log"
         self.argv_file = self.root / "consumer-argv"
         self.producer_file = self.root / "producer-output"
@@ -676,6 +702,12 @@ class _JobSimulation:
         _git(self.repo, "add", "data/", "public/data/")
         _git(self.repo, "commit", "-m", "baseline")
         self.baseline_head = _git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        # H01: exclusive filesystem-local bare origin seeded at the exact baseline
+        # head. Bootstrap uses real git outside the workflow transport log.
+        _git(self.root, "init", "--bare", "-b", "main", str(self.origin))
+        _git(self.repo, "remote", "add", "origin", str(self.origin))
+        _git(self.repo, "push", "origin", "main:refs/heads/main")
+        assert self.origin_head() == self.baseline_head
 
     # -- expression / condition model ------------------------------------
     def _lookup(self, expression: str) -> str:
@@ -788,6 +820,9 @@ class _JobSimulation:
 
     def git_log(self) -> list[str]:
         return self.git_log_path.read_text().splitlines()
+
+    def origin_head(self) -> str:
+        return _git(self.origin, "rev-parse", "refs/heads/main").stdout.strip()
 
     def gh_log(self) -> list[str]:
         return self.gh_log_path.read_text().splitlines()
@@ -1254,10 +1289,52 @@ def test_publication_predicates_exclude_transport_and_evidence_signals():
     assert "p14_run_evidence_bundle" not in _TEXT
 
 
+_COMMIT_HISTORY_COMMANDS = (
+    "git rev-parse --verify 'HEAD^{commit}'",  # push base X, bound before any data commit
+    'git add data/ public/data/',
+    "git commit -m ",
+    "git rev-list --parents -n 1",  # Y is X or exactly one single-parent child of X
+    'git fetch --no-tags origin "$target_ref"',
+    "git rev-parse --verify 'FETCH_HEAD^{commit}'",
+    "git merge-base --is-ancestor",
+    'git push origin "HEAD:$target_ref"',
+    'git ls-remote --exit-code --refs origin "$target_ref"',
+    'echo "data_changed=true" >> "$GITHUB_OUTPUT"',
+    'echo "pushed_sha=$proposed_push_sha" >> "$GITHUB_OUTPUT"',
+)
+
+
+def _assert_commit_block_is_history_safe(run: str) -> None:
+    """H01 oracle: active commands only (a comment never satisfies it)."""
+    active = [
+        line.strip() for line in run.splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+    for forbidden in (
+        "git pull", "rebase", "git merge ", "git reset", "--force", "--amend", "--delete",
+    ):
+        assert not any(forbidden in line for line in active), forbidden
+    positions = []
+    for command in _COMMIT_HISTORY_COMMANDS:
+        found = [index for index, line in enumerate(active) if command in line]
+        assert found, command
+        positions.append(found[0])
+    assert all(earlier < later for earlier, later in zip(positions, positions[1:])), positions
+    assert sum('git push origin "HEAD:$target_ref"' in line for line in active) == 1
+    # Both equality (fetched tip == bound base) and ancestry are mandatory, and an
+    # unobservable or unequal post-push remote is an unconfirmed outcome, not success.
+    assert 'if [ "$fetched_tip" != "$push_base_sha" ]; then' in active
+    assert 'if ! git merge-base --is-ancestor "$fetched_tip" "$proposed_push_sha"; then' in active
+    assert any("PUSH_OUTCOME_UNCONFIRMED" in line for line in active)
+    assert any('"$observed_sha" != "$proposed_push_sha"' in line for line in active)
+
+
 _PINNED_RUN_BODY_SHA256 = {
     _BUILD_STEP: "e451077c9900b65ff05052c83012d482bd18e9907a9ededa6a516d5bcfdc0339",
     _SMOKE_STEP: "974139a0212e54fc9c78b653af1777466305a1e1214e1c02dfd616c749f1bc44",
-    _COMMIT_STEP: "4fdf18961ca265109c8f8ecc80ef88ec4046fcd0ec9af258253d82a5465bc97f",
+    # H01 re-pin of the Commit run body (history-safe replacement of pull/rebase);
+    # old 4fdf18961ca265109c8f8ecc80ef88ec4046fcd0ec9af258253d82a5465bc97f
+    _COMMIT_STEP: "a7287258bce409f403c8f82d1aef669693c29d4575eb0273b6a3dde356e4e566",
     _DISPATCH_STEP: "e9365724733bfa059d38b4d442805c32fd077552920929b01d47c7c8d2e3c837",
     _ENFORCE_STEP: "874309ae7464ccb4c09eb03b9018b24a8096751fa0018246b06ed06969e98213",
 }
@@ -1265,8 +1342,10 @@ _PINNED_RUN_BODY_SHA256 = {
 
 def test_original_publication_rollback_and_final_enforcement_subblocks_preserved():
     """Shell bodies of the publication chain are byte-identical to C0 (the new
-    wiring only adds env/args/steps AROUND them). The full-step historical BASE
-    comparison lives in tests/test_late_run_guard_workflows.py."""
+    wiring only adds env/args/steps AROUND them), except the Commit run body, which
+    H01 replaced with the reviewed history-safe sequence (asserted structurally
+    below). The full-step historical BASE comparison lives in
+    tests/test_late_run_guard_workflows.py."""
     for name, expected in _PINNED_RUN_BODY_SHA256.items():
         assert hashlib.sha256(_STEPS_BY_NAME[name]["run"].encode()).hexdigest() == expected, name
     assert _ENFORCE_STEP_EXPECTED in _TEXT
@@ -1280,7 +1359,7 @@ def test_original_publication_rollback_and_final_enforcement_subblocks_preserved
     ):
         assert marker in build_body
     assert 'echo "publication_status=smoke_passed"' in _STEPS_BY_NAME[_SMOKE_STEP]["run"]
-    assert "git pull --rebase origin" in _STEPS_BY_NAME[_COMMIT_STEP]["run"]  # release history is a later gate
+    _assert_commit_block_is_history_safe(_STEPS_BY_NAME[_COMMIT_STEP]["run"])
 
 
 # ── N-PUB-1..6 ───────────────────────────────────────────────────────────────
@@ -1406,6 +1485,15 @@ def test_n_pub_5_successful_gates_do_not_confirm_failed_or_skipped_push(tmp_path
         assert head != sim.baseline_head
         assert commit_outputs == {"data_changed": "false"}
         assert any(line.startswith("push origin HEAD:refs/heads/main") for line in sim.git_log())
+        # H01: the failure is the injected push itself, reached after a real exact-target
+        # fetch (genuine FETCH_HEAD) and ancestry check; the bare origin never moved.
+        log = sim.git_log()
+        fetch_index = log.index("fetch --no-tags origin refs/heads/main")
+        push_index = next(i for i, line in enumerate(log) if line.startswith("push origin "))
+        assert fetch_index < push_index
+        assert not any(line.startswith(("ls-remote", "pull", "rebase", "merge ")) for line in log)
+        assert (sim.repo / ".git" / "FETCH_HEAD").is_file()
+        assert sim.origin_head() == sim.baseline_head
     else:
         assert sim.results[_COMMIT_STEP].status == "skipped"
         assert head == sim.baseline_head and commit_outputs == {}
@@ -1418,6 +1506,13 @@ def test_n_pub_6_dispatch_acceptance_does_not_prove_deployment(tmp_path):
     pushed_sha = _git(sim.repo, "rev-parse", "HEAD").stdout.strip()
     assert pushed_sha != sim.baseline_head
     assert sim.outputs["commit-push"] == {"data_changed": "true", "pushed_sha": pushed_sha}
+    # H01: the actual local bare push and independent observation completed first.
+    assert sim.origin_head() == pushed_sha
+    log = sim.git_log()
+    fetch_index = log.index("fetch --no-tags origin refs/heads/main")
+    push_index = log.index("push origin HEAD:refs/heads/main")
+    observe_index = log.index("ls-remote --exit-code --refs origin refs/heads/main")
+    assert fetch_index < push_index < observe_index
     # The stub gh recorded exactly the accepted main/deploy_sha request, nothing else.
     assert sim.gh_log() == [
         f"workflow run deploy.yml --repo example/jp-portfolio --ref main -f deploy_sha={pushed_sha}"

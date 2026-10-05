@@ -1,11 +1,11 @@
 """P4-A23 / P4-A23-1 / P4-A23-2 / P4-A28 / P5-B004e-3 guard.
 
 P4-A23: dry-run health-check steps are retained in routines-stub (detection-only).
-P4-A23-1: Job 2 commit/push step follows correct order (add → commit → pull → push).
+P4-A23-1: Job 2 binds the base, stages/commits, checks history, then pushes/observes.
 P4-A23-2: git add covers full data/ directory, not individual files.
 P4-A28: real write steps for safe_mode.json and TierA snapshots are wired in Job 2
         (update-data), covered by the existing "git add data/ public/data/" commit step.
-P5-B004e-3: pull/rebase and push target the validated workflow branch, fail-closed.
+P5-B004e-3: fetch and ordinary push target the validated workflow branch, fail-closed.
 """
 from datetime import datetime, timedelta, timezone
 import os
@@ -75,7 +75,11 @@ def test_no_upload_artifact_added():
 # ── P4-A23-1: Job 2 commit/push order guards ─────────────────────────────────
 
 def test_git_pull_rebase_uses_explicit_remote_and_target_branch():
-    assert 'git pull --rebase origin "$target_ref"' in _TEXT
+    commands = _commit_and_push_commands()
+    assert commands.count('git fetch --no-tags origin "$target_ref"') == 1
+    assert not re.search(r'\bgit (?:pull|rebase|merge|reset)(?:\s|$)', commands)
+    assert not re.search(r'\bgit push[^\n]*(?:--force|-f\b|--delete)', commands)
+    assert not re.search(r'\bgit commit[^\n]*--amend', commands)
 
 
 def test_git_pull_rebase_does_not_hardcode_main():
@@ -83,21 +87,43 @@ def test_git_pull_rebase_does_not_hardcode_main():
 
 
 def test_git_add_before_pull_rebase():
-    add_pos = _TEXT.index("git add data/")
-    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
-    assert add_pos < rebase_pos, "git add must come before git pull --rebase"
+    commands = _commit_and_push_commands()
+    base_pos = commands.index('push_base_sha="$(git rev-parse --verify')
+    add_pos = commands.index("git add data/ public/data/")
+    validation_pos = commands.index("python3 - <<'PY'")
+    optional_commit_pos = commands.index("if ! git diff --staged --quiet; then")
+    commit_pos = commands.index('git commit -m "chore: full-batch data update')
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    assert base_pos < add_pos < validation_pos < optional_commit_pos < commit_pos < fetch_pos
 
 
 def test_git_commit_before_pull_rebase():
-    commit_pos = _TEXT.index('git commit -m "chore: full-batch data update')
-    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
-    assert commit_pos < rebase_pos, "git commit must come before git pull --rebase"
+    commands = _commit_and_push_commands()
+    commit_pos = commands.index('git commit -m "chore: full-batch data update')
+    proposed_pos = commands.index('proposed_push_sha="$(git rev-parse --verify')
+    parents_pos = commands.index('git rev-list --parents -n 1 "$proposed_push_sha"')
+    child_pos = commands.index('[ "$proposed_parents" != "$proposed_push_sha $push_base_sha" ]')
+    unchanged_pos = commands.index('[ "$proposed_push_sha" != "$push_base_sha" ]')
+    clean_pos = commands.index("if ! git diff --quiet || ! git diff --cached --quiet;")
+    untracked_pos = commands.index("git ls-files --others --exclude-standard")
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    assert commit_pos < proposed_pos < parents_pos < child_pos < unchanged_pos < clean_pos < untracked_pos < fetch_pos
 
 
 def test_git_push_after_pull_rebase():
-    rebase_pos = _TEXT.index('git pull --rebase origin "$target_ref"')
-    push_pos = _TEXT.index("git push", rebase_pos)
-    assert push_pos > rebase_pos, "git push must come after git pull --rebase"
+    commands = _commit_and_push_commands()
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    fetched_pos = commands.index('fetched_tip="$(git rev-parse --verify')
+    assert "git rev-parse --verify 'FETCH_HEAD^{commit}'" in commands
+    equality_pos = commands.index('[ "$fetched_tip" != "$push_base_sha" ]')
+    ancestor_pos = commands.index('git merge-base --is-ancestor "$fetched_tip" "$proposed_push_sha"')
+    push_pos = commands.index('git push origin "HEAD:$target_ref"')
+    observed_pos = commands.index('git ls-remote --exit-code --refs origin "$target_ref"')
+    confirmed_pos = commands.index('[ "$observed_ref" != "$target_ref" ]')
+    assert '[ "$observed_sha" != "$proposed_push_sha" ]' in commands
+    true_pos = commands.index('echo "data_changed=true" >> "$GITHUB_OUTPUT"')
+    sha_pos = commands.index('echo "pushed_sha=$proposed_push_sha" >> "$GITHUB_OUTPUT"')
+    assert fetch_pos < fetched_pos < equality_pos < ancestor_pos < push_pos < observed_pos < confirmed_pos < true_pos < sha_pos
 
 
 def test_git_push_uses_explicit_matching_target_refspec():
@@ -176,6 +202,22 @@ def _commit_and_push_script() -> str:
     return "\n".join(lines) + "\n"
 
 
+def _commit_and_push_commands() -> str:
+    """Inspect shell commands, excluding comments and the inline JSON validator."""
+    lines = []
+    in_validator = False
+    for line in _commit_and_push_script().splitlines():
+        if in_validator:
+            if line == "PY":
+                in_validator = False
+            continue
+        if line == "python3 - <<'PY'":
+            in_validator = True
+        if line.strip() and not line.lstrip().startswith("#"):
+            lines.append(line)
+    return "\n".join(lines)
+
+
 def _workflow_step_script(step_name: str) -> str:
     """Return a literal ``run: |`` shell body from an update-data step."""
     marker = f"      - name: {step_name}\n"
@@ -216,6 +258,8 @@ def _make_funnel_simulation_repo(tmp_path: Path) -> tuple[Path, Path]:
     ):
         path.write_text('{"version":"committed"}\n')
     (repo / "data" / "unrelated.json").write_text('{"version":"old"}\n')
+    (repo / "data" / "safe_mode.json").write_text('{"safe":false}\n')
+    (repo / "public" / "data" / "tier_a_alerts.json").write_text('{"alerts":["old"]}\n')
     _git(repo, "add", "data/", "public/data/")
     _git(repo, "commit", "-m", "baseline")
 
@@ -278,6 +322,8 @@ def _make_remote_with_release_branches(tmp_path: Path) -> Path:
     (seed / "public" / "data").mkdir(parents=True)
     (seed / "data" / "base.json").write_text("{}\n")
     (seed / "public" / "data" / "base.json").write_text("{}\n")
+    for path in ("data/market.json", "public/data/market.json", "data/news.json", "public/data/news.json"):
+        (seed / path).write_text("{}\n")
     _git(seed, "add", "data/", "public/data/")
     _git(seed, "commit", "-m", "seed")
     _git(seed, "remote", "add", "origin", str(remote))
@@ -292,11 +338,14 @@ def _clone_branch(remote: Path, destination: Path, branch: str) -> None:
 
 
 def _run_commit_push(
-    worktree: Path, branch: str, output_path: Path | None = None
+    worktree: Path, branch: str, output_path: Path | None = None,
+    trace_path: Path | None = None,
 ) -> subprocess.CompletedProcess:
     env = os.environ.copy()
     if output_path is None:
-        output_path = worktree / "github-output"
+        output_path = worktree.parent / f"{worktree.name}-github-output"
+    if trace_path is not None:
+        env["GIT_TRACE"] = str(trace_path)
     env.update(
         GITHUB_REF_NAME=branch,
         GITHUB_REF=f"refs/heads/{branch}",
@@ -319,38 +368,76 @@ def test_commit_push_targets_current_execution_branch(tmp_path, branch):
     other_branch = "v13.3-dev" if branch == "main" else "main"
     other_before = _git(remote, "rev-parse", f"refs/heads/{other_branch}").stdout.strip()
     _clone_branch(remote, worktree, branch)
-    (worktree / "data" / "generated.json").write_text(f'{{"branch":"{branch}"}}\n')
+    base = _git(worktree, "rev-parse", "HEAD").stdout.strip()
+    payload = f'{{"branch":"{branch}"}}\n'
+    for path in ("data/market.json", "public/data/market.json"):
+        (worktree / path).write_text(payload)
+    output_path = tmp_path / "commit-output"
+    trace_path = tmp_path / "commit-git-trace"
 
-    result = _run_commit_push(worktree, branch)
+    result = _run_commit_push(worktree, branch, output_path, trace_path)
 
     assert result.returncode == 0, result.stderr
-    assert branch in _git(
-        remote, "show", f"refs/heads/{branch}:data/generated.json"
-    ).stdout
+    for path in ("data/market.json", "public/data/market.json"):
+        assert _git(remote, "show", f"refs/heads/{branch}:{path}").stdout == payload
     assert _git(remote, "rev-parse", f"refs/heads/{other_branch}").stdout.strip() == other_before
+    child = _git(worktree, "rev-parse", "HEAD").stdout.strip()
+    assert _git(worktree, "rev-list", "--parents", "-n", "1", child).stdout.strip() == f"{child} {base}"
+    assert _git(worktree, "rev-list", "--count", f"{base}..{child}").stdout.strip() == "1"
+    assert _git(remote, "rev-parse", f"refs/heads/{branch}").stdout.strip() == child
+    assert _step_output(output_path, "data_changed") == "true"
+    assert _step_output(output_path, "pushed_sha") == child
+    commands = re.findall(r"trace: built-in: git (.+)", trace_path.read_text())
+    assert sum(command.startswith("commit ") for command in commands) == 1
+    assert commands.count(f"push origin HEAD:refs/heads/{branch}") == 1
+    assert _git(worktree, "status", "--porcelain", "--untracked-files=all").stdout == ""
 
 
 def test_commit_push_rebases_onto_stale_remote_update(tmp_path):
+    """A remote advance after X binding stops before push and preserves X/Y/Z."""
     remote = _make_remote_with_release_branches(tmp_path)
     worktree = tmp_path / "worktree"
     updater = tmp_path / "updater"
     _clone_branch(remote, worktree, "v13.3-dev")
     _clone_branch(remote, updater, "v13.3-dev")
+    base = _git(worktree, "rev-parse", "HEAD").stdout.strip()
     _git(updater, "config", "user.name", "Remote Updater")
     _git(updater, "config", "user.email", "updater@example.com")
-    (updater / "data" / "remote.json").write_text('{"remote":true}\n')
-    _git(updater, "add", "data/remote.json")
+    for path in ("data/news.json", "public/data/news.json"):
+        (updater / path).write_text('{"remote":true}\n')
+    _git(updater, "add", "data/news.json", "public/data/news.json")
     _git(updater, "commit", "-m", "concurrent remote update")
     _git(updater, "push", "origin", "v13.3-dev")
     remote_update = _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip()
-    (worktree / "data" / "generated.json").write_text('{"local":true}\n')
+    for path in ("data/market.json", "public/data/market.json"):
+        (worktree / path).write_text('{"local":true}\n')
+    output_path = tmp_path / "stale-output"
+    trace_path = tmp_path / "stale-git-trace"
 
-    result = _run_commit_push(worktree, "v13.3-dev")
+    result = _run_commit_push(worktree, "v13.3-dev", output_path, trace_path)
 
-    assert result.returncode == 0, result.stderr
-    assert _git(remote, "show", "refs/heads/v13.3-dev:data/remote.json").stdout
-    assert _git(remote, "show", "refs/heads/v13.3-dev:data/generated.json").stdout
-    assert _git(remote, "rev-parse", "refs/heads/v13.3-dev^").stdout.strip() == remote_update
+    assert result.returncode == 1, result.stderr
+    assert "Remote target no longer matches the push base" in result.stderr
+    child = _git(worktree, "rev-parse", "HEAD").stdout.strip()
+    assert child != base and child != remote_update
+    assert _git(worktree, "rev-list", "--parents", "-n", "1", child).stdout.strip() == f"{child} {base}"
+    assert _git(worktree, "rev-list", "--count", f"{base}..{child}").stdout.strip() == "1"
+    assert _git(remote, "rev-list", "--parents", "-n", "1", remote_update).stdout.strip() == f"{remote_update} {base}"
+    assert _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip() == remote_update
+    assert _git(worktree, "rev-parse", "FETCH_HEAD").stdout.strip() == remote_update
+    for path in ("data/news.json", "public/data/news.json"):
+        assert _git(remote, "show", f"refs/heads/v13.3-dev:{path}").stdout == '{"remote":true}\n'
+    for path in ("data/market.json", "public/data/market.json"):
+        assert _git(worktree, "show", f"HEAD:{path}").stdout == '{"local":true}\n'
+        assert (worktree / path).read_text() == '{"local":true}\n'
+        assert _git(remote, "show", f"refs/heads/v13.3-dev:{path}").stdout == "{}\n"
+    assert output_path.read_text().splitlines() == ["data_changed=false"]
+    commands = re.findall(r"trace: built-in: git (.+)", trace_path.read_text())
+    assert commands.count("fetch --no-tags origin refs/heads/v13.3-dev") == 1
+    assert sum(command.startswith("commit ") for command in commands) == 1
+    assert not any(command.split()[0] in {"push", "pull", "rebase", "merge", "reset"} for command in commands)
+    assert not any("--amend" in command.split() for command in commands)
+    assert _git(worktree, "status", "--porcelain", "--untracked-files=all").stdout == ""
 
 
 @pytest.mark.parametrize(
@@ -371,9 +458,12 @@ def test_commit_push_fails_closed_for_unexpected_ref_or_checkout(
         _git(worktree, "checkout", "--detach")
     main_before = _git(remote, "rev-parse", "refs/heads/main").stdout.strip()
     dev_before = _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip()
-    (worktree / "data" / "generated.json").write_text('{"must_not_push":true}\n')
+    for path in ("data/market.json", "public/data/market.json"):
+        (worktree / path).write_text('{"must_not_push":true}\n')
     env = os.environ.copy()
-    env.update(GITHUB_REF_NAME=ref_name, GITHUB_REF=ref, GITHUB_REF_TYPE=ref_type)
+    output_path = tmp_path / "invalid-ref-output"
+    env.update(GITHUB_REF_NAME=ref_name, GITHUB_REF=ref, GITHUB_REF_TYPE=ref_type,
+               GITHUB_OUTPUT=str(output_path))
 
     result = subprocess.run(
         ["bash", "-c", _commit_and_push_script()],
@@ -384,6 +474,13 @@ def test_commit_push_fails_closed_for_unexpected_ref_or_checkout(
     )
 
     assert result.returncode != 0
+    diagnostic = (
+        "Refusing data push for non-branch ref" if ref_type != "branch" else
+        "Refusing data push from detached HEAD" if detach else
+        "Checked-out branch does not match workflow ref"
+    )
+    assert diagnostic in result.stderr
+    assert output_path.read_text().splitlines() == ["data_changed=false"]
     assert _git(remote, "rev-parse", "refs/heads/main").stdout.strip() == main_before
     assert _git(remote, "rev-parse", "refs/heads/v13.3-dev").stdout.strip() == dev_before
 

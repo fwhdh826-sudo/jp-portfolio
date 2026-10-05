@@ -147,6 +147,41 @@ def source_without_cleanup(source: str) -> str:
     return source[:start] + source[end:]
 
 
+# ── OPS P14 v13.4 H01: reviewed release-history change of the Commit block ───
+# The three "Commit and push" run bodies replace their pull/rebase (or implicit
+# push) with a forward-only, exact-target history-safe sequence. Everything else of
+# those steps - and every other byte of the historical BASE envelope - is still
+# compared to BASE. The exception is exactly one named step and, inside it, only
+# the run body; the step header and the BASE staging/identity/message/guard lines
+# must survive verbatim.
+COMMIT_STEP = "Commit and push"
+COMMIT_RUN_MARKER = "        run: |\n"
+COMMIT_PRESERVED_LINE_PREFIXES = (
+    "git config user.",
+    "git add ",
+    "git commit -m ",
+)
+INTRADAY_UNSTAGED_GUARD = (
+    "          git diff --quiet || {\n"
+    '            echo "::error::Unstaged tracked changes remain after intraday staging"\n'
+    "            git status --short\n"
+    "            exit 1\n"
+    "          }\n"
+)
+
+
+def source_without_commit_step(source: str) -> str:
+    marker = f"      - name: {COMMIT_STEP}\n"
+    assert source.count(marker) == 1
+    return source.replace(step_block(source, COMMIT_STEP), "", 1)
+
+
+def commit_header_and_body(block: str) -> tuple[str, str]:
+    assert block.count(COMMIT_RUN_MARKER) == 1
+    header, body = block.split(COMMIT_RUN_MARKER, 1)
+    return header, body
+
+
 @pytest.mark.parametrize("workflow", WORKFLOWS)
 def test_each_workflow_has_one_guard_command_and_runtime_token(workflow):
     source = text(workflow)
@@ -222,10 +257,12 @@ def test_full_p14_threshold_evidence_publication_rollback_and_enforcement_bytes_
     wiring (producer env, consumer env/args, named cleanup insertion)."""
     marker = "      # ── OPS-P14-2: same-run evidence input保全"
     end_marker = "  # ── Job 3: Routines (stub)"
-    current = source_without_cleanup(text("full")).split(marker, 1)[1].split(
-        end_marker, 1
-    )[0]
-    expected = reviewed_baseline_source().split(marker, 1)[1].split(end_marker, 1)[0]
+    current = source_without_commit_step(
+        source_without_cleanup(text("full"))
+    ).split(marker, 1)[1].split(end_marker, 1)[0]
+    expected = source_without_commit_step(reviewed_baseline_source()).split(
+        marker, 1
+    )[1].split(end_marker, 1)[0]
     assert current == expected
 
 
@@ -268,14 +305,69 @@ def test_p14_consumer_step_is_base_plus_only_the_reviewed_wiring():
     assert "${{" not in current.split("        run: >-\n", 1)[1]
 
 
+PAGES_STEP = "Dispatch Pages for pushed data"
+
+
+def assert_commit_step_changes_only_the_reviewed_history_run_body(workflow):
+    """H01 exception: the Commit step header (name/id/run marker, no if/env/shell/
+    continue-on-error) is byte-identical to BASE and every BASE staging, identity,
+    data-message and unstaged-guard line survives; the run body itself is the
+    reviewed history-safe replacement (pinned by the block digests elsewhere)."""
+    current_block = step_block(text(workflow), COMMIT_STEP)
+    original_block = step_block(baseline(WORKFLOWS[workflow]), COMMIT_STEP)
+    current_header, current_body = commit_header_and_body(current_block)
+    original_header, original_body = commit_header_and_body(original_block)
+    assert current_header == original_header
+    assert current_header == (
+        f"      - name: {COMMIT_STEP}\n        id: commit-push\n"
+    )
+    current_lines = [line.strip() for line in current_body.splitlines()]
+    preserved = [
+        line.strip()
+        for line in original_body.splitlines()
+        if line.strip().startswith(COMMIT_PRESERVED_LINE_PREFIXES)
+    ]
+    assert len(preserved) >= 3
+    for line in preserved:
+        assert current_lines.count(line) == 1, line
+    assert current_lines.count('echo "data_changed=false" >> "$GITHUB_OUTPUT"') == 1
+    if workflow == "intraday":
+        assert INTRADAY_UNSTAGED_GUARD in original_block
+        assert INTRADAY_UNSTAGED_GUARD in current_block
+    # The superseded history behaviour is gone; no history rewrite is introduced.
+    active = [line for line in current_lines if line and not line.startswith("#")]
+    for forbidden in ("git pull", "rebase", "--force", "git reset", "--amend", "git merge "):
+        assert not any(forbidden in line for line in active), forbidden
+
+
+# Frozen selector identity (workflow x step_name, six cases): the combined Git/Pages
+# oracle. Pages stays byte-identical to BASE; the Commit block is checked against the
+# reviewed H01 history-safe exception above instead of the superseded BASE bytes.
 @pytest.mark.parametrize("workflow", WORKFLOWS)
 @pytest.mark.parametrize(
     "step_name", ["Commit and push", "Dispatch Pages for pushed data"]
 )
 def test_existing_git_and_pages_step_bytes_are_frozen(workflow, step_name):
-    assert step_block(text(workflow), step_name) == step_block(
-        baseline(WORKFLOWS[workflow]), step_name
+    if step_name == COMMIT_STEP:
+        assert_commit_step_changes_only_the_reviewed_history_run_body(workflow)
+    else:
+        assert step_name == PAGES_STEP
+        assert step_block(text(workflow), step_name) == step_block(
+            baseline(WORKFLOWS[workflow]), step_name
+        )
+
+
+# Additive split coverage, kept alongside the frozen combined selector.
+@pytest.mark.parametrize("workflow", WORKFLOWS)
+def test_existing_pages_step_bytes_are_frozen(workflow):
+    assert step_block(text(workflow), PAGES_STEP) == step_block(
+        baseline(WORKFLOWS[workflow]), PAGES_STEP
     )
+
+
+@pytest.mark.parametrize("workflow", WORKFLOWS)
+def test_commit_step_changes_only_the_reviewed_history_run_body(workflow):
+    assert_commit_step_changes_only_the_reviewed_history_run_body(workflow)
 
 
 @pytest.mark.parametrize(
