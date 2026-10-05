@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-05T00:53:47.252013+09:00",
-  "sourceUpdatedAt": "2026-10-04T15:15:16+00:00",
+  "updatedAt": "2026-10-05T09:07:53.640174+09:00",
+  "sourceUpdatedAt": "2026-10-04T23:51:13+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -43,15 +43,15 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.268,
+      "avgSentiment": 0.334,
       "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+      "topPositiveTitle": "Asian Stocks to Rise as Hike Bets Ease, Oil Climbs: Markets Wrap",
       "items": [
         {
           "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
@@ -80,6 +80,18 @@
           ]
         },
         {
+          "title": "Trump Aide Hassett Says Powell Should ‘Move On’ From Fed Board",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T15:52:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/trump-aide-hassett-says-powell-should-move-on-from-fed-board",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Jobs Slow but Inflation Keeps Fed on Alert",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -104,21 +116,6 @@
             "rates",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-04T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
@@ -318,15 +315,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.402,
+      "avgSentiment": 0.502,
       "negativeCount": 1,
-      "positiveCount": 3,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "EM Investors Shrug Off Quarter’s Pullback, Double Down on Carry Trades",
-      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+      "topPositiveTitle": "Asian Stocks to Rise as Hike Bets Ease, Oil Climbs: Markets Wrap",
       "items": [
         {
           "title": "EM Investors Shrug Off Quarter’s Pullback, Double Down on Carry Trades",
@@ -381,15 +378,14 @@
           ]
         },
         {
-          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "title": "Asian Stocks to Rise as Hike Bets Ease, Oil Climbs: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-10-04T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "publishedAt": "2026-10-04T22:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
           "tags": [
             "commodity",
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -398,15 +394,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.381,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 3,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "G7 Fuel Release Offers Temporary Price Relief",
-      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+      "topPositiveTitle": "Asian Stocks to Rise as Hike Bets Ease, Oil Climbs: Markets Wrap",
       "items": [
         {
           "title": "G7 Fuel Release Offers Temporary Price Relief",
@@ -462,18 +458,15 @@
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
         },
         {
-          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "title": "Supreme Court Opens Term With Climate Fight",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-04T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T16:42:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/supreme-court-opens-term-with-climate-fight-video",
           "tags": [
             "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -482,13 +475,25 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 5,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Says US Policy Remains Unchanged",
-      "topPositiveTitle": "Taiwan Says US Policy Remains Unchanged",
+      "topNegativeTitle": "Bloomberg This Weekend 10/4/2026",
+      "topPositiveTitle": "Bloomberg This Weekend 10/4/2026",
       "items": [
+        {
+          "title": "Bloomberg This Weekend 10/4/2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T16:33:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-04/bloomberg-this-weekend-10-4-2026-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Taiwan Says US Policy Remains Unchanged",
           "source": "Bloomberg Markets",
@@ -543,19 +548,6 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T09:49:22+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261003de54064",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え"
         }
       ]
     }
