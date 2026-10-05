@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-05T11:13:00.825784+09:00",
-  "sourceUpdatedAt": "2026-10-05T01:41:48+00:00",
+  "updatedAt": "2026-10-05T19:43:54.821728+09:00",
+  "sourceUpdatedAt": "2026-10-05T10:39:54+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -32,41 +32,27 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Taiwan Says US Policy Remains Unchanged",
-      "topPositiveTitle": "Taiwan Says US Policy Remains Unchanged",
-      "items": [
-        {
-          "title": "Taiwan Says US Policy Remains Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-04T14:45:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/taiwan-says-us-policy-remains-unchanged-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.334,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "Asian Shares Rise as Fed Bets Ease, Bonds Edge Up: Markets Wrap",
+      "topPositiveTitle": "Trump Aide Hassett Says Powell Should ‘Move On’ From Fed Board",
       "items": [
         {
           "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
@@ -82,20 +68,6 @@
           ]
         },
         {
-          "title": "Gold Edges Higher as Markets Weigh Jobs Data Impact on Fed Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-05T00:41:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-edges-higher-as-markets-weigh-jobs-data-impact-on-fed-path",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Trump Aide Hassett Says Powell Should ‘Move On’ From Fed Board",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -106,46 +78,19 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Jobs Slow but Inflation Keeps Fed on Alert",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T13:04:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/jobs-slow-but-inflation-keeps-fed-on-alert-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-      "topPositiveTitle": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
+      "topPositiveTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
       "items": [
         {
           "title": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
@@ -160,73 +105,69 @@
             "rates",
             "us_growth"
           ]
-        },
-        {
-          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.335,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Markets Weigh Jobs Data Impact on Fed Path",
-      "topPositiveTitle": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+      "topNegativeTitle": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
+      "topPositiveTitle": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
       "items": [
         {
-          "title": "Gold Edges Higher as Markets Weigh Jobs Data Impact on Fed Path",
+          "title": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-05T00:41:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-edges-higher-as-markets-weigh-jobs-data-impact-on-fed-path",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T09:57:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/the-pulse-10-5-2026-video",
           "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "geopolitical",
+            "global_broad",
+            "market"
           ]
         },
         {
-          "title": "Wall Street Strategists Steer Investors to Cross-Asset Hedges",
+          "title": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-04T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-strategists-steer-investors-to-cross-asset-hedges",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-04T22:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
           "tags": [
-            "commodity",
+            "fx",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
+      "topPositiveTitle": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
+      "items": [
+        {
+          "title": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T07:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/nagel-sees-good-case-for-central-bank-diversification-into-gold",
+          "tags": [
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -256,16 +197,40 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.193,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "Japan Should Keep Focus on Cheap Mideast Oil, Local Refiner Says",
+      "topNegativeTitle": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
+      "topPositiveTitle": "Romanian Assets Rally After Dodging Rating Downgrade to Junk",
       "items": [
+        {
+          "title": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-05T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/uk-s-job-slump-now-longer-than-during-financial-crisis-pmi-says",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Euro Hits 17-Month Low on Region’s Fiscal, Political Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-05T03:30:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/euro-falls-to-17-month-low-on-region-s-fiscal-political-risks",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
           "source": "Bloomberg Economics",
@@ -277,6 +242,20 @@
             "macro_risk",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T09:54:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -293,58 +272,81 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Traders Are Dusting Off The Contagion Playbook for European Bonds",
+      "topPositiveTitle": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
+      "items": [
+        {
+          "title": "Traders Are Dusting Off The Contagion Playbook for European Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T10:16:26+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-05/traders-are-dusting-off-the-contagion-playbook-for-european-bonds",
+          "tags": [
+            "fx",
+            "market"
+          ]
         },
         {
-          "title": "Japan Should Keep Focus on Cheap Mideast Oil, Local Refiner Says",
+          "title": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T23:51:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/japan-should-keep-focus-on-cheap-mideast-oil-local-refiner-says",
+          "publishedAt": "2026-10-04T22:17:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "fx",
+            "global_broad",
             "market"
           ]
         }
       ]
     },
-    "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "rates": {
-      "avgSentiment": 0.557,
-      "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 0,
+      "avgSentiment": 0.22,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Markets Weigh Jobs Data Impact on Fed Path",
-      "topPositiveTitle": "Asian Shares Rise as Fed Bets Ease, Bonds Edge Up: Markets Wrap",
+      "topNegativeTitle": "BlackRock Says Higher Yields Not Necessarily Bad for Markets",
+      "topPositiveTitle": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
       "items": [
         {
-          "title": "Gold Edges Higher as Markets Weigh Jobs Data Impact on Fed Path",
+          "title": "BlackRock Says Higher Yields Not Necessarily Bad for Markets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-05T00:41:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-edges-higher-as-markets-weigh-jobs-data-impact-on-fed-path",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T09:04:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/blackrock-higher-yields-not-necessarily-bad-for-markets-video",
           "tags": [
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T07:03:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/turkey-annual-inflation-slows-more-than-expected-in-september",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -360,68 +362,41 @@
             "rates",
             "us_growth"
           ]
-        },
-        {
-          "title": "Jobs Slow but Inflation Keeps Fed on Alert",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T13:04:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/jobs-slow-but-inflation-keeps-fed-on-alert-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street’s AI Party Is on Edge as Soaring Yields Raise Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/wall-street-s-ai-party-is-on-edge-as-soaring-yields-raise-risks",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Shares Rise as Fed Bets Ease, Bonds Edge Up: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-04T22:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.477,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Saudis Cut Flagship Oil Price to Asia to Lowest in Six Years",
-      "topPositiveTitle": "Asian Shares Rise as Fed Bets Ease, Bonds Edge Up: Markets Wrap",
+      "topNegativeTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+      "topPositiveTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
       "items": [
         {
-          "title": "Saudis Cut Flagship Oil Price to Asia to Lowest in Six Years",
+          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T01:09:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/saudis-cut-flagship-oil-price-to-asia-to-lowest-in-six-years",
+          "publishedAt": "2026-10-05T09:54:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Key Saudi Oil Pipeline Flows Normal Despite Report of Halt",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T08:52:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/saudi-east-west-oil-pipeline-is-flowing-as-normal-people-say",
           "tags": [
             "commodity",
             "market"
@@ -440,6 +415,18 @@
           ]
         },
         {
+          "title": "Latest Oil Market News and Analysis for Oct. 5",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-04T22:03:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-04/latest-oil-market-news-and-analysis-for-oct-5",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
           "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
           "source": "NHK 経済",
           "sentiment": "neutral",
@@ -453,80 +440,31 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "Japan Should Keep Focus on Cheap Mideast Oil, Local Refiner Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T23:51:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/japan-should-keep-focus-on-cheap-mideast-oil-local-refiner-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Supreme Court Opens Term With Climate Fight",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T16:42:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/supreme-court-opens-term-with-climate-fight-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.112,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Saudi-Backed Yemen Forces Begin Operation to Retake Houthi Areas",
-      "topPositiveTitle": "Japan Should Keep Focus on Cheap Mideast Oil, Local Refiner Says",
+      "topNegativeTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+      "topPositiveTitle": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
       "items": [
         {
-          "title": "Saudi-Backed Yemen Forces Begin Operation to Retake Houthi Areas",
+          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T01:02:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/yemen-forces-begin-operation-to-retake-houthi-areas-video",
+          "publishedAt": "2026-10-05T09:54:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
           "tags": [
+            "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Bloomberg This Weekend 10/4/2026",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-04T16:33:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/bloomberg-this-weekend-10-4-2026-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan Says US Policy Remains Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-04T14:45:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-04/taiwan-says-us-policy-remains-unchanged-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
+            "macro_risk",
             "market"
           ]
         },
@@ -546,17 +484,17 @@
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
         },
         {
-          "title": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T09:49:22+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261003de54064",
+          "title": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T09:57:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/the-pulse-10-5-2026-video",
           "tags": [
             "geopolitical",
+            "global_broad",
             "market"
-          ],
-          "titleJa": "葉梨沖縄・北方相 北方領土を視察 「墓参り」再開取り組む考え"
+          ]
         }
       ]
     }
