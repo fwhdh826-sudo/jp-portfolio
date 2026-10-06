@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-06T10:56:40.130715+09:00",
-  "sourceUpdatedAt": "2026-10-06T01:05:27+00:00",
+  "updatedAt": "2026-10-06T19:37:52.749044+09:00",
+  "sourceUpdatedAt": "2026-10-06T10:27:07+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
+      "topPositiveTitle": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
+      "items": [
+        {
+          "title": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-06T07:24:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ueda-does-little-to-challenge-bets-against-october-boj-hike",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -24,16 +37,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-      "topPositiveTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+      "topNegativeTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+      "topPositiveTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
       "items": [
         {
-          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+          "title": "Nvidia Is on the Verge of a $6 Trillion Market Value",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
+          "publishedAt": "2026-10-06T10:09:50+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/nvidia-is-on-the-verge-of-a-6-trillion-market-value",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -43,66 +56,62 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.835,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
-      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+      "topPositiveTitle": "SEBI Says Jane Street’s Appeal for More Details a Delaying Ploy",
       "items": [
         {
-          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
+          "title": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-05T23:39:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-05T23:13:44+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
           "tags": [
             "commodity",
+            "global_broad",
             "market",
-            "rates",
-            "us_broad",
-            "us_growth"
+            "us_broad"
+          ]
+        },
+        {
+          "title": "SEBI Says Jane Street’s Appeal for More Details a Delaying Ploy",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-06T09:38:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/sebi-says-jane-street-s-appeal-for-more-details-a-delaying-ploy",
+          "tags": [
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+      "topNegativeTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+      "topPositiveTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
       "items": [
         {
-          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+          "title": "Nvidia Is on the Verge of a $6 Trillion Market Value",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
+          "publishedAt": "2026-10-06T10:09:50+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/nvidia-is-on-the-verge-of-a-6-trillion-market-value",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -110,23 +119,47 @@
           ]
         },
         {
-          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "title": "AI Boom Leaves Thai Graduates Facing a Tougher Job Hunt",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T05:55:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ai-boom-leaves-thai-graduates-facing-a-tougher-job-hunt",
           "tags": [
-            "commodity",
             "market",
-            "rates",
-            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+      "items": [
+        {
+          "title": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -137,46 +170,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
-      "topPositiveTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
-      "items": [
-        {
-          "title": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T07:45:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/nagel-sees-good-case-for-central-bank-diversification-into-gold",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-05T23:39:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -203,229 +196,186 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.068,
-      "negativeCount": 1,
+      "avgSentiment": 0.223,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
-      "topPositiveTitle": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
+      "topNegativeTitle": "EU to Seek Market Operator to Conduct Joint Energy Purchases",
+      "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
         {
-          "title": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-05T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/uk-s-job-slump-now-longer-than-during-financial-crisis-pmi-says",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Could High US Bond Yields Spark A Crisis in Europe?",
+          "title": "EU to Seek Market Operator to Conduct Joint Energy Purchases",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/could-high-us-bond-yields-spark-a-crisis-in-europe-video",
+          "publishedAt": "2026-10-06T09:10:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/eu-to-seek-market-operator-to-conduct-joint-energy-purchases",
           "tags": [
+            "commodity",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
-          "title": "A French Crisis Would Be a Nightmare for ECB",
+          "title": "Why Americans Are Unhappy With an Economy That Looks Strong",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T11:04:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-05/a-french-crisis-would-be-a-nightmare-for-ecb",
+          "publishedAt": "2026-10-06T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/why-americans-are-unhappy-with-an-economy-that-looks-strong",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "title": "Polish Probe Endorses Accusations Against Central Bank Governor",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-06T10:16:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/polish-probe-endorses-accusations-against-central-bank-governor",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T07:03:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/turkey-annual-inflation-slows-more-than-expected-in-september",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.113,
+      "avgSentiment": -0.5,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Nidec Scandal Sends Bonds to Bottom in Test for New President",
-      "topPositiveTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
+      "topNegativeTitle": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
+      "topPositiveTitle": "Hungarian Central Banker Floats 2031 Euro Adoption Scenario",
       "items": [
         {
-          "title": "Nidec Scandal Sends Bonds to Bottom in Test for New President",
+          "title": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-06T00:30:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/nidec-scandal-sends-bonds-to-bottom-in-test-for-new-president",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-06T09:52:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/zambian-kwacha-extends-slide-as-oil-importers-seek-dollars",
           "tags": [
+            "commodity",
             "fx",
             "market"
           ]
         },
         {
-          "title": "New World Launches Exchange Offer for Nearly $1 Billion of Bonds",
-          "source": "Bloomberg Markets",
+          "title": "Hungarian Central Banker Floats 2031 Euro Adoption Scenario",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T00:36:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/new-world-launches-exchange-offer-for-nearly-1-billion-of-bonds",
+          "publishedAt": "2026-10-06T08:13:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/hungarian-central-banker-floats-2031-euro-adoption-scenario",
           "tags": [
             "fx",
             "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-05T23:39:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.222,
-      "negativeCount": 1,
-      "positiveCount": 4,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Australia’s Consumer Confidence Tumbles Further After Rate Hike",
-      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+      "topNegativeTitle": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
+      "topPositiveTitle": "Lescure Says France Is Far From Needing ECB Help on Debt",
       "items": [
         {
-          "title": "Australia’s Consumer Confidence Tumbles Further After Rate Hike",
+          "title": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-05T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/australia-s-consumer-confidence-tumbles-further-after-rate-hike",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T10:20:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-yields-fall-from-2002-high-as-oil-dips-bessent-vows-on-debt",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Czech Inflation Breaches Target in Boost to Rate Hike Odds",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-06T07:23:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/czech-inflation-breaches-target-as-policymakers-mull-more-hikes",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Could High US Bond Yields Spark A Crisis in Europe?",
-          "source": "Bloomberg Markets",
+          "title": "Lescure Says France Is Far From Needing ECB Help on Debt",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/could-high-us-bond-yields-spark-a-crisis-in-europe-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Higher Bond Yields Will Pressure Australia Budget, Chalmers Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T23:44:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/bond-yields-will-pressure-australia-budget-chalmers-video",
+          "publishedAt": "2026-10-06T07:48:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/lescure-says-france-is-far-from-needing-ecb-help-on-debt",
           "tags": [
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T07:03:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/turkey-annual-inflation-slows-more-than-expected-in-september",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-05T23:39:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
+      "avgSentiment": -0.297,
+      "negativeCount": 5,
       "positiveCount": 1,
       "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 6",
-      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+      "topNegativeTitle": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
+      "topPositiveTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
       "items": [
+        {
+          "title": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-06T09:52:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/zambian-kwacha-extends-slide-as-oil-importers-seek-dollars",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T10:20:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-yields-fall-from-2002-high-as-oil-dips-bessent-vows-on-debt",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Oct. 6",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-05T22:03:37+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-05/latest-oil-market-news-and-analysis-for-oct-6",
           "tags": [
@@ -434,74 +384,54 @@
           ]
         },
         {
-          "title": "Lane Urges Measured ECB Response to Second Wave of Energy Shock",
+          "title": "World Bank Lifts India GDP View, Says Asia’s Buffers Too Thin",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T08:00:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/lane-urges-measured-ecb-response-to-second-wave-of-energy-shock",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-06T02:16:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/asia-s-buffers-too-thin-to-keep-absorbing-oil-shock-world-bank",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "title": "Ireland Faces Pressure to Spend Tax Windfall in Budget to Help Voters",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-06T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ireland-faces-pressure-to-spend-tax-windfall-in-budget-to-help-voters",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+      "topNegativeTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
+      "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
         {
-          "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-03T00:58:17+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261002de53966",
+          "title": "Polish Probe Endorses Accusations Against Central Bank Governor",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-06T10:16:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/polish-probe-endorses-accusations-against-central-bank-governor",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+          ]
         }
       ]
     }
