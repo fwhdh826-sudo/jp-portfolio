@@ -1,37 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-05T19:43:54.821728+09:00",
-  "sourceUpdatedAt": "2026-10-05T10:39:54+00:00",
+  "updatedAt": "2026-10-06T10:56:40.130715+09:00",
+  "sourceUpdatedAt": "2026-10-06T01:05:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-      "topPositiveTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-      "items": [
-        {
-          "title": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T01:29:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/boj-s-deputy-chief-flags-ai-s-possible-impact-on-neutral-rate",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -43,120 +16,138 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+    "jp_semiconductor": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-      "topPositiveTitle": "Trump Aide Hassett Says Powell Should ‘Move On’ From Fed Board",
-      "items": [
-        {
-          "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-03T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/fed-ecb-minutes-to-show-inflation-fears-as-hike-bets-fade",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trump Aide Hassett Says Powell Should ‘Move On’ From Fed Board",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-04T15:52:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/trump-aide-hassett-says-powell-should-move-on-from-fed-board",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-      "topPositiveTitle": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
+      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+      "topPositiveTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
       "items": [
         {
-          "title": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T01:29:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/boj-s-deputy-chief-flags-ai-s-possible-impact-on-neutral-rate",
+          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T21:44:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
           "tags": [
-            "jp_broad",
+            "jp_semiconductor",
             "market",
-            "rates",
             "us_growth"
           ]
         }
       ]
     },
-    "global_broad": {
-      "avgSentiment": 0.5,
+    "us_broad": {
+      "avgSentiment": 0.835,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
-      "topPositiveTitle": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
+      "topNegativeTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
+      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
       "items": [
         {
-          "title": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T09:57:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/the-pulse-10-5-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
+          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T22:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
+          "publishedAt": "2026-10-05T23:39:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
           "tags": [
             "fx",
-            "global_broad",
-            "market"
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
-    "gold": {
-      "avgSentiment": 0.33,
+    "us_growth": {
+      "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+      "items": [
+        {
+          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T21:44:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
-      "topPositiveTitle": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
+      "topPositiveTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
       "items": [
         {
           "title": "Nagel Sees Good Case for Central-Bank Diversification Into Gold",
@@ -168,6 +159,21 @@
           "tags": [
             "gold",
             "market"
+          ]
+        },
+        {
+          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-05T23:39:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -197,15 +203,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.193,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.068,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
-      "topPositiveTitle": "Romanian Assets Rally After Dodging Rating Downgrade to Junk",
+      "topPositiveTitle": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
       "items": [
         {
           "title": "UK Job Slump Longer Than During Financial Crisis, PMI Says",
@@ -220,40 +226,26 @@
           ]
         },
         {
-          "title": "Euro Hits 17-Month Low on Region’s Fiscal, Political Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-05T03:30:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/euro-falls-to-17-month-low-on-region-s-fiscal-political-risks",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Fed, ECB Minutes to Show Inflation Fears as Hike Bets Fade",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-03T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-03/fed-ecb-minutes-to-show-inflation-fears-as-hike-bets-fade",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+          "title": "Could High US Bond Yields Spark A Crisis in Europe?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T09:54:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
+          "publishedAt": "2026-10-05T21:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/could-high-us-bond-yields-spark-a-crisis-in-europe-video",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "A French Crisis Would Be a Nightmare for ECB",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T11:04:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-05/a-french-crisis-would-be-a-nightmare-for-ecb",
+          "tags": [
             "macro_risk",
             "market"
           ]
@@ -272,65 +264,117 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        },
+        {
+          "title": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T07:03:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/turkey-annual-inflation-slows-more-than-expected-in-september",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Traders Are Dusting Off The Contagion Playbook for European Bonds",
-      "topPositiveTitle": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
+      "topNegativeTitle": "Nidec Scandal Sends Bonds to Bottom in Test for New President",
+      "topPositiveTitle": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
       "items": [
         {
-          "title": "Traders Are Dusting Off The Contagion Playbook for European Bonds",
+          "title": "Nidec Scandal Sends Bonds to Bottom in Test for New President",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T10:16:26+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-05/traders-are-dusting-off-the-contagion-playbook-for-european-bonds",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-06T00:30:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/nidec-scandal-sends-bonds-to-bottom-in-test-for-new-president",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Stocks Struggle as Europe Woes Dent Risk Appetite: Markets Wrap",
+          "title": "New World Launches Exchange Offer for Nearly $1 Billion of Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T00:36:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/new-world-launches-exchange-offer-for-nearly-1-billion-of-bonds",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-04T22:17:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/asian-stocks-to-rise-as-hike-bets-ease-oil-climbs-markets-wrap",
+          "publishedAt": "2026-10-05T23:39:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
           "tags": [
             "fx",
-            "global_broad",
-            "market"
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.222,
+      "negativeCount": 1,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BlackRock Says Higher Yields Not Necessarily Bad for Markets",
-      "topPositiveTitle": "Surprise Slowdown in Turkish Prices Makes Case for Rate Cut",
+      "topNegativeTitle": "Australia’s Consumer Confidence Tumbles Further After Rate Hike",
+      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
       "items": [
         {
-          "title": "BlackRock Says Higher Yields Not Necessarily Bad for Markets",
+          "title": "Australia’s Consumer Confidence Tumbles Further After Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-05T23:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/australia-s-consumer-confidence-tumbles-further-after-rate-hike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Could High US Bond Yields Spark A Crisis in Europe?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T09:04:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/blackrock-higher-yields-not-necessarily-bad-for-markets-video",
+          "publishedAt": "2026-10-05T21:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/could-high-us-bond-yields-spark-a-crisis-in-europe-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Higher Bond Yields Will Pressure Australia Budget, Chalmers Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-05T23:44:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-05/bond-yields-will-pressure-australia-budget-chalmers-video",
           "tags": [
             "market",
             "rates"
@@ -350,77 +394,52 @@
           ]
         },
         {
-          "title": "BOJ’s Deputy Chief Flags AI’s Possible Impact on Neutral Rate",
-          "source": "Bloomberg Economics",
+          "title": "Gold Steadies as Stronger Dollar and Yields Weigh on Rate Path",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T01:29:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/boj-s-deputy-chief-flags-ai-s-possible-impact-on-neutral-rate",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-05T23:39:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gold-steadies-as-stronger-dollar-and-yields-weigh-on-rate-path",
           "tags": [
-            "jp_broad",
+            "fx",
+            "gold",
             "market",
             "rates",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
-      "topPositiveTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 6",
+      "topPositiveTitle": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
       "items": [
         {
-          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
+          "title": "Latest Oil Market News and Analysis for Oct. 6",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T09:54:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Key Saudi Oil Pipeline Flows Normal Despite Report of Halt",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T08:52:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/saudi-east-west-oil-pipeline-is-flowing-as-normal-people-say",
+          "publishedAt": "2026-10-05T22:03:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/latest-oil-market-news-and-analysis-for-oct-6",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Vanguard's Wang: Energy, AI Keep Inflation High",
+          "title": "Lane Urges Measured ECB Response to Second Wave of Energy Shock",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T00:01:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/vanguard-s-wang-energy-ai-keep-inflation-high-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 5",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-04T22:03:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-04/latest-oil-market-news-and-analysis-for-oct-5",
+          "publishedAt": "2026-10-05T08:00:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/lane-urges-measured-ecb-response-to-second-wave-of-energy-shock",
           "tags": [
             "commodity",
             "market"
@@ -440,34 +459,35 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
+        },
+        {
+          "title": "S&P 500 Closes In on Record High as Tech Rallies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
-      "topPositiveTitle": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
+      "topNegativeTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
+      "topPositiveTitle": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
       "items": [
-        {
-          "title": "ICE Offers Tanker Derivatives for Route Outside Strait of Hormuz",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T09:54:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/ice-offers-tanker-derivatives-for-route-outside-strait-of-hormuz",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府",
           "source": "NHK 経済",
@@ -482,19 +502,6 @@
             "market"
           ],
           "titleJa": "ロシアへの追加制裁を発表 「影の船団」も制裁対象に 日本政府"
-        },
-        {
-          "title": "Britain’s $160 Billion Super-Rich Exodus, Bolsonaro Leads Brazil Vote",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T09:57:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-05/the-pulse-10-5-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
         }
       ]
     }
@@ -507,7 +514,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
