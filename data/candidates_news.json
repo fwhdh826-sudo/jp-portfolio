@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-06T19:37:52.749044+09:00",
-  "sourceUpdatedAt": "2026-10-06T10:27:07+00:00",
+  "updatedAt": "2026-10-07T02:19:54.874285+09:00",
+  "sourceUpdatedAt": "2026-10-06T17:10:07+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
-      "topPositiveTitle": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
-      "items": [
-        {
-          "title": "Ueda Does Little to Challenge Bets Against October BOJ Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-06T07:24:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ueda-does-little-to-challenge-bets-against-october-boj-hike",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
@@ -37,16 +24,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
-      "topPositiveTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+      "topPositiveTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
       "items": [
         {
-          "title": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T10:09:50+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/nvidia-is-on-the-verge-of-a-6-trillion-market-value",
+          "publishedAt": "2026-10-05T21:44:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -56,62 +43,88 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.557,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
-      "topPositiveTitle": "SEBI Says Jane Street’s Appeal for More Details a Delaying Ploy",
+      "topNegativeTitle": "Man Group Disputes View That High Inflation Is Bad for Bonds",
+      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
       "items": [
         {
-          "title": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+          "title": "Man Group Disputes View That High Inflation Is Bad for Bonds",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T12:31:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/man-group-disputes-view-that-high-inflation-is-bad-for-us-bonds",
           "tags": [
-            "commodity",
-            "global_broad",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "SEBI Says Jane Street’s Appeal for More Details a Delaying Ploy",
+          "title": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-06T09:38:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/sebi-says-jane-street-s-appeal-for-more-details-a-delaying-ploy",
+          "publishedAt": "2026-10-06T12:14:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/s-p-500-set-for-first-record-since-august-as-bulls-downplay-risk",
           "tags": [
+            "commodity",
             "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
-      "topPositiveTitle": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+      "topNegativeTitle": "Johnson & Johnson CEO Says AI Has to Be Embraced",
+      "topPositiveTitle": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
       "items": [
         {
-          "title": "Nvidia Is on the Verge of a $6 Trillion Market Value",
+          "title": "Johnson & Johnson CEO Says AI Has to Be Embraced",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T10:09:50+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/nvidia-is-on-the-verge-of-a-6-trillion-market-value",
+          "publishedAt": "2026-10-06T16:27:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-06/j-j-ceo-says-ai-has-to-be-embraced-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-05T21:44:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -119,42 +132,45 @@
           ]
         },
         {
-          "title": "AI Boom Leaves Thai Graduates Facing a Tougher Job Hunt",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T05:55:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ai-boom-leaves-thai-graduates-facing-a-tougher-job-hunt",
+          "title": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-06T12:14:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/s-p-500-set-for-first-record-since-august-as-bulls-downplay-risk",
           "tags": [
+            "commodity",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": -0.2,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
-      "topPositiveTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
+      "topPositiveTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
       "items": [
         {
-          "title": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
+          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-06T11:52:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
           "tags": [
             "commodity",
+            "fx",
             "global_broad",
             "market",
-            "us_broad"
+            "rates"
           ]
         }
       ]
@@ -203,18 +219,19 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "EU to Seek Market Operator to Conduct Joint Energy Purchases",
+      "topNegativeTitle": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
       "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
         {
-          "title": "EU to Seek Market Operator to Conduct Joint Energy Purchases",
+          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T09:10:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/eu-to-seek-market-operator-to-conduct-joint-energy-purchases",
+          "publishedAt": "2026-10-06T15:49:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -247,27 +264,29 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
+      "avgSentiment": -0.1,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
+      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
       "topPositiveTitle": "Hungarian Central Banker Floats 2031 Euro Adoption Scenario",
       "items": [
         {
-          "title": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
+          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-06T09:52:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/zambian-kwacha-extends-slide-as-oil-importers-seek-dollars",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-06T11:52:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
           "tags": [
             "commodity",
             "fx",
-            "market"
+            "global_broad",
+            "market",
+            "rates"
           ]
         },
         {
@@ -285,29 +304,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": 0.16,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
-      "topPositiveTitle": "Lescure Says France Is Far From Needing ECB Help on Debt",
+      "topNegativeTitle": "Czech Inflation Breaches Target in Boost to Rate Hike Odds",
+      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
       "items": [
-        {
-          "title": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-06T10:20:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-yields-fall-from-2002-high-as-oil-dips-bessent-vows-on-debt",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Czech Inflation Breaches Target in Boost to Rate Hike Odds",
           "source": "Bloomberg Economics",
@@ -316,6 +322,21 @@
           "publishedAt": "2026-10-06T07:23:46+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-06/czech-inflation-breaches-target-as-policymakers-mull-more-hikes",
           "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-06T11:52:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
+          "tags": [
+            "commodity",
+            "fx",
+            "global_broad",
             "market",
             "rates"
           ]
@@ -331,77 +352,106 @@
             "market",
             "rates"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.297,
-      "negativeCount": 5,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 9,
-      "isStale": false,
-      "topNegativeTitle": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
-      "topPositiveTitle": "S&P 500 Targets Record as Bonds Climb and Oil Dips: Markets Wrap",
-      "items": [
-        {
-          "title": "Zambian Kwacha Extends Slide as Oil Importers Seek Dollars",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-06T09:52:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/zambian-kwacha-extends-slide-as-oil-importers-seek-dollars",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
         },
         {
-          "title": "US Yields Fall From 2002 High as Oil Dips, Bessent Vows On Debt",
+          "title": "Air Liquide Sells Debt at Better Rate Than French Government",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-06T10:20:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-yields-fall-from-2002-high-as-oil-dips-bessent-vows-on-debt",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-06T08:21:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/air-liquide-taps-euro-market-in-test-of-appetite-for-french-debt",
           "tags": [
-            "commodity",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 6",
+          "title": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-05T23:13:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.285,
+      "negativeCount": 0,
+      "positiveCount": 6,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 11,
+      "isStale": false,
+      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
+      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+      "items": [
+        {
+          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-05T22:03:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/latest-oil-market-news-and-analysis-for-oct-6",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-06T11:52:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
+          "tags": [
+            "commodity",
+            "fx",
+            "global_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T15:49:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Ireland Cuts Energy Taxes in Budget Bid to Appease Voters",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T12:54:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ireland-reduces-energy-taxes-in-budget-aimed-at-appeasing-voters",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "World Bank Lifts India GDP View, Says Asia’s Buffers Too Thin",
+          "title": "US Inflation: Diesel’s Pulling Power Poses 2027 Risk",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-06T02:16:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/asia-s-buffers-too-thin-to-keep-absorbing-oil-shock-world-bank",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/us-inflation-diesel-s-pulling-power-poses-2027-risk",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Ireland Faces Pressure to Spend Tax Windfall in Budget to Help Voters",
+          "title": "ECB’s Rehn Says Energy Shock Hasn’t Yet Spread to Wages",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-06T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ireland-faces-pressure-to-spend-tax-windfall-in-budget-to-help-voters",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ecb-s-rehn-says-energy-price-shock-hasn-t-yet-spread-to-wages",
           "tags": [
             "commodity",
             "market"
@@ -410,16 +460,43 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
+      "topNegativeTitle": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
       "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
+        {
+          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T15:49:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Iran Ramps Up Ship Attacks in Hormuz as Oil and Gas Flows Climb",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-06T16:18:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/iran-ramps-up-ship-attacks-in-hormuz-as-oil-and-gas-flows-climb",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Polish Probe Endorses Accusations Against Central Bank Governor",
           "source": "Bloomberg Economics",
@@ -444,7 +521,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
