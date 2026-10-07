@@ -21,12 +21,18 @@ EXPECTED_TRIGGER_BLOCK_SHA256 = {
     "update": "75c248bccacfb3f4413c70e126a868d5483c571b6b5e80f2a758e8422a2d758b",
     "intraday": "bb70ed647bf1f04dd285d15be52231c087ad53bc9ad0f88fddbda69a01bc0936",
 }
+# OPS P14 v13.4 H01 (release-history maintenance) re-pinned exactly the three
+# "Commit and push" blocks to the reviewed history-safe bytes; the Pages blocks and
+# every other pin below are unchanged.
+#   full     old 8bf450a78161c1db43c031ad3054262b0bc7899501c4944ab71fbe2e9a5ce7b6
+#   update   old 6f678dfdffb605c0ab16a18a1de0146ff8870baec8906a92ade1e2272dff6a7a
+#   intraday old 47d183813f118d13fc371bd7eb9fc81b22fae8c35fdb0726a0b2bbbef7ab51b6
 EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
-    ("full", "Commit and push"): "8bf450a78161c1db43c031ad3054262b0bc7899501c4944ab71fbe2e9a5ce7b6",
+    ("full", "Commit and push"): "3c995a599144fdcb9e401e2cbfcf486f6aa5e76fc884d677a9806ef1b4614c75",
     ("full", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
-    ("update", "Commit and push"): "6f678dfdffb605c0ab16a18a1de0146ff8870baec8906a92ade1e2272dff6a7a",
+    ("update", "Commit and push"): "493b3eef78742d08c31a8ed051a9d9154f4f2f643ce9257d49bad94121e4c765",
     ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
-    ("intraday", "Commit and push"): "47d183813f118d13fc371bd7eb9fc81b22fae8c35fdb0726a0b2bbbef7ab51b6",
+    ("intraday", "Commit and push"): "41b24e51310740003c941eadc65f0f43aad076a962848179f3a8e83788d6284c",
     ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",
 }
 EXPECTED_PRE_FETCH_BLOCK_SHA256 = {
@@ -168,9 +174,21 @@ def test_manual_dispatch_trigger_is_frozen_and_cannot_skip_reanchor(workflow):
 def test_existing_commit_push_and_dispatch_pages_bytes_are_frozen(
     workflow, step_name
 ):
-    assert frozen_sha256(step_block(source(workflow), step_name)) == (
+    block = step_block(source(workflow), step_name)
+    assert frozen_sha256(block) == (
         EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256[(workflow, step_name)]
     )
+    if step_name == "Commit and push":
+        # H01: the reviewed Commit block is history-safe, not merely re-hashed.
+        assert "git pull" not in block and "rebase" not in block
+        ordered = [
+            'git fetch --no-tags origin "$target_ref"',
+            "git merge-base --is-ancestor",
+            'git push origin "HEAD:$target_ref"',
+            'git ls-remote --exit-code --refs origin "$target_ref"',
+        ]
+        positions = [block.index(command) for command in ordered]
+        assert positions == sorted(positions)
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS)

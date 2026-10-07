@@ -1,6 +1,6 @@
 """P4-A79: intraday_patch.yml guard tests.
 
-Guards the Tier 1 artifact coverage and git pull/rebase/add/commit/push
+Guards the Tier 1 artifact coverage and forward-only add/commit/fetch/push
 flow of the intraday-patch workflow without executing it or touching real APIs.
 
 Scope (Tier 1 = market + news only):
@@ -8,10 +8,9 @@ Scope (Tier 1 = market + news only):
   - update_market.py is called (Tier 1 market source)
   - public/data/market.json is handled (copy + explicit git add)
   - public/data/candidates_news.json and data/candidates_news.json are staged
-  - git pull --rebase / add / commit / push basic flow is intact
-  - add and commit come before pull --rebase (race-safe order: stage and
-    commit local Tier 1 changes first so the working tree is clean before
-    rebasing onto origin, avoiding "You have unstaged changes" pull failures)
+  - bind the base before staging and the proposed child after optional commit
+  - validate clean state, fetch the exact target, require the frozen base and
+    ancestry, then push and independently observe the child before success
 
 Non-goals:
   - market_intel.json is intentionally NOT covered by intraday_patch
@@ -23,6 +22,29 @@ from pathlib import Path
 
 _WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "intraday_patch.yml"
 _TEXT = _WORKFLOW.read_text()
+
+
+def _commit_and_push_commands() -> str:
+    """Bind shell checks to the Commit step, excluding comments/validator prose."""
+    step = _TEXT.split("      - name: Commit and push\n", 1)[1]
+    body = step.split("        run: |\n", 1)[1]
+    lines = []
+    in_validator = False
+    for raw_line in body.splitlines():
+        if not raw_line.strip():
+            continue
+        if not raw_line.startswith("          "):
+            break
+        line = raw_line[10:]
+        if in_validator:
+            if line == "PY":
+                in_validator = False
+            continue
+        if line == "python3 - <<'PY'":
+            in_validator = True
+        if not line.lstrip().startswith("#"):
+            lines.append(line)
+    return "\n".join(lines)
 
 
 # ── existence ─────────────────────────────────────────────────────────────────
@@ -73,7 +95,7 @@ def test_data_candidates_news_explicitly_staged():
 # 37/37 real Actions runs failed with "cannot pull with rebase: You have
 # unstaged changes" (exit 128) because data/market.json and data/news.json
 # were updated but never staged, leaving unstaged tracked changes at
-# `git pull --rebase` time. These tests lock the exact 6-file allowlist.
+# the old synchronization boundary. These tests lock the exact 6-file allowlist.
 
 _GIT_ADD_LINE = _TEXT.split("git add ")[1].split("\n")[0]
 
@@ -114,15 +136,18 @@ def test_no_broad_directory_staging():
 
 
 def test_unstaged_change_guard_before_pull_rebase():
-    # after commit, an explicit guard must fail the step if unstaged tracked
-    # changes remain, instead of letting `git pull --rebase` fail with the
-    # ambiguous "You have unstaged changes" / exit 128 error.
-    commit_pos = _TEXT.index('git commit -m "chore: intraday-patch')
-    rebase_pos = _TEXT.index("git pull --rebase")
-    guard_pos = _TEXT.index("git diff --quiet")
-    assert commit_pos < guard_pos < rebase_pos, (
-        "unstaged-change guard must run after commit and before pull --rebase"
-    )
+    # Preserve the explicit post-commit rejection of unstaged Tier 1 changes.
+    commands = _commit_and_push_commands()
+    commit_pos = commands.index('git commit -m "chore: intraday-patch')
+    guard_pos = commands.index("git diff --quiet || {")
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    equality_pos = commands.index('[ "$fetched_tip" != "$push_base_sha" ]')
+    ancestor_pos = commands.index('git merge-base --is-ancestor "$fetched_tip" "$proposed_push_sha"')
+    push_pos = commands.index('git push origin "HEAD:$target_ref"')
+    assert commit_pos < guard_pos < fetch_pos < equality_pos < ancestor_pos < push_pos
+    guard = commands[guard_pos:commands.index('proposed_push_sha="', guard_pos)]
+    assert "Unstaged tracked changes remain after intraday staging" in guard
+    assert "exit 1" in guard
 
 
 # ── market_intel is intentionally absent ─────────────────────────────────────
@@ -134,10 +159,18 @@ def test_market_intel_not_in_git_add():
     assert "market_intel" not in git_add_line
 
 
-# ── git pull/rebase / add / commit / push flow ───────────────────────────────
+# ── forward-only add / commit / fetch / push flow ───────────────────────────
 
 def test_git_pull_rebase_present():
-    assert "git pull --rebase" in _TEXT
+    commands = _commit_and_push_commands()
+    assert commands.count('git fetch --no-tags origin "$target_ref"') == 1
+    assert 'if [ "$fetched_tip" != "$push_base_sha" ]; then' in commands
+    assert 'if ! git merge-base --is-ancestor "$fetched_tip" "$proposed_push_sha"; then' in commands
+    assert 'git ls-remote --exit-code --refs origin "$target_ref"' in commands
+    for subcommand in ("pull", "rebase", "merge", "reset"):
+        assert f"git {subcommand} " not in commands
+    assert "--force" not in commands and "--amend" not in commands
+    assert "git push -f" not in commands and "git push --delete" not in commands
 
 
 def test_git_add_present():
@@ -153,12 +186,14 @@ def test_git_push_present():
 
 
 def test_git_add_before_pull_rebase():
-    # git add must come before pull --rebase: stage local Tier 1 changes
-    # first so the working tree is clean when rebase runs (avoids
-    # "You have unstaged changes" pull --rebase failures)
-    add_pos = _TEXT.index("git add ")
-    rebase_pos = _TEXT.index("git pull --rebase")
-    assert add_pos < rebase_pos, "git add must come before git pull --rebase"
+    commands = _commit_and_push_commands()
+    base_pos = commands.index('push_base_sha="$(git rev-parse --verify')
+    add_pos = commands.index("git add ")
+    validation_pos = commands.index("python3 - <<'PY'")
+    optional_commit_pos = commands.index("if ! git diff --staged --quiet; then")
+    commit_pos = commands.index('git commit -m "chore: intraday-patch')
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    assert base_pos < add_pos < validation_pos < optional_commit_pos < commit_pos < fetch_pos
 
 
 def test_git_add_before_commit():
@@ -169,14 +204,16 @@ def test_git_add_before_commit():
 
 
 def test_commit_before_pull_rebase():
-    # git commit must come before pull --rebase: commit local Tier 1
-    # changes first so the working tree is clean when rebase runs
-    # (avoids "You have unstaged changes" pull --rebase failures).
-    # Use the actual commit command to avoid matching the
-    # "── git push ──" section comment.
-    commit_pos = _TEXT.index('git commit -m "chore: intraday-patch')
-    rebase_pos = _TEXT.index("git pull --rebase")
-    assert commit_pos < rebase_pos, "git commit must come before git pull --rebase"
+    commands = _commit_and_push_commands()
+    commit_pos = commands.index('git commit -m "chore: intraday-patch')
+    proposed_pos = commands.index('proposed_push_sha="$(git rev-parse --verify')
+    parents_pos = commands.index('git rev-list --parents -n 1 "$proposed_push_sha"')
+    child_pos = commands.index('[ "$proposed_parents" != "$proposed_push_sha $push_base_sha" ]')
+    unchanged_pos = commands.index('[ "$proposed_push_sha" != "$push_base_sha" ]')
+    clean_pos = commands.index("if ! git diff --quiet || ! git diff --cached --quiet;")
+    untracked_pos = commands.index("git ls-files --others --exclude-standard")
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    assert commit_pos < proposed_pos < parents_pos < child_pos < unchanged_pos < clean_pos < untracked_pos < fetch_pos
 
 
 def test_commit_before_push():
@@ -190,12 +227,19 @@ def test_commit_before_push():
 
 
 def test_pull_rebase_before_push():
-    # pull --rebase must come before the final git push (rebase onto
-    # latest origin before pushing, so the push does not get rejected
-    # for being behind).
-    rebase_pos = _TEXT.index("git pull --rebase")
-    push_pos = _TEXT.rindex("git push")
-    assert rebase_pos < push_pos, "git pull --rebase must come before git push"
+    commands = _commit_and_push_commands()
+    fetch_pos = commands.index('git fetch --no-tags origin "$target_ref"')
+    fetched_pos = commands.index('fetched_tip="$(git rev-parse --verify')
+    assert "git rev-parse --verify 'FETCH_HEAD^{commit}'" in commands
+    equality_pos = commands.index('[ "$fetched_tip" != "$push_base_sha" ]')
+    ancestor_pos = commands.index('git merge-base --is-ancestor "$fetched_tip" "$proposed_push_sha"')
+    push_pos = commands.index('git push origin "HEAD:$target_ref"')
+    observed_pos = commands.index('git ls-remote --exit-code --refs origin "$target_ref"')
+    confirmed_pos = commands.index('[ "$observed_ref" != "$target_ref" ]')
+    assert '[ "$observed_sha" != "$proposed_push_sha" ]' in commands
+    true_pos = commands.index('echo "data_changed=true" >> "$GITHUB_OUTPUT"')
+    sha_pos = commands.index('echo "pushed_sha=$proposed_push_sha" >> "$GITHUB_OUTPUT"')
+    assert fetch_pos < fetched_pos < equality_pos < ancestor_pos < push_pos < observed_pos < confirmed_pos < true_pos < sha_pos
 
 
 def test_no_git_add_all():

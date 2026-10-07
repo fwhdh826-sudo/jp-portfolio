@@ -912,22 +912,29 @@ describe('useAppStore: portfolio snapshot（P4.5-A012b）', () => {
   })
 
   it('R3-F001: csvImportedAt非null snapshotはimmediate/canonical/reloadで同一値', async () => {
-    useAppStore.setState(s => ({
-      holdings: [], trust: [],
-      system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
-    }))
-    const importedAt = '2026-07-05T23:00:00.000Z'
-    const raw = boundV3Snapshot({
-      schemaVersion: 'portfolio-snapshot-3', exportedAt: '2026-07-06T00:00:00.000Z',
-      csvImportedAt: importedAt,
-      csvImportProvenance: snapshotProvenance(importedAt, '2026-07-05T22:00:00.000Z', '8'),
-      source: 'manual', holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
-    })
+    // 固定過去日付fixtureが本番90日retention窓を実時計で越えて失効しないよう、Dateのみ凍結する。
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-07-15T00:00:00.000Z'))
+    try {
+      useAppStore.setState(s => ({
+        holdings: [], trust: [],
+        system: { ...s.system, csvLastImportedAt: null, csvImportProvenance: null, csvSyncSummary: null },
+      }))
+      const importedAt = '2026-07-05T23:00:00.000Z'
+      const raw = boundV3Snapshot({
+        schemaVersion: 'portfolio-snapshot-3', exportedAt: '2026-07-06T00:00:00.000Z',
+        csvImportedAt: importedAt,
+        csvImportProvenance: snapshotProvenance(importedAt, '2026-07-05T22:00:00.000Z', '8'),
+        source: 'manual', holdings: [], trust: [], portfolioPolicy: null, cashAssumptions: null,
+      })
 
-    expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
-    expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
-    expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.csvImportedAt).toBe(importedAt)
-    expect(restoreCsvImportedAt()).toBe(importedAt)
+      expect(await useAppStore.getState().importPortfolioSnapshot(raw)).toMatchObject({ ok: true, code: 'SUCCESS' })
+      expect(useAppStore.getState().system.csvLastImportedAt).toBe(importedAt)
+      expect(JSON.parse(store[CSV_IMPORT_GENERATION_KEY]).payload.csvImportedAt).toBe(importedAt)
+      expect(restoreCsvImportedAt()).toBe(importedAt)
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('R3-F006: stale store csvSyncSummaryをsnapshot canonicalへ混載せずstore/reloadもnull', async () => {

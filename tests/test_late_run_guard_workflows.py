@@ -46,6 +46,142 @@ def step_block(source: str, name: str) -> str:
     return source[start:end]
 
 
+# ── OPS P14 v13.4 Phase IV D01: reviewed dormant-wiring insertions ───────────
+# The historical broad P14 envelope comparison below stays byte-for-byte against
+# the historical BASE, except for exactly these reviewed insertions:
+#   producer  : step-level env on "Build candidate_funnel.json ..."
+#   consumer  : step env + CLI args on "Capture candidate funnel run evidence"
+#   cleanup   : the named "Cleanup candidate funnel P14 handoff" step (+ its note)
+# Nothing else is admitted; every other byte of the envelope is compared to BASE.
+BUILD_STEP = "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)"
+CAPTURE_STEP = "Capture candidate funnel run evidence"
+CLEANUP_STEP = "Cleanup candidate funnel P14 handoff"
+UPLOAD_DERIVED_PER_STEP_MARKER = (
+    "      - name: Upload derived PER migration calibration evidence\n"
+)
+HANDOFF_DIR_EXPRESSION = (
+    "${{ runner.temp }}/candidate-funnel-p14/${{ github.run_id }}-${{ github.run_attempt }}"
+)
+PRODUCER_ENV_INSERTION = (
+    "        env:\n"
+    f"          P14_HANDOFF_DIR: {HANDOFF_DIR_EXPRESSION}\n"
+    "          P14_EXPECTED_POLICY_VERSION: p14-decision-aware-v1\n"
+)
+CONSUMER_OUTPUT_ENV = (
+    ("P14_TRANSPORT_STATUS", "p14_transport_status"),
+    ("P14_HANDOFF_DIGEST", "p14_handoff_digest"),
+    ("P14_OBSERVATION_DIGEST", "p14_observation_digest"),
+    ("P14_RECEIPT_DIGEST", "p14_receipt_digest"),
+    ("P14_CAPTURE_INPUT_DIGEST", "p14_capture_input_digest"),
+    ("P14_EXECUTED_GIT_SHA", "p14_executed_git_sha"),
+    ("P14_OBSERVATION_SCHEMA", "p14_observation_schema"),
+    ("P14_HANDOFF_SCHEMA", "p14_handoff_schema"),
+    ("P14_POLICY_VERSION", "p14_policy_version"),
+    ("P14_RUN_ID", "p14_run_id"),
+    ("P14_RUN_ATTEMPT", "p14_run_attempt"),
+)
+CONSUMER_FLAGS = (
+    "transport-status", "handoff-digest", "observation-digest", "receipt-digest",
+    "capture-input-digest", "executed-git-sha", "observation-schema", "handoff-schema",
+    "policy-version", "run-id", "run-attempt",
+)
+CONSUMER_ENV_INSERTION = (
+    f"          P14_HANDOFF_DIR: {HANDOFF_DIR_EXPRESSION}\n"
+    + "".join(
+        f"          {env_name}: ${{{{ steps.candidate-funnel-build.outputs.{output} }}}}\n"
+        for env_name, output in CONSUMER_OUTPUT_ENV
+    )
+)
+CONSUMER_ARGS_INSERTION = (
+    '          --p14-handoff-dir "$P14_HANDOFF_DIR"\n'
+    "          --p14-expected-policy-version p14-decision-aware-v1\n"
+    + "".join(
+        f'          --p14-{flag} "${env_name}"\n'
+        for flag, (env_name, _output) in zip(CONSUMER_FLAGS, CONSUMER_OUTPUT_ENV)
+    )
+)
+
+
+def _replace_once(block: str, old: str, new: str) -> str:
+    assert block.count(old) == 1, old
+    return block.replace(old, new, 1)
+
+
+def reviewed_producer_block(original: str) -> str:
+    return _replace_once(
+        original,
+        "        shell: bash\n        run: |\n",
+        "        shell: bash\n" + PRODUCER_ENV_INSERTION + "        run: |\n",
+    )
+
+
+def reviewed_consumer_block(original: str) -> str:
+    smoke_env = (
+        "          CANDIDATE_FUNNEL_SMOKE_STATUS: "
+        "${{ steps.candidate-funnel-smoke.outputs.publication_status }}\n"
+    )
+    smoke_arg = '          --smoke-status "$CANDIDATE_FUNNEL_SMOKE_STATUS"\n'
+    block = _replace_once(original, smoke_env, smoke_env + CONSUMER_ENV_INSERTION)
+    return _replace_once(block, smoke_arg, smoke_arg + CONSUMER_ARGS_INSERTION)
+
+
+def reviewed_baseline_source() -> str:
+    """BASE with only the producer/consumer insertions applied (cleanup is
+    compared separately by removing it from the current source)."""
+    source = baseline(WORKFLOWS["full"])
+    for step_name, transform in (
+        (BUILD_STEP, reviewed_producer_block),
+        (CAPTURE_STEP, reviewed_consumer_block),
+    ):
+        original = step_block(source, step_name)
+        assert source.count(original) == 1
+        source = source.replace(original, transform(original), 1)
+    return source
+
+
+def source_without_cleanup(source: str) -> str:
+    start = source.index(f"      - name: {CLEANUP_STEP}\n")
+    assert source.count(f"      - name: {CLEANUP_STEP}\n") == 1
+    end = source.index(UPLOAD_DERIVED_PER_STEP_MARKER)
+    assert start < end
+    return source[:start] + source[end:]
+
+
+# ── OPS P14 v13.4 H01: reviewed release-history change of the Commit block ───
+# The three "Commit and push" run bodies replace their pull/rebase (or implicit
+# push) with a forward-only, exact-target history-safe sequence. Everything else of
+# those steps - and every other byte of the historical BASE envelope - is still
+# compared to BASE. The exception is exactly one named step and, inside it, only
+# the run body; the step header and the BASE staging/identity/message/guard lines
+# must survive verbatim.
+COMMIT_STEP = "Commit and push"
+COMMIT_RUN_MARKER = "        run: |\n"
+COMMIT_PRESERVED_LINE_PREFIXES = (
+    "git config user.",
+    "git add ",
+    "git commit -m ",
+)
+INTRADAY_UNSTAGED_GUARD = (
+    "          git diff --quiet || {\n"
+    '            echo "::error::Unstaged tracked changes remain after intraday staging"\n'
+    "            git status --short\n"
+    "            exit 1\n"
+    "          }\n"
+)
+
+
+def source_without_commit_step(source: str) -> str:
+    marker = f"      - name: {COMMIT_STEP}\n"
+    assert source.count(marker) == 1
+    return source.replace(step_block(source, COMMIT_STEP), "", 1)
+
+
+def commit_header_and_body(block: str) -> tuple[str, str]:
+    assert block.count(COMMIT_RUN_MARKER) == 1
+    header, body = block.split(COMMIT_RUN_MARKER, 1)
+    return header, body
+
+
 @pytest.mark.parametrize("workflow", WORKFLOWS)
 def test_each_workflow_has_one_guard_command_and_runtime_token(workflow):
     source = text(workflow)
@@ -117,29 +253,126 @@ def test_manual_trigger_and_schedule_entries_are_byte_unchanged(workflow):
 
 
 def test_full_p14_threshold_evidence_publication_rollback_and_enforcement_bytes_frozen():
+    """Historical broad envelope: BASE bytes plus ONLY the reviewed dormant
+    wiring (producer env, consumer env/args, named cleanup insertion)."""
     marker = "      # ── OPS-P14-2: same-run evidence input保全"
     end_marker = "  # ── Job 3: Routines (stub)"
-    current = text("full").split(marker, 1)[1].split(end_marker, 1)[0]
-    original = baseline(WORKFLOWS["full"]).split(marker, 1)[1].split(
-        end_marker, 1
-    )[0]
-    assert current == original
+    current = source_without_commit_step(
+        source_without_cleanup(text("full"))
+    ).split(marker, 1)[1].split(end_marker, 1)[0]
+    expected = source_without_commit_step(reviewed_baseline_source()).split(
+        marker, 1
+    )[1].split(end_marker, 1)[0]
+    assert current == expected
 
 
+def test_p14_cleanup_is_the_only_new_step_and_follows_the_evidence_upload():
+    current_names = [
+        line.split("- name: ", 1)[1]
+        for line in text("full").splitlines()
+        if line.startswith("      - name: ")
+    ]
+    original_names = [
+        line.split("- name: ", 1)[1]
+        for line in baseline(WORKFLOWS["full"]).splitlines()
+        if line.startswith("      - name: ")
+    ]
+    assert CLEANUP_STEP in current_names
+    assert [name for name in current_names if name != CLEANUP_STEP] == original_names
+    position = current_names.index(CLEANUP_STEP)
+    assert current_names[position - 1] == "Upload candidate funnel run evidence"
+    assert current_names[position + 1] == "Upload derived PER migration calibration evidence"
+
+
+def test_p14_producer_step_is_base_plus_only_the_reviewed_env():
+    current = step_block(text("full"), BUILD_STEP)
+    original = step_block(baseline(WORKFLOWS["full"]), BUILD_STEP)
+    assert current == reviewed_producer_block(original)
+    # The producer command and its exit/rollback shell remain untouched.
+    assert current.count("python3 -m data.candidate_funnel_batch\n") == 1
+    assert current.split("        run: |\n", 1)[1] == original.split("        run: |\n", 1)[1]
+
+
+def test_p14_consumer_step_is_base_plus_only_the_reviewed_wiring():
+    current = step_block(text("full"), CAPTURE_STEP)
+    original = step_block(baseline(WORKFLOWS["full"]), CAPTURE_STEP)
+    assert current == reviewed_consumer_block(original)
+    # Semantic anchors: still non-blocking, always-run, same id and legacy args.
+    assert "        id: candidate-funnel-evidence\n" in current
+    assert "        if: always()\n" in current
+    assert "        continue-on-error: true\n" in current
+    assert "secrets." not in current
+    assert "${{" not in current.split("        run: >-\n", 1)[1]
+
+
+PAGES_STEP = "Dispatch Pages for pushed data"
+
+
+def assert_commit_step_changes_only_the_reviewed_history_run_body(workflow):
+    """H01 exception: the Commit step header (name/id/run marker, no if/env/shell/
+    continue-on-error) is byte-identical to BASE and every BASE staging, identity,
+    data-message and unstaged-guard line survives; the run body itself is the
+    reviewed history-safe replacement (pinned by the block digests elsewhere)."""
+    current_block = step_block(text(workflow), COMMIT_STEP)
+    original_block = step_block(baseline(WORKFLOWS[workflow]), COMMIT_STEP)
+    current_header, current_body = commit_header_and_body(current_block)
+    original_header, original_body = commit_header_and_body(original_block)
+    assert current_header == original_header
+    assert current_header == (
+        f"      - name: {COMMIT_STEP}\n        id: commit-push\n"
+    )
+    current_lines = [line.strip() for line in current_body.splitlines()]
+    preserved = [
+        line.strip()
+        for line in original_body.splitlines()
+        if line.strip().startswith(COMMIT_PRESERVED_LINE_PREFIXES)
+    ]
+    assert len(preserved) >= 3
+    for line in preserved:
+        assert current_lines.count(line) == 1, line
+    assert current_lines.count('echo "data_changed=false" >> "$GITHUB_OUTPUT"') == 1
+    if workflow == "intraday":
+        assert INTRADAY_UNSTAGED_GUARD in original_block
+        assert INTRADAY_UNSTAGED_GUARD in current_block
+    # The superseded history behaviour is gone; no history rewrite is introduced.
+    active = [line for line in current_lines if line and not line.startswith("#")]
+    for forbidden in ("git pull", "rebase", "--force", "git reset", "--amend", "git merge "):
+        assert not any(forbidden in line for line in active), forbidden
+
+
+# Frozen selector identity (workflow x step_name, six cases): the combined Git/Pages
+# oracle. Pages stays byte-identical to BASE; the Commit block is checked against the
+# reviewed H01 history-safe exception above instead of the superseded BASE bytes.
 @pytest.mark.parametrize("workflow", WORKFLOWS)
 @pytest.mark.parametrize(
     "step_name", ["Commit and push", "Dispatch Pages for pushed data"]
 )
 def test_existing_git_and_pages_step_bytes_are_frozen(workflow, step_name):
-    assert step_block(text(workflow), step_name) == step_block(
-        baseline(WORKFLOWS[workflow]), step_name
+    if step_name == COMMIT_STEP:
+        assert_commit_step_changes_only_the_reviewed_history_run_body(workflow)
+    else:
+        assert step_name == PAGES_STEP
+        assert step_block(text(workflow), step_name) == step_block(
+            baseline(WORKFLOWS[workflow]), step_name
+        )
+
+
+# Additive split coverage, kept alongside the frozen combined selector.
+@pytest.mark.parametrize("workflow", WORKFLOWS)
+def test_existing_pages_step_bytes_are_frozen(workflow):
+    assert step_block(text(workflow), PAGES_STEP) == step_block(
+        baseline(WORKFLOWS[workflow]), PAGES_STEP
     )
+
+
+@pytest.mark.parametrize("workflow", WORKFLOWS)
+def test_commit_step_changes_only_the_reviewed_history_run_body(workflow):
+    assert_commit_step_changes_only_the_reviewed_history_run_body(workflow)
 
 
 @pytest.mark.parametrize(
     "step_name",
     [
-        "Capture candidate funnel run evidence",
         "Upload candidate funnel run evidence",
         "Enforce candidate funnel publication status",
     ],

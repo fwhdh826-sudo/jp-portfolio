@@ -13,13 +13,1293 @@ import一致検査ではなく、独立した期待値として固定する）�
 from __future__ import annotations
 
 import copy
+import ast
+import hashlib
+import inspect
 import json
+import subprocess
+import types
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
 
 import data.candidate_funnel_batch as batch
+
+II_B_BASE = "1d12bcdc9a3676d56a2625483f6fbb98ce3621e3"
+II_C_PRE_COMMIT_HEAD = "1af76c8b4f2d5712370ef64cc5eed57b77ff02aa"
+II_C_IMPLEMENTATION_PATHS = (
+    "data/candidate_funnel_batch.py",
+    "data/p14_handoff.py",
+)
+
+
+@pytest.fixture
+def pre_ii_b():
+    """Independent audited source oracle, not a second copy of II-B logic."""
+    source = subprocess.check_output(
+        ["git", "show", f"{II_B_BASE}:data/candidate_funnel_batch.py"], cwd=batch.REPO_ROOT,
+    )
+    assert hashlib.sha256(source).hexdigest() == "9e9b136912b555296bc630fcf15183072efebd560be7696ff63dbe1f47b597dd"
+    module = types.ModuleType("pre_ii_b_batch")
+    module.__file__ = batch.__file__
+    exec(compile(source, "audited-pre-ii-b-batch", "exec"), module.__dict__)
+    return module
+
+
+def _ii_b_result():
+    rows = []
+    for index in range(60):
+        rows.append({
+            "code": str(1000 + index), "name": f"row {index}", "sector": f"S{index % 8}",
+            "tier": "actionable" if index < 12 else "deep_review" if index < 40 else "screened",
+            "marketRank": index + 1, "marketScore": 100.0 - index * 1.5,
+            "rawCompositeScore": 1.0 - index / 60,
+            "dataConfidence": 1.0, "dataStatus": "ok", "prescreenScore": 100 - index,
+            "prescreenRank": index + 1, "prescreenPool": "main",
+            "themeStatus": "unavailable", "themes": [], "selectedReasons": [],
+            "riskReasons": [], "hardExclusionReasons": [],
+        })
+    return {
+        "schemaVersion": "candidate-funnel-1", "funnelVersion": "candidate-funnel-v1",
+        "scoreVersion": "market-score-v1", "not_for_trading": True, "status": "generated",
+        "degradationReasons": [], "counts": {"total": 60, "screened": 60, "deepReview": 40, "actionable": 12},
+        "candidates": rows, "excludedSummary": {"total": 0, "byReason": {}},
+        "sectorDistribution": {"deepReview": {f"S{i}": 5 for i in range(8)}, "actionable": {f"S{i}": 1 for i in range(8)}},
+        "scoreDistribution": {},
+        "selectionObservability": {
+            "regimeApplied": "bull_calm", "actionableHardMaxApplied": 12,
+            "actionableSectorCapApplied": 2, "deepReviewHardMaxApplied": 40,
+            "deepReviewSectorCapApplied": 6, "deepReviewSectorCapRelaxed": False,
+            "actionableSectorCapRelaxed": False, "deepReviewSectorCapOverflow": {},
+            "actionableSectorCapOverflow": {}, "deepReviewEligibleCount": 40,
+            "deepReviewSelectedCount": 40, "actionableEligibleCount": 12,
+            "actionableSelectedCount": 12, "sourceStale": False, "fallbackProvenance": False,
+        },
+    }
+
+
+def _ii_b_inputs(tmp_path):
+    payload = _candidates_stocks_payload([_candidate(str(1000 + i), sector=f"S{i % 8}") for i in range(60)])
+    paths = {
+        "candidates_stocks_path": tmp_path / "candidates.json",
+        "prescreen_metadata_path": tmp_path / "prescreen.json",
+        "regime_state_path": tmp_path / "regime.json",
+        "previous_artifact_path": tmp_path / "previous.json",
+    }
+    _write_json(paths["candidates_stocks_path"], payload)
+    _write_json(paths["prescreen_metadata_path"], _prescreen_payload([
+        _prescreen_entry(str(1000 + i), score=100 - i, rank=i + 1) for i in range(60)
+    ]))
+    _write_json(paths["regime_state_path"], {"regime_state": {"current_regime": "bull_calm"}})
+    return {**paths, "now": NOW}
+
+
+def _ii_b_stub(monkeypatch, module, outcome="PASS"):
+    base = _ii_b_result()
+    perturbed = copy.deepcopy(base)
+    if outcome == "WARN":
+        perturbed["candidates"][0]["marketRank"] = 2
+        perturbed["candidates"][1]["marketRank"] = 1
+    elif outcome == "FAIL":
+        perturbed["candidates"][0]["tier"] = "deep_review"
+    elif outcome == "NOT_GENERATED":
+        base["status"] = "not_generated"
+    calls = []
+
+    def engine(inputs, context):
+        calls.append((inputs, context))
+        return base if len(calls) == 1 else perturbed
+
+    monkeypatch.setattr(module, "build_candidate_funnel", engine)
+    monkeypatch.setattr(module, "compute_degraded_path_actionable", lambda *args: (0, {}))
+    return base, perturbed, calls
+
+
+def _ii_b_session(tmp_path, **kwargs):
+    run = {
+        "repository": "fwhdh826-sudo/jp-portfolio", "workflow": "full_batch.yml",
+        "job": "update-data", "runId": "12345", "runAttempt": "2", "event": "schedule",
+        "gitRef": "refs/heads/main", "gitRefType": "branch", "gitSha": "1" * 40,
+    }
+    blocks, receipts = [], []
+    session = batch.P14CaptureSession(
+        batch.P14CaptureConfig(tmp_path / "handoff", batch.canonical_json_bytes(run)),
+        reference_sink=kwargs.get("reference_sink", blocks.append), receipt_sink=receipts.append,
+    )
+    return session, blocks, receipts
+
+
+def _public_bytes(value):
+    return json.dumps(value, ensure_ascii=False, indent=2).encode("utf-8")
+
+
+def _key_paths(value, prefix=()):
+    if isinstance(value, dict):
+        return {(prefix + (key,)) for key in value} | set().union(*(_key_paths(child, prefix + (key,)) for key, child in value.items()), set())
+    if isinstance(value, list):
+        return set().union(*(_key_paths(child, prefix + (index,)) for index, child in enumerate(value)), set())
+    return set()
+
+
+def _configure_qgf_case(monkeypatch, module, case):
+    """Force one reviewed FAIL-capable gate through compute_quality_report."""
+    base, perturbed, calls = _ii_b_stub(monkeypatch, module)
+    original_quality = module.compute_quality_report
+
+    if case in {"P-07", "P-07-NULL"}:
+        original_stats = module.compute_market_score_stats
+
+        def market_stats(engine_result):
+            value = original_stats(engine_result)
+            value.update({"range": None, "iqr": None} if case == "P-07-NULL" else {"range": 0.0, "iqr": 0.0})
+            return value
+
+        monkeypatch.setattr(module, "compute_market_score_stats", market_stats)
+    if case == "P-12":
+        original_reasons = module.compute_reason_code_distribution
+
+        def reason_distribution(engine_result):
+            soft, hard, _ = original_reasons(engine_result)
+            code = sorted(module.INACTIVE_V1_SOFT_REASONS)[0]
+            soft[code] = 1
+            return soft, hard, [code]
+
+        monkeypatch.setattr(module, "compute_reason_code_distribution", reason_distribution)
+    if case == "P-13":
+        monkeypatch.setattr(module, "compute_degraded_path_actionable", lambda *args: (1, {}))
+    if case in {"P-14", "P-10+P-14"}:
+        original_release = module.compute_p14_release_evidence
+
+        def hard_release(engine_result, perturbed_result):
+            value = original_release(engine_result, perturbed_result)
+            value["final"] = {
+                "status": "FAIL",
+                "hardReasons": ["P14_TOP40_JACCARD_HARD_FAIL"],
+                "warnReasons": [],
+            }
+            return value
+
+        monkeypatch.setattr(module, "compute_p14_release_evidence", hard_release)
+    if case == "P-10+P-14":
+        monkeypatch.setattr(module, "compute_rank_drift_vs_previous", lambda *args: 1.0)
+
+    def forced_quality(**kwargs):
+        kwargs = dict(kwargs)
+        if case == "P-02":
+            kwargs["join_stats"] = {**kwargs["join_stats"], "joinRate": 0.94}
+        elif case == "P-04":
+            payload = copy.deepcopy(kwargs["candidates_stocks_payload"])
+            payload["candidates"].append(copy.deepcopy(payload["candidates"][0]))
+            kwargs["candidates_stocks_payload"] = payload
+        elif case == "PRESCREEN_DUPLICATE":
+            kwargs["prescreen_duplicate_codes"] = ["1000"]
+        elif case == "P-08":
+            engine_result = copy.deepcopy(kwargs["engine_result"])
+            engine_result["counts"]["deepReview"] = 0
+            kwargs["engine_result"] = engine_result
+        elif case in {"P-10", "P-10+P-14"}:
+            engine_result = copy.deepcopy(kwargs["engine_result"])
+            engine_result["sectorDistribution"] = {
+                "deepReview": {"S0": 40},
+                "actionable": {"S0": 12},
+            }
+            kwargs["engine_result"] = engine_result
+        return original_quality(**kwargs)
+
+    monkeypatch.setattr(module, "compute_quality_report", forced_quality)
+    return base, perturbed, calls
+
+
+@pytest.mark.parametrize("outcome", ["PASS", "WARN", "FAIL", "NOT_GENERATED"])
+@pytest.mark.parametrize("enabled", [False, True])
+def test_ii_b_public_bytes_match_audited_base(tmp_path, monkeypatch, pre_ii_b, outcome, enabled):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b, outcome)
+    expected = pre_ii_b.run_batch(**inputs)
+    base, perturbed, engine_calls = _ii_b_stub(monkeypatch, batch, outcome)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, **({"p14_capture": session} if enabled else {}))
+    assert actual == expected
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert _key_paths(actual[0]) == _key_paths(expected[0])
+    assert len(engine_calls) == (1 if outcome == "NOT_GENERATED" else 2)
+    if enabled:
+        assert len(receipts) == 1
+        receipt = json.loads(receipts[0])
+        assert receipt["report"] == actual[1]
+        assert receipt["terminalStatus"] == {
+            "PASS": "BATCH_READY", "WARN": "BATCH_READY",
+            "FAIL": "QUALITY_GATE_FAILED", "NOT_GENERATED": "NOT_GENERATED",
+        }[outcome]
+        if outcome != "NOT_GENERATED":
+            assert session.transport_status == "READY"
+            assert blocks[-1] == "p14_transport_status=READY\n"
+            parts = batch.handoff.read_handoff_parts(session.config.root, session.binding, session.producer_reference)
+            assert parts.receipt_bytes == receipts[0]
+            if actual[0] is not None:
+                actual[0]["candidates"][0]["code"] = "changed"
+                actual[0]["_meta"]["qualityGate"]["notes"].append("changed")
+            assert base["candidates"][0]["code"] == "1000"
+            assert actual[1]["qualityGate"]["notes"] == []
+            assert json.loads(parts.observation_bytes)["base"]["candidates"][0]["code"] == "1000"
+        else:
+            assert session.producer_reference is None
+            assert blocks == []
+
+
+def test_ii_c_a1_pre_commit_working_tree_provenance(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert _key_paths(actual[0]) == _key_paths(expected[0])
+    assert _key_paths(actual[1]) == _key_paths(expected[1])
+    assert actual[0] is not None
+    assert session.transport_status == "READY"
+    assert len("".join(blocks).splitlines()) == 11
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=batch.REPO_ROOT, text=True,
+    ).strip()
+    observation = json.loads(session.observation_bytes)
+    receipt = json.loads(session.receipt_bytes)
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    envelope = json.loads(parts.envelope_bytes)
+    assert observation["sourceIdentity"]["executedGitSha"] == head
+    assert receipt["executedGitSha"] == head
+    assert envelope["executedGitSha"] == head
+    assert session.producer_reference.executed_git_sha == head
+    module_hashes = {
+        item["path"]: item["sha256"] for item in observation["sourceIdentity"]["modules"]
+    }
+    assert module_hashes == {
+        path: hashlib.sha256((batch.REPO_ROOT / path).read_bytes()).hexdigest()
+        for path in batch.handoff.FIXED_MODULE_PATHS
+    }
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["artifactAvailable"] is True
+    assert receipt["report"]["qualityGate"]["overallPass"] is True
+    observation_digest = hashlib.sha256(parts.observation_bytes).hexdigest()
+    receipt_digest = hashlib.sha256(parts.receipt_bytes).hexdigest()
+    capture_input_digest = hashlib.sha256(parts.capture_input_bytes).hexdigest()
+    transport_digest = hashlib.sha256(parts.envelope_bytes).hexdigest()
+    assert receipt["observationDigest"] == observation_digest
+    assert envelope["observation"]["sha256"] == observation_digest
+    assert envelope["receipt"]["sha256"] == receipt_digest
+    assert envelope["captureInput"]["sha256"] == capture_input_digest
+    assert session.producer_reference.observation_digest == observation_digest
+    assert session.producer_reference.receipt_digest == receipt_digest
+    assert session.producer_reference.capture_input_digest == capture_input_digest
+    assert session.producer_reference.transport_digest == transport_digest
+    assert receipts == [parts.receipt_bytes]
+
+
+def test_ii_c_a1_committed_head_identity_after_exactly_one_implementation_commit(
+    tmp_path, monkeypatch,
+):
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=batch.REPO_ROOT, text=True,
+    ).strip()
+    committed_sources = {
+        path: subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=batch.REPO_ROOT)
+        for path in II_C_IMPLEMENTATION_PATHS
+    }
+    working_sources = {
+        path: (batch.REPO_ROOT / path).read_bytes()
+        for path in II_C_IMPLEMENTATION_PATHS
+    }
+
+    if head == II_C_PRE_COMMIT_HEAD:
+        assert {
+            path for path in II_C_IMPLEMENTATION_PATHS
+            if committed_sources[path] != working_sources[path]
+        } == set(II_C_IMPLEMENTATION_PATHS)
+        return
+
+    commit_count = subprocess.check_output(
+        ["git", "rev-list", "--count", f"{II_C_PRE_COMMIT_HEAD}..HEAD"],
+        cwd=batch.REPO_ROOT,
+        text=True,
+    ).strip()
+    assert commit_count == "1"
+    assert committed_sources == working_sources
+
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    observation = json.loads(parts.observation_bytes)
+    receipt = json.loads(parts.receipt_bytes)
+    envelope = json.loads(parts.envelope_bytes)
+
+    assert artifact is not None
+    assert report["qualityGate"]["overallPass"] is True
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["artifactAvailable"] is True
+    assert session.transport_status == "READY"
+    assert len("".join(blocks).splitlines()) == 11
+    assert receipts == [parts.receipt_bytes]
+    assert observation["sourceIdentity"]["executedGitSha"] == head
+    assert receipt["executedGitSha"] == head
+    assert envelope["executedGitSha"] == head
+    assert session.producer_reference.executed_git_sha == head
+
+    module_hashes = {
+        item["path"]: item["sha256"]
+        for item in observation["sourceIdentity"]["modules"]
+    }
+    committed_module_hashes = {
+        path: hashlib.sha256(
+            subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=batch.REPO_ROOT)
+        ).hexdigest()
+        for path in batch.handoff.FIXED_MODULE_PATHS
+    }
+    assert module_hashes == committed_module_hashes
+
+    observation_digest = hashlib.sha256(parts.observation_bytes).hexdigest()
+    receipt_digest = hashlib.sha256(parts.receipt_bytes).hexdigest()
+    capture_input_digest = hashlib.sha256(parts.capture_input_bytes).hexdigest()
+    transport_digest = hashlib.sha256(parts.envelope_bytes).hexdigest()
+    assert receipt["observationDigest"] == observation_digest
+    assert envelope["observation"]["sha256"] == observation_digest
+    assert envelope["receipt"]["sha256"] == receipt_digest
+    assert envelope["captureInput"]["sha256"] == capture_input_digest
+    assert session.producer_reference.observation_digest == observation_digest
+    assert session.producer_reference.receipt_digest == receipt_digest
+    assert session.producer_reference.capture_input_digest == capture_input_digest
+    assert session.producer_reference.transport_digest == transport_digest
+
+
+@pytest.mark.parametrize("terminal", ["BATCH_READY", "QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+def test_ii_c_seam_reuses_same_objects_and_one_perturbation(tmp_path, monkeypatch, terminal):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    base, perturbed, calls = _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    session, _, _ = _ii_b_session(tmp_path)
+    events = []
+    perturb = batch._perturb_candidates
+    construct = batch._p14_observation_bytes
+    evaluate = batch.compute_p14_release_evidence
+
+    def perturb_spy(values):
+        events.append("perturb")
+        return perturb(values)
+
+    def construct_spy(binding, left, right):
+        assert left is base and right is perturbed
+        events.append("canonical")
+        return construct(binding, left, right)
+
+    def evaluate_spy(left, right):
+        assert left is base and right is perturbed
+        events.append("v1")
+        return evaluate(left, right)
+
+    monkeypatch.setattr(batch, "_perturb_candidates", perturb_spy)
+    monkeypatch.setattr(batch, "_p14_observation_bytes", construct_spy)
+    monkeypatch.setattr(batch, "compute_p14_release_evidence", evaluate_spy)
+    batch.run_batch(**inputs, p14_capture=session)
+    assert events == ["perturb", "canonical", "v1"]
+    assert len(calls) == 2
+    assert calls[0][0] is not calls[1][0]
+    assert json.loads(session.receipt_bytes)["terminalStatus"] == terminal
+    assert session.producer_reference is not None
+
+
+@pytest.mark.parametrize("outcome", ["PASS", "WARN", "FAIL"])
+@pytest.mark.parametrize("failure", ["handoff", "type", "value", "attribute", "malformed_row", "malformed_container"])
+def test_ii_b_producer_failure_preserves_v1(tmp_path, monkeypatch, pre_ii_b, outcome, failure):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b, outcome)
+    expected = pre_ii_b.run_batch(**inputs)
+    base, perturbed, calls = _ii_b_stub(monkeypatch, batch, outcome)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    builder = batch.handoff.build_observation_bytes
+    perturb = batch._perturb_candidates
+    evaluate = batch.compute_p14_release_evidence
+    events = []
+
+    def broken(**kwargs):
+        events.append("construct")
+        if failure == "malformed_row":
+            kwargs["base"]["candidates"][0] = []
+        elif failure == "malformed_container":
+            kwargs["base"]["candidates"] = 1
+        else:
+            raise {"handoff": batch.handoff.HandoffError("HANDOFF_MALFORMED"), "type": TypeError(), "value": ValueError(), "attribute": AttributeError()}[failure]
+        return builder(**kwargs)  # Actual II-A raw producer exceptions (NOTE-R2-01).
+
+    def perturb_spy(values):
+        events.append("perturb")
+        return perturb(values)
+
+    def evaluate_spy(left, right):
+        assert left is base and right is perturbed
+        events.append("v1")
+        return evaluate(left, right)
+
+    monkeypatch.setattr(batch.handoff, "build_observation_bytes", broken)
+    monkeypatch.setattr(batch, "_perturb_candidates", perturb_spy)
+    monkeypatch.setattr(batch, "compute_p14_release_evidence", evaluate_spy)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+    assert events == ["perturb", "construct", "v1"]
+    assert len(calls) == 2
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert session.transport_status == "CANONICAL_CONSTRUCTION_FAILED"
+    assert session.observation_bytes is None and session.observation_digest is None
+    assert session.producer_reference is None and blocks == []
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["observationDigest"] is None
+    assert receipt["transportStatus"] == "CANONICAL_CONSTRUCTION_FAILED"
+    assert not session.config.root.exists()
+
+
+def test_ii_b_disabled_tripwires(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("disabled mode entered new ownership/transport work")
+
+    for name in ("_p14_observation_bytes", "_p14_privacy_check", "_p14_digest_binding", "content_digest", "canonical_json_bytes"):
+        monkeypatch.setattr(batch, name, forbidden)
+    for name in ("claim_attempt", "build_capture_input_bytes", "build_batch_receipt_bytes", "make_producer_reference", "write_handoff_parts"):
+        monkeypatch.setattr(batch.handoff, name, forbidden)
+    monkeypatch.setattr(batch.copy, "deepcopy", forbidden)
+    assert _public_bytes(batch.run_batch(**inputs)) == _public_bytes(expected)
+
+
+def test_ii_b_schema_violations_terminal_receipt(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    for module in (pre_ii_b, batch):
+        _ii_b_stub(monkeypatch, module)
+        monkeypatch.setattr(module, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    expected = pre_ii_b.run_batch(**inputs)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+    assert actual == expected and actual[0] is None
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == "SCHEMA_VIOLATIONS"
+    assert receipt["artifactAvailable"] is False
+    assert receipt["report"]["qualityGate"]["overallPass"] is True
+    assert receipt["report"]["schemaViolations"] == ["schemaVersion mismatch"]
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    assert parts.receipt_bytes == receipts[0]
+
+
+@pytest.mark.parametrize("failure", ["input", "engine", "v1"])
+def test_ii_b_escaping_exceptions_are_not_swallowed(tmp_path, monkeypatch, failure):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    error = batch.CandidateFunnelBatchError("original") if failure == "input" else RuntimeError("original")
+
+    def broken(*args, **kwargs):
+        raise error
+
+    monkeypatch.setattr(batch, {"input": "load_candidates_stocks", "engine": "build_candidate_funnel", "v1": "compute_p14_release_evidence"}[failure], broken)
+    with pytest.raises(type(error)) as caught:
+        batch.run_batch(**inputs, p14_capture=session)
+    assert caught.value is error
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == ("BATCH_INPUT_ERROR" if failure == "input" else "BATCH_EXCEPTION")
+    assert receipt["reportState"] == "UNAVAILABLE"
+    assert session.producer_reference is None and blocks == []
+
+
+@pytest.mark.parametrize("operation", ["capture", "receipt", "claim", "write", "reference", "sink_first", "sink_ready"])
+def test_ii_b_transport_failure_is_independent_of_release(tmp_path, monkeypatch, pre_ii_b, operation):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _, _, calls = _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    perturb_calls = []
+    perturb = batch._perturb_candidates
+
+    def perturb_spy(values):
+        perturb_calls.append(1)
+        return perturb(values)
+
+    def broken(*args, **kwargs):
+        raise OSError("must not escape transport")
+
+    monkeypatch.setattr(batch, "_perturb_candidates", perturb_spy)
+    names = {"capture": "build_capture_input_bytes", "receipt": "build_batch_receipt_bytes", "claim": "claim_attempt", "write": "write_handoff_parts", "reference": "make_producer_reference"}
+    if operation in names:
+        monkeypatch.setattr(batch.handoff, names[operation], broken)
+    else:
+        def failing_sink(block):
+            if operation == "sink_first" or "p14_transport_status=READY" in block:
+                raise OSError("output unavailable")
+            blocks.append(block)
+        session.reference_sink = failing_sink
+    actual = batch.run_batch(**inputs, p14_capture=session)
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert perturb_calls == [1] and len(calls) == 2
+    assert session.transport_status != "READY"
+    assert session.producer_reference is None
+    assert not any("p14_transport_status=READY" in block for block in blocks)
+
+
+def test_ii_b_raw_input_identity_uses_loaded_bytes_once(tmp_path, monkeypatch):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    path = inputs["regime_state_path"]
+    original = b'{\r\n"regime_state":{"current_regime":"bull_calm"}\r\n}\r\n'
+    path.write_bytes(original)
+    reads = []
+    read = Path.read_bytes
+
+    def read_spy(candidate):
+        if candidate == path:
+            reads.append(candidate)
+        return read(candidate)
+
+    monkeypatch.setattr(Path, "read_bytes", read_spy)
+    session, _, _ = _ii_b_session(tmp_path)
+    batch.run_batch(**inputs, p14_capture=session)
+    assert reads == [path]
+    raw = session.raw_files["regimeState"]
+    assert raw.sha256 == hashlib.sha256(original).hexdigest()
+    assert raw.bytes == len(original)
+    assert session.raw_files["previousArtifact"].present is False
+    assert json.loads(session.capture_input_bytes)["context"]["regime"] == "bull_calm"
+
+
+def test_ii_b_source_observer_failure_does_not_change_loaders(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, _ = _ii_b_session(tmp_path)
+    original = batch.content_digest
+
+    def failed_hash(payload):
+        if payload == inputs["candidates_stocks_path"].read_bytes():
+            raise ValueError("observer failure")
+        return original(payload)
+
+    monkeypatch.setattr(batch, "content_digest", failed_hash)
+    assert _public_bytes(batch.run_batch(**inputs, p14_capture=session)) == _public_bytes(expected)
+    assert session.transport_status == "INPUT_IDENTITY_UNAVAILABLE"
+    assert session.producer_reference is None and blocks == []
+
+
+@pytest.mark.parametrize("failure", ["snapshot", "ownership"])
+def test_ii_b_optional_acquisition_failure_preserves_v1(tmp_path, monkeypatch, pre_ii_b, failure):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _, _, calls = _ii_b_stub(monkeypatch, batch)
+    session, blocks, _ = _ii_b_session(tmp_path)
+    if failure == "snapshot":
+        read = Path.read_bytes
+
+        def failed_read(path):
+            if path == inputs["candidates_stocks_path"]:
+                raise OSError("snapshot wrapper unavailable")
+            return read(path)
+
+        monkeypatch.setattr(Path, "read_bytes", failed_read)
+    else:
+        def failed_copy(value):
+            raise TypeError("ownership construction unavailable")
+        monkeypatch.setattr(batch.copy, "deepcopy", failed_copy)
+    assert _public_bytes(batch.run_batch(**inputs, p14_capture=session)) == _public_bytes(expected)
+    assert len(calls) == 2
+    assert session.transport_status == ("INPUT_IDENTITY_UNAVAILABLE" if failure == "snapshot" else "CANONICAL_CONSTRUCTION_FAILED")
+    assert session.producer_reference is None and blocks == []
+
+
+def test_ii_b_canonical_failure_after_observation_clears_session_authority(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    accepted = []
+    accept = session.accept_observation
+    original_deepcopy = batch.copy.deepcopy
+
+    def record_accepted_observation(payload):
+        assert payload is not None
+        accept(payload)
+        accepted.append((session.observation_bytes, session.observation_digest))
+
+    def failed_artifact_copy(value):
+        if isinstance(value, dict) and value.get("schemaVersion") == "candidate-funnel-1":
+            assert session.observation_bytes is not None
+            assert session.observation_digest is not None
+            raise TypeError("canonical artifact ownership construction unavailable")
+        return original_deepcopy(value)
+
+    monkeypatch.setattr(session, "accept_observation", record_accepted_observation)
+    monkeypatch.setattr(batch.copy, "deepcopy", failed_artifact_copy)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert len(accepted) == 1
+    accepted_bytes, accepted_digest = accepted[0]
+    assert accepted_bytes is not None and accepted_digest is not None
+    assert hashlib.sha256(accepted_bytes).hexdigest() == accepted_digest
+    assert session.transport_status == "CANONICAL_CONSTRUCTION_FAILED"
+    assert session.observation_bytes is None
+    assert session.observation_digest is None
+    assert session.producer_reference is None and blocks == []
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["transportStatus"] == "CANONICAL_CONSTRUCTION_FAILED"
+    assert receipt["observationDigest"] is None
+    assert not session.config.root.exists()
+
+
+def test_p14_phase_ii_batch_import_contract(pre_ii_b):
+    expected_scopes = {
+        "<module>": {"DATA_OUTPUT_PATH", "TOP_N_STABILITY", "_jaccard", "_perturb_candidates", "_top_n_codes_ordered"},
+        "_reconstruct_batch_inputs": {
+            "CANDIDATES_STOCKS_PATH", "PRESCREEN_METADATA_PATH", "REGIME_STATE_PATH",
+            "build_context", "build_prescreen_index", "join_candidates_with_prescreen",
+            "load_candidates_stocks", "load_prescreen_metadata", "read_current_regime",
+        },
+    }
+    source = (batch.REPO_ROOT / "data/derived_per_calibration.py").read_text()
+    tree = ast.parse(source)
+    records = {}
+
+    def imports(node, scope="<module>"):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            scope = node.name
+        if isinstance(node, ast.ImportFrom) and node.module == "data.candidate_funnel_batch":
+            assert all(alias.asname is None for alias in node.names)
+            records[scope] = {alias.name for alias in node.names}
+            namespace = {}
+            exec(compile(ast.Module(body=[node], type_ignores=[]), "batch-import-probe", "exec"), namespace)
+            for alias in node.names:
+                assert namespace[alias.name] is getattr(batch, alias.name)
+        for child in ast.iter_child_nodes(node):
+            imports(child, scope)
+
+    imports(tree)
+    assert records == expected_scopes
+    assert sum(map(len, records.values())) == 14
+    expected_consumers = {
+        "candidate_funnel_run_evidence": "CANDIDATES_STOCKS_PATH CandidateFunnelBatchError P14_ASSIGNMENT_CONTRACT P14_RELEASE_POLICY_VERSION PERTURBATION_PCT PRESCREEN_METADATA_PATH RANK_STABILITY_JACCARD_MIN REGIME_STATE_PATH TOP_N_STABILITY build_context build_prescreen_index compute_p14_release_evidence compute_quality_report compute_rank_stability join_candidates_with_prescreen load_candidates_stocks load_prescreen_metadata load_previous_artifact read_current_regime",
+        "p14_evidence_capture": "CANDIDATES_STOCKS_PATH DATA_OUTPUT_PATH P14_ASSIGNMENT_CONTRACT P14_ASSIGNMENT_NOTE PERTURBATION_PCT PRESCREEN_METADATA_PATH RANK_STABILITY_JACCARD_MIN REGIME_STATE_PATH TOP_N_STABILITY _p14_canonical_sign_by_code _perturb_candidates build_context build_prescreen_index compute_quality_report join_candidates_with_prescreen load_previous_artifact read_current_regime",
+        "p14_evidence_validate": "P14_ASSIGNMENT_CONTRACT P14_ASSIGNMENT_NOTE PERTURBATION_PCT RANK_STABILITY_JACCARD_MIN TOP_N_STABILITY _p14_canonical_sign_by_code",
+        "p14_legacy_replay": "P14_ASSIGNMENT_CONTRACT P14_ASSIGNMENT_NOTE PERTURBATION_PCT _p14_canonical_sign_by_code _perturb_candidates",
+    }
+    names = set().union(*expected_scopes.values())
+    for module, expected in expected_consumers.items():
+        consumer_tree = ast.parse((batch.REPO_ROOT / f"data/{module}.py").read_text())
+        aliases = {alias.asname or alias.name for node in ast.walk(consumer_tree) if isinstance(node, ast.ImportFrom) and node.module == "data" for alias in node.names if alias.name == "candidate_funnel_batch"}
+        assert aliases == {"batch"}
+        used = {node.attr for node in ast.walk(consumer_tree) if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id in aliases}
+        assert used == set(expected.split())
+        names.update(used)
+        # Bind every actual consumer call shape without executing its workflow.
+        for node in ast.walk(consumer_tree):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id in aliases:
+                assert not any(isinstance(arg, ast.Starred) for arg in node.args)
+                assert not any(keyword.arg is None for keyword in node.keywords)
+                inspect.signature(getattr(batch, node.func.attr)).bind(
+                    *([None] * len(node.args)), **{keyword.arg: None for keyword in node.keywords},
+                )
+    for name in names:
+        current, original = getattr(batch, name), getattr(pre_ii_b, name)
+        if inspect.isfunction(original):
+            before, after = inspect.signature(original), inspect.signature(current)
+            for key, parameter in before.parameters.items():
+                assert key in after.parameters
+                assert after.parameters[key].kind == parameter.kind
+                assert after.parameters[key].default == parameter.default
+            for key in after.parameters.keys() - before.parameters.keys():
+                assert after.parameters[key].kind == inspect.Parameter.KEYWORD_ONLY
+                assert after.parameters[key].default is None
+        elif not inspect.isclass(original):
+            assert current == original
+    for name in ("_perturb_candidates", "_p14_canonical_sign_by_code", "_jaccard", "_top_n_codes_ordered", "compute_rank_stability", "compute_p14_release_evidence"):
+        old_tree = ast.parse(subprocess.check_output(["git", "show", f"{II_B_BASE}:data/candidate_funnel_batch.py"], cwd=batch.REPO_ROOT, text=True))
+        old = next(node for node in old_tree.body if isinstance(node, ast.FunctionDef) and node.name == name)
+        new = ast.parse(inspect.getsource(getattr(batch, name))).body[0]
+        assert ast.dump(old) == ast.dump(new)
+    from data import candidate_funnel_run_evidence as evidence
+    assert batch.REPLAY_CANDIDATE_FIELDS == evidence.REPLAY_CANDIDATE_FIELDS
+
+
+@pytest.mark.parametrize("regime", ["bull_calm", None])
+def test_ii_b_derived_per_controlled_lazy_import_runtime(tmp_path, monkeypatch, regime):
+    from data import derived_per_calibration as derived
+    inputs = _ii_b_inputs(tmp_path)
+    for name, key in (("CANDIDATES_STOCKS_PATH", "candidates_stocks_path"), ("PRESCREEN_METADATA_PATH", "prescreen_metadata_path"), ("REGIME_STATE_PATH", "regime_state_path")):
+        monkeypatch.setattr(batch, name, inputs[key])
+    _write_json(inputs["regime_state_path"], {"regime_state": {"current_regime": regime}})
+    calls = []
+    for name in ("load_candidates_stocks", "load_prescreen_metadata", "read_current_regime", "build_prescreen_index", "join_candidates_with_prescreen", "build_context"):
+        original = getattr(batch, name)
+
+        def spy(*args, _name=name, _original=original, **kwargs):
+            calls.append(_name)
+            return _original(*args, **kwargs)
+
+        monkeypatch.setattr(batch, name, spy)
+    monkeypatch.setattr(batch, "build_candidate_funnel", lambda *args: pytest.fail("helper must not execute engine"))
+    value = derived._reconstruct_batch_inputs(NOW)
+    assert calls == ["load_candidates_stocks", "load_prescreen_metadata", "read_current_regime", "build_prescreen_index", "join_candidates_with_prescreen", "build_context"]
+    assert value["regime"] == regime
+    assert value["source_context"]["asOf"] == NOW.isoformat()
+    assert len(value["joined_candidates"]) == 60
+    assert value["joined_candidates"][0]["prescreenRank"] == 1
+    inputs["candidates_stocks_path"].write_text("{", encoding="utf-8")
+    with pytest.raises(batch.CandidateFunnelBatchError):
+        derived._reconstruct_batch_inputs(NOW)
+
+
+def _ii_b_enable_environment(monkeypatch, tmp_path):
+    values = {
+        "P14_HANDOFF_MODE": "enabled", "P14_HANDOFF_DIR": str(tmp_path / "handoff"),
+        "GITHUB_OUTPUT": str(tmp_path / "runner-output"),
+        "GITHUB_REPOSITORY": "fwhdh826-sudo/jp-portfolio", "GITHUB_JOB": "update-data",
+        "GITHUB_RUN_ID": "12345", "GITHUB_RUN_ATTEMPT": "2", "GITHUB_EVENT_NAME": "schedule",
+        "GITHUB_REF": "refs/heads/main", "GITHUB_REF_TYPE": "branch", "GITHUB_SHA": "1" * 40,
+    }
+    for name, value in values.items():
+        monkeypatch.setenv(name, value)
+    return values
+
+
+def test_ii_b_disabled_adapter_does_not_read_or_touch_handoff_paths(tmp_path, monkeypatch, pre_ii_b, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    environment = _ii_b_enable_environment(monkeypatch, tmp_path)
+    monkeypatch.setenv("P14_HANDOFF_MODE", "disabled")
+    output_path = Path(environment["GITHUB_OUTPUT"])
+    handoff_dir = Path(environment["P14_HANDOFF_DIR"])
+    output_path.write_text("existing runner output\n", encoding="utf-8")
+
+    class TrackedEnvironment(dict):
+        def __init__(self, values):
+            super().__init__(values)
+            self.watched_reads = []
+
+        def __getitem__(self, key):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().__getitem__(key)
+
+        def get(self, key, default=None):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().get(key, default)
+
+        def __contains__(self, key):
+            if key in {"GITHUB_OUTPUT", "P14_HANDOFF_DIR"}:
+                self.watched_reads.append(key)
+            return super().__contains__(key)
+
+    environment_reads = TrackedEnvironment(dict(batch.os.environ))
+    filesystem_accesses = []
+    sessions = []
+    calls = []
+    published = []
+    original_session = batch.P14CaptureSession
+
+    def construct_session(*args, **kwargs):
+        sessions.append(True)
+        return original_session(*args, **kwargs)
+
+    def legacy_run(**kwargs):
+        calls.append(kwargs)
+        return expected
+
+    monkeypatch.setattr(batch, "run_batch", legacy_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+
+    with monkeypatch.context() as guarded:
+        guarded.setattr(batch.os, "environ", environment_reads)
+        guarded.setattr(batch, "P14CaptureSession", construct_session)
+        for method_name in (
+            "open", "read_bytes", "read_text", "write_bytes", "write_text",
+            "stat", "lstat", "resolve", "exists", "is_file", "is_dir",
+            "mkdir", "touch",
+        ):
+            original_method = getattr(Path, method_name)
+
+            def tripwire(path, *args, _method=original_method, _name=method_name, **kwargs):
+                if path in {output_path, handoff_dir}:
+                    filesystem_accesses.append((_name, str(path)))
+                return _method(path, *args, **kwargs)
+
+            guarded.setattr(Path, method_name, tripwire)
+        assert batch.main(()) == 0
+
+    assert set(environment) >= {
+        "P14_HANDOFF_MODE", "P14_HANDOFF_DIR", "GITHUB_OUTPUT", "GITHUB_REPOSITORY",
+        "GITHUB_JOB", "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_EVENT_NAME",
+        "GITHUB_REF", "GITHUB_REF_TYPE", "GITHUB_SHA",
+    }
+    assert environment_reads["P14_HANDOFF_MODE"] == "disabled"
+    assert environment_reads.watched_reads == []
+    assert filesystem_accesses == []
+    assert sessions == []
+    assert calls == [{}]
+    assert published == [expected[0]]
+    assert output_path.read_text(encoding="utf-8") == "existing runner output\n"
+    assert not handoff_dir.exists()
+    assert capsys.readouterr().err == ""
+
+
+@pytest.mark.parametrize(
+    ("mode", "activates"),
+    [
+        (" enabled", False),
+        ("enabled ", False),
+        ("ENABLED", False),
+        ("Enabled", False),
+        ("true", False),
+        ("1", False),
+        ("enabled", True),
+    ],
+)
+def test_ii_b_mode_matching_is_exact_with_complete_environment(
+    tmp_path, monkeypatch, pre_ii_b, capsys, mode, activates,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    monkeypatch.setenv("P14_HANDOFF_MODE", mode)
+    sessions = []
+    calls = []
+    published = []
+    original_session = batch.P14CaptureSession
+
+    def construct_session(*args, **kwargs):
+        session = original_session(*args, **kwargs)
+        sessions.append(session)
+        return session
+
+    def run(**kwargs):
+        calls.append(kwargs)
+        return expected
+
+    monkeypatch.setattr(batch, "P14CaptureSession", construct_session)
+    monkeypatch.setattr(batch, "run_batch", run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 0
+
+    assert published == [expected[0]]
+    if activates:
+        assert len(sessions) == 1
+        assert calls == [{"p14_capture": sessions[0]}]
+        assert capsys.readouterr().err == ""
+    else:
+        assert sessions == []
+        assert calls == [{}]
+        assert capsys.readouterr().err == "P14 transport: CAPTURE_CONFIGURATION_INVALID\n"
+
+
+@pytest.mark.parametrize("mode", [None, "disabled", "invalid", " enabled", "enabled"])
+def test_ii_b_main_dormant_or_invalid_config_is_v1_compatible(tmp_path, monkeypatch, pre_ii_b, capsys, mode):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b)
+    expected = pre_ii_b.run_batch(**inputs)
+    published = []
+    calls = []
+    monkeypatch.delenv("GITHUB_OUTPUT", raising=False)
+    if mode is None:
+        monkeypatch.delenv("P14_HANDOFF_MODE", raising=False)
+    else:
+        monkeypatch.setenv("P14_HANDOFF_MODE", mode)
+
+    def run(**kwargs):
+        calls.append(kwargs)
+        return expected
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("disabled or invalid configuration constructed a session")
+
+    monkeypatch.setattr(batch, "P14CaptureSession", forbidden)
+    monkeypatch.setattr(batch, "run_batch", run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 0
+    assert calls == [{}]
+    assert published == [expected[0]]
+    output = capsys.readouterr()
+    if mode in (None, "disabled"):
+        assert output.err == ""
+    else:
+        assert output.err == "P14 transport: CAPTURE_CONFIGURATION_INVALID\n"
+    assert not (tmp_path / "handoff").exists()
+
+
+@pytest.mark.parametrize("outcome", ["PASS", "WARN", "FAIL", "NOT_GENERATED"])
+def test_ii_b_main_enabled_harness_preserves_publication_gate(tmp_path, monkeypatch, pre_ii_b, capsys, outcome):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, pre_ii_b, outcome)
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_stub(monkeypatch, batch, outcome)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    run = batch.run_batch
+    sessions, published = [], []
+
+    def controlled_run(**kwargs):
+        sessions.append(kwargs["p14_capture"])
+        return run(**inputs, **kwargs)
+
+    monkeypatch.setattr(batch, "run_batch", controlled_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == (0 if expected[0] is not None else 1)
+    session = sessions[0]
+    assert json.loads(session.receipt_bytes)["report"] == expected[1]
+    if expected[0] is not None:
+        assert _public_bytes(published[0]) == _public_bytes(expected[0])
+    else:
+        assert published == []
+    if outcome != "NOT_GENERATED":
+        output = (tmp_path / "runner-output").read_text()
+        assert output.endswith("p14_transport_status=READY\n")
+        assert output.count("p14_transport_status=") == 1
+        assert len(output.splitlines()) == 11
+        assert session.producer_reference.executed_git_sha != "1" * 40
+        assert json.loads(session.observation_bytes)["runIdentity"]["gitSha"] == "1" * 40
+    else:
+        assert not (tmp_path / "runner-output").exists()
+    capsys.readouterr()
+
+
+def test_ii_c_schema_violation_ready_reference_does_not_publish(tmp_path, monkeypatch, pre_ii_b, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    for module in (pre_ii_b, batch):
+        _ii_b_stub(monkeypatch, module)
+        monkeypatch.setattr(module, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    expected = pre_ii_b.run_batch(**inputs)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    run = batch.run_batch
+    sessions, published = [], []
+
+    def controlled_run(**kwargs):
+        sessions.append(kwargs["p14_capture"])
+        return run(**inputs, **kwargs)
+
+    monkeypatch.setattr(batch, "run_batch", controlled_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 1
+    assert expected[0] is None
+    assert published == []
+    session = sessions[0]
+    assert session.producer_reference is not None
+    receipt = json.loads(session.receipt_bytes)
+    assert receipt["terminalStatus"] == "SCHEMA_VIOLATIONS"
+    assert receipt["artifactAvailable"] is False
+    assert receipt["report"]["qualityGate"]["overallPass"] is True
+    output = (tmp_path / "runner-output").read_text()
+    assert output.endswith("p14_transport_status=READY\n")
+    assert len(output.splitlines()) == 11
+    capsys.readouterr()
+
+
+def test_ii_b_main_output_failure_is_transport_only(tmp_path, monkeypatch, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    monkeypatch.setenv("GITHUB_OUTPUT", str(tmp_path / "absent-parent" / "output"))
+    run = batch.run_batch
+    sessions, published = [], []
+
+    def controlled_run(**kwargs):
+        sessions.append(kwargs["p14_capture"])
+        return run(**inputs, **kwargs)
+
+    monkeypatch.setattr(batch, "run_batch", controlled_run)
+    monkeypatch.setattr(batch, "publish_artifact", published.append)
+    assert batch.main(()) == 0
+    assert len(published) == 1
+    assert sessions[0].producer_reference is None
+    assert sessions[0].transport_status == "HANDOFF_WRITE_FAILED"
+    assert capsys.readouterr().err == "P14 transport: HANDOFF_WRITE_FAILED\n"
+
+
+def test_ii_b_main_input_failure_finalizes_and_preserves_exit(tmp_path, monkeypatch, capsys):
+    inputs = _ii_b_inputs(tmp_path)
+    inputs["candidates_stocks_path"].write_text("{", encoding="utf-8")
+    _ii_b_enable_environment(monkeypatch, tmp_path)
+    run = batch.run_batch
+    sessions = []
+
+    def controlled_run(**kwargs):
+        sessions.append(kwargs["p14_capture"])
+        return run(**inputs, **kwargs)
+
+    monkeypatch.setattr(batch, "run_batch", controlled_run)
+    monkeypatch.setattr(batch, "publish_artifact", lambda *args: pytest.fail("input error cannot publish"))
+    assert batch.main(()) == 1
+    assert json.loads(sessions[0].receipt_bytes)["terminalStatus"] == "BATCH_INPUT_ERROR"
+    assert not (tmp_path / "runner-output").exists()
+    assert "P14 transport: P14_NOT_EVALUATED" in capsys.readouterr().err
+
+
+def test_ii_b_non_p14_gate_failure_receipt(tmp_path, monkeypatch):
+    inputs = _ii_b_inputs(tmp_path)
+    base, _, _ = _ii_b_stub(monkeypatch, batch)
+    base["sectorDistribution"]["deepReview"] = {"S0": 40}
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is None and report["qualityGate"]["hardFailIds"] == ["P-10"]
+    assert json.loads(receipts[0])["terminalStatus"] == "QUALITY_GATE_FAILED"
+    assert json.loads(receipts[0])["report"] == report
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    assert parts.receipt_bytes == receipts[0]
+    assert json.loads(parts.receipt_bytes)["report"]["qualityGate"]["p14ReleaseEvidence"]["final"]["status"] in {"PASS", "WARN"}
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_fail_ids", "p15_numeric"),
+    [
+        ("P-02", {"P-02"}, False),
+        ("P-04", {"P-04"}, False),
+        ("PRESCREEN_DUPLICATE", {"PRESCREEN_DUPLICATE"}, False),
+        ("P-07", {"P-07"}, False),
+        ("P-07-NULL", {"P-07"}, False),
+        ("P-08", {"P-08"}, False),
+        ("P-10", {"P-10"}, False),
+        ("P-12", {"P-12"}, False),
+        ("P-13", {"P-13"}, False),
+        ("P-14", {"P-14"}, False),
+        ("P-10+P-14", {"P-10", "P-14"}, True),
+    ],
+)
+def test_ii_c_qgf_receipt_matrix_uses_real_quality_and_finish_paths(
+    tmp_path, monkeypatch, pre_ii_b, case, expected_fail_ids, p15_numeric,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    _configure_qgf_case(monkeypatch, pre_ii_b, case)
+    expected = pre_ii_b.run_batch(**inputs)
+    _configure_qgf_case(monkeypatch, batch, case)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    actual = batch.run_batch(**inputs, p14_capture=session)
+
+    assert _public_bytes(actual) == _public_bytes(expected)
+    assert actual[0] is None
+    quality = actual[1]["qualityGate"]
+    assert expected_fail_ids.issubset(quality["hardFailIds"])
+    assert quality["overallPass"] is False
+    assert session.transport_status == "READY"
+    assert session.producer_reference is not None
+    assert blocks[-1] == "p14_transport_status=READY\n"
+    parts = batch.handoff.read_handoff_parts(
+        session.config.root, session.binding, session.producer_reference,
+    )
+    attempt = session.config.root / "run-12345" / "attempt-2"
+    names = {path.name for path in attempt.iterdir()}
+    assert names == {
+        batch.handoff.CLAIM_FILE,
+        batch.handoff.CLAIM_CONSUMED_FILE,
+        batch.handoff.CAPTURE_INPUT_FILE,
+        batch.handoff.RECEIPT_FILE,
+        batch.handoff.HANDOFF_FILE,
+        f"observation-{session.producer_reference.observation_digest}.json",
+    }
+    assert parts.receipt_bytes == receipts[0]
+    receipt = json.loads(parts.receipt_bytes)
+    assert receipt["terminalStatus"] == "QUALITY_GATE_FAILED"
+    assert receipt["artifactAvailable"] is False
+    assert receipt["transportStatus"] == "READY"
+    assert expected_fail_ids.issubset(receipt["report"]["qualityGate"]["hardFailIds"])
+    p14_status = receipt["report"]["qualityGate"]["p14ReleaseEvidence"]["final"]["status"]
+    if "P-14" in expected_fail_ids:
+        assert p14_status == "FAIL"
+        assert "P-14" in receipt["report"]["qualityGate"]["hardFailIds"]
+    else:
+        assert p14_status in {"PASS", "WARN"}
+        assert "P-14" not in receipt["report"]["qualityGate"]["hardFailIds"]
+    gate_ids = {gate["id"] for gate in receipt["report"]["qualityGate"]["gates"]}
+    assert {f"P-{number:02d}" for number in range(1, 16)}.issubset(gate_ids)
+    assert "PRESCREEN_DUPLICATE" in gate_ids
+    p15 = _gate(receipt["report"]["qualityGate"], "P-15")["value"]
+    assert (type(p15) is float) is p15_numeric
+
+
+def test_ii_c_fail_capable_gate_set_has_source_derived_drift_tripwire():
+    tree = ast.parse(inspect.getsource(batch.compute_quality_report))
+    fail_capable = {
+        ast.literal_eval(node.args[0])
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "_gate"
+        and len(node.args) >= 5
+        and any(
+            isinstance(child, ast.Constant) and child.value == "FAIL"
+            for child in ast.walk(node.args[4])
+        )
+    }
+    fail_capable.add("P-14")  # status is returned by the frozen decision-aware evaluator.
+    assert fail_capable == {
+        "P-02", "P-04", "PRESCREEN_DUPLICATE", "P-07", "P-08",
+        "P-10", "P-12", "P-13", "P-14",
+    }
+
+
+@pytest.mark.parametrize("terminal", ["QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+@pytest.mark.parametrize("injection", ["holdings", "arbitraryUnknownKey", "token"])
+def test_ii_c_failure_handoff_privacy_remains_fail_closed(
+    tmp_path, monkeypatch, terminal, injection,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+    original_quality = batch.compute_quality_report
+
+    def unsafe_quality(**kwargs):
+        value = original_quality(**kwargs)
+        if injection == "token":
+            value["gates"][0]["note"] = "ghp_" + "A" * 36
+        else:
+            value[injection] = {"nested": "private"}
+        return value
+
+    monkeypatch.setattr(batch, "compute_quality_report", unsafe_quality)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is None
+    assert report["qualityGate"]["overallPass"] is (terminal == "SCHEMA_VIOLATIONS")
+    assert session.transport_status == "RECEIPT_CONSTRUCTION_FAILED"
+    assert session.producer_reference is None
+    assert blocks == []
+    assert not session.config.root.exists()
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == terminal
+    assert receipt["transportStatus"] == "RECEIPT_CONSTRUCTION_FAILED"
+    assert receipt["reportState"] == "UNAVAILABLE"
+    assert receipt["report"] is None
+
+
+@pytest.mark.parametrize("terminal", ["QUALITY_GATE_FAILED", "SCHEMA_VIOLATIONS"])
+def test_ii_c_failure_handoff_write_failure_never_emits_reference(
+    tmp_path, monkeypatch, terminal,
+):
+    inputs = _ii_b_inputs(tmp_path)
+    outcome = "FAIL" if terminal == "QUALITY_GATE_FAILED" else "PASS"
+    _ii_b_stub(monkeypatch, batch, outcome)
+    if terminal == "SCHEMA_VIOLATIONS":
+        monkeypatch.setattr(batch, "validate_artifact_schema", lambda value: ["schemaVersion mismatch"])
+
+    def failed_write(*args, **kwargs):
+        raise batch.handoff.HandoffError("HANDOFF_WRITE_FAILED")
+
+    monkeypatch.setattr(batch.handoff, "write_handoff_parts", failed_write)
+    session, blocks, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is None
+    assert report["qualityGate"]["overallPass"] is (terminal == "SCHEMA_VIOLATIONS")
+    assert session.transport_status == "HANDOFF_WRITE_FAILED"
+    assert session.producer_reference is None
+    assert blocks == []
+    assert len(receipts) == 1
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == terminal
+    assert receipt["transportStatus"] == "HANDOFF_WRITE_FAILED"
+    assert receipt["artifactAvailable"] is False
+
+
+def test_ii_b_unverifiable_report_uses_minimal_failure_receipt(tmp_path, monkeypatch, pre_ii_b):
+    inputs = _ii_b_inputs(tmp_path)
+    old_base, _, _ = _ii_b_stub(monkeypatch, pre_ii_b)
+    old_base["selectionObservability"]["deepReviewSectorCapOverflow"] = {"S0": 0}
+    expected = pre_ii_b.run_batch(**inputs)
+    base, _, _ = _ii_b_stub(monkeypatch, batch)
+    base["selectionObservability"]["deepReviewSectorCapOverflow"] = {"S0": 0}
+    session, blocks, receipts = _ii_b_session(tmp_path)
+
+    def failed_observation(*args):
+        raise TypeError("no observation sector authority")
+
+    monkeypatch.setattr(batch, "_p14_observation_bytes", failed_observation)
+    assert batch.run_batch(**inputs, p14_capture=session) == expected
+    receipt = json.loads(receipts[0])
+    assert receipt["terminalStatus"] == "BATCH_READY"
+    assert receipt["reportState"] == "UNAVAILABLE" and receipt["report"] is None
+    assert receipt["observationDigest"] is None
+    assert receipt["transportStatus"] == "CANONICAL_CONSTRUCTION_FAILED"
+    assert session.producer_reference is None and blocks == []
+
+
+def test_ii_b_duplicate_attempt_cannot_emit_second_reference(tmp_path, monkeypatch):
+    inputs = _ii_b_inputs(tmp_path)
+    _ii_b_stub(monkeypatch, batch)
+    first, _, _ = _ii_b_session(tmp_path)
+    expected = batch.run_batch(**inputs, p14_capture=first)
+    _ii_b_stub(monkeypatch, batch)
+    second, blocks, receipts = _ii_b_session(tmp_path)
+    assert batch.run_batch(**inputs, p14_capture=second) == expected
+    assert second.transport_status == "HANDOFF_WRITE_FAILED"
+    assert second.producer_reference is None and blocks == []
+    assert json.loads(receipts[0])["transportStatus"] == "HANDOFF_WRITE_FAILED"
+    assert batch.handoff.read_handoff_parts(first.config.root, first.binding, first.producer_reference).receipt_bytes == first.receipt_bytes
+
+
+def test_ii_b_rank_vectors_boundary_and_bidirectional_ownership(tmp_path, monkeypatch, pre_ii_b):
+    from data.p14_observation import project_rank_vector
+    inputs = _ii_b_inputs(tmp_path)
+    base, perturbed, _ = _ii_b_stub(monkeypatch, batch)
+    session, _, receipts = _ii_b_session(tmp_path)
+    artifact, report = batch.run_batch(**inputs, p14_capture=session)
+    assert artifact is not None
+    observation = json.loads(session.observation_bytes)
+    expected_vectors = [{
+        "code": str(1000 + i), "prescreenScore": 100 - i, "prescreenRank": i + 1,
+        "prescreenPool": "main", "marketRank": i + 1, "marketScore": 100.0 - i * 1.5,
+        "rawCompositeScore": 1.0 - i / 60,
+    } for i in range(60)]
+    for side in ("base", "perturbed"):
+        assert project_rank_vector(observation[side]["candidates"]) == expected_vectors
+        assert [row["artifactIndex"] for row in observation[side]["candidates"]] == list(range(60))
+    assert batch._top_n_codes_ordered(base, 40) == [str(1000 + i) for i in range(40)]
+    assert [row["code"] for row in expected_vectors[39:50]] == [str(i) for i in range(1039, 1050)]
+    before = _public_bytes(artifact)
+    base["candidates"][0]["name"] = "engine mutation"
+    perturbed["candidates"][0]["sector"] = "perturbed mutation"
+    report["qualityGate"]["notes"].append("report mutation")
+    decoded_receipt = json.loads(receipts[0])
+    decoded_receipt["report"]["qualityGate"]["notes"].append("receipt mutation")
+    observation["base"]["candidates"][0]["code"] = "decode mutation"
+    assert _public_bytes(artifact) == before
+    assert json.loads(receipts[0])["report"]["qualityGate"]["notes"] == []
+    assert json.loads(session.observation_bytes)["base"]["candidates"][0]["code"] == "1000"
+    # Exercise the actual, unchanged public writer in temporary storage too.
+    pre_ii_b.publish_artifact(artifact, tmp_path / "old-data", tmp_path / "old-public")
+    batch.publish_artifact(artifact, tmp_path / "new-data", tmp_path / "new-public")
+    assert (tmp_path / "old-data").read_bytes() == (tmp_path / "new-data").read_bytes() == before
+    assert (tmp_path / "old-public").read_bytes() == (tmp_path / "new-public").read_bytes() == before
 
 
 # ---------------------------------------------------------------------------

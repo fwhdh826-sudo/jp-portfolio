@@ -18,22 +18,52 @@ JOBS = {"full": "update-data", "update": "update", "intraday": "patch-tier1"}
 EXPECTED_FULL_TOP_LEVEL_CONCURRENCY_SHA256 = (
     "8748350ba21894296af65487469d11af47d9242c910b949855f19e7ed5c54e08"
 )
+# OPS P14 v13.4 H01 (release-history maintenance) re-pinned exactly the three
+# "Commit and push" blocks to the reviewed history-safe bytes (forward-only data
+# commit, exact-target fetch/equality/ancestor check, explicit ordinary push and
+# independent post-push observation; no pull/rebase). The three Pages blocks stay.
+#   full     old 817633cbd2ae487ab9a793b203aacf034e0c2bea38e2f76275adaf35e751eb9e
+#   update   old d366a333641d51856bb234923fd918abfefbc397d00c410e19344bbd7529897d
+#   intraday old d95a6bddfc6b1a74d415a58c1ce1c2bef9b0840c225b88d99eadd78ff86f4e65
 EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
-    ("full", "Commit and push"): "817633cbd2ae487ab9a793b203aacf034e0c2bea38e2f76275adaf35e751eb9e",
+    ("full", "Commit and push"): "43ac1ce1c2dc6e445bc8c565e5f3914612068204d46cd4309e27c356ae18eefc",
     ("full", "Dispatch Pages for pushed data"): "24873d087c5ffa960d059bace99e4b0e767c41492f54477704852b3c1fece775",
-    ("update", "Commit and push"): "d366a333641d51856bb234923fd918abfefbc397d00c410e19344bbd7529897d",
+    ("update", "Commit and push"): "6141ab2ddeebcfa4e8b240ae43a2ab7a73caa8f6586a4569ee19d88c7e9c8ecd",
     ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
-    ("intraday", "Commit and push"): "d95a6bddfc6b1a74d415a58c1ce1c2bef9b0840c225b88d99eadd78ff86f4e65",
+    ("intraday", "Commit and push"): "bfcec8d1b298238776b30bc9c9e8abda1b734d17eb8a359dce2cf2733f7c915d",
     ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",
 }
+# OPS P14 v13.4 Phase IV D01 (dormant transport wiring) re-pinned exactly two
+# blocks and added one:
+#   * Build   (producer): + step-level env P14_HANDOFF_DIR / P14_EXPECTED_POLICY_VERSION
+#             (old ca1656a0ebe58b08dda1082ccefd78ee4544194e49b9923abb6842a63e427097)
+#   * Capture (consumer): + 11 producer-output env vars, P14_HANDOFF_DIR and 13 CLI args
+#             (old f59f29f3e1a068d68cf2b61f31d9a405f3de560c660a3d87122368a92dd632cc)
+#   * Cleanup (new step): exact attempt-root cleanup after the evidence upload.
+# Every other P14/commit/Pages block digest is unchanged.
 EXPECTED_P14_BLOCK_SHA256 = {
     "Snapshot previous candidate_funnel artifact for evidence": "81ea1328407b6bc4e70799cac7fd4645222854d6ba302e129c9f12a289bc6b4d",
-    "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)": "ca1656a0ebe58b08dda1082ccefd78ee4544194e49b9923abb6842a63e427097",
+    "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)": "b509a763749b851547d26d12affcb2ace8e202b96248432fa70372a5d9f1ac34",
     "Privacy/schema smoke test candidate_funnel.json": "5282b593ad20da65628f8bc7ebe2c322359bfea3018d9408c0525db0c5828cff",
-    "Capture candidate funnel run evidence": "f59f29f3e1a068d68cf2b61f31d9a405f3de560c660a3d87122368a92dd632cc",
+    "Capture candidate funnel run evidence": "2a893718c3a2980a13a19406ebe4c033c5ecfc905f72de548355e469bce566ec",
     "Upload candidate funnel run evidence": "493ea65c308a2049676a569696b0c8adaaf6c75d50674496a3ca84e3a2e7957f",
+    "Cleanup candidate funnel P14 handoff": "0d00e543d3825c2b94647e41dce2d0296e929df0fe32df2b0559cc019f1c6b4f",
     "Enforce candidate funnel publication status": "5e310c23d955e9583f43a19062c5f144a23975b9cc5cc8ce7ef1c872cdc7336b",
 }
+EXPECTED_FULL_STEPS_BETWEEN_PRE_PUBLISH_AND_COMMIT = [
+    "Snapshot previous candidate_funnel artifact for evidence",
+    "Build candidate_funnel.json (prescreen join + P-01..P-15 quality gate)",
+    "Privacy/schema smoke test candidate_funnel.json",
+    "Derived PER migration calibration observability",
+    "Capture candidate funnel run evidence",
+    "Upload candidate funnel run evidence",
+    "Cleanup candidate funnel P14 handoff",
+    "Upload derived PER migration calibration evidence",
+    "Build SAFE_MODE snapshot",
+    "Smoke test safe_mode schema",
+    "Build TierA snapshots",
+    "Smoke test TierA schemas",
+]
 EXPECTED_MARKET_STRICT_GATE_SHA256 = (
     "2434ceeef653fef30403bf0d230cacbdba6b1a948145afff428a81dfdc75190a"
 )
@@ -163,7 +193,11 @@ def test_full_checkpoint_positions_and_r11_nine_blocking_steps_are_preserved():
     assert names[p2 - 1] == "Smoke test regime_state schema"
     assert names[p2 + 1] == "Snapshot previous candidate_funnel artifact for evidence"
     between = steps[p2 + 1 : commit]
-    assert len(between) == 11
+    # 11 -> 12 solely because of the P14 handoff cleanup step (Phase IV D01).
+    assert len(between) == 12
+    assert [step.get("name") for step in between] == (
+        EXPECTED_FULL_STEPS_BETWEEN_PRE_PUBLISH_AND_COMMIT
+    )
     assert source("full").index("--checkpoint pre_publish") < source("full").index(
         "# ── OPS-P14-2: same-run evidence input保全"
     )
@@ -197,6 +231,7 @@ def test_existing_commit_and_pages_step_bytes_are_unchanged(workflow, step_name)
         "Privacy/schema smoke test candidate_funnel.json",
         "Capture candidate funnel run evidence",
         "Upload candidate funnel run evidence",
+        "Cleanup candidate funnel P14 handoff",
         "Enforce candidate funnel publication status",
     ],
 )
