@@ -116,7 +116,7 @@ jobs:
     #    activation をしない（有効化は別途の明示 gate）。dispatch input / repository
     #    variable / step-level override で上書きしてはならない。
     env:
-      P14_HANDOFF_MODE: disabled
+      P14_HANDOFF_MODE: enabled
     steps:
       - uses: actions/checkout@v4
 

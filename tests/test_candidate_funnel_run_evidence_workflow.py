@@ -1028,10 +1028,10 @@ def _snapshot(root: Path) -> dict[str, tuple]:
 # ── shared mode, same-job topology, mapping ───────────────────────────────
 
 
-def test_dormant_mode_shared_and_literal_disabled():
-    assert _JOB["env"] == {"P14_HANDOFF_MODE": "disabled"}
+def test_production_mode_shared_and_literal_enabled():
+    assert _JOB["env"] == {"P14_HANDOFF_MODE": "enabled"}
     assert _TEXT.count("P14_HANDOFF_MODE") == 1
-    assert _TEXT.count("      P14_HANDOFF_MODE: disabled\n") == 1
+    assert _TEXT.count("      P14_HANDOFF_MODE: enabled\n") == 1
     for job_name, job in _DOC["jobs"].items():
         if job_name != "update-data":
             assert "P14_HANDOFF_MODE" not in (job.get("env") or {})
