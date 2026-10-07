@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-07T09:59:26.686623+09:00",
-  "sourceUpdatedAt": "2026-10-07T00:33:03+00:00",
+  "updatedAt": "2026-10-07T11:34:17.247478+09:00",
+  "sourceUpdatedAt": "2026-10-07T02:01:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,7 +29,7 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.133,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 2,
@@ -37,7 +37,7 @@
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
-      "topPositiveTitle": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Edge Lower, Bonds Fall as Oil Gains: Markets Wrap",
       "items": [
         {
           "title": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
@@ -69,10 +69,10 @@
           ]
         },
         {
-          "title": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
+          "title": "Asian Stocks Edge Lower, Bonds Fall as Oil Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.4,
           "publishedAt": "2026-10-06T22:12:38+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -84,50 +84,48 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0.235,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
-      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+      "topNegativeTitle": "Copper Stable as AI-Driven Tech Stock Rally Holds Near Record",
+      "topPositiveTitle": "Copper Stable as AI-Driven Tech Stock Rally Holds Near Record",
       "items": [
         {
-          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-06T11:52:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+          "title": "Copper Stable as AI-Driven Tech Stock Rally Holds Near Record",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-07T00:07:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/taiwan-dethrones-korea-atop-global-markets-as-ai-trade-widens",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-07T02:01:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/copper-stable-as-ai-driven-tech-stock-rally-holds-near-record",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Taiwan Dethrones Korea Atop Global Markets",
+      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets",
+      "items": [
+        {
+          "title": "Taiwan Dethrones Korea Atop Global Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-07T01:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-07/taiwan-dethrones-korea-atop-global-markets-video",
           "tags": [
             "geopolitical",
             "global_broad",
@@ -215,16 +213,29 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
+      "topNegativeTitle": "QatarEnergy Secures $3 Billion Loan From Four Chinese Banks",
       "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
+        {
+          "title": "QatarEnergy Secures $3 Billion Loan From Four Chinese Banks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T01:31:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/qatarenergy-secures-3-billion-loan-from-four-chinese-banks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
           "source": "Bloomberg Economics",
@@ -267,31 +278,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.05,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
+      "topNegativeTitle": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
       "topPositiveTitle": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
       "items": [
-        {
-          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-06T11:52:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
           "source": "Bloomberg Markets",
@@ -334,31 +330,16 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.033,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 6,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
+      "topNegativeTitle": "Asset Management One to Boost Talent Spending 30% Over 3 Years",
       "topPositiveTitle": "Asset Management One to Boost Talent Spending 30% Over 3 Years",
       "items": [
-        {
-          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-06T11:52:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Asset Management One to Boost Talent Spending 30% Over 3 Years",
           "source": "Bloomberg Markets",
@@ -411,19 +392,31 @@
             "rates",
             "reit"
           ]
+        },
+        {
+          "title": "Lescure Says France Is Far From Needing ECB Help on Debt",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T07:48:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/lescure-says-france-is-far-from-needing-ecb-help-on-debt",
+          "tags": [
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.147,
+      "avgSentiment": 0.119,
       "negativeCount": 2,
       "positiveCount": 3,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
       "topNegativeTitle": "Mary Ng: Asian Trade Growth Can Boost Canadian Exports",
-      "topPositiveTitle": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 7",
       "items": [
         {
           "title": "Mary Ng: Asian Trade Growth Can Boost Canadian Exports",
@@ -447,21 +440,6 @@
           "tags": [
             "commodity",
             "market"
-          ]
-        },
-        {
-          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-06T11:52:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/emerging-markets-gain-as-oil-drop-brazil-vote-boost-sentiment",
-          "tags": [
-            "commodity",
-            "fx",
-            "global_broad",
-            "market",
-            "rates"
           ]
         },
         {
@@ -490,22 +468,47 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "Ireland Cuts Energy Taxes in Budget Bid to Appease Voters",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T12:54:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ireland-reduces-energy-taxes-in-budget-aimed-at-appeasing-voters",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.585,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
-      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+      "topNegativeTitle": "QatarEnergy Secures $3 Billion Loan From Four Chinese Banks",
+      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets",
       "items": [
         {
-          "title": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+          "title": "QatarEnergy Secures $3 Billion Loan From Four Chinese Banks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T01:31:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/qatarenergy-secures-3-billion-loan-from-four-chinese-banks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Taiwan Dethrones Korea Atop World Markets as AI Trade Widens",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -513,7 +516,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-10-07/taiwan-dethrones-korea-atop-global-markets-as-ai-trade-widens",
           "tags": [
             "geopolitical",
-            "global_broad",
             "market"
           ]
         },
@@ -527,6 +529,19 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Taiwan Dethrones Korea Atop Global Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-07T01:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-07/taiwan-dethrones-korea-atop-global-markets-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
             "market"
           ]
         }
