@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-07T02:19:54.874285+09:00",
-  "sourceUpdatedAt": "2026-10-06T17:10:07+00:00",
+  "updatedAt": "2026-10-07T09:59:26.686623+09:00",
+  "sourceUpdatedAt": "2026-10-07T00:33:03+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,149 +17,97 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-      "topPositiveTitle": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-      "items": [
-        {
-          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.557,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Man Group Disputes View That High Inflation Is Bad for Bonds",
-      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+      "topNegativeTitle": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
+      "topPositiveTitle": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
       "items": [
         {
-          "title": "Man Group Disputes View That High Inflation Is Bad for Bonds",
+          "title": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T12:31:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/man-group-disputes-view-that-high-inflation-is-bad-for-us-bonds",
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
           "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T17:08:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-lawmaker-seeks-review-of-hong-kong-s-access-to-fed-facility",
+          "tags": [
+            "fx",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-06T12:14:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/s-p-500-set-for-first-record-since-august-as-bulls-downplay-risk",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+          "title": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "publishedAt": "2026-10-06T22:12:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.223,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Johnson & Johnson CEO Says AI Has to Be Embraced",
-      "topPositiveTitle": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
-      "items": [
-        {
-          "title": "Johnson & Johnson CEO Says AI Has to Be Embraced",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T16:27:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-06/j-j-ceo-says-ai-has-to-be-embraced-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "GPU Financing Filters Into ABS With Stonebriar, Wingspire Deals",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-05T21:44:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/gpu-financing-filters-into-abs-with-stonebriar-wingspire-deals",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "S&P 500 Sets First Record Since August as Bulls Downplay Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-06T12:14:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/s-p-500-set-for-first-record-since-august-as-bulls-downplay-risk",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": -0.2,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "global_broad": {
+      "avgSentiment": 0.235,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
-      "topPositiveTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
+      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
+      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
       "items": [
         {
-          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
+          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -172,32 +120,87 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-07T00:07:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/taiwan-dethrones-korea-atop-global-markets-as-ai-trade-widens",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
+      "topPositiveTitle": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "BHP Sells Shuttered Australian Nickel Plant to Gold Fields",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T23:41:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/bhp-sells-shuttered-australian-nickel-plant-to-gold-fields",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Hamilton Lane’s Bell on Secondary Markets Opportunity",
+      "topPositiveTitle": "Hamilton Lane’s Bell on Secondary Markets Opportunity",
+      "items": [
+        {
+          "title": "Hamilton Lane’s Bell on Secondary Markets Opportunity",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T22:15:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-06/hamilton-lane-s-bell-on-secondary-markets-opportunity-video",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -216,24 +219,24 @@
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
+      "topNegativeTitle": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
       "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
       "items": [
         {
-          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
-          "source": "Bloomberg Markets",
+          "title": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T15:49:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
+          "publishedAt": "2026-10-06T17:08:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-lawmaker-seeks-review-of-hong-kong-s-access-to-fed-facility",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "fx",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -264,18 +267,18 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.1,
+      "avgSentiment": -0.05,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
-      "topPositiveTitle": "Hungarian Central Banker Floats 2031 Euro Adoption Scenario",
+      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
+      "topPositiveTitle": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
       "items": [
         {
-          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
+          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -287,6 +290,33 @@
             "global_broad",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/surging-yields-hit-asian-bond-sales-as-ai-fundraising-trails-us",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "US Lawmaker Seeks Review of Hong Kong’s Access to Fed Facility",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T17:08:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/us-lawmaker-seeks-review-of-hong-kong-s-access-to-fed-facility",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -304,30 +334,18 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.16,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.033,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Czech Inflation Breaches Target in Boost to Rate Hike Odds",
-      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+      "topNegativeTitle": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
+      "topPositiveTitle": "Asset Management One to Boost Talent Spending 30% Over 3 Years",
       "items": [
         {
-          "title": "Czech Inflation Breaches Target in Boost to Rate Hike Odds",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-06T07:23:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/czech-inflation-breaches-target-as-policymakers-mull-more-hikes",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
+          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -342,58 +360,97 @@
           ]
         },
         {
-          "title": "Lescure Says France Is Far From Needing ECB Help on Debt",
-          "source": "Bloomberg Economics",
+          "title": "Asset Management One to Boost Talent Spending 30% Over 3 Years",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T07:48:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/lescure-says-france-is-far-from-needing-ecb-help-on-debt",
+          "publishedAt": "2026-10-07T00:00:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/asset-management-one-to-boost-talent-spending-30-over-3-years",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Air Liquide Sells Debt at Better Rate Than French Government",
+          "title": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-06T08:21:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/air-liquide-taps-euro-market-in-test-of-appetite-for-french-debt",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-05T23:13:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-05/s-p-500-closes-in-on-record-high-as-tech-rallies-markets-wrap-muvv94wz",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
           "tags": [
             "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Surging Yields Hit Asian Bond Sales as AI Fundraising Trails US",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/surging-yields-hit-asian-bond-sales-as-ai-fundraising-trails-us",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Hamilton Lane’s Bell on Secondary Markets Opportunity",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-06T22:15:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-06/hamilton-lane-s-bell-on-secondary-markets-opportunity-video",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.285,
-      "negativeCount": 0,
-      "positiveCount": 6,
+      "avgSentiment": 0.147,
+      "negativeCount": 2,
+      "positiveCount": 3,
       "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Emerging-Market Assets Extend Gains as US Yields Decline",
-      "topPositiveTitle": "S&P 500 Climbs to Record High on Earnings Optimism: Markets Wrap",
+      "topNegativeTitle": "Mary Ng: Asian Trade Growth Can Boost Canadian Exports",
+      "topPositiveTitle": "Asian Stocks Hold Near Record Highs, Oil Climbs: Markets Wrap",
       "items": [
         {
-          "title": "Emerging-Market Assets Extend Gains as US Yields Decline",
+          "title": "Mary Ng: Asian Trade Growth Can Boost Canadian Exports",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-07T00:33:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-07/mary-ng-asian-trade-growth-can-boost-canadian-exports-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Why Gas Flares Keep Burning Despite Big Oil’s 2030 Pledges",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-06T22:26:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-06/why-gas-flares-keep-burning-despite-big-oil-s-pledges-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Emerging-Market Assets Gain as US Yields Drop, Oil Steadies",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.2,
@@ -408,50 +465,27 @@
           ]
         },
         {
-          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
+          "title": "Gold Steady as More Oil and Falling Yields Ease Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T15:49:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Ireland Cuts Energy Taxes in Budget Bid to Appease Voters",
-          "source": "Bloomberg Economics",
+          "title": "Virginia Lieutenant Governor Opposes NextEra-Dominion Deal",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T12:54:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ireland-reduces-energy-taxes-in-budget-aimed-at-appeasing-voters",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "US Inflation: Diesel’s Pulling Power Poses 2027 Risk",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-06/us-inflation-diesel-s-pulling-power-poses-2027-risk",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Rehn Says Energy Shock Hasn’t Yet Spread to Wages",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/ecb-s-rehn-says-energy-price-shock-hasn-t-yet-spread-to-wages",
+          "publishedAt": "2026-10-06T21:50:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/virginia-lieutenant-governor-opposes-nextera-dominion-deal",
           "tags": [
             "commodity",
             "market"
@@ -460,40 +494,26 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
-      "topPositiveTitle": "Polish Probe Endorses Accusations Against Central Bank Governor",
+      "topNegativeTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
+      "topPositiveTitle": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
       "items": [
         {
-          "title": "Oil Bosses Warn on Dwindling Buffers Even as Hormuz Ramps Up",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-06T15:49:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/oil-bosses-warn-on-dwindling-buffers-even-as-hormuz-ramps-up",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Iran Ramps Up Ship Attacks in Hormuz as Oil and Gas Flows Climb",
+          "title": "Taiwan Dethrones Korea Atop Global Markets as AI Trade Widens",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-06T16:18:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/iran-ramps-up-ship-attacks-in-hormuz-as-oil-and-gas-flows-climb",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-07T00:07:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/taiwan-dethrones-korea-atop-global-markets-as-ai-trade-widens",
           "tags": [
-            "commodity",
             "geopolitical",
+            "global_broad",
             "market"
           ]
         },
@@ -521,7 +541,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
