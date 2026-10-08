@@ -1,22 +1,37 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-07T19:28:13.879184+09:00",
-  "sourceUpdatedAt": "2026-10-07T10:26:29+00:00",
+  "updatedAt": "2026-10-08T10:15:31.729004+09:00",
+  "sourceUpdatedAt": "2026-10-08T00:31:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.135,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Kioxia’s Weighting on Topix Index to Rise After JPX Review",
-      "topPositiveTitle": "Kioxia’s Weighting on Topix Index to Rise After JPX Review",
+      "topNegativeTitle": "Japanese Stocks Fall as Inflation Fears Hit Cyclical Shares",
+      "topPositiveTitle": "Kioxia Shares Lifted by $13 Billion Inflow Hope After JPX Review",
       "items": [
         {
-          "title": "Kioxia’s Weighting on Topix Index to Rise After JPX Review",
+          "title": "Japanese Stocks Fall as Inflation Fears Hit Cyclical Shares",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-08T00:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/japanese-stocks-fall-as-inflation-fears-hit-cyclical-shares",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kioxia Shares Lifted by $13 Billion Inflow Hope After JPX Review",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -42,74 +57,117 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
+      "avgSentiment": -0.212,
+      "negativeCount": 3,
       "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Warsh Earns IMF Praise for Focusing on Price Stability",
-      "topPositiveTitle": "India Regulator Presses Jane Street to Respond After Data Share",
+      "topNegativeTitle": "Asian Stocks Drop as Oil Stokes Inflation Worries: Markets Wrap",
+      "topPositiveTitle": "One-Year Inflation Expectations Reach Three-Year High: NY Fed Survey",
       "items": [
         {
-          "title": "Fed’s Warsh Earns IMF Praise for Focusing on Price Stability",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:49:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/fed-s-warsh-earns-imf-praise-for-focusing-on-price-stability",
+          "title": "Asian Stocks Drop as Oil Stokes Inflation Worries: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-07T22:03:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Slip as Bond Yields Start Rising Again: Markets Wrap",
+          "title": "Stocks Fall From All-Time Highs on Inflation Worry: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-06T22:12:38+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "India Regulator Presses Jane Street to Respond After Data Share",
+          "title": "Japanese Stocks Fall as Inflation Fears Hit Cyclical Shares",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-08T00:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/japanese-stocks-fall-as-inflation-fears-hit-cyclical-shares",
+          "tags": [
+            "commodity",
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bessent Pressed by Warren on ‘Chaotic’ Treasuries Buybacks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/bessent-pressed-by-warren-on-chaotic-us-treasuries-buybacks",
+          "tags": [
+            "dividend",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Minutes Show Hawkish Unity Behind September Rate Hike",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-07T09:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/india-regulator-presses-jane-street-to-respond-after-data-share",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-07T18:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/fed-minutes-show-hawkish-unity-behind-september-rate-hike",
           "tags": [
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Hong Kong Tech Index Expands Members to 50 In Major AI Overhaul",
-      "topPositiveTitle": "Hong Kong Tech Index Expands Members to 50 In Major AI Overhaul",
+      "topNegativeTitle": "AI Drives Global Goods Trade Facing Trump Tariffs, War Headwinds",
+      "topPositiveTitle": "Robert Rubin Warns AI Boom Carries Risks for US Economy, Markets",
       "items": [
         {
-          "title": "Hong Kong Tech Index Expands Members to 50 In Major AI Overhaul",
-          "source": "Bloomberg Markets",
+          "title": "AI Drives Global Goods Trade Facing Trump Tariffs, War Headwinds",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:35:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/hong-kong-tech-index-expands-members-to-50-in-major-ai-overhaul",
+          "publishedAt": "2026-10-07T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/ai-drives-global-goods-trade-facing-trump-tariffs-war-headwinds",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Robert Rubin Warns AI Boom Carries Risks for US Economy, Markets",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-07T19:02:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/robert-rubin-warns-ai-boom-carries-risks-for-us-economy-markets",
           "tags": [
             "market",
             "us_growth"
@@ -118,50 +176,72 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+      "topPositiveTitle": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+      "items": [
+        {
+          "title": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-08T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/worst-performing-philippine-bonds-face-peso-inflation-risks",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "ICE Starts Gold Futures in London Market Dominated by Top Banks",
-      "topPositiveTitle": "Hong Kong, Singapore Pitch Rival Gold Hubs to Bullion Market",
+      "topNegativeTitle": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
+      "topPositiveTitle": "Gold Near Nine-Week Low on Prospects for Rate Hike by Year-End",
       "items": [
         {
-          "title": "ICE Starts Gold Futures in London Market Dominated by Top Banks",
+          "title": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:48:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/ice-starts-gold-futures-in-london-market-dominated-by-top-banks",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
           "tags": [
+            "fx",
+            "geopolitical",
             "gold",
-            "market"
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Hong Kong, Singapore Pitch Rival Gold Hubs to Bullion Market",
+          "title": "Gold Near Nine-Week Low on Prospects for Rate Hike by Year-End",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-07T08:48:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/hong-kong-singapore-make-rival-gold-pitches-at-industry-meeting",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-07T23:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
           "tags": [
+            "geopolitical",
             "gold",
-            "market"
+            "macro_risk",
+            "market",
+            "rates"
           ]
         }
       ]
@@ -179,76 +259,109 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Vietnam Central Bank Warns of Rising Inflation, Rates Pressure",
-      "topPositiveTitle": "Moubarak: GCC Economies Set for Strong Recovery in 2027",
+      "topNegativeTitle": "Bessent Pressed by Warren on ‘Chaotic’ Treasuries Buybacks",
+      "topPositiveTitle": "Bessent Pressed by Warren on ‘Chaotic’ Treasuries Buybacks",
       "items": [
         {
-          "title": "Vietnam Central Bank Warns of Rising Inflation, Rates Pressure",
+          "title": "Bessent Pressed by Warren on ‘Chaotic’ Treasuries Buybacks",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:28:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/vietnam-central-bank-warns-of-rising-inflation-rates-pressure",
+          "publishedAt": "2026-10-07T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/bessent-pressed-by-warren-on-chaotic-us-treasuries-buybacks",
+          "tags": [
+            "dividend",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.45,
+      "negativeCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 8,
+      "isStale": false,
+      "topNegativeTitle": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+      "topPositiveTitle": "Asian Wheat Buyers Cut Forward Purchases as War Whipsaws Markets",
+      "items": [
+        {
+          "title": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-08T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/worst-performing-philippine-bonds-face-peso-inflation-risks",
           "tags": [
             "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Argentina’s Sluggish August Points to Technical Recession",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-07T19:46:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/argentina-s-sluggish-august-points-to-technical-recession",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "gold",
             "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Putin Is Spending a Record $200 Billion on the War This Year",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T08:40:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/putin-ramped-up-2026-war-spending-to-record-after-talks-stalled",
+          "title": "Japanese Stocks Fall as Inflation Fears Hit Cyclical Shares",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-08T00:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/japanese-stocks-fall-as-inflation-fears-hit-cyclical-shares",
           "tags": [
-            "geopolitical",
+            "commodity",
+            "jp_broad",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Moubarak: GCC Economies Set for Strong Recovery in 2027",
+          "title": "Gold Near Nine-Week Low on Prospects for Rate Hike by Year-End",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-07T09:13:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-07/moubarak-gcc-economies-set-for-strong-recovery-in-2027-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-07T23:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Traders Reload Bets on Higher US Yields After Brief Jolt",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-06T20:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/bonds-traders-revive-treasury-short-bets-after-fleeting-shakeout",
-          "tags": [
+            "gold",
             "macro_risk",
             "market",
             "rates"
@@ -257,15 +370,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.132,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-      "topPositiveTitle": "Iraq Devalues Currency as Hormuz Disruption Hits Oil Exports",
+      "topPositiveTitle": "Emerging Market Assets Snap Rally Amid Oil Swings, Rising Dollar",
       "items": [
         {
           "title": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
@@ -281,42 +394,32 @@
           ]
         },
         {
-          "title": "Stocks Are Due for a ‘Gut Check’ From Rates, Oil and the Dollar",
+          "title": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-07T10:23:30+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-07/stocks-are-due-for-a-gut-check-from-rates-oil-and-the-dollar",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Emerging Market Assets Snap Rally Amid Oil Swings, Rising Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-07T11:22:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/emerging-stocks-halt-advance-as-hormuz-tensions-come-into-focus",
           "tags": [
             "commodity",
             "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Euro Slides as Traders Look Beyond the Dollar for Bearish Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-07T08:25:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/euro-falls-to-16-month-low-versus-pound-on-france-s-fiscal-risks",
-          "tags": [
-            "fx",
             "market"
-          ]
-        },
-        {
-          "title": "Rupee Nears Record Low as RBI Hike Leaves Traders Wanting More",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:11:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/rupee-nears-record-low-as-rbi-hike-leaves-traders-wanting-more",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
           ]
         },
         {
@@ -335,15 +438,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.067,
+      "avgSentiment": -0.168,
       "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-      "topPositiveTitle": "US Stocks Slip as Bond Yields Start Rising Again: Markets Wrap",
+      "topPositiveTitle": "Fed Minutes Show Hawkish Unity Behind September Rate Hike",
       "items": [
         {
           "title": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
@@ -359,51 +462,57 @@
           ]
         },
         {
-          "title": "Stocks Are Due for a ‘Gut Check’ From Rates, Oil and the Dollar",
+          "title": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Near Nine-Week Low on Prospects for Rate Hike by Year-End",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-07T10:23:30+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-07/stocks-are-due-for-a-gut-check-from-rates-oil-and-the-dollar",
+          "publishedAt": "2026-10-07T23:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fear of Rising Interest Rates Puts Off Britain’s Housebuyers",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T23:01:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/fear-of-rising-interest-rates-puts-off-britain-s-housebuyers",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Kenya Holds Rates With Eye on Inflationary Risks From Iran War",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T14:23:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/kenya-holds-rates-with-eye-on-inflationary-risks-from-iran-war",
           "tags": [
             "commodity",
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Sweden’s Steady Inflation Keeps Door Open for Riksbank Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-07T06:16:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/sweden-s-steady-inflation-rate-keeps-riksbank-rate-hike-in-play",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Peru Seen Lifting Rate for First Time Since 2023: Decision Guide",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T10:04:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/peru-seen-lifting-rate-for-first-time-since-2023-decision-guide",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Vietnam Central Bank Warns of Rising Inflation, Rates Pressure",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:28:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/vietnam-central-bank-warns-of-rising-inflation-rates-pressure",
-          "tags": [
             "geopolitical",
             "macro_risk",
             "market",
@@ -413,76 +522,79 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.2,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "avgSentiment": 0.093,
+      "negativeCount": 3,
+      "positiveCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "India Signals More Rate Hikes Ahead",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 7",
+      "topNegativeTitle": "Asian Stocks Drop as Oil Stokes Inflation Worries: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for DATE",
       "items": [
         {
-          "title": "India Signals More Rate Hikes Ahead",
+          "title": "Asian Stocks Drop as Oil Stokes Inflation Worries: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-07T22:03:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall From All-Time Highs on Inflation Worry: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-07T09:55:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-07/india-signals-more-rate-hikes-ahead-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Are Due for a ‘Gut Check’ From Rates, Oil and the Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-07T10:23:30+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-07/stocks-are-due-for-a-gut-check-from-rates-oil-and-the-dollar",
-          "tags": [
-            "commodity",
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US Stocks Slip as Bond Yields Start Rising Again: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
           "publishedAt": "2026-10-06T22:12:38+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-06/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Iraq Devalues Currency as Hormuz Disruption Hits Oil Exports",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-07T05:56:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/iraq-devalues-currency-as-hormuz-closure-hits-oil-exports",
+          "title": "Japanese Stocks Fall as Inflation Fears Hit Cyclical Shares",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-08T00:27:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/japanese-stocks-fall-as-inflation-fears-hit-cyclical-shares",
           "tags": [
             "commodity",
-            "fx",
-            "market"
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 7",
+          "title": "Kenya Holds Rates With Eye on Inflationary Risks From Iran War",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T14:23:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/kenya-holds-rates-with-eye-on-inflationary-risks-from-iran-war",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "LG Energy Profit Beats Estimates on Energy-Storage Systems",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-06T22:02:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-06/latest-oil-market-news-and-analysis-for-oct-7",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-07T23:58:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/lg-energy-profit-beats-estimates-on-energy-storage-system-demand",
           "tags": [
             "commodity",
             "market"
@@ -491,37 +603,68 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.037,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Vietnam Central Bank Warns of Rising Inflation, Rates Pressure",
-      "topPositiveTitle": "Moubarak: GCC Economies Set for Strong Recovery in 2027",
+      "topNegativeTitle": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for DATE",
       "items": [
         {
-          "title": "Vietnam Central Bank Warns of Rising Inflation, Rates Pressure",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T09:28:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/vietnam-central-bank-warns-of-rising-inflation-rates-pressure",
+          "title": "Worst-Performing Philippine Bonds Face Peso, Inflation Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-08T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/worst-performing-philippine-bonds-face-peso-inflation-risks",
           "tags": [
             "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Falls as Traders Weigh Rate-Hike Prospects, Inflation Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-06T23:52:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-06/gold-steady-as-more-oil-and-falling-yields-ease-rate-hike-bets",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "gold",
             "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Putin Is Spending a Record $200 Billion on the War This Year",
-          "source": "Bloomberg Economics",
+          "title": "Gold Near Nine-Week Low on Prospects for Rate Hike by Year-End",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-07T23:37:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Asian Wheat Buyers Cut Forward Purchases as War Whipsaws Markets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-07T08:40:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/putin-ramped-up-2026-war-spending-to-record-after-talks-stalled",
+          "publishedAt": "2026-10-08T00:31:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/asian-wheat-buyers-cut-forward-purchases-as-war-whipsaws-markets",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -529,15 +672,14 @@
           ]
         },
         {
-          "title": "Moubarak: GCC Economies Set for Strong Recovery in 2027",
+          "title": "What to Know About Suspected Plague Case in Siberia",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-07T09:13:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-07/moubarak-gcc-economies-set-for-strong-recovery-in-2027-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-07T22:10:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-07/what-to-know-about-suspected-plague-case-in-siberia-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -552,7 +694,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
