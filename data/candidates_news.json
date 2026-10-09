@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-09T10:25:54.379098+09:00",
-  "sourceUpdatedAt": "2026-10-09T00:45:53+00:00",
+  "updatedAt": "2026-10-09T19:47:49.087797+09:00",
+  "sourceUpdatedAt": "2026-10-09T10:30:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,26 +29,40 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
-      "topPositiveTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
+      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+      "topPositiveTitle": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
       "items": [
         {
-          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
+          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T00:02:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-09T05:12:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
           "tags": [
             "geopolitical",
-            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-09T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/wall-street-sees-an-ominous-sign-in-bond-market-s-latest-selloff",
+          "tags": [
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -59,25 +73,13 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
-      "topPositiveTitle": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
+      "topNegativeTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
+      "topPositiveTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
       "items": [
-        {
-          "title": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T00:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/japan-deal-drought-cuts-ipo-fundraising-to-lowest-in-14-years",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
           "source": "Bloomberg Economics",
@@ -107,32 +109,18 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
-      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
+      "topNegativeTitle": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
+      "topPositiveTitle": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
       "items": [
         {
-          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T00:02:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "India Scraps Key Tax Relief for Gold Imports, Raising Costs",
+          "title": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -142,58 +130,100 @@
             "gold",
             "market"
           ]
-        },
+        }
+      ]
+    },
+    "reit": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+      "topPositiveTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+      "items": [
         {
-          "title": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
+          "title": "London’s Newest Rates Market Specialists Are Real Estate Agents",
           "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T08:55:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/london-s-newest-rates-market-specialists-are-real-estate-agents",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
+      "topPositiveTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
+      "items": [
+        {
+          "title": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-07T23:37:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-09T07:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/petronas-boosts-malaysia-dividends-further-as-oil-prices-surge",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
+            "dividend",
             "market"
           ]
         }
       ]
     },
-    "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "macro_risk": {
-      "avgSentiment": -0.189,
+      "avgSentiment": -0.184,
       "negativeCount": 4,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "AI Borrowing Spree Hammers Tech Debt in Rush to Reprice Risk",
-      "topPositiveTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
+      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+      "topPositiveTitle": "Montenegro Police Detains Head of Russian War Blog Rybar",
       "items": [
+        {
+          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-09T05:12:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-09T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/wall-street-sees-an-ominous-sign-in-bond-market-s-latest-selloff",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "AI Borrowing Spree Hammers Tech Debt in Rush to Reprice Risk",
           "source": "Bloomberg Markets",
@@ -219,68 +249,98 @@
           ]
         },
         {
-          "title": "France’s Debt Is Riskier Than 38% of Nation’s Company Bonds",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T07:15:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/france-s-debt-is-now-riskier-than-38-of-nation-s-company-bonds",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Ray Dalio Warns of US Debt Crisis Within Three Years",
+          "title": "Montenegro Police Detains Head of Russian War Blog Rybar",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-06T03:37:51+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-06/ray-dalio-warns-of-us-debt-crisis-within-three-years-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
+          "publishedAt": "2026-10-09T10:19:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/montenegro-police-detains-head-of-russian-war-blog-rybar",
           "tags": [
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
-      "topPositiveTitle": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
+      "topNegativeTitle": "Dollar Is Set for Longest Winning Streak Since Early 2025",
+      "topPositiveTitle": "Japan’s Takaichi Says Growth Push Will Help Support Trust in Yen",
       "items": [
+        {
+          "title": "Dollar Is Set for Longest Winning Streak Since Early 2025",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T08:05:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/dollar-s-longest-winning-streak-since-early-2025-keeps-going",
+          "tags": [
+            "commodity",
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Takaichi Says Growth Push Will Help Support Trust in Yen",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-09T04:32:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/japan-s-takaichi-says-growth-push-will-help-support-trust-in-yen",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.168,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+      "topPositiveTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+      "items": [
+        {
+          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-09T05:12:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T08:55:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/london-s-newest-rates-market-specialists-are-real-estate-agents",
+          "tags": [
+            "market",
+            "rates",
+            "reit"
+          ]
+        },
         {
           "title": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
           "source": "Bloomberg Economics",
@@ -309,17 +369,17 @@
     },
     "commodity": {
       "avgSentiment": -0.167,
-      "negativeCount": 2,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Slip After US Tech Jitters, Oil Drops: Markets Wrap",
-      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
+      "topNegativeTitle": "Stocks Bounce as Oil Falls and AI Worries Ease: Markets Wrap",
+      "topPositiveTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
       "items": [
         {
-          "title": "Asian Stocks Slip After US Tech Jitters, Oil Drops: Markets Wrap",
+          "title": "Stocks Bounce as Oil Falls and AI Worries Ease: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -331,10 +391,24 @@
           ]
         },
         {
+          "title": "Dollar Is Set for Longest Winning Streak Since Early 2025",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T08:05:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/dollar-s-longest-winning-streak-since-early-2025-keeps-going",
+          "tags": [
+            "commodity",
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "Latest Oil Market News and Analysis for Oct. 9",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-10-08T22:02:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
           "tags": [
@@ -344,71 +418,83 @@
           ]
         },
         {
-          "title": "ECB Can Stick With Measured Response to Iran War, Lane Says",
+          "title": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T10:45:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-can-stick-with-measured-response-to-iran-war-lane-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
-          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-07T23:37:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-09T07:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/petronas-boosts-malaysia-dividends-further-as-oil-prices-surge",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
+            "dividend",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.055,
+      "avgSentiment": -0.057,
       "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 9",
-      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
+      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+      "topPositiveTitle": "Trump Rules Out Iran Attack Before Midterms, OpenAI Eyes $70B Revenue",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 9",
+          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
+          "publishedAt": "2026-10-09T05:12:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Montenegro Police Detains Head of Russian War Blog Rybar",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T10:19:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/montenegro-police-detains-head-of-russian-war-blog-rybar",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Azadeh Moaveni on the Iranian Diaspora",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T08:25:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/azadeh-moaveni-on-the-iranian-diaspora-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 9",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-10-08T22:02:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
           "tags": [
             "commodity",
             "geopolitical",
             "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T00:02:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -424,33 +510,6 @@
             "market",
             "us_growth"
           ]
-        },
-        {
-          "title": "Top Qatari Bank QNB Inks $2.5 Billion Loan Led By Asia Firms",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T11:57:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/top-qatari-bank-qnb-inks-2-5-billion-loan-led-by-asian-lenders",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB Can Stick With Measured Response to Iran War, Lane Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T10:45:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-can-stick-with-measured-response-to-iran-war-lane-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -463,7 +522,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
