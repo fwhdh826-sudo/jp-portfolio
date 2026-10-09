@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-08T19:48:59.136173+09:00",
-  "sourceUpdatedAt": "2026-10-08T10:48:27+00:00",
+  "updatedAt": "2026-10-09T10:25:54.379098+09:00",
+  "sourceUpdatedAt": "2026-10-09T00:45:53+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,37 +29,26 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed's Waller Sees Some Flexibility on Rate-Hike Timing",
-      "topPositiveTitle": "AI Bubble Risks Worst S&P 500 Crash Since 2008, Strategist Says",
+      "topNegativeTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
+      "topPositiveTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
       "items": [
         {
-          "title": "Fed's Waller Sees Some Flexibility on Rate-Hike Timing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T10:13:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-08/fed-s-waller-sees-some-flexibility-on-rate-hike-timing-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Bubble Risks Worst S&P 500 Crash Since 2008, Strategist Says",
+          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T06:16:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ai-bubble-risks-worst-s-p-500-crash-since-2008-strategist-says",
+          "publishedAt": "2026-10-09T00:02:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
           "tags": [
-            "macro_risk",
+            "geopolitical",
+            "gold",
             "market",
             "us_broad"
           ]
@@ -67,6 +56,45 @@
       ]
     },
     "us_growth": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
+      "topPositiveTitle": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
+      "items": [
+        {
+          "title": "Japan Deal Drought Cuts IPO Fundraising to Lowest in 14 Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T00:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/japan-deal-drought-cuts-ipo-fundraising-to-lowest-in-14-years",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-08T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -78,66 +106,55 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "France Is the Bellwether for Stress in Global Markets",
-      "topPositiveTitle": "France Is the Bellwether for Stress in Global Markets",
-      "items": [
-        {
-          "title": "France Is the Bellwether for Stress in Global Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T10:48:27+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-08/france-is-the-bellwether-for-stress-in-global-markets",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
-    },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Olympian Gabby Thomas On Building a New Track League",
-      "topPositiveTitle": "Olympian Gabby Thomas On Building a New Track League",
+      "topNegativeTitle": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
+      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
       "items": [
         {
-          "title": "Olympian Gabby Thomas On Building a New Track League",
+          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T09:06:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-08/olympian-gabby-thomas-on-building-a-new-track-league-video",
+          "publishedAt": "2026-10-09T00:02:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "India Scraps Key Tax Relief for Gold Imports, Raising Costs",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-08T12:44:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/india-scraps-key-tax-relief-for-gold-imports-raising-costs",
           "tags": [
             "gold",
             "market"
           ]
         },
         {
-          "title": "Gold Recovers as Chinese Buyers Return From Weeklong Holiday",
+          "title": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-10-07T23:37:27+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
@@ -167,23 +184,35 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.09,
-      "negativeCount": 5,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": -0.189,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Bahrain Bond Selloff Revives Memory of 2018 Rescue by Gulf Peers",
-      "topPositiveTitle": "UK Card Defaults Rise For Longest Period in 17 Years, BOE Says",
+      "topNegativeTitle": "AI Borrowing Spree Hammers Tech Debt in Rush to Reprice Risk",
+      "topPositiveTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
       "items": [
         {
-          "title": "Bahrain Bond Selloff Revives Memory of 2018 Rescue by Gulf Peers",
+          "title": "AI Borrowing Spree Hammers Tech Debt in Rush to Reprice Risk",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T10:29:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/bahrain-bond-selloff-revives-memory-of-2018-rescue-by-gulf-peers",
+          "publishedAt": "2026-10-08T22:24:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ai-debt-spree-hammers-tech-debt-as-traders-rush-to-reprice-risk",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "What’s the TPI? How ECB Can Respond to French Bond Turmoil",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-08T13:24:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/what-s-the-tpi-how-ecb-can-respond-to-french-bond-turmoil",
           "tags": [
             "macro_risk",
             "market"
@@ -202,159 +231,76 @@
           ]
         },
         {
-          "title": "Pakistan Reaches IMF Deal to Unlock $1.2 Billion in New Funds",
-          "source": "Bloomberg Economics",
+          "title": "Ray Dalio Warns of US Debt Crisis Within Three Years",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T05:56:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/pakistan-reaches-imf-deal-to-unlock-1-2-billion-in-new-funds",
+          "publishedAt": "2026-10-06T03:37:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-06/ray-dalio-warns-of-us-debt-crisis-within-three-years-video",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Romania to Keep EU’s Highest Rates as Political Woes Weaken Leu",
+          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/romania-to-keep-eu-s-highest-rates-as-political-woes-weaken-leu",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-08T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
           "tags": [
-            "fx",
+            "geopolitical",
             "macro_risk",
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Singapore Bank Shares Tumble as Yield Surge Threatens Earnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T02:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/singapore-banks-hot-rally-stutters-over-surging-bond-yields",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.5,
-      "negativeCount": 2,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-      "topPositiveTitle": "Romania to Keep EU’s Highest Rates as Political Woes Weaken Leu",
+      "topNegativeTitle": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
+      "topPositiveTitle": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
       "items": [
         {
-          "title": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-07T04:34:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/india-central-bank-lifts-rates-for-first-time-in-near-four-years",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Romania to Keep EU’s Highest Rates as Political Woes Weaken Leu",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/romania-to-keep-eu-s-highest-rates-as-political-woes-weaken-leu",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": -0.166,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 8,
-      "isStale": false,
-      "topNegativeTitle": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-      "topPositiveTitle": "Bank of France’s Moulin Says All Countries Face Higher Rates Now",
-      "items": [
-        {
-          "title": "RBI Signals Further Rate Hikes as Price Pressures Intensify",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-07T04:34:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/india-central-bank-lifts-rates-for-first-time-in-near-four-years",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "India Set for Consecutive Rate Hikes as Inflation Picks Up",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T03:50:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/india-set-for-back-to-back-rate-hikes-as-inflation-risks-mount",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Romania to Keep EU’s Highest Rates as Political Woes Weaken Leu",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T03:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/romania-to-keep-eu-s-highest-rates-as-political-woes-weaken-leu",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Singapore Bank Shares Tumble as Yield Surge Threatens Earnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T02:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/singapore-banks-hot-rally-stutters-over-surging-bond-yields",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB Rates Can Prevent Price Shock From Spreading, Dolenc Says",
+          "title": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-rates-can-prevent-price-shock-from-spreading-dolenc-says",
+          "publishedAt": "2026-10-08T20:54:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/uruguay-raises-interest-rates-to-counter-above-target-inflation",
           "tags": [
-            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Poland’s Glapinski Ready to Raise Rates If Inflation Risks Mount",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-08T15:04:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/poland-s-glapinski-ready-to-raise-rates-if-inflation-risks-mount",
+          "tags": [
             "market",
             "rates"
           ]
@@ -362,35 +308,48 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.066,
-      "negativeCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Oil Spike Would Be Just The Worst: Market Analysis",
-      "topPositiveTitle": "Oil Rise Spurs Fresh Selling in Stocks and Bonds: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Slip After US Tech Jitters, Oil Drops: Markets Wrap",
+      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
       "items": [
         {
-          "title": "Oil Spike Would Be Just The Worst: Market Analysis",
+          "title": "Asian Stocks Slip After US Tech Jitters, Oil Drops: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T09:18:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-08/oil-spike-would-be-just-the-worst-3-minutes-mliv-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-08T22:05:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Saudis in Talks to Formalize Hormuz Shuttles in Fight for Market",
+          "title": "Latest Oil Market News and Analysis for Oct. 9",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-08T22:02:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ECB Can Stick With Measured Response to Iran War, Lane Says",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T09:00:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/saudis-in-talks-to-formalize-hormuz-shuttles-in-fight-for-market",
+          "publishedAt": "2026-10-08T10:45:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-can-stick-with-measured-response-to-iran-war-lane-says",
           "tags": [
             "commodity",
             "geopolitical",
@@ -399,41 +358,16 @@
           ]
         },
         {
-          "title": "ECB Rates Can Prevent Price Shock From Spreading, Dolenc Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-rates-can-prevent-price-shock-from-spreading-dolenc-says",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Gold Recovers as Chinese Buyers Return From Weeklong Holiday",
+          "title": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-10-07T23:37:27+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-07/gold-near-nine-week-low-on-prospects-for-rate-hike-by-year-end",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Oil Rise Spurs Fresh Selling in Stocks and Bonds: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-07T22:03:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-07/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
             "market"
           ]
         }
@@ -442,48 +376,62 @@
     "geopolitical": {
       "avgSentiment": 0.055,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Pakistan Reaches IMF Deal to Unlock $1.2 Billion in New Funds",
-      "topPositiveTitle": "UK Card Defaults Rise For Longest Period in 17 Years, BOE Says",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 9",
+      "topPositiveTitle": "Gold Rises After Trump Says US Won’t Attack Iran Before Midterms",
       "items": [
         {
-          "title": "Pakistan Reaches IMF Deal to Unlock $1.2 Billion in New Funds",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T05:56:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/pakistan-reaches-imf-deal-to-unlock-1-2-billion-in-new-funds",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudis in Talks to Formalize Hormuz Shuttles in Fight for Market",
+          "title": "Latest Oil Market News and Analysis for Oct. 9",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T09:00:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/saudis-in-talks-to-formalize-hormuz-shuttles-in-fight-for-market",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-08T22:02:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Podcast: Is Trump About to Lose Farm Country for the Republicans?",
+          "title": "Gold Steadies as Traders Assess US-Iran Tensions, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T00:02:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/gold-steadies-as-traders-assess-us-iran-tensions-fed-rate-path",
+          "tags": [
+            "geopolitical",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T09:00:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/podcast-is-trump-about-to-lose-farm-country-for-the-republicans",
+          "publishedAt": "2026-10-08T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Top Qatari Bank QNB Inks $2.5 Billion Loan Led By Asia Firms",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-08T11:57:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/top-qatari-bank-qnb-inks-2-5-billion-loan-led-by-asian-lenders",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -491,26 +439,14 @@
           ]
         },
         {
-          "title": "EU Takes Harder Line on China’s Trade Gap as Talks Kick Off",
+          "title": "ECB Can Stick With Measured Response to Iran War, Lane Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T02:30:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/eu-is-taking-harder-line-on-china-s-trade-gap-as-talks-kick-off",
+          "publishedAt": "2026-10-08T10:45:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ecb-can-stick-with-measured-response-to-iran-war-lane-says",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Card Defaults Rise For Longest Period in 17 Years, BOE Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-08T10:20:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/uk-card-defaults-rise-for-longest-period-in-17-years-boe-says",
-          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
