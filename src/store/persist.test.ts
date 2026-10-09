@@ -387,6 +387,7 @@ describe('Portfolio/Trust persist/restore（P4.5-A012d: TTL失効時も値を保
 })
 
 describe('CsvSyncSummary persist/restore（P4.5-A013-T6）', () => {
+  const CSV_SYNC_TEST_NOW_MS = Date.parse('2026-07-11T06:00:00.000Z')
   const store: Record<string, string> = {}
   const lsMock = {
     getItem:    (k: string) => store[k] ?? null,
@@ -407,26 +408,26 @@ describe('CsvSyncSummary persist/restore（P4.5-A013-T6）', () => {
   }
 
   it('restoreCsvSyncSummary: keyなしはnull', () => {
-    expect(restoreCsvSyncSummary()).toBeNull()
+    expect(restoreCsvSyncSummary(CSV_SYNC_TEST_NOW_MS)).toBeNull()
   })
 
   it('restoreCsvSyncSummary: TTL内（fresh）で保存値を返す', () => {
     persistCsvSyncSummary(testSummary)
-    expect(restoreCsvSyncSummary()).toEqual(testSummary)
+    expect(restoreCsvSyncSummary(CSV_SYNC_TEST_NOW_MS)).toEqual(testSummary)
   })
 
   it('restoreCsvSyncSummary: TTL超過（stale）はnullを返しremoveItemする', () => {
     const staleSummary = {
       ...testSummary,
-      importedAt: new Date(Date.now() - TTL_90D - 1000).toISOString(),
+      importedAt: new Date(CSV_SYNC_TEST_NOW_MS - TTL_90D - 1).toISOString(),
     }
-    store[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({ data: staleSummary, savedAt: Date.now() })
-    expect(restoreCsvSyncSummary()).toBeNull()
+    store[CSV_SYNC_SUMMARY_KEY] = JSON.stringify({ data: staleSummary, savedAt: CSV_SYNC_TEST_NOW_MS })
+    expect(restoreCsvSyncSummary(CSV_SYNC_TEST_NOW_MS)).toBeNull()
     expect(store[CSV_SYNC_SUMMARY_KEY]).toBeUndefined()
   })
 
   it('restoreCsvSyncSummary: 壊れたJSONはnull（fail-closed、例外を投げない）', () => {
     store[CSV_SYNC_SUMMARY_KEY] = 'corrupted{'
-    expect(restoreCsvSyncSummary()).toBeNull()
+    expect(restoreCsvSyncSummary(CSV_SYNC_TEST_NOW_MS)).toBeNull()
   })
 })
