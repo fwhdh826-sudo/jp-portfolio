@@ -1,6 +1,7 @@
 """OPS-ROUTINES-2 workflow placement and frozen-semantics guards."""
 
 from pathlib import Path
+import shlex
 import subprocess
 
 import pytest
@@ -311,8 +312,9 @@ PAGES_STEP = "Dispatch Pages for pushed data"
 def assert_commit_step_changes_only_the_reviewed_history_run_body(workflow):
     """H01 exception: the Commit step header (name/id/run marker, no if/env/shell/
     continue-on-error) is byte-identical to BASE and every BASE staging, identity,
-    data-message and unstaged-guard line survives; the run body itself is the
-    reviewed history-safe replacement (pinned by the block digests elsewhere)."""
+    data-message and unstaged-guard line survives. Update's staging alone follows
+    the explicitly reviewed canonical publication contract below; the run body
+    remains the reviewed history-safe replacement (pinned elsewhere)."""
     current_block = step_block(text(workflow), COMMIT_STEP)
     original_block = step_block(baseline(WORKFLOWS[workflow]), COMMIT_STEP)
     current_header, current_body = commit_header_and_body(current_block)
@@ -327,6 +329,29 @@ def assert_commit_step_changes_only_the_reviewed_history_run_body(workflow):
         for line in original_body.splitlines()
         if line.strip().startswith(COMMIT_PRESERVED_LINE_PREFIXES)
     ]
+    if workflow == "update":
+        # This ticket replaces only Update's historical staging line. Require the
+        # complete explicit list; retain every identity/message/history guard.
+        preserved = [line for line in preserved if not line.startswith("git add ")]
+        assert sum(line.startswith("git add ") for line in current_lines) == 1
+        staging = current_body.split("git add ", 1)[1].split(
+            "# Every staged delta", 1
+        )[0]
+        assert shlex.split(staging.replace("\\\n", "")) == [
+            "public/data/",
+            "data/candidates_news.json",
+            "data/correlation.json",
+            "data/earnings_calendar.json",
+            "data/flows.json",
+            "data/macro.json",
+            "data/margin.json",
+            "data/market.json",
+            "data/market_intel.json",
+            "data/news.json",
+            "data/regime_state.json",
+            "data/sq_calendar.json",
+            "data/stock_scores_6axis.json",
+        ]
     assert len(preserved) >= 3
     for line in preserved:
         assert current_lines.count(line) == 1, line

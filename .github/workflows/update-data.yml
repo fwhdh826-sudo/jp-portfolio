@@ -193,6 +193,20 @@ jobs:
             cp data/stock_scores_6axis.json public/data/scoring/stock_scores_6axis.json
           fi
 
+      - name: Cleanup update-data run-local source artifacts
+        run: |
+          set -euo pipefail
+          for path in \
+            data/holding_evidence.json \
+            data/returns.json \
+            data/stock_scores_6axis_backup.json; do
+            if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+              echo "::error::Run-local source artifact is unexpectedly tracked: $path" >&2
+              exit 1
+            fi
+            rm -f -- "$path"
+          done
+
       - name: Evaluate mutation admission (pre_publish)
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -241,7 +255,19 @@ jobs:
             echo "::error::Cannot bind the push base commit" >&2
             exit 1
           fi
-          git add public/data/ data/candidates_news.json data/regime_state.json
+          git add public/data/ \
+            data/candidates_news.json \
+            data/correlation.json \
+            data/earnings_calendar.json \
+            data/flows.json \
+            data/macro.json \
+            data/margin.json \
+            data/market.json \
+            data/market_intel.json \
+            data/news.json \
+            data/regime_state.json \
+            data/sq_calendar.json \
+            data/stock_scores_6axis.json
           # Every staged delta must modify an existing regular strict-JSON data file.
           python3 - <<'PY'
           import json
@@ -259,10 +285,12 @@ jobs:
               "data/macro.json",
               "data/margin.json",
               "data/market.json",
+              "data/market_intel.json",
               "data/news.json",
               "data/regime_state.json",
               "data/safe_mode.json",
               "data/sq_calendar.json",
+              "data/stock_scores_6axis.json",
               "data/tier_a_alerts.json",
               "data/tier_a_violations.json",
               "public/data/candidate_funnel.json",

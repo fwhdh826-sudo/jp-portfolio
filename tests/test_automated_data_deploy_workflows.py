@@ -36,7 +36,7 @@ def _job_step_script(producer: str, step_name: str) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _make_remote(tmp_path: Path) -> tuple[Path, Path]:
+def _make_remote(tmp_path: Path, producer: str) -> tuple[Path, Path]:
     remote = tmp_path / "remote.git"
     seed = tmp_path / "seed"
     subprocess.run(
@@ -60,7 +60,7 @@ def _make_remote(tmp_path: Path) -> tuple[Path, Path]:
         subprocess.run(["git", *args], cwd=seed, check=True)
     (seed / "data").mkdir()
     (seed / "public" / "data").mkdir(parents=True)
-    for path in (
+    paths = (
         "data/market.json",
         "data/news.json",
         "data/candidates_news.json",
@@ -68,7 +68,21 @@ def _make_remote(tmp_path: Path) -> tuple[Path, Path]:
         "public/data/market.json",
         "public/data/news.json",
         "public/data/candidates_news.json",
-    ):
+    )
+    if producer == "update-data":
+        # Only canonical tracked source outputs required by Update's real git add.
+        # holding_evidence, returns and the score backup stay run-local sources.
+        paths += (
+            "data/correlation.json",
+            "data/earnings_calendar.json",
+            "data/flows.json",
+            "data/macro.json",
+            "data/margin.json",
+            "data/market_intel.json",
+            "data/sq_calendar.json",
+            "data/stock_scores_6axis.json",
+        )
+    for path in paths:
         (seed / path).write_text('{"version":"old"}\n')
     subprocess.run(["git", "add", "data/", "public/data/"], cwd=seed, check=True)
     subprocess.run(["git", "commit", "-m", "seed"], cwd=seed, check=True)
@@ -120,7 +134,7 @@ def _outputs(path: Path) -> dict[str, str]:
 
 @pytest.mark.parametrize("producer", _PRODUCERS)
 def test_prod_01_successful_commit_exposes_exact_pushed_sha(tmp_path, producer):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     (worktree / "public" / "data" / "market.json").write_text(
         '{"version":"new"}\n'
     )
@@ -148,7 +162,7 @@ def test_prod_01_successful_commit_exposes_exact_pushed_sha(tmp_path, producer):
 def test_prod_02_no_change_exposes_false_and_has_no_dispatch_candidate(
     tmp_path, producer
 ):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     before = subprocess.run(
         ["git", "rev-parse", "refs/heads/main"],
         cwd=remote,
@@ -174,7 +188,7 @@ def test_prod_02_no_change_exposes_false_and_has_no_dispatch_candidate(
 
 @pytest.mark.parametrize("producer", _PRODUCERS)
 def test_prod_03_failed_push_never_exposes_success(tmp_path, producer):
-    _, worktree = _make_remote(tmp_path)
+    _, worktree = _make_remote(tmp_path, producer)
     (worktree / "public" / "data" / "market.json").write_text(
         '{"version":"new"}\n'
     )
@@ -372,7 +386,7 @@ def test_release_history_no_rebase_in_any_production_push_block(
         for line in active
     )
 
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     base = _git(worktree, "rev-parse", "HEAD")
     if scenario == "data_change":
         _edit_data(producer, worktree)
@@ -413,7 +427,7 @@ def test_release_history_no_rebase_in_any_production_push_block(
 def test_release_history_remote_advance_fails_without_success_outputs(
     tmp_path, producer, advance
 ):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     base = _git(worktree, "rev-parse", "HEAD")
     _edit_data(producer, worktree)
     other = tmp_path / "other"
@@ -452,7 +466,7 @@ def test_release_history_remote_advance_fails_without_success_outputs(
 def test_release_history_fetch_and_ancestor_failure_stop_before_push(
     tmp_path, producer, failure
 ):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     base = _git(worktree, "rev-parse", "HEAD")
     _edit_data(producer, worktree)
     kwargs = {}
@@ -527,7 +541,7 @@ def _scenario_state(scenario: str, worktree: Path) -> dict[str, str]:
 def test_release_history_ineligible_ref_or_state_stops_before_commit_and_transport(
     tmp_path, producer, scenario
 ):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     _git(worktree, "config", "core.fileMode", "true")
     base = _commit_and_push_seed_file(worktree)
     env_overrides = _scenario_state(scenario, worktree)
@@ -548,7 +562,7 @@ def test_release_history_ineligible_ref_or_state_stops_before_commit_and_transpo
 
 @pytest.mark.parametrize("producer", _PRODUCERS)
 def test_release_history_arbitrary_local_ahead_history_is_not_pushed(tmp_path, producer):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     remote_tip = _bare_main(remote)
     (worktree / "public" / "data" / "news.json").write_text('{"version":"local-ahead"}\n')
     _git(worktree, "add", "public/data/news.json")
@@ -568,7 +582,7 @@ def test_release_history_arbitrary_local_ahead_history_is_not_pushed(tmp_path, p
 
 @pytest.mark.parametrize("producer", _PRODUCERS)
 def test_release_history_rejected_push_stops_and_keeps_actual_state(tmp_path, producer):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     base = _git(worktree, "rev-parse", "HEAD")
     _edit_data(producer, worktree)
     hook = remote / "hooks" / "pre-receive"
@@ -595,7 +609,7 @@ def test_release_history_rejected_push_stops_and_keeps_actual_state(tmp_path, pr
 def test_release_history_unconfirmed_post_push_observation_emits_no_success(
     tmp_path, producer, observation
 ):
-    remote, worktree = _make_remote(tmp_path)
+    remote, worktree = _make_remote(tmp_path, producer)
     base = _git(worktree, "rev-parse", "HEAD")
     _edit_data(producer, worktree)
     path, _log = _install_git_wrapper(tmp_path, ls_remote=observation)

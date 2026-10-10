@@ -30,7 +30,7 @@ EXPECTED_TRIGGER_BLOCK_SHA256 = {
 EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
     ("full", "Commit and push"): "3c995a599144fdcb9e401e2cbfcf486f6aa5e76fc884d677a9806ef1b4614c75",
     ("full", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
-    ("update", "Commit and push"): "493b3eef78742d08c31a8ed051a9d9154f4f2f643ce9257d49bad94121e4c765",
+    ("update", "Commit and push"): "1e6cfedd433e53733cc0c8c56667575e3e1955379b2f29490dd218f32147fc2d",
     ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
     ("intraday", "Commit and push"): "41b24e51310740003c941eadc65f0f43aad076a962848179f3a8e83788d6284c",
     ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",

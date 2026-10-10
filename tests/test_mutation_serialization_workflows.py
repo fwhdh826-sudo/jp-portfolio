@@ -28,7 +28,7 @@ EXPECTED_FULL_TOP_LEVEL_CONCURRENCY_SHA256 = (
 EXPECTED_COMMIT_AND_PAGES_BLOCK_SHA256 = {
     ("full", "Commit and push"): "43ac1ce1c2dc6e445bc8c565e5f3914612068204d46cd4309e27c356ae18eefc",
     ("full", "Dispatch Pages for pushed data"): "24873d087c5ffa960d059bace99e4b0e767c41492f54477704852b3c1fece775",
-    ("update", "Commit and push"): "6141ab2ddeebcfa4e8b240ae43a2ab7a73caa8f6586a4569ee19d88c7e9c8ecd",
+    ("update", "Commit and push"): "33a459933e324a0da3de4ee61b5ba3a19a953ffe04b82cfae6fd98ccd8d1787b",
     ("update", "Dispatch Pages for pushed data"): "12ad918d41af46a7e455d24975651c124692b3ce08186cf69dfe2a04cbb23339",
     ("intraday", "Commit and push"): "bfcec8d1b298238776b30bc9c9e8abda1b734d17eb8a359dce2cf2733f7c915d",
     ("intraday", "Dispatch Pages for pushed data"): "68a52f52e2127dfd32c479dc38a6649417044c0100d67e2a003c467e474b9371",
