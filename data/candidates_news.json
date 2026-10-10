@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-09T19:47:49.087797+09:00",
-  "sourceUpdatedAt": "2026-10-09T10:30:51+00:00",
+  "updatedAt": "2026-10-11T01:18:35.436752+09:00",
+  "sourceUpdatedAt": "2026-10-10T16:17:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,40 +29,49 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.5,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": 0.223,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-      "topPositiveTitle": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
+      "topNegativeTitle": "Trump Says Putin to Supply US With Diesel",
+      "topPositiveTitle": "Can Trump Fire Fed Governor Lisa Cook?",
       "items": [
         {
-          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+          "title": "Trump Says Putin to Supply US With Diesel",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-09T05:12:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T23:17:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/the-close-10-9-2026-video",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-09T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/wall-street-sees-an-ominous-sign-in-bond-market-s-latest-selloff",
+          "title": "Treasuries Slip on Inflation Worry as Energy Costs Stay High",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T17:24:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/treasuries-slide-on-inflation-worry-as-energy-costs-stay-high",
           "tags": [
-            "macro_risk",
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Can Trump Fire Fed Governor Lisa Cook?",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-09T20:32:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/can-trump-fire-fed-governor-lisa-cook",
+          "tags": [
             "market",
             "us_broad"
           ]
@@ -77,19 +86,17 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
-      "topPositiveTitle": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
+      "topNegativeTitle": "China Targets AI-Linked Jobs With New Employment Initiative",
+      "topPositiveTitle": "China Targets AI-Linked Jobs With New Employment Initiative",
       "items": [
         {
-          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
-          "source": "Bloomberg Economics",
+          "title": "China Targets AI-Linked Jobs With New Employment Initiative",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
+          "publishedAt": "2026-10-10T03:43:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/china-targets-ai-linked-jobs-with-new-employment-initiative",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -97,6 +104,33 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+      "topPositiveTitle": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+      "items": [
+        {
+          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T21:00:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -108,408 +142,270 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
-      "topPositiveTitle": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
-      "items": [
-        {
-          "title": "India Scraps Key Tax Relief on Gold Imports, Raising Costs",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T12:44:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/india-scraps-key-tax-relief-for-gold-imports-raising-costs",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
-    },
     "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
-      "topPositiveTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
-      "items": [
-        {
-          "title": "London’s Newest Rates Market Specialists Are Real Estate Agents",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T08:55:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/london-s-newest-rates-market-specialists-are-real-estate-agents",
-          "tags": [
-            "market",
-            "rates",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
-      "topPositiveTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
-      "items": [
-        {
-          "title": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-09T07:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/petronas-boosts-malaysia-dividends-further-as-oil-prices-surge",
-          "tags": [
-            "commodity",
-            "dividend",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.184,
-      "negativeCount": 4,
-      "positiveCount": 0,
+      "avgSentiment": 0.241,
+      "negativeCount": 0,
+      "positiveCount": 4,
       "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-      "topPositiveTitle": "Montenegro Police Detains Head of Russian War Blog Rybar",
+      "topNegativeTitle": "European Debt-Crisis Risks Have Risen Sharply, Bundesbanker Says",
+      "topPositiveTitle": "Trump's Russian Diesel Deal Draws Ukraine Criticism",
       "items": [
         {
-          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-09T05:12:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Sees an Ominous Sign in Bond Market’s Latest Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-09T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/wall-street-sees-an-ominous-sign-in-bond-market-s-latest-selloff",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Borrowing Spree Hammers Tech Debt in Rush to Reprice Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T22:24:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/ai-debt-spree-hammers-tech-debt-as-traders-rush-to-reprice-risk",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "What’s the TPI? How ECB Can Respond to French Bond Turmoil",
+          "title": "European Debt-Crisis Risks Have Risen Sharply, Bundesbanker Says",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-08T13:24:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/what-s-the-tpi-how-ecb-can-respond-to-french-bond-turmoil",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T06:41:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/european-debt-crisis-risks-have-risen-sharply-bundesbanker-says",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Montenegro Police Detains Head of Russian War Blog Rybar",
+          "title": "India Announces Emergency Steps to Support Plunging Currency",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T10:19:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/montenegro-police-detains-head-of-russian-war-blog-rybar",
+          "publishedAt": "2026-10-10T03:14:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/rbi-announces-special-oil-window-regulatory-steps-for-rupee",
           "tags": [
-            "geopolitical",
+            "fx",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T21:00:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "茂木外相 米国ルビオ国務長官にICC制裁への日本の立場伝達",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T14:41:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261010de57789",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "茂木外相 米国ルビオ国務長官にICC制裁への日本の立場伝達"
+        },
+        {
+          "title": "自民 古屋氏 中国の制裁受け高市首相から「名誉ある制裁」",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T07:42:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261009de57223",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "自民 古屋氏 中国の制裁受け高市首相から「名誉ある制裁」"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Dollar Is Set for Longest Winning Streak Since Early 2025",
-      "topPositiveTitle": "Japan’s Takaichi Says Growth Push Will Help Support Trust in Yen",
+      "topNegativeTitle": "India Announces Emergency Steps to Support Plunging Currency",
+      "topPositiveTitle": "India Announces Emergency Steps to Support Plunging Currency",
       "items": [
         {
-          "title": "Dollar Is Set for Longest Winning Streak Since Early 2025",
+          "title": "India Announces Emergency Steps to Support Plunging Currency",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T08:05:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/dollar-s-longest-winning-streak-since-early-2025-keeps-going",
+          "publishedAt": "2026-10-10T03:14:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/rbi-announces-special-oil-window-regulatory-steps-for-rupee",
           "tags": [
-            "commodity",
             "fx",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Takaichi Says Growth Push Will Help Support Trust in Yen",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-09T04:32:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/japan-s-takaichi-says-growth-push-will-help-support-trust-in-yen",
-          "tags": [
-            "fx",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.168,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-      "topPositiveTitle": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "commodity": {
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "China Passenger Vehicle Retail Sales Drop 24% in September",
+      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
       "items": [
         {
-          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
+          "title": "China Passenger Vehicle Retail Sales Drop 24% in September",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-09T05:12:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-10T09:53:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/china-passenger-vehicle-retail-sales-drop-24-in-september",
           "tags": [
-            "geopolitical",
-            "macro_risk",
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Slip on Inflation Worry as Energy Costs Stay High",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T17:24:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-09/treasuries-slide-on-inflation-worry-as-energy-costs-stay-high",
+          "tags": [
+            "commodity",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "London’s Newest Rates Market Specialists Are Real Estate Agents",
+          "title": "Russian Diesel Deal Unlikely to Lower US Prices",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T08:55:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/london-s-newest-rates-market-specialists-are-real-estate-agents",
-          "tags": [
-            "market",
-            "rates",
-            "reit"
-          ]
-        },
-        {
-          "title": "Uruguay Raises Interest Rates to Counter Above-Target Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T20:54:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/uruguay-raises-interest-rates-to-counter-above-target-inflation",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Poland’s Glapinski Ready to Raise Rates If Inflation Risks Mount",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T15:04:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/poland-s-glapinski-ready-to-raise-rates-if-inflation-risks-mount",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Bounce as Oil Falls and AI Worries Ease: Markets Wrap",
-      "topPositiveTitle": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
-      "items": [
-        {
-          "title": "Stocks Bounce as Oil Falls and AI Worries Ease: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-08T22:05:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Is Set for Longest Winning Streak Since Early 2025",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T08:05:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/dollar-s-longest-winning-streak-since-early-2025-keeps-going",
-          "tags": [
-            "commodity",
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 9",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T22:02:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-10T16:03:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-10/russian-diesel-deal-unlikely-to-lower-us-prices-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Petronas Boosts Malaysia Dividends Further as Oil Prices Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-09T07:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/petronas-boosts-malaysia-dividends-further-as-oil-prices-surge",
-          "tags": [
-            "commodity",
-            "dividend",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.057,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.301,
+      "negativeCount": 0,
+      "positiveCount": 5,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-      "topPositiveTitle": "Trump Rules Out Iran Attack Before Midterms, OpenAI Eyes $70B Revenue",
+      "topNegativeTitle": "Russia Plague Scare Raises Public Health Questions",
+      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
       "items": [
         {
-          "title": "Rizk: Fiscal Pressures Show in Bahrain Bonds",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-09T05:12:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/rizk-economic-physical-pressure-show-in-bahrain-bonds-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Montenegro Police Detains Head of Russian War Blog Rybar",
+          "title": "Russia Plague Scare Raises Public Health Questions",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T10:19:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/montenegro-police-detains-head-of-russian-war-blog-rybar",
+          "publishedAt": "2026-10-10T16:11:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-10/russia-plague-scare-raises-public-health-questions-video",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Azadeh Moaveni on the Iranian Diaspora",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T08:25:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/azadeh-moaveni-on-the-iranian-diaspora-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 9",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T22:02:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/latest-oil-market-news-and-analysis-for-oct-9",
-          "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "WTO Lifts Goods Trade Outlook as AI Demand Outweighs War Strains",
+          "title": "One of Russia’s Richest Men Says Economy Has Yet to Hit Bottom",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-08/wto-lifts-goods-trade-outlook-as-ai-demand-outweighs-war-strains",
+          "publishedAt": "2026-10-10T12:38:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/one-of-russia-s-richest-men-says-economy-has-yet-to-hit-bottom",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
+        },
+        {
+          "title": "Australia Says Doesn’t Need Russian Fuel After Trump Diesel Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T02:30:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/australia-says-doesn-t-need-russian-fuel-after-trump-diesel-move",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T21:00:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "茂木外相 ロシアのペスト対策研究所の職員死亡で現地対策本部",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T11:35:33+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261009de57475",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 ロシアのペスト対策研究所の職員死亡で現地対策本部"
         }
       ]
     }
