@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-11T01:18:35.436752+09:00",
-  "sourceUpdatedAt": "2026-10-10T16:17:34+00:00",
+  "updatedAt": "2026-10-11T11:02:28.356977+09:00",
+  "sourceUpdatedAt": "2026-10-11T00:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,48 +29,36 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump Says Putin to Supply US With Diesel",
-      "topPositiveTitle": "Can Trump Fire Fed Governor Lisa Cook?",
+      "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+      "topPositiveTitle": "Strong Earnings Keep US Stocks in Favor",
       "items": [
         {
-          "title": "Trump Says Putin to Supply US With Diesel",
+          "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/us-cpi-to-show-overall-inflation-boosted-by-higher-gasoline-prices",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Strong Earnings Keep US Stocks in Favor",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T23:17:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/the-close-10-9-2026-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Slip on Inflation Worry as Energy Costs Stay High",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T17:24:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/treasuries-slide-on-inflation-worry-as-energy-costs-stay-high",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Can Trump Fire Fed Governor Lisa Cook?",
-          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-09T20:32:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/can-trump-fire-fed-governor-lisa-cook",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-10T17:37:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-10/strong-earnings-keep-us-stocks-in-favor-video",
           "tags": [
             "market",
             "us_broad"
@@ -79,29 +67,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China Targets AI-Linked Jobs With New Employment Initiative",
-      "topPositiveTitle": "China Targets AI-Linked Jobs With New Employment Initiative",
-      "items": [
-        {
-          "title": "China Targets AI-Linked Jobs With New Employment Initiative",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T03:43:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/china-targets-ai-linked-jobs-with-new-employment-initiative",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0.0,
@@ -167,12 +142,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.241,
+      "avgSentiment": 0.143,
       "negativeCount": 0,
-      "positiveCount": 4,
+      "positiveCount": 2,
       "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "European Debt-Crisis Risks Have Risen Sharply, Bundesbanker Says",
       "topPositiveTitle": "Trump's Russian Diesel Deal Draws Ukraine Criticism",
@@ -185,19 +160,6 @@
           "publishedAt": "2026-10-10T06:41:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-10/european-debt-crisis-risks-have-risen-sharply-bundesbanker-says",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "India Announces Emergency Steps to Support Plunging Currency",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T03:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/rbi-announces-special-oil-window-regulatory-steps-for-rupee",
-          "tags": [
-            "fx",
             "macro_risk",
             "market"
           ]
@@ -217,17 +179,30 @@
           ]
         },
         {
-          "title": "茂木外相 米国ルビオ国務長官にICC制裁への日本の立場伝達",
+          "title": "Phenomenal Time To Be Investor, Not Consumer: Amoroso",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T19:27:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/phenomenal-time-to-be-investor-not-consumer-amoroso-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "茂木外相 米 ルビオ国務長官にICC制裁への日本の立場伝達",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T14:41:00+00:00",
+          "publishedAt": "2026-10-10T22:31:00+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261010de57789",
           "tags": [
             "macro_risk",
             "market"
           ],
-          "titleJa": "茂木外相 米国ルビオ国務長官にICC制裁への日本の立場伝達"
+          "titleJa": "茂木外相 米 ルビオ国務長官にICC制裁への日本の立場伝達"
         },
         {
           "title": "自民 古屋氏 中国の制裁受け高市首相から「名誉ある制裁」",
@@ -245,32 +220,6 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "India Announces Emergency Steps to Support Plunging Currency",
-      "topPositiveTitle": "India Announces Emergency Steps to Support Plunging Currency",
-      "items": [
-        {
-          "title": "India Announces Emergency Steps to Support Plunging Currency",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T03:14:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/rbi-announces-special-oil-window-regulatory-steps-for-rupee",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "rates": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -282,42 +231,80 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+    "rates": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "China Passenger Vehicle Retail Sales Drop 24% in September",
-      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
+      "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+      "topPositiveTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
       "items": [
         {
-          "title": "China Passenger Vehicle Retail Sales Drop 24% in September",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-10T09:53:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/china-passenger-vehicle-retail-sales-drop-24-in-september",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Slip on Inflation Worry as Energy Costs Stay High",
+          "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T17:24:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-09/treasuries-slide-on-inflation-worry-as-energy-costs-stay-high",
+          "publishedAt": "2026-10-10T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/us-cpi-to-show-overall-inflation-boosted-by-higher-gasoline-prices",
           "tags": [
-            "commodity",
             "market",
+            "rates",
             "us_broad"
           ]
         },
+        {
+          "title": "Australia Home Auction Clearance Rate Stuck Below 50% for Second Week",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T23:56:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/australia-home-auction-clearance-rate-stuck-below-50-for-second-week",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "AI Debt Issuance Defies Rising Yields as SpaceX, Broadcom Plan Major Deals",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-10T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/ai-issuers-are-upending-longstanding-safety-valve-credit-weekly",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Phenomenal Time To Be Investor, Not Consumer: Amoroso",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-09T19:27:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-09/phenomenal-time-to-be-investor-not-consumer-amoroso-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
+      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
+      "items": [
         {
           "title": "Russian Diesel Deal Unlikely to Lower US Prices",
           "source": "Bloomberg Markets",
@@ -334,12 +321,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.301,
+      "avgSentiment": 0.293,
       "negativeCount": 0,
-      "positiveCount": 5,
-      "neutralCount": 5,
+      "positiveCount": 4,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Russia Plague Scare Raises Public Health Questions",
       "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
@@ -363,18 +350,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-10-10T12:38:27+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-10/one-of-russia-s-richest-men-says-economy-has-yet-to-hit-bottom",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Australia Says Doesn’t Need Russian Fuel After Trump Diesel Move",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T02:30:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/australia-says-doesn-t-need-russian-fuel-after-trump-diesel-move",
           "tags": [
             "geopolitical",
             "market"
@@ -406,6 +381,19 @@
             "market"
           ],
           "titleJa": "茂木外相 ロシアのペスト対策研究所の職員死亡で現地対策本部"
+        },
+        {
+          "title": "Egypt Inflation Slows Again Despite Iran War Price Pressures",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-10T06:19:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-10/egypt-inflation-slows-again-despite-iran-war-price-pressures",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
