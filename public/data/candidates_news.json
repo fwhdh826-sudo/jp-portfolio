@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-11T11:02:28.356977+09:00",
-  "sourceUpdatedAt": "2026-10-11T00:00:00+00:00",
+  "updatedAt": "2026-10-12T01:42:25.792938+09:00",
+  "sourceUpdatedAt": "2026-10-11T16:27:24+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,15 +29,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.168,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
-      "topPositiveTitle": "Strong Earnings Keep US Stocks in Favor",
+      "topPositiveTitle": "Consumers Are Tapped and Wall Street Fears That’s a Rally Killer",
       "items": [
         {
           "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
@@ -53,12 +53,36 @@
           ]
         },
         {
-          "title": "Strong Earnings Keep US Stocks in Favor",
+          "title": "Tech Earnings Loom Large for Hedge Funds Packed Into Dispersion Trade",
           "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/tech-earnings-loom-large-for-hedge-funds-packed-into-dispersion-trade",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Prediction Markets’ NFL Boom Tests Sports Betting Rules",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T13:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/prediction-markets-nfl-boom-tests-sports-betting-rules",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Consumers Are Tapped and Wall Street Fears That’s a Rally Killer",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-10T17:37:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-10/strong-earnings-keep-us-stocks-in-favor-video",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-11T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/consumers-are-tapped-and-wall-street-fears-that-s-a-rally-killer",
           "tags": [
             "market",
             "us_broad"
@@ -67,16 +91,29 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Tech Billionaires Gain $845 Billion in 2026",
+      "topPositiveTitle": "Tech Billionaires Gain $845 Billion in 2026",
+      "items": [
+        {
+          "title": "Tech Billionaires Gain $845 Billion in 2026",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T16:20:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/tech-billionaires-gain-845-billion-in-2026-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0.0,
@@ -86,18 +123,17 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
-      "topPositiveTitle": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+      "topNegativeTitle": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
+      "topPositiveTitle": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
       "items": [
         {
-          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+          "title": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T21:00:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
+          "publishedAt": "2026-10-11T12:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/emerging-markets-better-armed-for-renewed-european-debt-turmoil",
           "tags": [
-            "geopolitical",
             "global_broad",
             "macro_risk",
             "market"
@@ -142,105 +178,119 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.143,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": -0.125,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "European Debt-Crisis Risks Have Risen Sharply, Bundesbanker Says",
-      "topPositiveTitle": "Trump's Russian Diesel Deal Draws Ukraine Criticism",
+      "topNegativeTitle": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
+      "topPositiveTitle": "Saudi Airport Attack Raises Middle East War Risks",
       "items": [
         {
-          "title": "European Debt-Crisis Risks Have Risen Sharply, Bundesbanker Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T06:41:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/european-debt-crisis-risks-have-risen-sharply-bundesbanker-says",
+          "title": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T14:50:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/trump-s-russia-diesel-deal-deepens-ukraine-rift-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
+          "title": "Saudi Airport Attack Kills 12 as Conflict Escalates",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-11T13:46:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-kills-12-as-conflict-escalates-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Saudi Airport Attack Raises Middle East War Risks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T21:00:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
+          "publishedAt": "2026-10-11T15:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-raises-middle-east-war-risks-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Moves to Stave Off Wider EU Trade War With Hybrid Deal",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T13:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/china-moves-to-stave-off-wider-eu-trade-war-with-hybrid-deal",
           "tags": [
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T12:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/emerging-markets-better-armed-for-renewed-european-debt-turmoil",
+          "tags": [
             "global_broad",
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Phenomenal Time To Be Investor, Not Consumer: Amoroso",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T19:27:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/phenomenal-time-to-be-investor-not-consumer-amoroso-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "茂木外相 米 ルビオ国務長官にICC制裁への日本の立場伝達",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T22:31:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261010de57789",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "茂木外相 米 ルビオ国務長官にICC制裁への日本の立場伝達"
-        },
-        {
-          "title": "自民 古屋氏 中国の制裁受け高市首相から「名誉ある制裁」",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T07:42:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261009de57223",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "自民 古屋氏 中国の制裁受け高市首相から「名誉ある制裁」"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
+      "topPositiveTitle": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
+      "items": [
+        {
+          "title": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-11T03:00:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/india-s-rupee-defense-raises-question-of-how-far-rbi-will-go",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
-      "topPositiveTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+      "topPositiveTitle": "Big Banks Face Test as Earnings Season Begins",
       "items": [
         {
           "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
@@ -268,26 +318,13 @@
           ]
         },
         {
-          "title": "AI Debt Issuance Defies Rising Yields as SpaceX, Broadcom Plan Major Deals",
+          "title": "Big Banks Face Test as Earnings Season Begins",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/ai-issuers-are-upending-longstanding-safety-valve-credit-weekly",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-11T15:20:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/big-banks-face-test-as-earnings-season-begins-video",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Phenomenal Time To Be Investor, Not Consumer: Amoroso",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T19:27:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/phenomenal-time-to-be-investor-not-consumer-amoroso-video",
-          "tags": [
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -295,100 +332,103 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
-      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
+      "topNegativeTitle": "Saudi Airport Attack Raises Middle East War Risks",
+      "topPositiveTitle": "Saudi Airport Attack Raises Middle East War Risks",
       "items": [
         {
-          "title": "Russian Diesel Deal Unlikely to Lower US Prices",
+          "title": "Saudi Airport Attack Raises Middle East War Risks",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-10T16:03:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-10/russian-diesel-deal-unlikely-to-lower-us-prices-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T15:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-raises-middle-east-war-risks-video",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.293,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": -0.041,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Russia Plague Scare Raises Public Health Questions",
-      "topPositiveTitle": "Russian Diesel Deal Unlikely to Lower US Prices",
+      "topNegativeTitle": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
+      "topPositiveTitle": "Taiwan’s Lai Urges Democracies to Unite After Trump-Xi Talks",
       "items": [
         {
-          "title": "Russia Plague Scare Raises Public Health Questions",
+          "title": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T16:11:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-10/russia-plague-scare-raises-public-health-questions-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T14:50:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/trump-s-russia-diesel-deal-deepens-ukraine-rift-video",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "One of Russia’s Richest Men Says Economy Has Yet to Hit Bottom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T12:38:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/one-of-russia-s-richest-men-says-economy-has-yet-to-hit-bottom",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Balancing Conviction and Risk: Masters in Business with Maria Vassalou",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T21:00:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-09/masters-in-business-with-barry-ritholtz-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "茂木外相 ロシアのペスト対策研究所の職員死亡で現地対策本部",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-09T11:35:33+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261009de57475",
+          "title": "Saudi Airport Attack Kills 12 as Conflict Escalates",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-11T13:46:58+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-kills-12-as-conflict-escalates-video",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
-          ],
-          "titleJa": "茂木外相 ロシアのペスト対策研究所の職員死亡で現地対策本部"
+          ]
         },
         {
-          "title": "Egypt Inflation Slows Again Despite Iran War Price Pressures",
+          "title": "Saudi Airport Attack Raises Middle East War Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T15:46:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-raises-middle-east-war-risks-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China Moves to Stave Off Wider EU Trade War With Hybrid Deal",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-10T06:19:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/egypt-inflation-slows-again-despite-iran-war-price-pressures",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T13:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/china-moves-to-stave-off-wider-eu-trade-war-with-hybrid-deal",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Healey Plans Short-Term UK Budget Giveaways to Limit Fiscal Pain",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T06:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/healey-plans-short-term-uk-budget-giveaways-to-limit-fiscal-pain",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -406,7 +446,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
