@@ -144,12 +144,13 @@ function fitResultFor(records: CandidatePortfolioFitRecord[], overrides: Partial
   }
 }
 
-/** funnel default fixture: 1002=deep_review, 1003=actionable. */
+/** Keep normal fit identity aligned with the canonical funnel, including artifact indices. */
 function defaultFitResult(overrides: Partial<CandidatePortfolioFitResult> = {}): CandidatePortfolioFitResult {
-  return fitResultFor([
-    fitRecordFor({ code: '1002', marketRank: 1, tier: 'deep_review' }, 1),
-    fitRecordFor({ code: '1003', marketRank: 1, tier: 'actionable' }, 2),
-  ], overrides)
+  const records = artifact().candidates.flatMap((candidate, artifactIndex) => {
+    if (candidate.tier !== 'deep_review' && candidate.tier !== 'actionable') return []
+    return [fitRecordFor({ code: candidate.code, marketRank: candidate.marketRank, tier: candidate.tier }, artifactIndex)]
+  })
+  return fitResultFor(records, overrides)
 }
 
 describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
@@ -163,6 +164,23 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
     })
     expect(result?.status).toBe('available')
     expect(result?.provenance.candidateGenerationId).toBe(FUNNEL_GENERATION)
+  })
+
+  it('keeps normal stock:1002 fit evaluated with canonical deep_review rank 2', () => {
+    const state = baseState()
+    const fit = defaultFitResult()
+    expect(fit.records.find(record => record.code === '1002')).toMatchObject({
+      artifactIndex: 1, candidateRecordId: 'artifact:1', candidateTier: 'deep_review', candidateMarketRank: 2,
+    })
+    const result = buildCandidateDecisionSynthesisFromState({
+      state, allocationPlan: planFor(state), allocationPlanStatus: 'current',
+      allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
+      fitResult: fit, candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
+    })
+    expect(result?.status).toBe('available')
+    const entry = [...(result?.decisions ?? []), ...(result?.watchList ?? [])].find(e => e.instrumentId === 'stock:1002')
+    expect(entry?.candidateQuality).toMatchObject({ marketRank: 2, tier: 'deep_review' })
+    expect(entry?.portfolioFit).toMatchObject({ status: 'evaluated', hardGatePassed: true })
   })
 
   it('B2 candidate generation mismatch -> null (fail closed)', () => {
@@ -281,6 +299,8 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
     })
     const entry = [...(result?.decisions ?? []), ...(result?.watchList ?? [])].find(e => e.instrumentId === 'stock:1003')
     expect(entry).toMatchObject({ action: 'BLOCKED', assetClass: 'JP_STOCK' })
+    expect(entry?.candidateQuality).toMatchObject({ marketRank: 1, tier: 'actionable' })
+    expect(entry?.portfolioFit.status).toBe('evaluated')
     expect(entry?.portfolioFit.hardGatePassed).toBe(true)
     expect(entry?.blockingReasons).toContain('JP_STOCK_EXECUTION_DATA_UNAVAILABLE')
   })
@@ -288,32 +308,37 @@ describe('CAND-SYN-1B buildCandidateDecisionSynthesisFromState', () => {
   it('the portfolioFit hard gate correctly computes false when the fit record does not exactly match (D9)', () => {
     const state = baseState()
     const plan = planFor(state)
-    const mismatched = fitResultFor([
-      fitRecordFor({ code: '1002', marketRank: 1, tier: 'deep_review' }, 1),
-      fitRecordFor({ code: '1003', marketRank: 1, tier: 'actionable' }, 2, { candidateMarketRank: 999 }), // no longer exact-matches raw.marketRank
-    ])
+    const mismatched = fitResultFor(defaultFitResult().records.map(record =>
+      record.code === '1003' ? { ...record, candidateMarketRank: 999 } : record, // no longer exact-matches raw.marketRank
+    ))
     const result = buildCandidateDecisionSynthesisFromState({
       state, allocationPlan: plan, allocationPlanStatus: 'current',
       allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
       fitResult: mismatched, candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
     })
-    const entry = [...(result?.decisions ?? []), ...(result?.watchList ?? [])].find(e => e.instrumentId === 'stock:1003')
+    const entries = [...(result?.decisions ?? []), ...(result?.watchList ?? [])]
+    expect(entries.find(e => e.instrumentId === 'stock:1002')?.portfolioFit).toMatchObject({ status: 'evaluated', hardGatePassed: true })
+    const entry = entries.find(e => e.instrumentId === 'stock:1003')
+    expect(entry?.candidateQuality.marketRank).toBe(1)
+    expect(entry?.portfolioFit.status).toBe('invalid')
     expect(entry?.portfolioFit.hardGatePassed).toBe(false)
   })
 
   it('holding_match_unknown demotes the hard gate (D9 condition 3)', () => {
     const state = baseState()
     const plan = planFor(state)
-    const unknownMatch = fitResultFor([
-      fitRecordFor({ code: '1002', marketRank: 1, tier: 'deep_review' }, 1),
-      fitRecordFor({ code: '1003', marketRank: 1, tier: 'actionable' }, 2, { holdingRelationship: 'holding_match_unknown' }),
-    ])
+    const unknownMatch = fitResultFor(defaultFitResult().records.map(record =>
+      record.code === '1003' ? { ...record, holdingRelationship: 'holding_match_unknown' } : record,
+    ))
     const result = buildCandidateDecisionSynthesisFromState({
       state, allocationPlan: plan, allocationPlanStatus: 'current',
       allocationPlanCandidateGenerationId: FUNNEL_GENERATION,
       fitResult: unknownMatch, candidateFreshness: 'fresh', evaluatedAt: NOW_ISO, nowMs: NOW,
     })
-    const entry = [...(result?.decisions ?? []), ...(result?.watchList ?? [])].find(e => e.instrumentId === 'stock:1003')
+    const entries = [...(result?.decisions ?? []), ...(result?.watchList ?? [])]
+    expect(entries.find(e => e.instrumentId === 'stock:1002')?.portfolioFit).toMatchObject({ status: 'evaluated', hardGatePassed: true })
+    const entry = entries.find(e => e.instrumentId === 'stock:1003')
+    expect(entry?.portfolioFit.status).toBe('evaluated')
     expect(entry?.portfolioFit.hardGatePassed).toBe(false)
     expect(entry?.portfolioFit.relationship).toBe('holding_match_unknown')
   })
