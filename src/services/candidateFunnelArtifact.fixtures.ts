@@ -22,7 +22,7 @@ function buildScoreBreakdown() {
   }))
 }
 
-function buildCandidate(code: string, tier: 'screened' | 'deep_review' | 'actionable', marketScore: number) {
+function buildCandidate(code: string, tier: 'screened' | 'deep_review' | 'actionable', marketScore: number, marketRank: number) {
   return {
     code,
     name: `テスト銘柄${code}`,
@@ -34,7 +34,7 @@ function buildCandidate(code: string, tier: 'screened' | 'deep_review' | 'action
     rawCompositeScore: 0.6,
     dataConfidence: 1.0,
     marketScore,
-    marketRank: 1,
+    marketRank,
     tier,
     selectedReasons: tier === 'actionable' ? ['SELECTED_ACTIONABLE'] : tier === 'deep_review' ? ['SELECTED_DEEP_REVIEW'] : [],
     riskReasons: [],
@@ -72,9 +72,9 @@ export function buildValidCandidateFunnelArtifact(): any {
     degradationReasons: [],
     counts: { total: 3, excluded: 0, screened: 1, deepReview: 1, actionable: 1 },
     candidates: [
-      buildCandidate('1001', 'screened', 40.0),
-      buildCandidate('1002', 'deep_review', 60.0),
-      buildCandidate('1003', 'actionable', 75.0),
+      buildCandidate('1001', 'screened', 40.0, 3),
+      buildCandidate('1002', 'deep_review', 60.0, 2),
+      buildCandidate('1003', 'actionable', 75.0, 1),
     ],
     excludedSummary: { total: 0, byReason: {} },
     sectorDistribution: {

@@ -9,6 +9,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import { parseCandidateFunnelArtifact } from './candidateFunnelParser'
+import { candidateMarketRankSetIsCanonical } from './candidateFunnelInvariants'
 import { buildValidCandidateFunnelArtifact } from './candidateFunnelArtifact.fixtures'
 import dataArtifact from '../../data/candidate_funnel.json'
 import publicArtifact from '../../public/data/candidate_funnel.json'
@@ -790,5 +791,71 @@ describe('FCA-1-P1-03 strict producer-compatible timestamp contract at the parse
     const artifact = buildValidCandidateFunnelArtifact()
     artifact._meta.generatedAt = '2999-01-01T00:00:00+00:00'
     expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+})
+
+
+describe('canonical market rank set at the parser boundary', () => {
+  it.each([[3, 2, 1], [1, 2, 3]])('accepts rank permutation %j without sorting the array', (...ranks) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates.forEach((candidate: { marketRank: number }, index: number) => { candidate.marketRank = ranks[index] })
+    const before = structuredClone(artifact)
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: true, data: before })
+    expect(artifact).toEqual(before)
+  })
+
+  it('accepts a physical candidate-array permutation and preserves it', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates = [artifact.candidates[1], artifact.candidates[2], artifact.candidates[0]]
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result).toEqual({ ok: true, data: artifact })
+    expect(artifact.candidates.map((candidate: { marketRank: number }) => candidate.marketRank)).toEqual([2, 1, 3])
+  })
+
+  it.each([[1, 1, 3], [1, 3, 4], [1, 2, 4], [1, 1, 1]])('rejects individually positive ranks %j as invalid_candidates', (...ranks) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates.forEach((candidate: { marketRank: number }, index: number) => { candidate.marketRank = ranks[index] })
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: false, code: 'invalid_candidates' })
+  })
+
+  it.each([2, 3])('counts only non-excluded candidates (remaining ranks 1,%i)', (rank) => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0] = { ...artifact.candidates[0], tier: 'excluded', marketRank: null, selectedReasons: [], hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'] }
+    artifact.candidates[1].marketRank = rank
+    artifact.counts = { ...artifact.counts, excluded: 1, screened: 0 }
+    artifact.excludedSummary = { total: 1, byReason: { HARD_NOT_PRIME_DOMESTIC: 1 } }
+    artifact.sectorDistribution.screened = {}
+    const result = parseCandidateFunnelArtifact(artifact)
+    expect(result).toEqual(rank === 2 ? { ok: true, data: artifact } : { ok: false, code: 'invalid_candidates' })
+  })
+
+  it('accepts an empty non-excluded set with only null-ranked excluded rows', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates = artifact.candidates.map((candidate: object) => ({ ...candidate, tier: 'excluded', marketRank: null, selectedReasons: [], hardExclusionReasons: ['HARD_NOT_PRIME_DOMESTIC'] }))
+    artifact.counts = { total: 3, excluded: 3, screened: 0, deepReview: 0, actionable: 0 }
+    artifact.excludedSummary = { total: 3, byReason: { HARD_NOT_PRIME_DOMESTIC: 3 } }
+    artifact.sectorDistribution = { screened: {}, deepReview: {}, actionable: {} }
+    expect(parseCandidateFunnelArtifact(artifact)).toEqual({ ok: true, data: artifact })
+  })
+
+  it('leaves repeated and non-contiguous positive prescreen ranks valid', () => {
+    const artifact = buildValidCandidateFunnelArtifact()
+    artifact.candidates[0].prescreenRank = 9
+    expect(parseCandidateFunnelArtifact(artifact).ok).toBe(true)
+  })
+
+  it('shared invariant accepts empty input and reads frozen inputs without mutation', () => {
+    expect(candidateMarketRankSetIsCanonical([])).toBe(true)
+    const candidates = Object.freeze([
+      Object.freeze({ tier: 'screened', marketRank: 2 }),
+      Object.freeze({ tier: 'excluded', marketRank: null }),
+      Object.freeze({ tier: 'actionable', marketRank: 1 }),
+    ])
+    expect(candidateMarketRankSetIsCanonical(candidates)).toBe(true)
+    for (const rank of [null, 0, -1, 1.5, Number.NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+      expect(candidateMarketRankSetIsCanonical([{ tier: 'screened', marketRank: rank }])).toBe(false)
+    }
+    expect(candidateMarketRankSetIsCanonical([{ tier: 'excluded', marketRank: 1 }])).toBe(false)
+    expect(candidates.map(candidate => candidate.marketRank)).toEqual([2, null, 1])
   })
 })

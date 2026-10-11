@@ -131,7 +131,7 @@ describe('FCA-1 baseline control: coherent fresh artifact yields available BUY_N
     const state = await loadThroughParser(candidateArtifact())
     const { buyNew, candidateArtifact: artifactState } = buyNewCandidates(state)
     expect(artifactState).toBe('fresh')
-    expect(buyNew.map(c => c.instrumentId)).toEqual(['stock:1002', 'stock:1003'])
+    expect(buyNew.map(c => c.instrumentId)).toEqual(['stock:1003', 'stock:1002'])
   })
 
   it('allowed P-14 WARN with coherent aggregates remains available BUY_NEW evidence', async () => {
@@ -341,5 +341,24 @@ describe('FCA-1-P1-03 cross-layer: future / calendar-invalid generatedAt cannot 
       expect(selectCandidateFunnelFreshness(state, NOW)).toBe('invalid')
       expect(buyNewCandidates(state).candidateArtifact).toBe('invalid')
     }
+  })
+})
+
+
+describe('canonical market rank set across loader and typed bypass boundaries', () => {
+  it.each([
+    ['duplicate', [1, 1, 3]],
+    ['gap', [1, 3, 4]],
+  ] as const)('%s ranks fail closed at both boundaries', async (_label, ranks) => {
+    const artifact = candidateArtifact(value => {
+      value.candidates.forEach((candidate, index) => { candidate.marketRank = ranks[index] })
+    })
+    const loaded = await loadThroughParser(artifact)
+    expect(loaded.system.dataSourceStatus.candidateFunnel).toBe('invalid')
+    expect(loaded.candidateFunnel).toBeNull()
+    expect(buyNewCandidates(loaded).buyNew).toEqual([])
+    const bypass = stateWith(artifact)
+    expect(buyNewCandidates(bypass).buyNew).toEqual([])
+    assertNoExecutableBuyNew(bypass)
   })
 })

@@ -51,7 +51,7 @@ describe('HR-I3 canonical candidate allocation input adapter', () => {
 
   it('keeps asset-class identity separated by the stock namespace', () => {
     const result = buildCandidateAllocationInputs({ artifact: artifact(), holdings: [] })
-    expect(result.instruments.map(item => item.instrumentId)).toEqual(['stock:1002', 'stock:1003'])
+    expect(result.instruments.map(item => item.instrumentId)).toEqual(['stock:1003', 'stock:1002'])
     expect(result.instruments.every(item => item.assetClass === 'JP_STOCK')).toBe(true)
     expect(result.instruments.every(item => !item.instrumentId.startsWith('trust:'))).toBe(true)
   })
@@ -82,6 +82,7 @@ describe('HR-I3 canonical candidate allocation input adapter', () => {
 
   it('uses stable market-rank then artifact ordering', () => {
     const value = artifact()
+    value.candidates[0].marketRank = 2
     value.candidates[1].marketRank = 3
     value.candidates[2].marketRank = 1
     const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
@@ -235,12 +236,12 @@ describe('FCA-1-P1-02 direct adapter path: invalid non-null rank never becomes a
     expect(result.candidates.map(item => item.instrumentId)).toEqual(['stock:1003', 'stock:1002'])
   })
 
-  it('artifactIndex tie-break is unchanged for equal valid ranks', () => {
+  it('duplicate ranks fail closed instead of reaching the artifactIndex tie-break', () => {
     const value = artifact()
     value.candidates[1].marketRank = 1
     value.candidates[2].marketRank = 1
     const result = buildCandidateAllocationInputs({ artifact: value, holdings: [] })
-    expect(result.candidates.map(item => item.artifactIndex)).toEqual([1, 2])
+    expect(result).toMatchObject({ status: 'invalid', instruments: [], candidates: [] })
   })
 })
 
@@ -281,5 +282,21 @@ describe('FCA-1-P1-03 direct adapter path: generatedAt must be a strict producer
     const value = artifact()
     value._meta.generatedAt = '2026-07-26T07:11:40.540540+00:00'
     expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }).status).toBe('available')
+  })
+})
+
+
+describe('canonical market rank set on direct typed allocation input', () => {
+  it.each([
+    ['duplicate', [1, 1, 3]],
+    ['gap', [1, 3, 4]],
+    ['out-of-range', [1, 2, 4]],
+  ] as const)('rejects %s ranks without normalizing them', (_label, ranks) => {
+    const value = artifact()
+    value.candidates.forEach((candidate, index) => { candidate.marketRank = ranks[index] })
+    const before = structuredClone(value)
+    expect(buildCandidateAllocationInputs({ artifact: value, holdings: [] }))
+      .toMatchObject({ status: 'invalid', instruments: [], candidates: [] })
+    expect(value).toEqual(before)
   })
 })

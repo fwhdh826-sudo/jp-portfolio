@@ -40,6 +40,7 @@ import {
 import type { CandidateFunnelArtifact, JsonValue } from '../types/candidateFunnelArtifact'
 import { isCandidateFunnelTimestamp } from '../utils/candidateFunnelTimestamp'
 import {
+  candidateMarketRankSetIsCanonical,
   candidateTierAgreesWithMarketRank,
   isCanonicalRankOrNull,
   qualityGateAggregatesAgreeWithGates,
@@ -422,6 +423,7 @@ function doParse(input: unknown): CandidateFunnelParseResult {
   }
   if (!input.candidates.every(validateCandidate)) return fail('invalid_candidates')
   const candidates = input.candidates as CandidateFunnelCandidate[]
+  if (!candidateMarketRankSetIsCanonical(candidates)) return fail('invalid_candidates')
 
   if (candidates.length !== counts.total) return fail('invalid_counts')
   const tally = { excluded: 0, screened: 0, deep_review: 0, actionable: 0, eligible: 0 }

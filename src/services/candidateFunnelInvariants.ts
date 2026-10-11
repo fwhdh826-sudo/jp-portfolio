@@ -69,3 +69,24 @@ export function candidateTierAgreesWithMarketRank(candidate: {
   if (candidate.tier === 'excluded') return candidate.marketRank === null
   return isCanonicalRank(candidate.marketRank)
 }
+
+// Producer assigns each non-excluded index one rank in 1..m. Array order is
+// independent of that permutation; excluded rows do not contribute to m.
+export function candidateMarketRankSetIsCanonical(candidates: readonly {
+  readonly tier: string
+  readonly marketRank: unknown
+}[]): boolean {
+  const count = candidates.filter(candidate => candidate.tier !== 'excluded').length
+  const ranks = new Set<number>()
+  for (const candidate of candidates) {
+    if (candidate.tier === 'excluded') {
+      if (candidate.marketRank !== null) return false
+      continue
+    }
+    const rank = candidate.marketRank
+    if (!isCanonicalRank(rank) || rank > count || ranks.has(rank)) return false
+    ranks.add(rank)
+  }
+  // count distinct integers in 1..count necessarily cover every rank once.
+  return ranks.size === count
+}

@@ -712,7 +712,7 @@ describe('P5-B005-C-B2 pure runtime selector', () => {
       EVALUATED_AT,
     )
     expect(currentArtifact).toEqual(before)
-    expect(result.records.map(record => record.candidateMarketRank)).toEqual([1, 1])
+    expect(result.records.map(record => record.candidateMarketRank)).toEqual([2, 1])
     expect(result.records.map(record => record.candidateTier)).toEqual([
       'deep_review',
       'actionable',

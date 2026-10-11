@@ -18,6 +18,7 @@ import type { CandidateInput, InstrumentInput } from '../../types/allocationPlan
 import type { Holding } from '../../types'
 import { normalizePortfolioFitCode } from './portfolioFit'
 import {
+  candidateMarketRankSetIsCanonical,
   candidateTierAgreesWithMarketRank,
   isCanonicalRankOrNull,
   qualityGateAggregatesAgreeWithGates,
@@ -60,7 +61,8 @@ function isValidCandidateArtifact(artifact: CandidateFunnelArtifact): boolean {
     // 正当な null-rank candidate として null-last ordering に流さず、
     // artifact 全体を invalid とする（NON_EXCLUDED_NULL_MARKET_RANK は
     // AVAILABLE_ALLOCATION_EVIDENCE にも BUY_NEW にもならない）。
-    artifact.candidates.every(candidateTierAgreesWithMarketRank)
+    artifact.candidates.every(candidateTierAgreesWithMarketRank) &&
+    candidateMarketRankSetIsCanonical(artifact.candidates)
   )
 }
 

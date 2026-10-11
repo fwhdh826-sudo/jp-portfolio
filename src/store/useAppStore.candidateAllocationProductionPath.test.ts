@@ -85,15 +85,15 @@ describe('HR-I3 candidate allocation production path', () => {
       updatedAt: new Date(NOW).toISOString(),
     }
     const input = buildAllocationPlanInput(source, adapterOptions())
-    expect(input?.candidates.map(item => item.instrumentId)).toEqual(['stock:1002', 'stock:1003'])
+    expect(input?.candidates.map(item => item.instrumentId)).toEqual(['stock:1003', 'stock:1002'])
     expect(input?.budgets).toEqual({ shortTermBudget: 0, longTermBudget: 2_000_000 })
     expect(input?.instruments.filter(item => item.relationship === 'new_to_portfolio').map(item => ({
       instrumentId: item.instrumentId,
       priceJpy: item.priceJpy,
       lotSizeShares: item.lotSizeShares,
     }))).toEqual([
-      { instrumentId: 'stock:1002', priceJpy: null, lotSizeShares: null },
       { instrumentId: 'stock:1003', priceJpy: null, lotSizeShares: null },
+      { instrumentId: 'stock:1002', priceJpy: null, lotSizeShares: null },
     ])
   })
 
@@ -190,7 +190,7 @@ describe('HR-I3 candidate allocation production path', () => {
     })
     expect(computed.allocationPlanCandidateGenerationId).toBe(artifact._meta.generatedAt)
     expect(computed.allocationPlan?.instrumentPlans.map(item => item.instrumentId))
-      .toEqual(['stock:1002', 'stock:1003'])
+      .toEqual(['stock:1003', 'stock:1002'])
     expect(computed.allocationPlan?.instrumentPlans.every(item =>
       item.finalSuggestedAmount === 0 &&
       item.executable === false &&

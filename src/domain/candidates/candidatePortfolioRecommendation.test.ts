@@ -204,9 +204,9 @@ describe('P5-B005-C-D pure recommendation policy', () => {
     const result = compose(candidates)
     expect(result.map(row => [row.artifactIndex, row.marketRank, row.action])).toEqual([[1, 1, 'BUY_NEW'], [0, 2, 'BUY_NEW']])
   })
-  it('C-C-T24 uses artifactIndex for equal-rank tie', () => {
+  it('C-C-T24 duplicate ranks fail closed before the artifactIndex tie-break', () => {
     const candidates = [artifactCandidate(0, { marketRank: 1 }), artifactCandidate(1, { marketRank: 1 })]
-    expect(compose(candidates).map(row => row.artifactIndex)).toEqual([0, 1])
+    expect(compose(candidates)).toEqual([])
   })
   it('C-C-T25 caps output at three', () => {
     expect(compose([0, 1, 2, 3, 4].map(index => artifactCandidate(index)))).toHaveLength(3)
@@ -238,5 +238,17 @@ describe('P5-B005-C-D pure recommendation policy', () => {
     const candidates = [artifactCandidate(0), artifactCandidate(1)]
     const input = { artifact: artifact(candidates), fitResult: fitResult(candidates), gates: { dataQualitySuppressed: false, noTrade: false, safeModeActive: false } }
     expect(composeCandidatePortfolioRecommendations(input)).toEqual(composeCandidatePortfolioRecommendations(structuredClone(input)))
+  })
+})
+
+
+describe('canonical market rank set on direct typed recommendation input', () => {
+  it.each([
+    ['duplicate', [1, 1, 3]],
+    ['gap', [1, 3, 4]],
+    ['out-of-range', [1, 2, 4]],
+  ] as const)('rejects %s ranks even with exactly matching fit records', (_label, ranks) => {
+    const candidates = ranks.map((marketRank, index) => artifactCandidate(index, { marketRank }))
+    expect(compose(candidates)).toEqual([])
   })
 })
