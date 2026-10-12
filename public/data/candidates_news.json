@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-12T11:33:13.193342+09:00",
-  "sourceUpdatedAt": "2026-10-12T02:30:23+00:00",
+  "updatedAt": "2026-10-13T05:22:54.664348+09:00",
+  "sourceUpdatedAt": "2026-10-12T20:19:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,73 +17,91 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Wrightson’s Crandall Ends Weekly Market Missives After 44 Years",
-      "topPositiveTitle": "Consumers Are Tapped and Wall Street Fears That’s a Rally Killer",
+      "topNegativeTitle": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
       "items": [
         {
-          "title": "Wrightson’s Crandall Ends Weekly Market Missives After 44 Years",
+          "title": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-11T23:32:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/wrightson-s-crandall-ends-weekly-market-missives-after-44-years",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T22:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/oil-rises-on-mideast-attacks-dollar-edges-higher-markets-wrap",
           "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.003,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
+      "topPositiveTitle": "Wall Street Strategists See Value in Duration After Bond Rout",
+      "items": [
+        {
+          "title": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T22:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/oil-rises-on-mideast-attacks-dollar-edges-higher-markets-wrap",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
+          "title": "Gold Edges Down as Traders Monitor Oil Prices, Fed Rate Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/us-bond-traders-await-cpi-warsh-for-insight-on-fed-s-rate-path",
+          "publishedAt": "2026-10-12T00:38:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-edges-up-as-traders-weigh-russia-ukraine-energy-ceasefire",
           "tags": [
+            "commodity",
+            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/us-cpi-to-show-overall-inflation-boosted-by-higher-gasoline-prices",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Consumers Are Tapped and Wall Street Fears That’s a Rally Killer",
-          "source": "Bloomberg Economics",
+          "title": "Wall Street Strategists See Value in Duration After Bond Rout",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-11T13:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/consumers-are-tapped-and-wall-street-fears-that-s-a-rally-killer",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-12T17:52:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/wall-street-strategists-see-value-in-duration-after-bond-rout",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Hammack Prefers Smaller, Frequent Rate Adjustments",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-12T17:23:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/fed-s-hammack-prefers-smaller-frequent-rate-adjustments-video",
           "tags": [
             "market",
             "us_broad"
@@ -92,52 +110,79 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
-      "topPositiveTitle": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
+      "topNegativeTitle": "JPMorgan, Goldman Curb Exposure on $5 Billion Volta AI Loan Sale",
+      "topPositiveTitle": "JPMorgan, Goldman Curb Exposure on $5 Billion Volta AI Loan Sale",
       "items": [
         {
-          "title": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
+          "title": "JPMorgan, Goldman Curb Exposure on $5 Billion Volta AI Loan Sale",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T18:30:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/jpmorgan-goldman-curb-exposure-on-5-billion-volta-ai-loan-sale",
+          "tags": [
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Bloomberg Primer - Season 3 Trailer",
+      "topPositiveTitle": "Bloomberg Primer - Season 3 Trailer",
+      "items": [
+        {
+          "title": "Bloomberg Primer - Season 3 Trailer",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T19:52:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/bloomberg-primer-season-3-trailer-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Edges Down as Traders Monitor Oil Prices, Fed Rate Outlook",
+      "topPositiveTitle": "Gold Edges Down as Traders Monitor Oil Prices, Fed Rate Outlook",
+      "items": [
+        {
+          "title": "Gold Edges Down as Traders Monitor Oil Prices, Fed Rate Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
           "publishedAt": "2026-10-12T00:38:27+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-edges-up-as-traders-weigh-russia-ukraine-energy-ceasefire",
           "tags": [
             "commodity",
             "gold",
             "market",
-            "rates"
+            "us_broad"
           ]
         }
       ]
@@ -167,36 +212,52 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.019,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 7,
+      "avgSentiment": 0.083,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "Bond Selloff May Mean Fewer Rate Hikes From Global Central Banks",
-      "topPositiveTitle": "Stock and Bond Futures Rise as Oil Extends Decline: Markets Wrap",
+      "topNegativeTitle": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
+      "topPositiveTitle": "Crisis Theorists Recasting Ideas of Keynes Share Nobel Prize",
       "items": [
         {
-          "title": "Bond Selloff May Mean Fewer Rate Hikes From Global Central Banks",
+          "title": "S&P 500 Churns Before Earnings as Chip Stocks Fall: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-11T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/bond-selloff-may-mean-fewer-rate-hikes-from-global-central-banks",
+          "publishedAt": "2026-10-11T22:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/oil-rises-on-mideast-attacks-dollar-edges-higher-markets-wrap",
           "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Houthi Attacks Part of Wider Escalating Conflict, Says Natasha Hall",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-12T19:10:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/houthi-attack-part-of-escalating-conflict-natasha-hall-video",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Korean Bond Rally Seen Faltering as Traders Brace for Rate Hikes",
+          "title": "Ukraine Should Be Free to Strike Russia, Says Trump's Ex-Envoy",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T00:14:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/korean-bond-rally-seen-faltering-as-traders-brace-for-rate-hikes",
+          "publishedAt": "2026-10-12T16:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/ukraine-should-be-free-to-strike-russia-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -214,25 +275,12 @@
           ]
         },
         {
-          "title": "'Windows of Opportunity' to End War in Ukraine, SACEUR Says",
-          "source": "Bloomberg Markets",
+          "title": "China Moves to Stave Off Wider EU Trade War With Hybrid Deal",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T17:41:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/digi-full-intv-gen-alexus-g-grynkewich-nato-supreme-allied-commander-europe",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Former US Envoy Warns of Wider Middle East Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T17:12:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/former-us-envoy-warns-of-wider-middle-east-conflict-video",
+          "publishedAt": "2026-10-11T13:52:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/china-moves-to-stave-off-wider-eu-trade-war-with-hybrid-deal",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -242,37 +290,37 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.835,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "South Korean Won Hits Two-Year High on Lower Oil, Dollar Sales",
-      "topPositiveTitle": "Indian Rupee Strengthens in Offshore Market After RBI Measures",
+      "topNegativeTitle": "Bank of England’s Breeden in No Rush to Launch ‘Britcoin’",
+      "topPositiveTitle": "Bank of England’s Breeden in No Rush to Launch ‘Britcoin’",
       "items": [
         {
-          "title": "South Korean Won Hits Two-Year High on Lower Oil, Dollar Sales",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-12T02:20:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/south-korean-won-hits-two-year-high-on-lower-oil-dollar-sales",
+          "title": "Bank of England’s Breeden in No Rush to Launch ‘Britcoin’",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T10:58:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/bank-of-england-s-breeden-in-no-rush-to-launch-britcoin",
           "tags": [
-            "commodity",
             "fx",
             "market"
           ]
         },
         {
-          "title": "Indian Rupee Strengthens in Offshore Market After RBI Measures",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-12T01:44:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/indian-rupee-strengthens-in-offshore-market-after-rbi-measures",
+          "title": "RBI Window to Meet Refiners’ $10 Billion Monthly Need, Aid Rupee",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T09:14:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/rbi-window-to-meet-refiners-10-billion-monthly-need-aid-rupee",
           "tags": [
+            "commodity",
             "fx",
             "market"
           ]
@@ -280,50 +328,72 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.055,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
-      "topPositiveTitle": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
+      "topNegativeTitle": "ECB’s Higher Rates Can’t Prevent More Shocks, Patsalides Says",
+      "topPositiveTitle": "Wall Street Strategists See Value in Duration After Bond Rout",
       "items": [
         {
-          "title": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
-          "source": "Bloomberg Markets",
+          "title": "ECB’s Higher Rates Can’t Prevent More Shocks, Patsalides Says",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T00:38:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-edges-up-as-traders-weigh-russia-ukraine-energy-ceasefire",
+          "publishedAt": "2026-10-12T12:23:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/ecb-s-higher-rates-can-t-prevent-more-shocks-patsalides-says",
           "tags": [
-            "commodity",
-            "gold",
             "market",
             "rates"
           ]
         },
         {
-          "title": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
+          "title": "JPMorgan, Goldman Curb Exposure on $5 Billion Volta AI Loan Sale",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/us-bond-traders-await-cpi-warsh-for-insight-on-fed-s-rate-path",
+          "publishedAt": "2026-10-12T18:30:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/jpmorgan-goldman-curb-exposure-on-5-billion-volta-ai-loan-sale",
           "tags": [
             "market",
             "rates",
-            "us_broad"
+            "us_growth"
           ]
         },
         {
-          "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+          "title": "India Inflation Hits Two-Year High, Backs RBI Tightening",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/us-cpi-to-show-overall-inflation-boosted-by-higher-gasoline-prices",
+          "publishedAt": "2026-10-12T10:32:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/india-inflation-hits-almost-two-year-high-backs-rbi-tightening",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Mauritius Rates Policy to Hinge on Persistance of Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T09:20:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/mauritius-rates-policy-to-hinge-on-persistance-of-inflation",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Wall Street Strategists See Value in Duration After Bond Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-12T17:52:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/wall-street-strategists-see-value-in-duration-after-bond-rout",
           "tags": [
             "market",
             "rates",
@@ -333,23 +403,23 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.234,
-      "negativeCount": 2,
+      "avgSentiment": 0.25,
+      "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 12",
-      "topPositiveTitle": "RBI Tightens Rupee Defense as Pricey Crude, Foreign Outflows Bite: USD/INR",
+      "topNegativeTitle": "US Should Not Do Diesel Deal With Russia, Says Republican Mike Lawler",
+      "topPositiveTitle": "Crisis Theorists Recasting Ideas of Keynes Share Nobel Prize",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 12",
+          "title": "US Should Not Do Diesel Deal With Russia, Says Republican Mike Lawler",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-11T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/latest-oil-market-news-and-analysis-for-oct-12",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T18:27:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/us-should-not-do-diesel-deal-with-russia-says-lawler-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -357,40 +427,12 @@
           ]
         },
         {
-          "title": "Gold Edges Up as Lower Oil Prices Pare Rate-Hike Expectations",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T00:38:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-edges-up-as-traders-weigh-russia-ukraine-energy-ceasefire",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stock and Bond Futures Rise as Oil Extends Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-11T22:09:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/oil-rises-on-mideast-attacks-dollar-edges-higher-markets-wrap",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "South Korean Won Hits Two-Year High on Lower Oil, Dollar Sales",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-12T02:20:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/south-korean-won-hits-two-year-high-on-lower-oil-dollar-sales",
+          "title": "RBI Window to Meet Refiners’ $10 Billion Monthly Need, Aid Rupee",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T09:14:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/rbi-window-to-meet-refiners-10-billion-monthly-need-aid-rupee",
           "tags": [
             "commodity",
             "fx",
@@ -398,50 +440,67 @@
           ]
         },
         {
-          "title": "RBI Tightens Rupee Defense as Pricey Crude, Foreign Outflows Bite: USD/INR",
+          "title": "Gold Edges Down as Traders Monitor Oil Prices, Fed Rate Outlook",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-12T02:30:23+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-12/rbi-tightens-rupee-defense-as-pricey-crude-foreign-outflows-bite-usd-inr",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T00:38:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-edges-up-as-traders-weigh-russia-ukraine-energy-ceasefire",
           "tags": [
             "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 12",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-11T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/latest-oil-market-news-and-analysis-for-oct-12",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Oil Advances on Threats to Supply From Russia to Middle East",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-10-12T17:00:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/oil-advances-on-threats-to-global-supply-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.021,
+      "avgSentiment": 0.071,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 12",
-      "topPositiveTitle": "Stock and Bond Futures Rise as Oil Extends Decline: Markets Wrap",
+      "topNegativeTitle": "Houthi Attacks Part of Wider Escalating Conflict, Says Natasha Hall",
+      "topPositiveTitle": "Oil Advances on Threats to Supply From Russia to Middle East",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 12",
+          "title": "Houthi Attacks Part of Wider Escalating Conflict, Says Natasha Hall",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-11T22:08:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/latest-oil-market-news-and-analysis-for-oct-12",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "'Windows of Opportunity' to End War in Ukraine, SACEUR Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T17:41:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/digi-full-intv-gen-alexus-g-grynkewich-nato-supreme-allied-commander-europe",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-12T19:10:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/houthi-attack-part-of-escalating-conflict-natasha-hall-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -449,12 +508,25 @@
           ]
         },
         {
-          "title": "Former US Envoy Warns of Wider Middle East Conflict",
+          "title": "US Should Not Do Diesel Deal With Russia, Says Republican Mike Lawler",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T17:12:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/former-us-envoy-warns-of-wider-middle-east-conflict-video",
+          "publishedAt": "2026-10-12T18:27:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/us-should-not-do-diesel-deal-with-russia-says-lawler-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Should Be Free to Strike Russia, Says Trump's Ex-Envoy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-12T16:17:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-12/ukraine-should-be-free-to-strike-russia-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -475,17 +547,17 @@
           ]
         },
         {
-          "title": "Healey Plans Short-Term UK Budget Giveaways to Limit Fiscal Pain",
-          "source": "Bloomberg Economics",
+          "title": "自民 古屋前選対委員長 台湾訪問 頼総統と会談",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/healey-plans-short-term-uk-budget-giveaways-to-limit-fiscal-pain",
+          "publishedAt": "2026-10-11T05:09:29+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261011de57877",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "自民 古屋前選対委員長 台湾訪問 頼総統と会談"
         }
       ]
     }
@@ -498,7 +570,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
