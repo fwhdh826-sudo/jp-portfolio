@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-12T01:42:25.792938+09:00",
-  "sourceUpdatedAt": "2026-10-11T16:27:24+00:00",
+  "updatedAt": "2026-10-12T09:46:04.936004+09:00",
+  "sourceUpdatedAt": "2026-10-12T00:39:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,41 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.168,
-      "negativeCount": 0,
+      "avgSentiment": 0.068,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+      "topNegativeTitle": "Wrightson’s Crandall Ends Weekly Market Missives After 44 Years",
       "topPositiveTitle": "Consumers Are Tapped and Wall Street Fears That’s a Rally Killer",
       "items": [
+        {
+          "title": "Wrightson’s Crandall Ends Weekly Market Missives After 44 Years",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-11T23:32:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/wrightson-s-crandall-ends-weekly-market-missives-after-44-years",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/us-bond-traders-await-cpi-warsh-for-insight-on-fed-s-rate-path",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
           "source": "Bloomberg Economics",
@@ -59,18 +84,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-10-11T14:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-11/tech-earnings-loom-large-for-hedge-funds-packed-into-dispersion-trade",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Prediction Markets’ NFL Boom Tests Sports Betting Rules",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/prediction-markets-nfl-boom-tests-sports-betting-rules",
           "tags": [
             "market",
             "us_broad"
@@ -116,30 +129,16 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
-      "topPositiveTitle": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
-      "items": [
-        {
-          "title": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/emerging-markets-better-armed-for-renewed-european-debt-turmoil",
-          "tags": [
-            "global_broad",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -178,16 +177,28 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.125,
-      "negativeCount": 2,
+      "avgSentiment": -0.152,
+      "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 6,
+      "neutralCount": 8,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
-      "topPositiveTitle": "Saudi Airport Attack Raises Middle East War Risks",
+      "topNegativeTitle": "Bond Selloff May Mean Fewer Rate Hikes From Global Central Banks",
+      "topPositiveTitle": "Korean Bond Rally Seen Faltering as Traders Brace for Rate Hikes",
       "items": [
+        {
+          "title": "Bond Selloff May Mean Fewer Rate Hikes From Global Central Banks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/bond-selloff-may-mean-fewer-rate-hikes-from-global-central-banks",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
           "source": "Bloomberg Markets",
@@ -215,41 +226,25 @@
           ]
         },
         {
-          "title": "Saudi Airport Attack Raises Middle East War Risks",
+          "title": "Korean Bond Rally Seen Faltering as Traders Brace for Rate Hikes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T15:46:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-raises-middle-east-war-risks-video",
+          "publishedAt": "2026-10-12T00:14:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/korean-bond-rally-seen-faltering-as-traders-brace-for-rate-hikes",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China Moves to Stave Off Wider EU Trade War With Hybrid Deal",
+          "title": "France Bond Crisis Revives Ghost of Europe's Sovereign Debt Crisis",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T13:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/china-moves-to-stave-off-wider-eu-trade-war-with-hybrid-deal",
+          "publishedAt": "2026-10-11T21:00:02+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-10-11/france-bond-crisis-revives-ghost-of-europe-s-sovereign-debt-crisis",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Emerging Markets Better Armed for Renewed European Debt Turmoil",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T12:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/emerging-markets-better-armed-for-renewed-european-debt-turmoil",
-          "tags": [
-            "global_broad",
             "macro_risk",
             "market"
           ]
@@ -257,29 +252,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
-      "topPositiveTitle": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
-      "items": [
-        {
-          "title": "India’s Rupee Defense Raises Question of How Far RBI Will Go",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-11T03:00:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/india-s-rupee-defense-raises-question-of-how-far-rbi-will-go",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
       "avgSentiment": 0.11,
@@ -289,9 +271,22 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
+      "topNegativeTitle": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
       "topPositiveTitle": "Big Banks Face Test as Earnings Season Begins",
       "items": [
+        {
+          "title": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-11T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/us-bond-traders-await-cpi-warsh-for-insight-on-fed-s-rate-path",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "US CPI to Show Overall Inflation Boosted by Higher Gasoline Prices",
           "source": "Bloomberg Economics",
@@ -303,18 +298,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Australia Home Auction Clearance Rate Stuck Below 50% for Second Week",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-10T23:56:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-10/australia-home-auction-clearance-rate-stuck-below-50-for-second-week",
-          "tags": [
-            "market",
-            "rates"
           ]
         },
         {
@@ -332,16 +315,29 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.177,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Saudi Airport Attack Raises Middle East War Risks",
-      "topPositiveTitle": "Saudi Airport Attack Raises Middle East War Risks",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 12",
+      "topPositiveTitle": "US Stock Futures Rise After Crude Oil Declines: Markets Wrap",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 12",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/latest-oil-market-news-and-analysis-for-oct-12",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Saudi Airport Attack Raises Middle East War Risks",
           "source": "Bloomberg Markets",
@@ -355,20 +351,45 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "US Stock Futures Rise After Crude Oil Declines: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-10-11T22:09:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/oil-rises-on-mideast-attacks-dollar-edges-higher-markets-wrap",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.041,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.182,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
-      "topPositiveTitle": "Taiwan’s Lai Urges Democracies to Unite After Trump-Xi Talks",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 12",
+      "topPositiveTitle": "'Windows of Opportunity' to End War in Ukraine, SACEUR Says",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 12",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-11T22:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-11/latest-oil-market-news-and-analysis-for-oct-12",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Trump's Russia Diesel Deal Deepens Ukraine Rift",
           "source": "Bloomberg Markets",
@@ -379,6 +400,18 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Riyadh Airport Attack, Trump To Ukraine: “Time To Get A New President”",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-11T16:24:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/bloomberg-this-weekend-10-11-2026-video",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         },
@@ -396,39 +429,12 @@
           ]
         },
         {
-          "title": "Saudi Airport Attack Raises Middle East War Risks",
+          "title": "'Windows of Opportunity' to End War in Ukraine, SACEUR Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T15:46:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-11/saudi-airport-attack-raises-middle-east-war-risks-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "China Moves to Stave Off Wider EU Trade War With Hybrid Deal",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T13:52:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/china-moves-to-stave-off-wider-eu-trade-war-with-hybrid-deal",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Healey Plans Short-Term UK Budget Giveaways to Limit Fiscal Pain",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-11T06:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-11/healey-plans-short-term-uk-budget-giveaways-to-limit-fiscal-pain",
+          "publishedAt": "2026-10-11T17:41:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-11/digi-full-intv-gen-alexus-g-grynkewich-nato-supreme-allied-commander-europe",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -446,7 +452,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
