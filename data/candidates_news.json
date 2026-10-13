@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-13T11:46:16.195751+09:00",
-  "sourceUpdatedAt": "2026-10-13T02:36:00+00:00",
+  "updatedAt": "2026-10-13T19:52:55.186184+09:00",
+  "sourceUpdatedAt": "2026-10-13T10:45:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.443,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Producer Prices Cools, Indicating Room for BOJ to Wait",
+      "topNegativeTitle": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
       "topPositiveTitle": "Japan Producer Prices Rise 6.8% From a Year Earlier",
       "items": [
+        {
+          "title": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-13T08:45:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boj-is-said-to-lean-against-back-to-back-rate-hike-in-october",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Japan’s Producer Prices Cools, Indicating Room for BOJ to Wait",
           "source": "Bloomberg Economics",
@@ -43,122 +56,147 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Chip Selloff Triggers 6% Korea Rout After CEO’s ‘Casino’ Warning",
-      "topPositiveTitle": "Chip Selloff Triggers 6% Korea Rout After CEO’s ‘Casino’ Warning",
+      "topNegativeTitle": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
+      "topPositiveTitle": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
       "items": [
         {
-          "title": "Chip Selloff Triggers 6% Korea Rout After CEO’s ‘Casino’ Warning",
+          "title": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T00:28:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/korean-chip-stocks-sink-on-chinese-rival-worry-broadcom-remarks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-13T09:38:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/cracks-grow-across-the-ai-trade-as-memory-chip-stocks-tumble",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-12T22:04:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.25,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
+      "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
-      "topPositiveTitle": "BlackRock Turns Bullish on Short-Term Bonds, Downgrades Stocks",
+      "topNegativeTitle": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
+      "topPositiveTitle": "Kalshi's Top Inflation Trader Beats Wall Street Banks From His Garage",
       "items": [
         {
-          "title": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BNY's LaRusse Sees Scope for Bond Market Relief Rally",
+          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T00:50:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-13/bny-s-larusse-sees-scope-for-bond-market-relief-rally-video",
+          "publishedAt": "2026-10-12T22:04:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fmr. Fed Governor Betsy Duke on CPI Amid Bank Results",
+          "title": "Treasuries Climb as Traders Pare Fed Hike Bets on Lower Oil",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T21:27:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-12/fmr-fed-governor-betsy-duke-on-cpi-amid-bank-results-video",
+          "publishedAt": "2026-10-13T02:22:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/treasuries-gain-on-haven-demand-as-trading-resumes-after-holiday",
           "tags": [
+            "commodity",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "BlackRock Turns Bullish on Short-Term Bonds, Downgrades Stocks",
-          "source": "Bloomberg Markets",
+          "title": "Waller Says Higher Treasury Yields Can Help Fed Cool Demand",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-12T21:26:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/blackrock-turns-bullish-on-short-term-bonds-downgrades-stocks",
+          "publishedAt": "2026-10-13T08:33:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-waller-says-higher-yields-could-help-fed-cool-demand",
           "tags": [
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Kalshi's Top Inflation Trader Beats Wall Street Banks From His Garage",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-13T10:45:10+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-10-13/kalshi-s-top-inflation-trader-beats-wall-street-banks-from-his-garage",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.333,
-      "negativeCount": 1,
+      "avgSentiment": -0.447,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
+      "topNegativeTitle": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
       "topPositiveTitle": "How the AI Boom Is Fueling Global Financial Risks",
       "items": [
         {
-          "title": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
+          "title": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-13T09:38:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/cracks-grow-across-the-ai-trade-as-memory-chip-stocks-tumble",
           "tags": [
-            "commodity",
+            "jp_semiconductor",
             "macro_risk",
             "market",
-            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-13T09:17:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
             "us_growth"
           ]
         },
@@ -171,18 +209,6 @@
           "url": "https://www.bloomberg.com/news/features/2026-10-12/how-the-ai-boom-is-fueling-global-financial-risks",
           "tags": [
             "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Why China Generates Too Much Power",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-08T20:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-08/why-china-generates-too-much-power-video",
-          "tags": [
             "market",
             "us_growth"
           ]
@@ -202,45 +228,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.835,
-      "negativeCount": 2,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-      "topPositiveTitle": "Singapore Bank Selloff Tests the City-State’s Safe Haven Status",
-      "items": [
-        {
-          "title": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T23:54:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-holds-drop-as-middle-east-fighting-stokes-inflation-fears",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore Bank Selloff Tests the City-State’s Safe Haven Status",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-12T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/singapore-bank-selloff-tests-the-city-state-s-safe-haven-status",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -267,119 +264,144 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.233,
+      "avgSentiment": -0.259,
       "negativeCount": 5,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Chip Selloff Triggers 6% Korea Rout After CEO’s ‘Casino’ Warning",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 13",
+      "topNegativeTitle": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
+      "topPositiveTitle": "Let the Rupee Find Its Own Level: Kotak",
       "items": [
         {
-          "title": "Chip Selloff Triggers 6% Korea Rout After CEO’s ‘Casino’ Warning",
+          "title": "Cracks Grow Across the AI Trade as Memory-Chip Stocks Tumble",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T00:28:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/korean-chip-stocks-sink-on-chinese-rival-worry-broadcom-remarks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-13T09:38:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/cracks-grow-across-the-ai-trade-as-memory-chip-stocks-tumble",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T23:54:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-holds-drop-as-middle-east-fighting-stokes-inflation-fears",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "macro_risk",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Singapore Bank Selloff Tests the City-State’s Safe Haven Status",
+          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-12T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/singapore-bank-selloff-tests-the-city-state-s-safe-haven-status",
+          "publishedAt": "2026-10-13T09:17:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
           "tags": [
-            "gold",
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "RBI’s Efforts to Curb Rupee Volatility Likely to Continue",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T09:34:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/rbi-efforts-to-curb-rupee-volatility-to-continue-minister-says",
+          "tags": [
+            "fx",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "BNY's LaRusse Sees Scope for Bond Market Relief Rally",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Factories Crater as China Imports Stunt Revival",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T00:50:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-13/bny-s-larusse-sees-scope-for-bond-market-relief-rally-video",
+          "publishedAt": "2026-10-13T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/south-african-factories-crater-as-china-imports-stunt-revival",
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-12T22:04:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.25,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Bank of England’s Breeden in No Rush to Launch ‘Britcoin’",
-      "topPositiveTitle": "Goldman Says Market Is Underestimating How Far Yuan Can Rise",
+      "topNegativeTitle": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+      "topPositiveTitle": "India's Sitharaman on Rupee Stabilization Efforts",
       "items": [
         {
-          "title": "Bank of England’s Breeden in No Rush to Launch ‘Britcoin’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T10:58:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/bank-of-england-s-breeden-in-no-rush-to-launch-britcoin",
+          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-13T09:17:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
           "tags": [
             "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "RBI’s Efforts to Curb Rupee Volatility Likely to Continue",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T09:34:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/rbi-efforts-to-curb-rupee-volatility-to-continue-minister-says",
+          "tags": [
+            "fx",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Goldman Says Market Is Underestimating How Far Yuan Can Rise",
+          "title": "India's Sitharaman on Rupee Stabilization Efforts",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-12T23:00:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/goldman-says-markets-are-underestimating-how-far-yuan-can-rise",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T09:12:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-13/india-s-sitharaman-on-rupee-stabilization-efforts-video",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Can Peter Magyar Deliver Euro Membership for Hungary?",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T04:00:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/can-peter-magyar-deliver-euro-membership-for-hungary",
           "tags": [
             "fx",
             "market"
@@ -388,62 +410,59 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.112,
-      "negativeCount": 2,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
       "positiveCount": 3,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BNY's LaRusse Sees Scope for Bond Market Relief Rally",
-      "topPositiveTitle": "Indian Bonds Face Double Blow From Rupee Defense, Inflation",
+      "topNegativeTitle": "Why Heavily Indebted Britain Is Getting Praise From the IMF",
+      "topPositiveTitle": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
       "items": [
         {
-          "title": "BNY's LaRusse Sees Scope for Bond Market Relief Rally",
+          "title": "Why Heavily Indebted Britain Is Getting Praise From the IMF",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T00:50:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-13/bny-s-larusse-sees-scope-for-bond-market-relief-rally-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "ECB’s Higher Rates Can’t Prevent More Shocks, Patsalides Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T12:23:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/ecb-s-higher-rates-can-t-prevent-more-shocks-patsalides-says",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T09:56:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/why-heavily-indebted-britain-is-getting-praise-from-the-imf",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "India Inflation Hits Two-Year High, Backs RBI Tightening",
+          "title": "Whitbread CEO Says UK Tax Hikes Mean New Hotels Scrapped",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T09:23:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/whitbread-ceo-says-uk-tax-hikes-mean-new-hotels-scrapped",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "BOE’s Greene Says UK Growth Upgrade Is Proof Rate Hike Needed",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T10:32:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/india-inflation-hits-almost-two-year-high-backs-rbi-tightening",
+          "publishedAt": "2026-10-13T04:14:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boe-s-greene-says-uk-growth-upgrade-is-proof-rate-hike-needed",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Japan’s Producer Prices Cools, Indicating Room for BOJ to Wait",
+          "title": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-13T01:29:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/japan-s-producer-prices-cools-indicating-room-for-boj-to-wait",
+          "publishedAt": "2026-10-13T08:45:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boj-is-said-to-lean-against-back-to-back-rate-hike-in-october",
           "tags": [
             "jp_broad",
             "market",
@@ -451,12 +470,12 @@
           ]
         },
         {
-          "title": "BlackRock Turns Bullish on Short-Term Bonds, Downgrades Stocks",
-          "source": "Bloomberg Markets",
+          "title": "Waller Says Higher Treasury Yields Can Help Fed Cool Demand",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-12T21:26:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/blackrock-turns-bullish-on-short-term-bonds-downgrades-stocks",
+          "publishedAt": "2026-10-13T08:33:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-waller-says-higher-yields-could-help-fed-cool-demand",
           "tags": [
             "market",
             "rates",
@@ -466,48 +485,55 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.094,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 13",
+      "topNegativeTitle": "BP Slashes Debt With Boost From Energy Trading and Refining",
+      "topPositiveTitle": "Brookfield’s Teskey Sees No Slowdown in AI Infrastructure Build",
       "items": [
         {
-          "title": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
+          "title": "BP Slashes Debt With Boost From Energy Trading and Refining",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T23:54:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-holds-drop-as-middle-east-fighting-stokes-inflation-fears",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T06:16:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/bp-debt-shrinks-with-boost-from-oil-and-gas-trading-refining",
           "tags": [
             "commodity",
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stocks Extend Losses as AI Trade Under Pressure: Markets Wrap",
+          "title": "Brookfield’s Teskey Sees No Slowdown in AI Infrastructure Build",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T10:18:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/brookfield-s-teskey-sees-no-slowdown-in-ai-infrastructure-build",
           "tags": [
             "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "World Economy Holds Up But Nears Limits of Resilience, IMF Says",
+          "title": "Treasuries Climb as Traders Pare Fed Hike Bets on Lower Oil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T02:22:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/treasuries-gain-on-haven-demand-as-trading-resumes-after-holiday",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "World Economy Holds Up, Nears Limits of Resilience, IMF Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -529,86 +555,42 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Current High Inflation Is a Real Concern: Jennifer McKeown",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T22:38:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-12/current-high-inflation-a-real-concern-jennifer-mckeown-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
       "avgSentiment": -0.165,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 13",
+      "topNegativeTitle": "South Africa Factories Crater as China Imports Stunt Revival",
+      "topPositiveTitle": "Mubadala, Kotak, HSBC on Repricing Risk",
       "items": [
         {
-          "title": "Gold Holds Drop as Middle East Fighting Stokes Inflation Fears",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Factories Crater as China Imports Stunt Revival",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-12T23:54:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/gold-holds-drop-as-middle-east-fighting-stokes-inflation-fears",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/south-african-factories-crater-as-china-imports-stunt-revival",
           "tags": [
-            "commodity",
             "geopolitical",
-            "gold",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "BNY's LaRusse Sees Scope for Bond Market Relief Rally",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T00:50:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-13/bny-s-larusse-sees-scope-for-bond-market-relief-rally-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "RBA Raised Key Rate to Counter Upside Price Risk, Remains Alert",
+          "title": "Mubadala, Kotak, HSBC on Repricing Risk",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T00:30:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/rba-raised-key-rate-to-counter-upside-price-risk-remains-alert",
+          "publishedAt": "2026-10-13T09:45:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-13/mubadala-kotak-hsbc-on-repricing-risk-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 13",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-12T22:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/latest-oil-market-news-and-analysis-for-oct-13",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -623,7 +605,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
