@@ -307,9 +307,15 @@ describe('T9-A003: committed CSV generation durability and recovery', () => {
   beforeEach(() => {
     Object.keys(store).forEach(key => delete store[key])
     vi.stubGlobal('localStorage', storage)
+    // Keep the July metadata fixtures inside their existing 90-day retention window.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-10-11T00:00:00.000Z'))
   })
 
-  afterEach(() => vi.unstubAllGlobals())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+  })
 
   it('clean committed generation hydrates every coordinated field from one envelope', () => {
     const next = payload('new')

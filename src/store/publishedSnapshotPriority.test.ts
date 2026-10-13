@@ -165,12 +165,16 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
     store = {}
     writeLog = []
     vi.stubGlobal('localStorage', lsMock)
+    // Keep the July canonical generation's metadata fresh under a deterministic Date clock.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-10-11T00:00:00.000Z'))
     useAppStore.setState(state => ({
       system: { ...state.system, status: 'idle', csvLastImportedAt: null, csvImportProvenance: null },
     }))
   })
 
   afterEach(() => {
+    vi.useRealTimers()
     vi.unstubAllGlobals()
   })
 
@@ -611,45 +615,40 @@ describe('useAppStore.initialize / refreshAllData: published snapshot優先順�
   })
 
   it('RA-005 DIRECT: initialize does not treat a legacy timestamp-only state as generation evidence', async () => {
-    // 90日保持期間の実時間expiryを避けるため、Dateのみを固定する（legacy at 2026-07-01 + 90日 = 2026-09-28 より前）
-    vi.useFakeTimers({ toFake: ['Date'] })
+    // The suite owns Date installation/cleanup; this case needs a fresh July 1 timestamp.
     vi.setSystemTime(new Date('2026-07-15T00:00:00+09:00'))
-    try {
-      seedLocalStorage({ csvImportedAt: '2026-07-01T00:00:00+09:00' })
-      useAppStore.setState(state => ({
-        holdings: [],
-        trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
-        portfolioPolicy: { jpStockMaxRatio: 0.10 },
-        cashAssumptions: {
-          source: 'DEFAULT',
-          grossCash: 0,
-          safetyReserve: 0,
-          pendingOrderCash: null,
-          updatedAt: null,
-        },
-        system: {
-          ...state.system,
-          status: 'idle',
-          csvLastImportedAt: null,
-          csvImportProvenance: null,
-          csvSyncSummary: null,
-        },
-      }))
-      mockFetchRouter({
-        'trust_master.json': {
-          last_updated: '2026-07-10T00:00:00+09:00',
-          source: 'sbi_csv',
-          funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
-        },
-      })
+    seedLocalStorage({ csvImportedAt: '2026-07-01T00:00:00+09:00' })
+    useAppStore.setState(state => ({
+      holdings: [],
+      trust: [makeTrust({ id: 'sp500_sbi', eval: 0 })],
+      portfolioPolicy: { jpStockMaxRatio: 0.10 },
+      cashAssumptions: {
+        source: 'DEFAULT',
+        grossCash: 0,
+        safetyReserve: 0,
+        pendingOrderCash: null,
+        updatedAt: null,
+      },
+      system: {
+        ...state.system,
+        status: 'idle',
+        csvLastImportedAt: null,
+        csvImportProvenance: null,
+        csvSyncSummary: null,
+      },
+    }))
+    mockFetchRouter({
+      'trust_master.json': {
+        last_updated: '2026-07-10T00:00:00+09:00',
+        source: 'sbi_csv',
+        funds: [{ id: 'sp500_sbi', eval: 1_234_567 }],
+      },
+    })
 
-      await useAppStore.getState().initialize()
+    await useAppStore.getState().initialize()
 
-      expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00+09:00')
-      expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
-    } finally {
-      vi.useRealTimers()
-    }
+    expect(useAppStore.getState().system.csvLastImportedAt).toBe('2026-07-01T00:00:00+09:00')
+    expect(useAppStore.getState().trust.find(item => item.id === 'sp500_sbi')?.eval).toBe(1_234_567)
   })
 
   it('initialize: timestamp同値の場合はsnapshotを適用せず、既存のユーザー状態を保持する', async () => {
