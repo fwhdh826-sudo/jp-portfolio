@@ -90,6 +90,8 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
       setItem: (key: string, value: string) => { storageWrites += 1; storage[key] = value },
       removeItem: (key: string) => { storageWrites += 1; delete storage[key] },
     })
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-10-11T00:00:00.000Z'))
     const currentProvenance = provenance()
     useAppStore.setState(state => ({
       holdings: [makeHolding(200_000)],
@@ -112,7 +114,10 @@ describe('T9-A004-R2: portfolio snapshot provenance action contract', () => {
     }))
   })
 
-  afterEach(() => vi.unstubAllGlobals())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+  })
 
   it('R2-F1 RED: self-asserted newer provenance cannot authorize content substitution over a non-empty generation', async () => {
     const incoming = provenance({
