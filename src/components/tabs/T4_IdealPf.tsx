@@ -6,8 +6,10 @@
 import { useMemo } from 'react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useAppStore } from '../../store/useAppStore'
-import { formatJPYAuto, formatPt, formatSignedJPY, formatSignedPct } from '../../utils/format'
+import { formatJPY, formatJPYAuto, formatPt, formatSignedJPY, formatSignedPct } from '../../utils/format'
 import { selectMarketDataQuality, selectEffectiveCashAssumptions, selectEffectiveSafeModeActive } from '../../store/selectors'
+import { selectAllocationConsumerSnapshot, selectT7TrustAllocationProjections } from '../../store/allocationConsumerSelectors'
+import { summarizeJpTrust } from '../../domain/allocation/allocationEngine'
 import {
   buildIdealPfPlan,
   type FundDiffRow,
@@ -100,6 +102,23 @@ export function T4_IdealPf() {
   // P4.5-A011: safe_mode.jsonのraw activeだけでなく、鮮度によるfail-closedも含めて判定する
   const safeModeActive  = useAppStore(selectEffectiveSafeModeActive)
   const isSuppressed    = safeModeActive || dq.isSuppressed
+  const allocationSnapshot = useAppStore(selectAllocationConsumerSnapshot)
+  // Reuse the downstream validation boundary before reading the raw snapshot.
+  // The existing engine helper owns summary/proposal aggregation; T4 does not.
+  const canonicalPlan = useAppStore(state =>
+    selectT7TrustAllocationProjections(state) === null ? null : state.allocationPlan,
+  )
+  const jpTrustSummary = useMemo(
+    () => {
+      if (canonicalPlan === null) return null
+      const summary = summarizeJpTrust(canonicalPlan)
+      return Object.values(summary).every(amount => Number.isSafeInteger(amount) && amount >= 0)
+        ? summary : null
+    },
+    [canonicalPlan],
+  )
+  const jpTrustBuyUnavailable = jpTrustSummary === null ||
+    allocationSnapshot.status !== 'current' || jpTrustSummary.jpTrustProposedAmount === 0
 
   // AppState-like for buildIdealPfPlan
   const partialState = useMemo(() => ({
@@ -240,7 +259,10 @@ export function T4_IdealPf() {
             }}>
               {ptDiffStr}
             </span>
-            <SignalBadge signal={diffToSignal(cat.diffValue)} size="sm" />
+            <SignalBadge signal={suppressBuySignal(
+              diffToSignal(cat.diffValue),
+              cat.class === 'JP_TRUST' && (isSuppressed || jpTrustBuyUnavailable),
+            )} size="sm" />
           </div>
         </div>
 
@@ -315,7 +337,7 @@ export function T4_IdealPf() {
             color:      diffColor(cat.diffValue),
             fontWeight: 700,
           }}>
-            {formatSignedJPY(cat.diffValue)}
+            <span>理論差分 </span><span>{formatSignedJPY(cat.diffValue)}</span>
           </span>
         </div>
       </div>
@@ -329,11 +351,12 @@ export function T4_IdealPf() {
       colors.gold
 
     // P4-A152: SAFE_MODE/DQ抑制中はBUYバッジのみWATCHへ変換（表示専用。row.recommendationは変更しない）
-    const isBuySuppressed = isSuppressed && row.recommendation === 'BUY'
+    const buySuppressed = isSuppressed || (row.policy === 'JAPAN_SHORTTERM' && jpTrustBuyUnavailable)
+    const isBuySuppressed = buySuppressed && row.recommendation === 'BUY'
     const recSignal: Signal = suppressBuySignal(
       row.recommendation === 'BUY'  ? 'BUY' :
       row.recommendation === 'SELL' ? 'SELL' : 'HOLD',
-      isSuppressed,
+      buySuppressed,
     )
 
     return (
@@ -362,7 +385,7 @@ export function T4_IdealPf() {
           <div style={{ ...typography.caption, color: colors.textSubtle, marginLeft: spacing[4], marginTop: spacing[0.5] }}>
             スコア {row.score} / EV {formatSignedPct(row.ev * 100, 1)}
             {isBuySuppressed && (
-              <span style={{ color: colors.waitText, fontWeight: 600 }}> — {SUPPRESSION_BANNER_PREFIX}: 買付は参考停止</span>
+              <span style={{ color: colors.waitText, fontWeight: 600 }}> — {isSuppressed ? SUPPRESSION_BANNER_PREFIX : '実行計画の買付提案なし'}: 買付は参考停止</span>
             )}
           </div>
           {EMBEDDED_GOLD_EXPOSURE[row.id] && (() => {
@@ -583,6 +606,10 @@ export function T4_IdealPf() {
 
       {/* ── ページタイトル（P1-5: TAB_META再利用のPageHeaderへ統一） ── */}
       <PageHeader tabId="T4" />
+      <p style={{ ...typography.caption, color: colors.textMuted }}>
+        理論差分は理想PFとの参考比較です。買付・売却の実行指示ではありません。
+        国内株投信の不足額と提案額は、下の実行計画で確認してください。
+      </p>
 
       {/* ── 抑制中参考表示バナー ── */}
       <SuppressedReferenceNotice />
@@ -600,7 +627,7 @@ export function T4_IdealPf() {
             {formatJPYAuto(universe.totalValue)}
           </div>
           <div data-regime={market.regime} style={{ ...typography.caption, color: colors.textSubtle, marginTop: spacing[1] }}>
-            レジーム: {marketRegimeDisplayLabel(market.regime)} — 目標乖離合計: {formatJPYAuto(totalToBuy - totalToSell)}
+            レジーム: {marketRegimeDisplayLabel(market.regime)} — 理論差分合計: {formatJPYAuto(totalToBuy - totalToSell)}
           </div>
         </div>
         <div className="t4-hero-body">
@@ -631,12 +658,12 @@ export function T4_IdealPf() {
       {/* ── 差分サマリーバナー（要追加 / 要削減） ── */}
       <div className="t4-diff-row">
         <div className="t4-diff-cell t4-diff-cell--buy">
-          <div className="t4-diff-cell__label">要追加</div>
+          <div className="t4-diff-cell__label">理論差分 — 要追加</div>
           <div className="t4-diff-cell__value">{formatSignedJPY(totalToBuy)}</div>
           <div className="t4-diff-cell__sub">増額対象の資産クラス</div>
         </div>
         <div className="t4-diff-cell t4-diff-cell--sell">
-          <div className="t4-diff-cell__label">要削減</div>
+          <div className="t4-diff-cell__label">理論差分 — 要削減</div>
           <div className="t4-diff-cell__value">{formatSignedJPY(-totalToSell)}</div>
           <div className="t4-diff-cell__sub">減額対象の資産クラス</div>
         </div>
@@ -702,7 +729,7 @@ export function T4_IdealPf() {
         <div>
           <SectionHeader
             title="今週のアクション候補"
-            caption={isSuppressed ? '参考表示 — 実行判断停止中' : '優先度順'}
+            caption={isSuppressed ? '理論差分に基づく参考表示 — 実行判断停止中' : '理論差分に基づく参考候補 — 実行指示ではありません'}
           />
           {isSuppressed && (
             <div style={{
@@ -749,7 +776,7 @@ export function T4_IdealPf() {
                     fontWeight: 700, flexShrink: 0,
                     lineHeight: '20px',
                   }}>
-                    {meta.icon} {meta.label}
+                    {meta.icon} 参考{meta.label}
                   </span>
                   <div style={{ ...typography.bodySmall, color: colors.textPrimary, flex: 1 }}>
                     {item}
@@ -772,7 +799,7 @@ export function T4_IdealPf() {
       <div>
         <SectionHeader
           title="資産クラス配分"
-          caption={`総資産 ${formatJPYAuto(universe.totalValue)} / レジーム: ${marketRegimeDisplayLabel(market.regime)}`}
+          caption={`理論差分（参考） / 総資産 ${formatJPYAuto(universe.totalValue)} / レジーム: ${marketRegimeDisplayLabel(market.regime)}`}
         />
         <div style={cardStyle}>
           {orderedCats.map((cat, i) => (
@@ -790,7 +817,7 @@ export function T4_IdealPf() {
         <div>
           <SectionHeader
             title="個別株 差分ランキング"
-            caption={`ロック${stockPlan.lockCount}件`}
+            caption={`理論差分（参考） / ロック${stockPlan.lockCount}件`}
           />
           <div style={cardStyle}>
             {stockPlan.rebalanceTop.slice(0, 8).map((row, i) => (
@@ -826,9 +853,61 @@ export function T4_IdealPf() {
       )}
 
       {/* ── 国内株投信 差分 ── */}
+      <section aria-label="国内株投信 実行計画" data-testid="t4-jp-trust-canonical-bridge">
+        <SectionHeader title="国内株投信 実行計画" caption="共有配分プランの金額" />
+        <div
+          data-allocation-availability={jpTrustSummary === null ? 'unavailable' : allocationSnapshot.availability}
+          data-allocation-status={allocationSnapshot.status}
+          data-snapshot-id={canonicalPlan?.snapshotId}
+          style={{ ...cardStyle, padding: spacing[4], minWidth: 0 }}
+        >
+          {jpTrustSummary !== null && allocationSnapshot.availability === 'available' ? (
+            <>
+              <p role="status" style={{ ...typography.caption, color: colors.textSubtle }}>
+                配分プラン: {allocationSnapshot.status === 'current' ? '最新' : allocationSnapshot.status === 'estimate_only' ? '見積のみ（実行不可）' : '実行不可'}
+              </p>
+              <dl style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'minmax(0, 1fr)' : 'repeat(4, minmax(0, 1fr))',
+                gap: spacing[3], margin: `${spacing[3]} 0`, minWidth: 0,
+              }}>
+                {[
+                  { label: '現在額', amount: jpTrustSummary.jpTrustCurrentAmount },
+                  { label: '目標額', amount: jpTrustSummary.jpTrustTargetAmount },
+                  { label: '不足額', amount: jpTrustSummary.jpTrustRemainingTarget },
+                  { label: '提案額', amount: jpTrustSummary.jpTrustProposedAmount },
+                ].map(({ label, amount }) => (
+                  <div key={label} style={{ minWidth: 0 }}>
+                    <dt style={{ ...typography.caption, color: colors.textSubtle }}>{label}</dt>
+                    <dd style={{ ...typography.metricSmall, color: colors.textPrimary, margin: 0, minWidth: 0, overflowWrap: 'anywhere' }}>
+                      {formatJPY(amount)}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p style={{ ...typography.caption, color: colors.textMuted }}>
+                提案額は現在の配分プランが提案する金額です。不足額や理論差分とは異なり、予算・上限・実行制約を反映します。
+                売買の最終判断はご自身で行ってください。
+              </p>
+            </>
+          ) : (
+            <p role="status" style={{ ...typography.bodySmall, color: colors.textSubtle }}>
+              {allocationSnapshot.availability === 'unavailable'
+                ? allocationSnapshot.reasonKind === 'UNKNOWN_REASON_CODE'
+                  ? '配分プランを利用できません。再計算してください。'
+                  : allocationSnapshot.status === 'stale'
+                    ? '配分プランの再計算が必要です。'
+                    : allocationSnapshot.status === 'invalid'
+                      ? '配分プランを計算できません。'
+                      : '配分プランは未計算です。'
+                : '国内株投信の配分プランを利用できません。'}
+            </p>
+          )}
+        </div>
+      </section>
       {jpFundRows.length > 0 && (
         <div>
-          <SectionHeader title="国内株投信 差分" caption="スコア重み付き按分" />
+          <SectionHeader title="国内株投信 差分" caption="理論差分（スコア重み付き按分・参考）" />
           <div style={cardStyle}>
             {jpFundRows.map((row, i) => (
               <FundRow key={row.id} row={row} isLast={i === jpFundRows.length - 1} isSuppressed={isSuppressed} />
@@ -840,7 +919,7 @@ export function T4_IdealPf() {
       {/* ── 海外投信 差分 ── */}
       {globalFundRows.length > 0 && (
         <div>
-          <SectionHeader title="海外投信 差分" caption="スコア重み付き按分" />
+          <SectionHeader title="海外投信 差分" caption="理論差分（スコア重み付き按分・参考）" />
           <div style={cardStyle}>
             {globalFundRows.map((row, i) => (
               <FundRow key={row.id} row={row} isLast={i === globalFundRows.length - 1} isSuppressed={isSuppressed} />
