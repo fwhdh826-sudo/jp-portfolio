@@ -28,6 +28,7 @@ import {
   restorePortfolio,
   restoreTrust,
   restoreLearning,
+  inspectLegacyLearning,
   restoreCsvImportedAt,
   restoreCsvImportProvenance,
   restoreCsvSyncSummary,
@@ -426,6 +427,12 @@ interface AppStoreRuntime {
   portfolioGenerationInvalidation: AppStoreRuntimeInvalidationState
   lastLocallyPersistedLegacyProjection: string | null
   lastLocallyPersistedLegacyLearningFingerprint: string | null
+  /**
+   * Exact bytes of every LEGACY_PORTFOLIO_GENERATION_KEYS entry as observed right after this
+   * runtime's own last durable legacy write. The self-persist shortcut is only honoured while the
+   * bytes currently on disk are still exactly these (see inspectDurablePortfolioAlignment).
+   */
+  lastLocallyPersistedLegacyRawReceipt: ReadonlyArray<string | null> | null
   activePortfolioOperation: PortfolioOperationTicket | null
   activePortfolioGenerationTransaction: PortfolioGenerationTransaction | null
   lastAppliedSnapshotGeneration: SnapshotGenerationCache
@@ -540,6 +547,7 @@ function createAppStoreRuntime(
     portfolioGenerationInvalidation: invalidationState,
     lastLocallyPersistedLegacyProjection: null,
     lastLocallyPersistedLegacyLearningFingerprint: null,
+    lastLocallyPersistedLegacyRawReceipt: null,
     activePortfolioOperation: null,
     activePortfolioGenerationTransaction: null,
     lastAppliedSnapshotGeneration: null,
@@ -587,6 +595,7 @@ function resetAppStoreRuntime(runtime: AppStoreRuntime): void {
   runtime.lastAppliedSnapshotGeneration = null
   runtime.lastLocallyPersistedLegacyProjection = null
   runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+  runtime.lastLocallyPersistedLegacyRawReceipt = null
   resetRuntimeTestSeams(runtime)
   // Transport subscription is intentionally left untouched: reset re-arms the runtime for
   // more test activity, it does not tear down the cross-tab dependency.
@@ -1635,21 +1644,48 @@ function portfolioGenerationProjectionsEqual(
  * unconditionally via `lastLocallyPersistedLegacyLearningFingerprint` in
  * inspectDurablePortfolioAlignment, since (unlike this projection) it can be mutated directly by
  * a non-cooperative writer without ever touching this runtime's own published state.
+ *
+ * This fingerprint is a purely *local* statement ("what I last wrote equals what I now publish").
+ * It says nothing about what is durable now; it must therefore never be sufficient on its own to
+ * admit a write (RA_CROSS_TAB_STALE_LEGACY_WRITE_GUARD_R1) — it is always paired with the exact
+ * on-disk bytes receipt below.
  */
 function buildLegacyProjectionOnlyFingerprint(state: AppState, nowMs: number): string {
   return JSON.stringify(stableStructuralValue(buildPublishedPortfolioGenerationProjection(state, nowMs)))
 }
 
+/** Exact bytes of all legacy generation keys, or null when storage cannot be read (fail closed). */
+function readLegacyGenerationRawBytes(): Array<string | null> | null {
+  try {
+    return LEGACY_PORTFOLIO_GENERATION_KEYS.map(key => localStorage.getItem(key))
+  } catch {
+    return null
+  }
+}
+
+function legacyRawBytesMatchReceipt(
+  receipt: ReadonlyArray<string | null> | null,
+  current: ReadonlyArray<string | null>,
+): boolean {
+  return receipt !== null &&
+    receipt.length === current.length &&
+    receipt.every((raw, index) => raw === current[index])
+}
+
 /**
- * Re-reads v91_learning right after a successful legacy-mode persist and caches its fingerprint
- * as this runtime's own recognized write. Not every legacy writer's persistLegacy callback
- * includes `learning` (e.g. setPortfolioPolicy/setCashAssumptions touch only their own key), so
- * trusting `finalState.learning` directly here would wrongly cache a value that was never
- * actually durably written; reading disk back is the only way to know what is actually there.
+ * Records, right after a successful legacy-mode persist, the evidence this runtime uses to
+ * recognise its own write: (1) the fingerprint of the durable learning snapshot and (2) the exact
+ * bytes of every legacy generation key. Both are read back from disk — not trusted from
+ * `finalState` — because not every legacy writer's persistLegacy callback touches `learning`
+ * (e.g. setPortfolioPolicy/setCashAssumptions write only their own key). The learning read is
+ * side-effect free (`inspectLegacyLearning`) so recording evidence can never delete a key.
  */
-function syncLegacyLearningFingerprintFromDisk(runtime: AppStoreRuntime): void {
-  runtime.lastLocallyPersistedLegacyLearningFingerprint =
-    JSON.stringify(stableStructuralValue(restoreLearning()))
+function syncLegacyOwnWriteEvidenceFromDisk(runtime: AppStoreRuntime, nowMs: number): void {
+  const learning = inspectLegacyLearning(nowMs)
+  runtime.lastLocallyPersistedLegacyLearningFingerprint = JSON.stringify(stableStructuralValue(
+    learning.status === 'valid' ? learning.learning : null,
+  ))
+  runtime.lastLocallyPersistedLegacyRawReceipt = readLegacyGenerationRawBytes()
 }
 
 /**
@@ -1715,15 +1751,13 @@ function inspectDurablePortfolioAlignment(
       : { status: 'stale' }
   }
 
-  let legacyRaw: Array<string | null>
-  try {
-    legacyRaw = LEGACY_PORTFOLIO_GENERATION_KEYS.map(key => localStorage.getItem(key))
-  } catch {
-    return { status: 'invalid', canonicalInvalid: false }
-  }
+  // Fresh durable bytes, read under the serialized commit boundary of this very call.
+  const legacyRaw = readLegacyGenerationRawBytes()
+  if (legacyRaw === null) return { status: 'invalid', canonicalInvalid: false }
   if (legacyRaw.every(raw => raw === null)) {
     runtime.lastLocallyPersistedLegacyProjection = null
     runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+    runtime.lastLocallyPersistedLegacyRawReceipt = null
     return { status: 'aligned', canonical, canonicalRaw }
   }
   // v91_learning is verified unconditionally, before (and independent of) the projection
@@ -1734,9 +1768,17 @@ function inspectDurablePortfolioAlignment(
   // this same Web-Lock-protected code, so skipping their re-read when live state is unchanged is
   // safe. Gating this learning check behind that same shortcut would let it go stale-blind
   // whenever nothing else changed, exactly the scenario the shortcut exists to skip.
-  if (legacyRaw[6] !== null) {
-    const legacyLearning = restoreLearning()
-    if (legacyLearning === null) return { status: 'stale' }
+  //
+  // The read is side-effect free: the TTL cleanup inside restoreLearning() would delete an
+  // expired key during what must be a read-only decision (and would do so even when this check
+  // goes on to reject the writer). An expired snapshot is treated like an absent one — it
+  // carries no overwrite authority — whereas a present-but-malformed one stays fail-closed.
+  const legacyLearningInspection = legacyRaw[6] !== null ? inspectLegacyLearning(nowMs) : null
+  if (legacyLearningInspection !== null && legacyLearningInspection.status === 'malformed') {
+    return { status: 'stale' }
+  }
+  if (legacyLearningInspection !== null && legacyLearningInspection.status === 'valid') {
+    const legacyLearning = legacyLearningInspection.learning
     const diskLearningFingerprint = JSON.stringify(stableStructuralValue(legacyLearning))
     // learning is recomputed on every load operation (fresh lastUpdated/outcomes each run), so a
     // plain live-state-vs-disk compare would misfire whenever this runtime's own durable write
@@ -1751,8 +1793,17 @@ function inspectDurablePortfolioAlignment(
       return { status: 'stale' }
     }
   }
+  // Self-persist shortcut. Matching the locally cached projection against the *published*
+  // projection only proves "what I last wrote is what I show" — it cannot see another tab's
+  // commit, which changes the durable keys without touching this runtime's state or cache. The
+  // shortcut is therefore admitted only when the bytes on disk, read fresh above, are still
+  // exactly the bytes this runtime observed right after its own last write. Anything else (a
+  // different tab wrote policy/cash/holdings/trust/CSV metadata, a key vanished, learning is
+  // missing or was rewritten with an identical timestamp) falls through to the full structural
+  // comparison below. Neither a missing v91_learning nor clock equality is generation identity.
   if (runtime.lastLocallyPersistedLegacyProjection ===
-      JSON.stringify(stableStructuralValue(publishedProjection))) {
+      JSON.stringify(stableStructuralValue(publishedProjection)) &&
+      legacyRawBytesMatchReceipt(runtime.lastLocallyPersistedLegacyRawReceipt, legacyRaw)) {
     return { status: 'aligned', canonical, canonicalRaw }
   }
   const legacyHoldings = restorePortfolio()
@@ -2960,10 +3011,11 @@ const createAppStoreStateCreator = (
           if (alignment.canonical.status === 'committed') {
             runtime.lastLocallyPersistedLegacyProjection = null
             runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+            runtime.lastLocallyPersistedLegacyRawReceipt = null
           } else {
             runtime.lastLocallyPersistedLegacyProjection =
               buildLegacyProjectionOnlyFingerprint(finalState, operationNowMs)
-            syncLegacyLearningFingerprintFromDisk(runtime)
+            syncLegacyOwnWriteEvidenceFromDisk(runtime, operationNowMs)
           }
 
           if (portfolioGenerationProjectionChanged(
@@ -3304,8 +3356,9 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.target === 'canonical') {
             runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+            runtime.lastLocallyPersistedLegacyRawReceipt = null
           } else {
-            syncLegacyLearningFingerprintFromDisk(runtime)
+            syncLegacyOwnWriteEvidenceFromDisk(runtime, nowMs)
           }
 
           if (portfolioGenerationProjectionChanged(
@@ -3464,8 +3517,9 @@ const createAppStoreStateCreator = (
           }
           if (persistenceResult.target === 'canonical') {
             runtime.lastLocallyPersistedLegacyLearningFingerprint = null
+            runtime.lastLocallyPersistedLegacyRawReceipt = null
           } else {
-            syncLegacyLearningFingerprintFromDisk(runtime)
+            syncLegacyOwnWriteEvidenceFromDisk(runtime, nowMs)
           }
 
           if (portfolioGenerationProjectionChanged(
@@ -4612,6 +4666,7 @@ const createAppStoreStateCreator = (
       }
       const markSnapshotGenerationApplied = () => {
         runtime.lastLocallyPersistedLegacyProjection = null
+        runtime.lastLocallyPersistedLegacyRawReceipt = null
         if (snapshot.snapshotGenerationIdentity !== null) {
           const appliedStateIdentity = computeCurrentSnapshotStateIdentity(get())
           runtime.lastAppliedSnapshotGeneration = appliedStateIdentity === null

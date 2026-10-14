@@ -866,6 +866,46 @@ export function restoreLearning(): LearningState | null {
   } catch { return null }
 }
 
+/**
+ * Result of a side-effect-free look at the legacy `v91_learning` snapshot.
+ * - `absent`: no key. No overwrite authority.
+ * - `expired`: a valid snapshot older than LEARNING_TTL_MS. Treated exactly like `absent` by
+ *   restore (returns null); unlike `restoreLearning()` it is never removed here.
+ * - `malformed`: present but not a valid learning snapshot, whatever its age (fail closed).
+ * - `valid`: parsed and sanitized.
+ */
+export type LegacyLearningInspection =
+  | { status: 'absent' }
+  | { status: 'expired' }
+  | { status: 'malformed' }
+  | { status: 'valid'; learning: LearningState }
+
+/**
+ * Read-only counterpart of the legacy branch of `restoreLearning()`.
+ *
+ * `restoreLearning()` deletes an expired `v91_learning` key as a side effect of reading it. That
+ * is acceptable when hydrating at startup, but it is NOT acceptable inside a cross-tab alignment
+ * check: a read that decides whether a writer may commit must never mutate durable bytes outside
+ * the writer's exact-byte ownership (a rejected writer would otherwise still delete another tab's
+ * key). The caller supplies the operation clock so the TTL judgement uses the transaction clock.
+ * Callers must only use this when no committed canonical generation governs learning.
+ */
+export function inspectLegacyLearning(nowMs: number = Date.now()): LegacyLearningInspection {
+  try {
+    const raw = localStorage.getItem(LEARNING_KEY)
+    if (!raw) return { status: 'absent' }
+    const snap = JSON.parse(raw) as Snapshot<unknown>
+    // Content validity is judged before age: a present-but-malformed snapshot stays fail-closed
+    // no matter how old it is. Only a *valid* snapshot can be classified as merely expired.
+    const learning = sanitizeLearningState(snap.data)
+    if (learning === null) return { status: 'malformed' }
+    if (nowMs - snap.savedAt > LEARNING_TTL_MS) return { status: 'expired' }
+    return { status: 'valid', learning }
+  } catch {
+    return { status: 'malformed' }
+  }
+}
+
 // ── Phase 8: CSV取込時刻の永続化（リロード跨ぎ・90日TTL） ─────
 const CSV_TTL_MS = 90 * 24 * 60 * 60 * 1000  // 90日
 
