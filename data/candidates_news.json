@@ -1,111 +1,92 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-14T03:25:13.887570+09:00",
-  "sourceUpdatedAt": "2026-10-13T18:07:10+00:00",
+  "updatedAt": "2026-10-14T09:34:42.027797+09:00",
+  "sourceUpdatedAt": "2026-10-14T00:18:44+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
-      "topPositiveTitle": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
-      "items": [
-        {
-          "title": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-13T08:45:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boj-is-said-to-lean-against-back-to-back-rate-hike-in-october",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
-      "topPositiveTitle": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
-      "items": [
-        {
-          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 3,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": -0.001,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Ray Dalio Warns Slump in Treasuries Market Has ‘Long Way to Go’",
-      "topPositiveTitle": "Long-Term Treasuries Rise Ahead of Key US Inflation Report",
+      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
+      "topPositiveTitle": "Asian Stocks Rise on Fed Rate Signal, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Ray Dalio Warns Slump in Treasuries Market Has ‘Long Way to Go’",
+          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T16:48:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ray-dalio-warns-slump-in-treasuries-market-has-long-way-to-go",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-14T00:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
           "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bassman Warns of ‘Nightmare Scenario’ Amplifying US Bond Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T17:34:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/bassman-warns-of-nightmare-scenario-amplifying-us-bond-selloff",
-          "tags": [
-            "macro_risk",
+            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
+          "title": "South Africa Fund Manager Tips Nigerian Stocks Over South Korea",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/south-africa-fund-manager-tips-nigerian-stocks-over-south-korea",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Lisa Cook Puts Off White House Hearing Over Trump’s Allegations",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T22:23:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-lisa-cook-puts-off-white-house-hearing-over-trump-s-allegations",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Collins Sees Higher Rates Likely This Year to Tame Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-collins-sees-higher-rates-likely-this-year-to-tame-prices",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -121,42 +102,28 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Bond Traders Eclipsed by Equities in a Wall Street Reversal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T16:43:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/bond-traders-eclipsed-by-equities-in-rare-wall-street-reversal",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
-      "topPositiveTitle": "Why the AI Boom Is Papering Over Cracks in Global Economy",
+      "topNegativeTitle": "Citadel Securities’ Rubner Says Retail Traders Return to AI Bets",
+      "topPositiveTitle": "Citadel Securities’ Rubner Says Retail Traders Return to AI Bets",
       "items": [
         {
-          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+          "title": "Citadel Securities’ Rubner Says Retail Traders Return to AI Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T09:17:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T21:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/citadel-securities-rubner-says-retail-traders-return-to-ai-bets",
           "tags": [
-            "fx",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -200,16 +167,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
+      "topPositiveTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
+      "items": [
+        {
+          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-14T00:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -236,81 +218,52 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.284,
-      "negativeCount": 5,
+      "avgSentiment": 0.137,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Ray Dalio Warns Slump in Treasuries Market Has ‘Long Way to Go’",
-      "topPositiveTitle": "S&P 500 Slips as Chipmaker Selloff Overshadows Bank Earnings",
+      "topNegativeTitle": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
+      "topPositiveTitle": "World-Beating China Bonds Can Overcome Paltry Yields, Funds Say",
       "items": [
         {
-          "title": "Ray Dalio Warns Slump in Treasuries Market Has ‘Long Way to Go’",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T16:48:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ray-dalio-warns-slump-in-treasuries-market-has-long-way-to-go",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bassman Warns of ‘Nightmare Scenario’ Amplifying US Bond Selloff",
+          "title": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T17:34:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/bassman-warns-of-nightmare-scenario-amplifying-us-bond-selloff",
+          "publishedAt": "2026-10-13T23:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/hong-kong-s-low-aggregate-balance-sparks-rate-volatility-concern",
           "tags": [
+            "fx",
             "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Skydance Selloff Fuels Worst New-Bond Performance Since Pandemic",
+          "title": "Skydance Bonds Extend Losses Amid Warner Bros. Buyout Angst",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T17:18:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/skydance-selloff-fuels-worst-new-bond-performance-since-pandemic",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-10-13T21:19:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/skydance-bonds-extend-losses-amid-warner-bros-buyout-angst",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+          "title": "World-Beating China Bonds Can Overcome Paltry Yields, Funds Say",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T09:17:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-10-13T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/world-beating-china-bonds-can-overcome-paltry-yields-funds-say",
           "tags": [
-            "fx",
             "macro_risk",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Chip Selloff Rolls On as Big Bank Earnings Begin: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-12T22:04:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "rates"
           ]
         }
       ]
@@ -323,21 +276,20 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+      "topNegativeTitle": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
       "topPositiveTitle": "BOK Governor Backs Further Won Gains, Vows to Keep Policy Tight",
       "items": [
         {
-          "title": "AI Selloff Drags Emerging Stocks Down, Weighs on Currency Gauge",
+          "title": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T09:17:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ai-selloff-drags-emerging-stocks-down-weighs-on-currency-gauge",
+          "publishedAt": "2026-10-13T23:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/hong-kong-s-low-aggregate-balance-sparks-rate-volatility-concern",
           "tags": [
             "fx",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
@@ -367,25 +319,38 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.19,
+      "avgSentiment": 0.177,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Bassman Warns of ‘Nightmare Scenario’ Amplifying US Bond Selloff",
+      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
       "topPositiveTitle": "US Existing-Home Sales Edged Up Ahead of Mortgage-Rate Shock",
       "items": [
         {
-          "title": "Bassman Warns of ‘Nightmare Scenario’ Amplifying US Bond Selloff",
+          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T17:34:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/bassman-warns-of-nightmare-scenario-amplifying-us-bond-selloff",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-14T00:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
           "tags": [
-            "macro_risk",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Collins Sees Higher Rates Likely This Year to Tame Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-collins-sees-higher-rates-likely-this-year-to-tame-prices",
+          "tags": [
             "market",
             "rates",
             "us_broad"
@@ -417,95 +382,95 @@
           ]
         },
         {
-          "title": "Colombian Central Banker Sees Extended Period of High Rates",
-          "source": "Bloomberg Economics",
+          "title": "Asian Stocks Rise on Fed Rate Signal, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-13T15:06:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/colombian-central-banker-sees-extended-period-of-high-rates",
+          "publishedAt": "2026-10-13T22:03:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOJ Is Said to Lean Against Back-to-Back Rate Hike in October",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-13T08:45:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boj-is-said-to-lean-against-back-to-back-rate-hike-in-october",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.083,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 13",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 13",
+      "topNegativeTitle": "Aramco Headquarters Hit as Houthi Missiles Strike Saudi Arabia",
+      "topPositiveTitle": "Asian Stocks Rise on Fed Rate Signal, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 13",
+          "title": "Aramco Headquarters Hit as Houthi Missiles Strike Saudi Arabia",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-12T22:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/latest-oil-market-news-and-analysis-for-oct-13",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T20:32:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/aramco-headquarters-hit-during-houthi-attacks-on-saudi-arabia",
           "tags": [
             "commodity",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore’s MAS Unexpectedly Holds Policy, Lowers Inflation View",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T00:03:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/singapore-holds-monetary-policy-as-economy-expands-5-4-on-ai",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Rise on Fed Rate Signal, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-13T22:03:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 14",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-13T22:02:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/latest-oil-market-news-and-analysis-for-oct-14",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "India’s Top Diplomat Encouraged by US Talks, Defends Russia Ties",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 13",
-      "items": [
-        {
-          "title": "India’s Top Diplomat Encouraged by US Talks, Defends Russia Ties",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T15:29:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/india-us-trade-talks-heading-in-right-direction-jaishankar-says",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 13",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-12T22:01:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/latest-oil-market-news-and-analysis-for-oct-13",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     }
   },
   "meta": {
@@ -516,7 +481,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
