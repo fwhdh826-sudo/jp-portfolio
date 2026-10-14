@@ -80,6 +80,11 @@ import {
   persistLearning,
   persistPortfolio,
   persistTrust,
+  restoreCashAssumptions,
+  restoreLearning,
+  restorePortfolio,
+  restorePortfolioPolicy,
+  restoreTrust,
   type CsvImportPersistencePayload,
 } from './persist'
 import {
@@ -87,6 +92,14 @@ import {
   type AppStoreState,
 } from './useAppStore'
 import { createImmediatePortfolioGenerationLockAdapterForTest } from './testing/portfolioGenerationLockTestAdapters'
+import {
+  createPortfolioGenerationLockAdapter,
+  PORTFOLIO_GENERATION_LOCK_NAME,
+} from './portfolioGenerationLock'
+import { createPortfolioGenerationInvalidationTransport } from './portfolioGenerationInvalidationTransport'
+import { FakeBroadcastChannelHub } from './testing/fakeBroadcastChannelHub'
+import { FakeStorageEventHub } from './testing/fakeStorageEventHub'
+import { FakeLockManager } from './testing/fakeLockManager'
 // Vite's `?raw` suffix returns a module's own source text as a plain string; see the identical
 // pattern/rationale in src/components/StatusBar.crossTabInvalidation.test.tsx.
 // @ts-expect-error -- resolved at build/test time by Vite's `?raw` import convention
@@ -495,6 +508,296 @@ describe('RA-009-B1: legacy learning generation change detection', () => {
     const result = await store.getState().refreshAllData()
 
     expect(JSON.stringify(result)).not.toContain('not-a-learning-state')
+    controls.dispose()
+  })
+})
+
+// RA_CROSS_TAB_STALE_LEGACY_WRITE_GUARD_R1: a runtime whose legacy "self-persist shortcut" cache is
+// warm must still prove, against the *current* durable bytes at the serialized commit boundary,
+// that no other tab committed a newer legacy generation. Two store instances sharing the same
+// mocked localStorage model two tabs of one origin (the Web Lock is the immediate adapter, i.e.
+// each call is individually serialized; interleaving between calls is what the tabs do).
+describe('RA_CROSS_TAB_STALE_LEGACY_WRITE_GUARD_R1: stale legacy persist is rejected at the commit boundary', () => {
+  type Instance = ReturnType<typeof freshStore>
+
+  const TEST_HOLDING = {
+    code: '2071', name: 'legacy-guard holding', eval: 300_000, pnlPct: 0,
+    mu: 0.1, sigma: 0.2, sigmaSource: 'static', beta: 1, sector: 'test',
+    target: 0, alert: 0, lock: false, mitsu: false, ma: false, rsi: 50,
+    macd: false, vol: false, mom3m: 0, roe: 0, per: 0, pbr: 0, epsG: 0,
+    cfOk: false, de: 0, divG: 0, score: 0, decision: 'HOLD', ev: 0,
+  } as unknown as AppStoreState['holdings'][number]
+
+  /** One holding on each tab (a fresh test store starts with none), then the shared legacy core. */
+  function seedTwoTabs(): { a: Instance; b: Instance } {
+    const a = freshStore()
+    const b = freshStore()
+    a.store.setState({ holdings: [{ ...TEST_HOLDING }] })
+    b.store.setState({ holdings: [{ ...TEST_HOLDING }] })
+    persistPortfolio(a.store.getState().holdings)
+    persistTrust(a.store.getState().trust)
+    return { a, b }
+  }
+
+  /**
+   * Models a reload of `target`: the published state is rebuilt from what is durable right now
+   * (no analysis, no write). A writer that ran its own analysis is *not* equal to disk for
+   * policy/cash-only writers, so copying another tab's published state would not be a reload.
+   */
+  function reloadFromDisk(target: Instance): void {
+    const holdings = restorePortfolio()
+    const trust = restoreTrust()
+    const portfolioPolicy = restorePortfolioPolicy()
+    const cashAssumptions = restoreCashAssumptions()
+    target.store.setState(state => ({
+      holdings: holdings ?? state.holdings,
+      trust: trust ?? state.trust,
+      portfolioPolicy: portfolioPolicy ?? state.portfolioPolicy,
+      cashAssumptions: cashAssumptions ?? state.cashAssumptions,
+      learning: restoreLearning(),
+    }))
+  }
+
+  const STALE = { ok: false, code: 'CROSS_TAB_STATE_STALE', retryable: false } as const
+
+  function policyOnDisk(): number {
+    return JSON.parse(storage.v13_portfolio_policy).data.jpStockMaxRatio as number
+  }
+  function cashOnDisk(): { grossCash: number } {
+    return JSON.parse(storage.v13_cash_assumptions).data as { grossCash: number }
+  }
+
+  it('A: a warm-cache tab cannot overwrite a newer portfolio policy committed by another tab', async () => {
+    const { a, b } = seedTwoTabs()
+
+    const primed = await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })
+    expect(primed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    reloadFromDisk(b)
+    const newer = await b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    expect(newer).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const durableBefore = storage.v13_portfolio_policy
+    const beforeA = a.store.getState()
+
+    const stale = await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+
+    expect(stale).toMatchObject({ ...STALE, operation: 'setPortfolioPolicy' })
+    expect(policyOnDisk()).toBe(0.12)
+    expect(storage.v13_portfolio_policy).toBe(durableBefore)
+    expect(a.store.getState().portfolioPolicy).toBe(beforeA.portfolioPolicy)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('B: a warm-cache tab cannot overwrite newer cash assumptions committed by another tab', async () => {
+    const { a, b } = seedTwoTabs()
+
+    const primed = await a.store.getState().setCashAssumptions({ grossCash: 500_000, safetyReserve: 0, pendingOrderCash: null })
+    expect(primed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    reloadFromDisk(b)
+    const newer = await b.store.getState().setCashAssumptions({ grossCash: 700_000, safetyReserve: 0, pendingOrderCash: null })
+    expect(newer).toMatchObject({ ok: true, code: 'SUCCESS' })
+    const durableBefore = storage.v13_cash_assumptions
+
+    const stale = await a.store.getState().setCashAssumptions({ grossCash: 900_000, safetyReserve: 0, pendingOrderCash: null })
+
+    expect(stale).toMatchObject({ ...STALE, operation: 'setCashAssumptions' })
+    expect(cashOnDisk().grossCash).toBe(700_000)
+    expect(storage.v13_cash_assumptions).toBe(durableBefore)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('C: a missing v91_learning key is not evidence that nothing changed (no accidental protection to lose)', async () => {
+    const { a, b } = seedTwoTabs()
+    const holdingCode = a.store.getState().holdings[0].code
+
+    const primed = await a.store.getState().updateHolding(holdingCode, { eval: a.store.getState().holdings[0].eval + 1_000 })
+    expect(primed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    // The learning snapshot is gone (TTL cleanup / eviction / never written): metadata missing.
+    delete storage.v91_learning
+    reloadFromDisk(b)
+    const newer = await b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    expect(newer).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(storage.v91_learning).toBeUndefined()
+    const durableBefore = storage.v13_portfolio_policy
+
+    const stale = await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+
+    expect(stale).toMatchObject({ ...STALE, operation: 'setPortfolioPolicy' })
+    expect(storage.v13_portfolio_policy).toBe(durableBefore)
+    expect(policyOnDisk()).toBe(0.12)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('D: identical clock + identical learning content is not a generation identity (clock collision)', async () => {
+    const { a, b } = seedTwoTabs()
+    const holdingCode = a.store.getState().holdings[0].code
+
+    // The fake system clock is pinned, so every operation below shares one `nowMs`.
+    const primed = await a.store.getState().updateHolding(holdingCode, { eval: a.store.getState().holdings[0].eval + 1_000 })
+    expect(primed).toMatchObject({ ok: true, code: 'SUCCESS' })
+    reloadFromDisk(b)
+    const fund = b.store.getState().trust[0]
+    const newer = await b.store.getState().updateTrust(fund.id, { eval: fund.eval + 1_000 })
+    expect(newer).toMatchObject({ ok: true, code: 'SUCCESS' })
+    // Force the learning evidence to collide: tab A now holds exactly the learning snapshot that
+    // is durable (what a same-millisecond recomputation would also have produced).
+    const durableLearning = restoreLearning()
+    expect(durableLearning).not.toBeNull()
+    a.store.setState({ learning: durableLearning })
+    const durableTrustBefore = storage.v81_trust
+
+    const stale = await a.store.getState().updateHolding(holdingCode, { eval: a.store.getState().holdings[0].eval + 2_000 })
+
+    expect(stale).toMatchObject({ ...STALE, operation: 'updateHolding' })
+    expect(storage.v81_trust).toBe(durableTrustBefore)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('E: non-conflicting legacy persists (single tab and strictly alternating reloaded tabs) all succeed', async () => {
+    const { a, b } = seedTwoTabs()
+    const holdingCode = a.store.getState().holdings[0].code
+
+    expect(await a.store.getState().updateHolding(holdingCode, { eval: a.store.getState().holdings[0].eval + 1_000 }))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 }))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(await a.store.getState().setCashAssumptions({ grossCash: 500_000, safetyReserve: 0, pendingOrderCash: null }))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+
+    reloadFromDisk(b)
+    expect(await b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 }))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+    reloadFromDisk(a)
+    expect(await a.store.getState().setCashAssumptions({ grossCash: 600_000, safetyReserve: 0, pendingOrderCash: null }))
+      .toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(policyOnDisk()).toBe(0.12)
+    expect(cashOnDisk().grossCash).toBe(600_000)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('F: after a stale rejection, re-initialization restores the latest durable generation and writes succeed again', async () => {
+    const { a, b } = seedTwoTabs()
+
+    expect(await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })).toMatchObject({ ok: true })
+    reloadFromDisk(b)
+    expect(await b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })).toMatchObject({ ok: true })
+    expect(await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })).toMatchObject(STALE)
+
+    const reinitialized = await a.store.getState().initialize()
+    expect(reinitialized).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(a.store.getState().portfolioPolicy.jpStockMaxRatio).toBe(0.12)
+
+    const retry = await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+    expect(retry).toMatchObject({ ok: true, code: 'SUCCESS' })
+    expect(policyOnDisk()).toBe(0.15)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('G: a received cross-tab invalidation does not weaken the guard and is not cleared by the rejection', async () => {
+    const bcHub = new FakeBroadcastChannelHub()
+    const storageHub = new FakeStorageEventHub()
+    const transport = (instanceId: string) => {
+      const context = storageHub.createContext()
+      return createPortfolioGenerationInvalidationTransport({
+        instanceId,
+        createBroadcastChannel: bcHub.createFactory(),
+        storage: context.storage,
+        storageEventTarget: context.eventTarget,
+      })
+    }
+    const make = (instanceId: string) => createAppStoreInstanceForTest({
+      portfolioGenerationLock: createImmediatePortfolioGenerationLockAdapterForTest(),
+      portfolioGenerationInvalidation: { instanceId, transport: transport(instanceId) },
+    })
+    const a = make('tab-a')
+    const b = make('tab-b')
+    persistPortfolio(a.store.getState().holdings)
+    persistTrust(a.store.getState().trust)
+
+    expect(await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })).toMatchObject({ ok: true })
+    reloadFromDisk(b)
+    expect(await b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })).toMatchObject({ ok: true })
+    expect(a.store.getState().system.crossTabInvalidation).toEqual({ status: 'stale' })
+    const durableBefore = storage.v13_portfolio_policy
+
+    const stale = await a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+
+    expect(stale).toMatchObject(STALE)
+    expect(storage.v13_portfolio_policy).toBe(durableBefore)
+    expect(a.store.getState().system.crossTabInvalidation).toEqual({ status: 'stale' })
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('H: lock-serialized writers — the stale warm tab is rejected, the current tab commits, FIFO order holds', async () => {
+    const manager = new FakeLockManager()
+    const lock = () => createPortfolioGenerationLockAdapter({ lockManager: manager, timeoutMs: 60_000 })
+    const a = createAppStoreInstanceForTest({ portfolioGenerationLock: lock() })
+    const b = createAppStoreInstanceForTest({ portfolioGenerationLock: lock() })
+    persistPortfolio(a.store.getState().holdings)
+    persistTrust(a.store.getState().trust)
+
+    const primeA = a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })
+    expect(manager.grantNext(PORTFOLIO_GENERATION_LOCK_NAME)).toBe(true)
+    expect(await primeA).toMatchObject({ ok: true, code: 'SUCCESS' })
+    reloadFromDisk(b)
+    const primeB = b.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.12 })
+    expect(manager.grantNext(PORTFOLIO_GENERATION_LOCK_NAME)).toBe(true)
+    expect(await primeB).toMatchObject({ ok: true, code: 'SUCCESS' })
+
+    // Both are queued; A (stale, warm) is first in FIFO order, B (current, warm) second.
+    const staleA = a.store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.15 })
+    const currentB = b.store.getState().setCashAssumptions({ grossCash: 800_000, safetyReserve: 0, pendingOrderCash: null })
+    expect(manager.grantNext(PORTFOLIO_GENERATION_LOCK_NAME)).toBe(true)
+    const staleResult = await staleA
+    expect(manager.grantNext(PORTFOLIO_GENERATION_LOCK_NAME)).toBe(true)
+    const currentResult = await currentB
+
+    expect(staleResult).toMatchObject({ ...STALE, operation: 'setPortfolioPolicy' })
+    expect(currentResult).toMatchObject({ ok: true, operation: 'setCashAssumptions', code: 'SUCCESS' })
+    expect(policyOnDisk()).toBe(0.12)
+    expect(cashOnDisk().grossCash).toBe(800_000)
+    a.controls.dispose()
+    b.controls.dispose()
+  })
+
+  it('I: an alignment check never deletes an expired v91_learning key (no read-time mutation), even when it rejects', async () => {
+    const { store, controls } = freshStore()
+    persistPortfolio(store.getState().holdings)
+    persistTrust(store.getState().trust)
+    const expiredRaw = JSON.stringify({
+      data: validLearning(),
+      savedAt: FIXED_NOW.getTime() - 31 * 24 * 60 * 60 * 1000,
+    })
+    storage.v91_learning = expiredRaw
+    // Make the call a rejection for an unrelated reason: a newer durable policy this tab never saw.
+    storage.v13_portfolio_policy = JSON.stringify({ data: { jpStockMaxRatio: 0.12 }, savedAt: FIXED_NOW.getTime() })
+
+    const result = await store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })
+
+    expect(result).toMatchObject(STALE)
+    expect(storage.v91_learning).toBe(expiredRaw)
+    controls.dispose()
+  })
+
+  it('I2: an expired v91_learning carries no overwrite authority and does not by itself reject a writer', async () => {
+    const { store, controls } = freshStore()
+    persistPortfolio(store.getState().holdings)
+    persistTrust(store.getState().trust)
+    const expiredRaw = JSON.stringify({
+      data: validLearning(),
+      savedAt: FIXED_NOW.getTime() - 31 * 24 * 60 * 60 * 1000,
+    })
+    storage.v91_learning = expiredRaw
+
+    const result = await store.getState().setPortfolioPolicy({ jpStockMaxRatio: 0.08 })
+
+    expect(result).toMatchObject({ ok: true, code: 'SUCCESS' })
     controls.dispose()
   })
 })

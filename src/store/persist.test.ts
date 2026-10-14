@@ -6,6 +6,7 @@ import {
   persistTrust, restoreTrust, getTrustStorageFreshness,
   persistCsvSyncSummary, restoreCsvSyncSummary,
   persistCsvImportTransaction, CsvImportPersistenceError,
+  persistLearning, restoreLearning, inspectLegacyLearning,
 } from './persist'
 import type { Holding, Trust, CsvSyncSummary } from '../types'
 
@@ -14,6 +15,8 @@ const CASH_ASSUMPTIONS_KEY = 'v13_cash_assumptions'
 const PORTFOLIO_KEY = 'v81_portfolio'
 const TRUST_KEY = 'v81_trust'
 const CSV_SYNC_SUMMARY_KEY = 'v13_csv_sync_summary'
+const LEARNING_KEY = 'v91_learning'
+const TTL_30D = 30 * 24 * 60 * 60 * 1000
 const TTL_7D = 7 * 24 * 60 * 60 * 1000
 const TTL_90D = 90 * 24 * 60 * 60 * 1000
 
@@ -429,5 +432,118 @@ describe('CsvSyncSummary persist/restore（P4.5-A013-T6）', () => {
   it('restoreCsvSyncSummary: 壊れたJSONはnull（fail-closed、例外を投げない）', () => {
     store[CSV_SYNC_SUMMARY_KEY] = 'corrupted{'
     expect(restoreCsvSyncSummary(CSV_SYNC_TEST_NOW_MS)).toBeNull()
+  })
+})
+
+// RA_CROSS_TAB_STALE_LEGACY_WRITE_GUARD_R1: the cross-tab alignment check must be able to read the
+// legacy learning snapshot without the TTL cleanup that restoreLearning() performs.
+describe('inspectLegacyLearning: side-effect-free legacy learning read', () => {
+  const NOW = 1_800_000_000_000
+  const store: Record<string, string> = {}
+  let removeCalls = 0
+  let setCalls = 0
+  const lsMock = {
+    getItem:    (k: string) => store[k] ?? null,
+    setItem:    (k: string, v: string) => { setCalls += 1; store[k] = v },
+    removeItem: (k: string) => { removeCalls += 1; delete store[k] },
+  }
+
+  function validLearningData(lastUpdated = '2026-07-20T00:00:00.000Z') {
+    const emptySummary = { count: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0 }
+    return {
+      lastUpdated,
+      baselineCount: 0,
+      baseline: [],
+      outcomes: [],
+      summary: {
+        total: 0, wins: 0, losses: 0, flats: 0, accuracy: 0, avgReward: 0,
+        byDecision: { BUY: { ...emptySummary }, HOLD: { ...emptySummary }, SELL: { ...emptySummary } },
+        driftSignals: [],
+      },
+      suggestedWeights: { fundamental: 0.3, market: 0.2, technical: 0.2, news: 0.1, quality: 0.1, risk: 0.1 },
+    }
+  }
+
+  beforeEach(() => {
+    Object.keys(store).forEach(k => delete store[k])
+    removeCalls = 0
+    setCalls = 0
+    vi.stubGlobal('localStorage', lsMock)
+  })
+  afterEach(() => { vi.unstubAllGlobals() })
+
+  it('absent key -> absent', () => {
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'absent' })
+  })
+
+  it('valid, within TTL -> valid with the sanitized learning, and nothing is written or removed', () => {
+    store[LEARNING_KEY] = JSON.stringify({ data: validLearningData(), savedAt: NOW - 1_000 })
+    const result = inspectLegacyLearning(NOW)
+    expect(result.status).toBe('valid')
+    expect(removeCalls).toBe(0)
+    expect(setCalls).toBe(0)
+  })
+
+  it('TTL boundary: exactly 30 days is valid, 30 days + 1 ms is expired', () => {
+    store[LEARNING_KEY] = JSON.stringify({ data: validLearningData(), savedAt: NOW - TTL_30D })
+    expect(inspectLegacyLearning(NOW).status).toBe('valid')
+    store[LEARNING_KEY] = JSON.stringify({ data: validLearningData(), savedAt: NOW - TTL_30D - 1 })
+    expect(inspectLegacyLearning(NOW).status).toBe('expired')
+  })
+
+  it('expired key is reported as expired and is NOT removed (restoreLearning still removes it)', () => {
+    const raw = JSON.stringify({ data: validLearningData(), savedAt: NOW - TTL_30D - 1 })
+    store[LEARNING_KEY] = raw
+
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'expired' })
+    expect(store[LEARNING_KEY]).toBe(raw)
+    expect(removeCalls).toBe(0)
+
+    // Unchanged startup behaviour: the hydrating reader keeps its TTL cleanup.
+    vi.useFakeTimers()
+    vi.setSystemTime(NOW)
+    try {
+      expect(restoreLearning()).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+    expect(store[LEARNING_KEY]).toBeUndefined()
+    expect(removeCalls).toBe(1)
+  })
+
+  it('uses the supplied operation clock, not the wall clock', () => {
+    store[LEARNING_KEY] = JSON.stringify({ data: validLearningData(), savedAt: 1_000 })
+    expect(inspectLegacyLearning(1_000 + TTL_30D).status).toBe('valid')
+    expect(inspectLegacyLearning(1_000 + TTL_30D + 1).status).toBe('expired')
+  })
+
+  it('malformed content stays malformed regardless of age (fail closed, never downgraded to expired)', () => {
+    store[LEARNING_KEY] = JSON.stringify({ data: { missing: 'everything' }, savedAt: 1 })
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'malformed' })
+    store[LEARNING_KEY] = JSON.stringify({ data: { missing: 'everything' }, savedAt: NOW })
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'malformed' })
+    store[LEARNING_KEY] = '{not json'
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'malformed' })
+    expect(removeCalls).toBe(0)
+  })
+
+  it('a round-trip through persistLearning is read back as valid', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(NOW)
+    try {
+      expect(persistLearning(validLearningData() as never)).toEqual({ status: 'persisted' })
+      expect(inspectLegacyLearning(NOW).status).toBe('valid')
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('storage that throws on read is reported as malformed (fail closed), never thrown', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => { throw new Error('storage unavailable') },
+      setItem: () => { throw new Error('storage unavailable') },
+      removeItem: () => { throw new Error('storage unavailable') },
+    })
+    expect(inspectLegacyLearning(NOW)).toEqual({ status: 'malformed' })
   })
 })
