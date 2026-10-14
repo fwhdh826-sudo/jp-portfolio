@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-14T11:03:00.421516+09:00",
-  "sourceUpdatedAt": "2026-10-14T01:05:56+00:00",
+  "updatedAt": "2026-10-14T17:55:29.094283+09:00",
+  "sourceUpdatedAt": "2026-10-14T08:33:47+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,30 +29,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.043,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "avgSentiment": 0.132,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-      "topPositiveTitle": "Fed's Collins Says Rates Will Likely Need to Rise More",
+      "topNegativeTitle": "South Africa Fund Manager Tips Nigerian Stocks Over South Korea",
+      "topPositiveTitle": "Copper Climbs to Three-Week High on Strike Threat, Fed Comments",
       "items": [
-        {
-          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-14T00:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "South Africa Fund Manager Tips Nigerian Stocks Over South Korea",
           "source": "Bloomberg Markets",
@@ -78,20 +64,6 @@
           ]
         },
         {
-          "title": "Asian Stocks Bounce as Tech Rebounds From Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Fed’s Collins Sees Higher Rates Likely This Year to Tame Prices",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -103,41 +75,56 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Copper Climbs to Three-Week High on Strike Threat, Fed Comments",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-14T04:37:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/copper-climbs-to-three-week-high-on-strike-threat-fed-comments",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Edge Higher in Countdown to Inflation: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-13T22:03:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ECB’s Lane Says Boom in AI Is Tightening Financing Conditions",
-      "topPositiveTitle": "ECB’s Lane Says Boom in AI Is Tightening Financing Conditions",
+      "topNegativeTitle": "US Stocks Edge Higher in Countdown to Inflation: Markets Wrap",
+      "topPositiveTitle": "US Stocks Edge Higher in Countdown to Inflation: Markets Wrap",
       "items": [
         {
-          "title": "ECB’s Lane Says Boom in AI Is Tightening Financing Conditions",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T18:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/ecb-s-lane-says-boom-in-ai-is-tightening-financing-conditions",
+          "title": "US Stocks Edge Higher in Countdown to Inflation: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-13T22:03:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Why the AI Boom Is Papering Over Cracks in Global Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T11:00:02+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-13/why-the-ai-boom-is-papering-over-cracks-in-global-economy",
-          "tags": [
-            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -156,31 +143,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-      "topPositiveTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-14T00:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -207,101 +179,62 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.102,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
-      "topPositiveTitle": "World-Beating China Bonds Can Overcome Paltry Yields, Funds Say",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 14",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 14",
       "items": [
         {
-          "title": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T23:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/hong-kong-s-low-aggregate-balance-sparks-rate-volatility-concern",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Bounce as Tech Rebounds From Selloff: Markets Wrap",
+          "title": "Latest Oil Market News and Analysis for Oct. 14",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-13T22:02:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/latest-oil-market-news-and-analysis-for-oct-14",
           "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Skydance Bonds Extend Losses Amid Warner Bros. Buyout Angst",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-10-13T21:19:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/skydance-bonds-extend-losses-amid-warner-bros-buyout-angst",
-          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "World-Beating China Bonds Can Overcome Paltry Yields, Funds Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-13T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/world-beating-china-bonds-can-overcome-paltry-yields-funds-say",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.335,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
-      "topPositiveTitle": "BOE’s Breeden in No Rush to Launch ‘Britcoin’",
+      "topNegativeTitle": "Rupee’s Relentless Slide Draws Importers Into RBI Currency Fight",
+      "topPositiveTitle": "RBI Open to More Steps to Curb FX Speculation, Malhotra Says",
       "items": [
         {
-          "title": "Hong Kong’s Low Aggregate Balance Sparks Rate Volatility Concern",
+          "title": "Rupee’s Relentless Slide Draws Importers Into RBI Currency Fight",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T23:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/hong-kong-s-low-aggregate-balance-sparks-rate-volatility-concern",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-14T02:43:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/rupee-s-relentless-slide-draws-importers-into-rbi-currency-fight",
           "tags": [
             "fx",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "BOE’s Breeden in No Rush to Launch ‘Britcoin’",
+          "title": "RBI Open to More Steps to Curb FX Speculation, Malhotra Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-12T10:58:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-12/bank-of-england-s-breeden-in-no-rush-to-launch-britcoin",
+          "publishedAt": "2026-10-13T16:39:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/rbi-open-to-more-steps-to-curb-forex-speculation-malhotra-says",
           "tags": [
             "fx",
             "market"
@@ -310,42 +243,38 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.14,
+      "avgSentiment": 0.066,
       "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-      "topPositiveTitle": "US Existing-Home Sales Edged Up Ahead of Mortgage-Rate Shock",
+      "topNegativeTitle": "BOE Hawk Pill Skeptical of Market Pricing Four UK Rate Hikes",
+      "topPositiveTitle": "Copper Climbs to Three-Week High on Strike Threat, Fed Comments",
       "items": [
         {
-          "title": "Gold Steady as Fed Official’s Remarks Temper Rate-Hike Bets",
-          "source": "Bloomberg Markets",
+          "title": "BOE Hawk Pill Skeptical of Market Pricing Four UK Rate Hikes",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-14T00:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-13T20:42:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/boe-s-bailey-says-getting-harder-to-avoid-inflationary-impact",
           "tags": [
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Asian Stocks Bounce as Tech Rebounds From Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Thai Central Bank Signals 1% Rate Floor, Sees Eventual Hikes",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-14T02:22:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/thai-central-bank-signals-1-rate-floor-sees-eventual-hikes",
           "tags": [
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -362,12 +291,12 @@
           ]
         },
         {
-          "title": "Fed’s Williams Interview With Bloomberg News: Full Transcript",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T18:07:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/fed-s-williams-interview-with-bloomberg-news-full-transcript",
+          "title": "Copper Climbs to Three-Week High on Strike Threat, Fed Comments",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-14T04:37:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/copper-climbs-to-three-week-high-on-strike-threat-fed-comments",
           "tags": [
             "market",
             "rates",
@@ -375,12 +304,12 @@
           ]
         },
         {
-          "title": "Czech Core Inflation Quickens as Central Bank Mulls Another Hike",
+          "title": "ECB Will Probably Have to Hike Rates Again, Wunsch Says",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-13T11:25:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/czech-core-inflation-quickens-as-central-bank-mulls-another-hike",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-14T03:23:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/ecb-will-probably-have-to-hike-interest-rates-again-wunsch-says",
           "tags": [
             "market",
             "rates"
@@ -390,46 +319,70 @@
     },
     "commodity": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Aramco Headquarters Hit as Houthi Missiles Strike Saudi Arabia",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 14",
+      "topNegativeTitle": "Mercuria Agrees $250 Million Congo Copper Deal With China Miner",
+      "topPositiveTitle": "Mercuria Agrees $250 Million Congo Copper Deal With China Miner",
       "items": [
         {
-          "title": "Aramco Headquarters Hit as Houthi Missiles Strike Saudi Arabia",
+          "title": "Mercuria Agrees $250 Million Congo Copper Deal With China Miner",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-13T20:32:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/aramco-headquarters-hit-during-houthi-attacks-on-saudi-arabia",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T08:33:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/mercuria-agrees-250-million-congo-copper-deal-with-china-miner",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Singapore’s MAS Stands Pat as Easing AI Momentum Tames Inflation",
+          "title": "Italy Industry Lobby Says Energy Shock Could Wipe Out Growth",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-14T00:03:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/singapore-holds-monetary-policy-as-economy-expands-5-4-on-ai",
+          "publishedAt": "2026-10-14T08:00:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/italy-industry-lobby-says-energy-shock-could-wipe-out-growth",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 14",
+          "title": "Botswana Tapped as Southern African Hub for Dangote Refinery IPO",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-13T22:02:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/latest-oil-market-news-and-analysis-for-oct-14",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T07:54:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/botswana-tapped-as-southern-african-hub-for-dangote-refinery-ipo",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Namibia, Total Remain in Oil Development Talks as Year-End Nears",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T07:33:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/namibia-total-remain-in-oil-development-talks-as-year-end-nears",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Expects Renewal of South African Fuel-Tax Relief",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/morgan-stanley-expects-renewal-of-south-african-fuel-tax-relief",
           "tags": [
             "commodity",
             "market"
@@ -438,16 +391,31 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 14",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 14",
+      "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 14",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-13T22:02:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-13/latest-oil-market-news-and-analysis-for-oct-14",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     }
   },
   "meta": {
@@ -458,7 +426,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
