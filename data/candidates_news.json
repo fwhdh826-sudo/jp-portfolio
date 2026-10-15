@@ -1,111 +1,61 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-16T00:40:36.475789+09:00",
-  "sourceUpdatedAt": "2026-10-15T15:34:00+00:00",
+  "updatedAt": "2026-10-16T08:50:04.496933+09:00",
+  "sourceUpdatedAt": "2026-10-15T23:37:02+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.6,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Koeda Warns Against Too Much Caution on Rate Hikes",
-      "topPositiveTitle": "BOJ’s Koeda Warns Against Too Much Caution on Rate Hikes",
+      "topNegativeTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
       "items": [
         {
-          "title": "BOJ’s Koeda Warns Against Too Much Caution on Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T01:47:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/boj-s-koeda-warns-against-overly-cautious-stance-on-rate-hikes",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": -0.38,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "CoreWeave Slides on Debt; TSMC Moves on Outlook | Stock Movers",
-      "topPositiveTitle": "S&P 500 Bounces as Chip Drop Spurs Stock Rotation: Markets Wrap",
-      "items": [
-        {
-          "title": "CoreWeave Slides on Debt; TSMC Moves on Outlook | Stock Movers",
+          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-15T15:02:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/coreweave-slides-on-debt-tsmc-moves-on-outlook-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
+            "fx",
             "jp_semiconductor",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "S&P 500 Bounces as Chip Drop Spurs Stock Rotation: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-14T22:04:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.189,
-      "negativeCount": 5,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.12,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Bitcoin Briefly Dips Below $80,000 as Volatility Roils Markets",
-      "topPositiveTitle": "Wall Street on Alert for Treasury’s Scott Bessent to Act on Bond Yields Again",
+      "topNegativeTitle": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
       "items": [
-        {
-          "title": "Bitcoin Briefly Dips Below $80,000 as Volatility Roils Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-15T14:59:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/bitcoin-briefly-dips-below-80-000-as-volatility-roils-markets",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "There's Not Going to Be a Sharp Downturn in Jobs, Says Lakshman Achuthan",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-15T15:34:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/there-won-t-be-a-sharp-downturn-in-jobs-says-achuthan-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
           "source": "Bloomberg Economics",
@@ -120,12 +70,12 @@
           ]
         },
         {
-          "title": "Treasuries Soar as Technology Share Slump Threatens Growth",
+          "title": "Rate Volatility Might Shake Fundamentals: Tannuzzo",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-15T00:27:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/treasuries-extend-gains-as-equities-selloff-dents-risk-sentiment",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T20:43:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/rate-volatility-might-shake-fundamentals-tannuzzo-video",
           "tags": [
             "macro_risk",
             "market",
@@ -133,31 +83,91 @@
           ]
         },
         {
-          "title": "S&P 500 Bounces as Chip Drop Spurs Stock Rotation: Markets Wrap",
+          "title": "Gold Rallies as Lower Yields, AI Stock Selloff Fuel Haven Demand",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-14T22:04:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T23:33:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-holds-loss-as-hot-inflation-lifts-october-rate-hike-bets",
           "tags": [
-            "jp_semiconductor",
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Inflation Pointing for the Fed to Act: Rajappa",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-15T20:50:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/inflation-pointing-for-the-fed-to-act-rajappa-video",
+          "tags": [
+            "commodity",
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.3,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Ross Gerber on Tesla Roadster, Potential SpaceX Merger",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "items": [
+        {
+          "title": "Ross Gerber on Tesla Roadster, Potential SpaceX Merger",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T21:18:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/ross-gerber-on-tesla-roadster-potential-spacex-merger-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -172,16 +182,44 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
+      "topPositiveTitle": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
+      "items": [
+        {
+          "title": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T21:36:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/real-yield-10-15-2026-video",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Rallies as Lower Yields, AI Stock Selloff Fuel Haven Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T23:33:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-holds-loss-as-hot-inflation-lifts-october-rate-hike-bets",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -208,67 +246,39 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.122,
-      "negativeCount": 3,
+      "avgSentiment": 0.075,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Bitcoin Briefly Dips Below $80,000 as Volatility Roils Markets",
-      "topPositiveTitle": "Malaysia Central Bank Chief Signals Room to Act as Inflation Risks Rise",
+      "topNegativeTitle": "The Investment Lessons Learned from 1873",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
       "items": [
         {
-          "title": "Bitcoin Briefly Dips Below $80,000 as Volatility Roils Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-15T14:59:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/bitcoin-briefly-dips-below-80-000-as-volatility-roils-markets",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "CoreWeave Slides on Debt; TSMC Moves on Outlook | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-15T15:02:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/coreweave-slides-on-debt-tsmc-moves-on-outlook-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Soar as Technology Share Slump Threatens Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-15T00:27:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/treasuries-extend-gains-as-equities-selloff-dents-risk-sentiment",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "G7 Pledges €2.5 Billion for Fertilizers, Food as War Hits Supply",
+          "title": "The Investment Lessons Learned from 1873",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T14:52:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/g7-pledges-2-5-billion-for-fertilizers-food-as-war-hits-supply",
+          "publishedAt": "2026-10-15T21:38:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/the-investment-lessons-learned-from-1873-video",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Rate Volatility Might Shake Fundamentals: Tannuzzo",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T20:43:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/rate-volatility-might-shake-fundamentals-tannuzzo-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -284,20 +294,19 @@
             "macro_risk",
             "market"
           ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Japan’s Katayama Says G20 Should Monitor Markets With Urgency",
-      "topPositiveTitle": "Japan’s Katayama Says G20 Should Monitor Markets With Urgency",
-      "items": [
+        },
+        {
+          "title": "Draghi Sees High Bar for ECB to Help France With Crisis Tool",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T07:59:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/draghi-sees-high-bar-for-ecb-to-help-france-with-crisis-tool",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Japan’s Katayama Says G20 Should Monitor Markets With Urgency",
           "source": "Bloomberg Economics",
@@ -313,16 +322,70 @@
         }
       ]
     },
-    "rates": {
-      "avgSentiment": 0.362,
-      "negativeCount": 1,
-      "positiveCount": 5,
-      "neutralCount": 0,
+    "fx": {
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "China’s Plan to Make Yuan a Global Currency Enters Faster Phase",
+      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "items": [
+        {
+          "title": "China’s Plan to Make Yuan a Global Currency Enters Faster Phase",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/china-s-plan-to-make-yuan-a-global-currency-enters-faster-phase",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Katayama Says G20 Should Monitor Markets With Urgency",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T00:53:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/japan-s-katayama-renews-warnings-on-yen-after-us-cpi-heats-up",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "fx",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
-      "topPositiveTitle": "Municipal Bond Rally Sends Yields Down the Most Since April 2025",
+      "topPositiveTitle": "Muni Bond Rally Sends Yields Down the Most Since April 2025",
       "items": [
         {
           "title": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
@@ -338,47 +401,22 @@
           ]
         },
         {
-          "title": "Malaysia Central Bank Chief Signals Room to Act as Inflation Risks Rise",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T07:21:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/malaysia-central-bank-chief-signals-room-to-act-as-inflation-risks-rise",
+          "title": "Gold Rallies as Lower Yields, AI Stock Selloff Fuel Haven Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T23:33:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-holds-loss-as-hot-inflation-lifts-october-rate-hike-bets",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "gold",
             "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "BOJ’s Koeda Warns Against Too Much Caution on Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T01:47:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/boj-s-koeda-warns-against-overly-cautious-stance-on-rate-hikes",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Ugandan Shilling Rallies for Second Day After Jumbo Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-15T14:56:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/ugandan-shilling-rallies-for-second-day-after-jumbo-rate-hike",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Municipal Bond Rally Sends Yields Down the Most Since April 2025",
+          "title": "Muni Bond Rally Sends Yields Down the Most Since April 2025",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -392,15 +430,15 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.143,
-      "negativeCount": 2,
+      "avgSentiment": 0.222,
+      "negativeCount": 1,
       "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Bank of England Officials Divide Over Inflation Risk Facing UK",
-      "topPositiveTitle": "US Producer Prices Up Most Since 2022 as Energy Pain Worsens",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 16",
       "items": [
         {
           "title": "Bank of England Officials Divide Over Inflation Risk Facing UK",
@@ -409,18 +447,6 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-10-15T09:26:41+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-15/bank-of-england-officials-divide-over-inflation-risk-facing-uk",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 15",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-14T22:02:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/latest-oil-market-news-and-analysis-for-oct-15",
           "tags": [
             "commodity",
             "market"
@@ -453,72 +479,43 @@
           ]
         },
         {
-          "title": "Malaysia Central Bank Chief Signals Room to Act as Inflation Risks Rise",
+          "title": "Inflation Pointing for the Fed to Act: Rajappa",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-15T20:50:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-15/inflation-pointing-for-the-fed-to-act-rajappa-video",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Producer Prices Up Most Since 2022 as Energy Pain Worsens",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T07:21:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/malaysia-central-bank-chief-signals-room-to-act-as-inflation-risks-rise",
+          "publishedAt": "2026-10-15T12:31:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/us-producer-prices-rise-by-most-in-more-than-four-years",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.017,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "CoreWeave Slides on Debt; TSMC Moves on Outlook | Stock Movers",
-      "topPositiveTitle": "Malaysia Central Bank Chief Signals Room to Act as Inflation Risks Rise",
+      "topNegativeTitle": "IMF Says Africa Showing Resilience but More Vulnerable to Shocks",
+      "topPositiveTitle": "IMF Says Africa Showing Resilience but More Vulnerable to Shocks",
       "items": [
-        {
-          "title": "CoreWeave Slides on Debt; TSMC Moves on Outlook | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-15T15:02:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/coreweave-slides-on-debt-tsmc-moves-on-outlook-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "2026 Bloomberg New Economy Forum Highlights",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T15:14:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/2026-bloomberg-new-economy-forum-highlights-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "G7 Pledges €2.5 Billion for Fertilizers, Food as War Hits Supply",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T14:52:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/g7-pledges-2-5-billion-for-fertilizers-food-as-war-hits-supply",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "IMF Says Africa Showing Resilience but More Vulnerable to Shocks",
           "source": "Bloomberg Economics",
@@ -556,7 +553,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
