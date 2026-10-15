@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-15T09:04:51.721508+09:00",
-  "sourceUpdatedAt": "2026-10-14T23:33:01+00:00",
+  "updatedAt": "2026-10-15T10:37:55.315124+09:00",
+  "sourceUpdatedAt": "2026-10-15T01:30:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,23 +17,36 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
+      "avgSentiment": -0.21,
+      "negativeCount": 2,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
+      "topNegativeTitle": "SK Hynix’s 57% Drop From Peak Shows Rapid Unwind of AI Excesses",
       "topPositiveTitle": "TSMC Results Face High Bar to Calm Global AI Stock Trade Jitters",
       "items": [
         {
-          "title": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
+          "title": "SK Hynix’s 57% Drop From Peak Shows Rapid Unwind of AI Excesses",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-15T00:08:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/chip-stocks-deepen-losses-as-concerns-mount-over-rates-ai-debt",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Stock Selloff Extends to Asia as Chip Rout Deepens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-14T22:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
@@ -71,28 +84,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.378,
-      "negativeCount": 8,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "avgSentiment": -0.111,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 13,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Bitcoin Slides as Wall Street Risk Pullback Tests Bullish Turn",
-      "topPositiveTitle": "US CPI Report September 2026: Live News on Inflation, Consumer Price Index",
+      "topNegativeTitle": "Fed Rate Hike Would Probably Be 'Stupid' Now, JPMorgan's Kelly Says",
+      "topPositiveTitle": "Treasuries Extend Gains as Equities Selloff Dents Risk Sentiment",
       "items": [
-        {
-          "title": "Bitcoin Slides as Wall Street Risk Pullback Tests Bullish Turn",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-14T18:19:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/bitcoin-hits-lower-end-of-trading-range-as-risk-appetite-wanes",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Fed Rate Hike Would Probably Be 'Stupid' Now, JPMorgan's Kelly Says",
           "source": "Bloomberg Economics",
@@ -107,31 +108,17 @@
           ]
         },
         {
-          "title": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
+          "title": "Stock Selloff Extends to Asia as Chip Rout Deepens: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-14T22:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks to Fall as Hot CPI Sparks US Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-14T22:04:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
             "us_broad"
           ]
         },
@@ -146,6 +133,30 @@
             "gold",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US CPI Report September 2026: Live News on Inflation, Consumer Price Index",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T11:39:22+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-10-14/us-cpi-for-september-live-updates",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "China’s Backdoor Bond-Buying Talk Swirls on $600 Billion Buildup",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/china-s-backdoor-bond-buying-talk-swirls-on-600-billion-buildup",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
@@ -216,15 +227,15 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Gold Holds Loss as Hot Inflation Lifts October Rate-Hike Bets",
-      "topPositiveTitle": "Gold Holds Loss as Hot Inflation Lifts October Rate-Hike Bets",
+      "topPositiveTitle": "Bolivia Revamps Gold Export Rules to Attract More Dollars",
       "items": [
         {
           "title": "Gold Holds Loss as Hot Inflation Lifts October Rate-Hike Bets",
@@ -241,17 +252,16 @@
           ]
         },
         {
-          "title": "Gold Slumps as Faster US Inflation Stokes Fed Rate Hike Wagers",
+          "title": "Bolivia Revamps Gold Export Rules to Attract More Dollars",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-14T00:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-steady-as-fed-official-s-remarks-temper-rate-hike-bets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T00:21:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/bolivia-revamps-gold-export-rules-in-bid-to-attract-dollars",
           "tags": [
+            "fx",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
@@ -295,42 +305,41 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.167,
+      "avgSentiment": -0.085,
       "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
-      "topPositiveTitle": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
+      "topNegativeTitle": "SK Hynix’s 57% Drop From Peak Shows Rapid Unwind of AI Excesses",
+      "topPositiveTitle": "Treasuries Extend Gains as Equities Selloff Dents Risk Sentiment",
       "items": [
         {
-          "title": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
+          "title": "SK Hynix’s 57% Drop From Peak Shows Rapid Unwind of AI Excesses",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-15T00:08:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/chip-stocks-deepen-losses-as-concerns-mount-over-rates-ai-debt",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Stock Selloff Extends to Asia as Chip Rout Deepens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-14T22:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
             "market",
             "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks to Fall as Hot CPI Sparks US Selloff: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-14T22:04:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
             "us_broad"
           ]
         },
@@ -349,31 +358,30 @@
           ]
         },
         {
-          "title": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
+          "title": "Treasuries Extend Gains as Equities Selloff Dents Risk Sentiment",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-14T20:54:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-14/oil-gains-as-middle-east-russia-risks-imperil-flows-video",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-10-15T00:27:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/treasuries-extend-gains-as-equities-selloff-dents-risk-sentiment",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.423,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Shilling World’s Best Performer After Uganda’s Big Rate Hike",
-      "topPositiveTitle": "Argentina Eyes Tapping China Swap to Cover 2027 Financing Needs",
+      "topPositiveTitle": "Japan’s Katayama Renews FX Warnings After US CPI Heats Up",
       "items": [
         {
           "title": "Shilling World’s Best Performer After Uganda’s Big Rate Hike",
@@ -389,17 +397,16 @@
           ]
         },
         {
-          "title": "Asian Stocks to Fall as Hot CPI Sparks US Selloff: Markets Wrap",
+          "title": "Bolivia Revamps Gold Export Rules to Attract More Dollars",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-14T22:04:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T00:21:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/bolivia-revamps-gold-export-rules-in-bid-to-attract-dollars",
           "tags": [
             "fx",
-            "macro_risk",
-            "market",
-            "us_broad"
+            "gold",
+            "market"
           ]
         },
         {
@@ -413,16 +420,29 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "Japan’s Katayama Renews FX Warnings After US CPI Heats Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-15T00:53:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/japan-s-katayama-renews-warnings-on-yen-after-us-cpi-heats-up",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.416,
-      "negativeCount": 6,
+      "avgSentiment": -0.406,
+      "negativeCount": 5,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Fed Rate Hike Would Probably Be 'Stupid' Now, JPMorgan's Kelly Says",
       "topPositiveTitle": "ECB’s Simkus Says Inflation Pressures Point to More Tightening",
@@ -441,18 +461,15 @@
           ]
         },
         {
-          "title": "Stocks Fall on Inflation Woes as Chip Rout Deepens: Markets Wrap",
+          "title": "Australia’s Higher Unemployment Prompts Paring of Rate Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-13T22:03:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-13/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-15T00:34:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/australian-unemployment-rate-was-4-7-in-september-on-job-losses",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -469,6 +486,21 @@
           ]
         },
         {
+          "title": "Stock Selloff Extends to Asia as Chip Rout Deepens: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-14T22:04:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Gold Holds Loss as Hot Inflation Lifts October Rate-Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
@@ -481,32 +513,19 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Top Forecaster Says Fed May Hike Rates Half a Point in December",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-14T22:35:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-14/top-forecaster-says-fed-may-hike-rates-half-a-point-in-december",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.186,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Fed Beige Book Shows Intensifying Price Growth in Some Areas",
-      "topPositiveTitle": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 15",
       "items": [
         {
           "title": "Fed Beige Book Shows Intensifying Price Growth in Some Areas",
@@ -559,40 +578,26 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-14T20:54:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-14/oil-gains-as-middle-east-russia-risks-imperil-flows-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.315,
+      "avgSentiment": 0.22,
       "negativeCount": 0,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "北海道新聞記者の拘束受けて状況などの確認急ぐ 日本政府",
-      "topPositiveTitle": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 15",
       "items": [
         {
           "title": "北海道新聞記者の拘束受けて状況などの確認急ぐ 日本政府",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-14T19:52:09+00:00",
+          "publishedAt": "2026-10-15T01:17:43+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261015de59523",
           "tags": [
             "geopolitical",
@@ -624,20 +629,6 @@
           "tags": [
             "geopolitical",
             "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Gains as Middle East, Russia Hostilities Imperil Flows",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-14T20:54:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-14/oil-gains-as-middle-east-russia-risks-imperil-flows-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
