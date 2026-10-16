@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-16T08:50:04.496933+09:00",
-  "sourceUpdatedAt": "2026-10-15T23:37:02+00:00",
+  "updatedAt": "2026-10-16T10:33:21.335083+09:00",
+  "sourceUpdatedAt": "2026-10-16T01:25:02+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,44 +17,43 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.6,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topNegativeTitle": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
       "items": [
         {
-          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+          "title": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-15T22:04:06+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
+            "commodity",
             "jp_semiconductor",
             "macro_risk",
             "market",
-            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.12,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topPositiveTitle": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
       "items": [
         {
           "title": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
@@ -70,15 +69,17 @@
           ]
         },
         {
-          "title": "Rate Volatility Might Shake Fundamentals: Tannuzzo",
+          "title": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T20:43:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/rate-volatility-might-shake-fundamentals-tannuzzo-video",
+          "publishedAt": "2026-10-15T23:51:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
           "tags": [
+            "gold",
             "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
@@ -96,49 +97,32 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Inflation Pointing for the Fed to Act: Rajappa",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T20:50:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/inflation-pointing-for-the-fed-to-act-rajappa-video",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-15T22:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.3,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Ross Gerber on Tesla Roadster, Potential SpaceX Merger",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topNegativeTitle": "Brazil Judge Orders Meta to Treat Runoff Candidates Equally",
+      "topPositiveTitle": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
       "items": [
+        {
+          "title": "Brazil Judge Orders Meta to Treat Runoff Candidates Equally",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T23:54:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/brazil-judge-orders-meta-to-treat-runoff-candidates-equally",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Ross Gerber on Tesla Roadster, Potential SpaceX Merger",
           "source": "Bloomberg Markets",
@@ -152,18 +136,17 @@
           ]
         },
         {
-          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+          "title": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.6,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-15T22:04:06+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
+            "commodity",
             "jp_semiconductor",
             "macro_risk",
             "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -185,13 +168,28 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
-      "topPositiveTitle": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
+      "topNegativeTitle": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
+      "topPositiveTitle": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
       "items": [
+        {
+          "title": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T23:51:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Hot US Inflation, Treasury Safe Haven, CoreWeave's Credit Risk",
           "source": "Bloomberg Markets",
@@ -246,16 +244,31 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.075,
+      "avgSentiment": 0.047,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 7,
+      "neutralCount": 6,
       "sourceCount": 3,
-      "itemCount": 8,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "The Investment Lessons Learned from 1873",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topNegativeTitle": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
+      "topPositiveTitle": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T23:51:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "The Investment Lessons Learned from 1873",
           "source": "Bloomberg Markets",
@@ -266,19 +279,6 @@
           "tags": [
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Rate Volatility Might Shake Fundamentals: Tannuzzo",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T20:43:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/rate-volatility-might-shake-fundamentals-tannuzzo-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -296,18 +296,6 @@
           ]
         },
         {
-          "title": "Draghi Sees High Bar for ECB to Help France With Crisis Tool",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T07:59:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/draghi-sees-high-bar-for-ecb-to-help-france-with-crisis-tool",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Japan’s Katayama Says G20 Should Monitor Markets With Urgency",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -319,19 +307,34 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Gold Rallies as Lower Yields, AI Stock Selloff Fuel Haven Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-14T23:33:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-14/gold-holds-loss-as-hot-inflation-lifts-october-rate-hike-bets",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "China’s Plan to Make Yuan a Global Currency Enters Faster Phase",
-      "topPositiveTitle": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
+      "topPositiveTitle": "China’s Plan to Make Yuan a Global Currency Enters Faster Phase",
       "items": [
         {
           "title": "China’s Plan to Make Yuan a Global Currency Enters Faster Phase",
@@ -357,35 +360,19 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Asian Stocks Set for Gains as Tech Selloff Eases: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-15T22:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.113,
+      "avgSentiment": -0.11,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
-      "topPositiveTitle": "Muni Bond Rally Sends Yields Down the Most Since April 2025",
+      "topPositiveTitle": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
       "items": [
         {
           "title": "Warsh Takes IMF Stage as Hot Inflation Spurs Rate Hike Bets",
@@ -395,6 +382,21 @@
           "publishedAt": "2026-10-15T11:00:02+00:00",
           "url": "https://www.bloomberg.com/news/newsletters/2026-10-15/warsh-takes-imf-stage-as-hot-inflation-spurs-rate-hike-bets",
           "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Gain With Haven Demand and Lower Yields in Focus",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-15T23:51:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
+          "tags": [
+            "gold",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -413,18 +415,6 @@
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Muni Bond Rally Sends Yields Down the Most Since April 2025",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-15T14:54:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/municipal-bond-rally-sends-yields-down-the-most-since-april-2025",
-          "tags": [
-            "market",
-            "rates"
           ]
         }
       ]
@@ -479,16 +469,18 @@
           ]
         },
         {
-          "title": "Inflation Pointing for the Fed to Act: Rajappa",
+          "title": "Asian Stocks Rise as Chip Selloff Eases, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T20:50:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-15/inflation-pointing-for-the-fed-to-act-rajappa-video",
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "jp_semiconductor",
+            "macro_risk",
             "market",
-            "us_broad"
+            "us_growth"
           ]
         },
         {
