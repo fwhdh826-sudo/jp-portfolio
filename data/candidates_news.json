@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-16T17:22:43.012793+09:00",
-  "sourceUpdatedAt": "2026-10-16T08:16:39+00:00",
+  "updatedAt": "2026-10-17T00:25:46.157302+09:00",
+  "sourceUpdatedAt": "2026-10-16T15:17:57+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "IMF Sees One More BOJ Hike Toward Neutral, Urges Flexibility",
-      "topPositiveTitle": "IMF Sees One More BOJ Hike Toward Neutral, Urges Flexibility",
+      "topPositiveTitle": "BOJ’s Ueda ‘Can’t Tolerate’ Underlying Inflation Further Over 2%",
       "items": [
         {
           "title": "IMF Sees One More BOJ Hike Toward Neutral, Urges Flexibility",
@@ -27,32 +27,126 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "BOJ’s Ueda ‘Can’t Tolerate’ Underlying Inflation Further Over 2%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T12:22:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/boj-s-ueda-can-t-tolerate-underlying-inflation-further-over-2",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.335,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
+      "topPositiveTitle": "US Factory Production Rebounds on Semiconductors, Supplies",
+      "items": [
+        {
+          "title": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Factory Production Rebounds on Semiconductors, Supplies",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-16T13:19:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/us-factory-output-increased-0-3-in-september-fed-data-show",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": 0.141,
-      "negativeCount": 0,
-      "positiveCount": 3,
+      "avgSentiment": 0.107,
+      "negativeCount": 1,
+      "positiveCount": 4,
       "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
-      "topPositiveTitle": "Jupiter’s Richards Shuns Treasuries as High Yields Lure Rivals",
+      "topNegativeTitle": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
+      "topPositiveTitle": "Fed Divisions and AI Debt Risks Shape Rate Outlook",
       "items": [
+        {
+          "title": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Euro Poised to Halt Five-Week Losing Run After Warsh Remarks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-16T09:37:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/euro-set-to-end-five-week-losing-run-as-warsh-remarks-hit-dollar",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Steady as Warsh Boosts Expectations of Rate Hold",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T14:01:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Job to Get Tougher as Oil Shock Filters Through Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/energy-shock-filtering-through-us-economy-complicates-fed-s-job",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
           "source": "Bloomberg Economics",
@@ -65,79 +159,43 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Warsh Announces Productivity, Jobs Task Force Hearing",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:05:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/fed-s-warsh-says-announces-productivity-jobs-task-force-hearing",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Live: Fed Chief Kevin Warsh Speaks at IMF After Hotter US Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T01:50:55+00:00",
-          "url": "https://www.bloomberg.com/news/live-blog/2026-10-16/imf-world-bank-annual-meetings-bangkok-fed-warsh-bailey",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steady After Warsh Remarks Lower October Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T23:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Jupiter’s Richards Shuns Treasuries as High Yields Lure Rivals",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-16T06:36:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/jupiter-s-richards-shuns-treasuries-as-high-yields-lure-rivals",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Malaysia’s Growth Tops Forecasts as AI Boom Drives Export Surge",
-      "topPositiveTitle": "Malaysia’s Growth Tops Forecasts as AI Boom Drives Export Surge",
+      "topNegativeTitle": "S&P 500 Steady as Warsh Boosts Expectations of Rate Hold",
+      "topPositiveTitle": "S&P 500 Steady as Warsh Boosts Expectations of Rate Hold",
       "items": [
         {
-          "title": "Malaysia’s Growth Tops Forecasts as AI Boom Drives Export Surge",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-16T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/malaysia-s-growth-tops-forecasts-as-ai-boom-drives-export-surge",
+          "title": "S&P 500 Steady as Warsh Boosts Expectations of Rate Hold",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T14:01:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
           "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Key Takeaways From Financial Elite’s Big Gathering in Bangkok",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T10:45:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/key-takeaways-from-financial-elite-s-big-gathering-in-bangkok",
+          "tags": [
+            "commodity",
             "market",
             "us_growth"
           ]
@@ -145,82 +203,43 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Why Indonesia Risks Being Removed From MSCI’s Global Indexes",
-      "topPositiveTitle": "Why Indonesia Risks Being Removed From MSCI’s Global Indexes",
+      "topNegativeTitle": "Treasuries Stall as Global Stocks Recovery Clips Haven Rally",
+      "topPositiveTitle": "Treasuries Stall as Global Stocks Recovery Clips Haven Rally",
       "items": [
         {
-          "title": "Why Indonesia Risks Being Removed From MSCI’s Global Indexes",
+          "title": "Treasuries Stall as Global Stocks Recovery Clips Haven Rally",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T07:07:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/why-indonesia-risks-being-removed-from-msci-s-global-indexes",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-16T09:10:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/treasuries-slide-as-global-stocks-recovery-clips-haven-rally",
           "tags": [
             "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Yemen Says Houthis Hit Presidential Palace, EU-Gulf Summit in Saudi Arabia Postponed",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T06:53:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-16/horizons-middle-east-africa-10-16-2026-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Asset Managers Curb Inflows Into Gold ETFs on Weak India Rupee",
-      "topPositiveTitle": "Gold Steady After Warsh Remarks Lower October Rate-Hike Bets",
-      "items": [
-        {
-          "title": "Asset Managers Curb Inflows Into Gold ETFs on Weak India Rupee",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-16T07:56:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/asset-managers-curb-inflows-into-gold-etfs-on-weak-india-rupee",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "trust"
-          ]
-        },
-        {
-          "title": "Gold Steady After Warsh Remarks Lower October Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T23:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
-          "tags": [
-            "gold",
             "market",
             "rates",
             "us_broad"
           ]
         }
       ]
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -235,75 +254,50 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China Moves to Prop Up Stocks With Selling Curbs, Buybacks",
-      "topPositiveTitle": "China Moves to Prop Up Stocks With Selling Curbs, Buybacks",
-      "items": [
-        {
-          "title": "China Moves to Prop Up Stocks With Selling Curbs, Buybacks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T07:22:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/china-moves-to-prop-up-stock-market-with-selling-curbs-buybacks",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        },
-        {
-          "title": "75歳以上の保険料などに金融所得反映 2029年8月開始へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T06:25:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261016de60405",
-          "tags": [
-            "dividend",
-            "market"
-          ],
-          "titleJa": "75歳以上の保険料などに金融所得反映 2029年8月開始へ"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.055,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Odd Lots: French Politics Are Leading to a Debt Crisis (Podcast)",
-      "topPositiveTitle": "German Power Supplier Exits Raise Specter of 2022 Energy Crisis",
+      "topNegativeTitle": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
+      "topPositiveTitle": "Why Tech’s AI Borrowing Binge Is Rattling Markets",
       "items": [
         {
-          "title": "Odd Lots: French Politics Are Leading to a Debt Crisis (Podcast)",
+          "title": "Chip Stocks Set for Longest Losing Run Since 2008: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-16T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-16/odd-lots-french-politics-are-leading-to-a-debt-crisis-podcast",
+          "publishedAt": "2026-10-15T22:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "German Power Supplier Exits Raise Specter of 2022 Energy Crisis",
+          "title": "Brasil: euforia por Flávio Bolsonaro oculta crisis de deuda",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T07:31:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/german-power-supplier-exits-raise-specter-of-2022-energy-crisis",
+          "publishedAt": "2026-10-16T14:53:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/brasil-euforia-por-flavio-bolsonaro-oculta-crisis-de-deuda-mvb38nf8",
           "tags": [
-            "commodity",
             "macro_risk",
             "market"
           ]
@@ -350,43 +344,54 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
+      "avgSentiment": -0.2,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Asset Managers Curb Inflows Into Gold ETFs on Weak India Rupee",
-      "topPositiveTitle": "Asset Managers Curb Inflows Into Gold ETFs on Weak India Rupee",
+      "topNegativeTitle": "Euro Poised to Halt Five-Week Losing Run After Warsh Remarks",
+      "topPositiveTitle": "Euro Poised to Halt Five-Week Losing Run After Warsh Remarks",
       "items": [
         {
-          "title": "Asset Managers Curb Inflows Into Gold ETFs on Weak India Rupee",
+          "title": "Euro Poised to Halt Five-Week Losing Run After Warsh Remarks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-16T07:56:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/asset-managers-curb-inflows-into-gold-etfs-on-weak-india-rupee",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-16T09:37:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/euro-set-to-end-five-week-losing-run-as-warsh-remarks-hit-dollar",
           "tags": [
             "fx",
-            "gold",
             "market",
-            "trust"
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "IMF Sees One More BOJ Hike Toward Neutral, Urges Flexibility",
-      "topPositiveTitle": "Jupiter’s Richards Shuns Treasuries as High Yields Lure Rivals",
+      "topNegativeTitle": "Investors Prepare for Data Dump That Will Determine Canada Rate Path",
+      "topPositiveTitle": "The Case for Mamdani-Style Populism",
       "items": [
+        {
+          "title": "Investors Prepare for Data Dump That Will Determine Canada Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-16T14:00:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/investors-prepare-for-data-dump-that-will-determine-canada-rate-path",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "IMF Sees One More BOJ Hike Toward Neutral, Urges Flexibility",
           "source": "Bloomberg Economics",
@@ -401,81 +406,93 @@
           ]
         },
         {
-          "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
+          "title": "S&P 500 Steady as Warsh Boosts Expectations of Rate Hold",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T14:01:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "BOJ’s Ueda ‘Can’t Tolerate’ Underlying Inflation Further Over 2%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T12:22:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/boj-s-ueda-can-t-tolerate-underlying-inflation-further-over-2",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Absent Bessent Can’t Keep Spotlight Off US at IMF",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:57:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/warsh-boosts-market-expectations-of-fed-hold-in-october",
+          "publishedAt": "2026-10-16T11:08:54+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-16/absent-bessent-can-t-keep-spotlight-off-us-at-imf",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Steady After Warsh Remarks Lower October Rate-Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T23:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Jupiter’s Richards Shuns Treasuries as High Yields Lure Rivals",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-16T06:36:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/jupiter-s-richards-shuns-treasuries-as-high-yields-lure-rivals",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.066,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "German Power Supplier Exits Raise Specter of 2022 Energy Crisis",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 16",
+      "topNegativeTitle": "Alberta Separatists Promise Oil Riches But Voters Are Skeptical",
+      "topPositiveTitle": "Exxon Signals Record Refining Earnings as Diesel Prices Soar",
       "items": [
         {
-          "title": "German Power Supplier Exits Raise Specter of 2022 Energy Crisis",
-          "source": "Bloomberg Markets",
+          "title": "Alberta Separatists Promise Oil Riches But Voters Are Skeptical",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T07:31:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/german-power-supplier-exits-raise-specter-of-2022-energy-crisis",
+          "publishedAt": "2026-10-16T14:00:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/alberta-separatists-promise-oil-riches-but-voters-are-skeptical",
           "tags": [
             "commodity",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Ship-Fuel Crunch to Persist Despite More Oil, Vitol Says",
-          "source": "Bloomberg Markets",
+          "title": "Key Takeaways From Financial Elite’s Big Gathering in Bangkok",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T05:10:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/ship-fuel-squeeze-persists-despite-more-hormuz-crude-vitol-says",
+          "publishedAt": "2026-10-16T10:45:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/key-takeaways-from-financial-elite-s-big-gathering-in-bangkok",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Job to Get Tougher as Oil Shock Filters Through Economy",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-16T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/energy-shock-filtering-through-us-economy-complicates-fed-s-job",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
           ]
         },
         {
@@ -493,30 +510,43 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 16",
+          "title": "Exxon Signals Record Refining Earnings as Diesel Prices Soar",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-15T22:03:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/latest-oil-market-news-and-analysis-for-oct-16",
+          "publishedAt": "2026-10-16T12:17:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/exxon-signals-knockout-refining-earnings-as-diesel-prices-soar",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
-      "topPositiveTitle": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
+      "topNegativeTitle": "Russian Fuel Flows Fell in Early October Before Diesel Ban Eased",
+      "topPositiveTitle": "Exxon Signals Record Refining Earnings as Diesel Prices Soar",
       "items": [
+        {
+          "title": "Russian Fuel Flows Fell in Early October Before Diesel Ban Eased",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-16T13:27:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/russian-fuel-flows-fell-in-early-october-before-diesel-ban-eased",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
           "source": "Bloomberg Economics",
@@ -541,6 +571,19 @@
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Exxon Signals Record Refining Earnings as Diesel Prices Soar",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-16T12:17:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/exxon-signals-knockout-refining-earnings-as-diesel-prices-soar",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         }
