@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-17T10:24:06.649654+09:00",
-  "sourceUpdatedAt": "2026-10-17T00:11:36+00:00",
+  "updatedAt": "2026-10-17T23:18:47.582509+09:00",
+  "sourceUpdatedAt": "2026-10-17T14:03:47+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,92 +17,36 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Chip Stocks Post Longest Losing Streak Since 2008: Markets Wrap",
-      "topPositiveTitle": "US Factory Production Rebounds on Semiconductors, Supplies",
-      "items": [
-        {
-          "title": "Chip Stocks Post Longest Losing Streak Since 2008: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T22:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Factory Production Rebounds on Semiconductors, Supplies",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-16T13:19:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/us-factory-output-increased-0-3-in-september-fed-data-show",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.069,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 5,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
+      "topNegativeTitle": "Can the Fed Fight Inflation Without Hurting Farmers?",
       "topPositiveTitle": "Foreign Holdings of US Treasuries Rise From Almost One-Year Low",
       "items": [
         {
-          "title": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-16T14:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Bonds Fall as Treasury Is Silent on Long End, Oil Climbs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-10-16T16:31:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/long-term-treasuries-fall-as-dealer-survey-offers-little-signal",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Anxiety Spreads as AI Rout Meets $110 Oil Shock",
+          "title": "Can the Fed Fight Inflation Without Hurting Farmers?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T20:31:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/wall-street-anxiety-spreads-as-ai-rout-meets-110-oil-shock",
+          "publishedAt": "2026-10-17T14:03:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/can-the-fed-fight-inflation-without-hurting-farmers-video",
           "tags": [
-            "commodity",
             "market",
             "us_broad"
           ]
@@ -121,70 +65,63 @@
           ]
         },
         {
-          "title": "Euro Snaps Five-Week Losing Streak With Warsh Remarks",
-          "source": "Bloomberg Markets",
+          "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T09:37:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/euro-set-to-end-five-week-losing-run-as-warsh-remarks-hit-dollar",
+          "publishedAt": "2026-10-16T04:57:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/warsh-boosts-market-expectations-of-fed-hold-in-october",
           "tags": [
-            "fx",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Profit Boom Drives Surge in New York Tax Collections",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-16T17:47:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/wall-street-profit-boom-drives-surge-in-new-york-tax-collections",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Foreign Holdings of US Treasuries Rise From Almost One-Year Low",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-16T20:37:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/foreign-holdings-of-us-treasuries-rise-from-almost-one-year-low",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.333,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
-      "topPositiveTitle": "Key Takeaways From Financial Elite’s Big Gathering in Bangkok",
+      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
+      "topPositiveTitle": "By The Way: Headlines You May Have Missed",
       "items": [
         {
-          "title": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
+          "title": "By The Way: Headlines You May Have Missed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-16T14:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-17T12:51:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/by-the-way-headlines-you-may-have-missed-video",
           "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Key Takeaways From Financial Elite’s Big Gathering in Bangkok",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T10:45:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/key-takeaways-from-financial-elite-s-big-gathering-in-bangkok",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Chip Stocks Post Longest Losing Streak Since 2008: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T22:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -204,57 +141,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steady as Rate-Hike Bets Ease, Oil Pushes Yields Higher",
-      "topPositiveTitle": "Gold Steady as Rate-Hike Bets Ease, Oil Pushes Yields Higher",
-      "items": [
-        {
-          "title": "Gold Steady as Rate-Hike Bets Ease, Oil Pushes Yields Higher",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-15T23:51:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/gold-holds-gains-with-haven-demand-and-lower-yields-in-focus",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Compass Sues California Home Listing Service Over Rules",
-      "topPositiveTitle": "Compass Sues California Home Listing Service Over Rules",
-      "items": [
-        {
-          "title": "Compass Sues California Home Listing Service Over Rules",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T19:05:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/compass-files-suit-over-california-home-listing-service-rules",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "reit": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -269,187 +177,53 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.2,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
-      "topPositiveTitle": "Big US Bank Stocks Log Worst Weekly Losing Streak Since 2008",
+      "topNegativeTitle": "David Byrne Explains How Forgotten Ideas Come Back to Life",
+      "topPositiveTitle": "David Byrne Explains How Forgotten Ideas Come Back to Life",
       "items": [
         {
-          "title": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
+          "title": "David Byrne Explains How Forgotten Ideas Come Back to Life",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-16T14:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Big US Bank Stocks Log Worst Weekly Losing Streak Since 2008",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T17:13:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/big-us-bank-shares-set-for-worst-weekly-losing-streak-since-2008",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-17T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-17/david-byrne-explains-how-forgotten-ideas-come-back-to-life",
           "tags": [
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:57:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/kganyago-says-rand-resilience-cushioning-south-africa-from-shock",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Heinz Solar Panels Power Telford Factory as Iran War Hits Oil",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/heinz-solar-panels-power-telford-factory-as-iran-war-hits-oil",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chip Stocks Post Longest Losing Streak Since 2008: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-15T22:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-15/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Euro Snaps Five-Week Losing Streak With Warsh Remarks",
-      "topPositiveTitle": "Dollar Has Worst Week in Month With Warsh Quiet on Rate Path",
-      "items": [
-        {
-          "title": "Euro Snaps Five-Week Losing Streak With Warsh Remarks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T09:37:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/euro-set-to-end-five-week-losing-run-as-warsh-remarks-hit-dollar",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Dollar Has Worst Week in Month With Warsh Quiet on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-16T16:24:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/dollar-heads-for-worst-week-in-over-a-month-as-warsh-stays-quiet",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "American Dream Running Past Us: Freedman",
-      "topPositiveTitle": "Gold Steady as Rate-Hike Bets Ease, Oil Pushes Yields Higher",
+      "topNegativeTitle": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
+      "topPositiveTitle": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
       "items": [
-        {
-          "title": "American Dream Running Past Us: Freedman",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T19:41:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-16/american-dream-running-past-us-freedman-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Absent Bessent Can’t Keep Spotlight Off US at IMF",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T11:08:54+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-16/absent-bessent-can-t-keep-spotlight-off-us-at-imf",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Euro Snaps Five-Week Losing Streak With Warsh Remarks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T09:37:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/euro-set-to-end-five-week-losing-run-as-warsh-remarks-hit-dollar",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Indonesia Rate-Hike Bets Grow as MSCI Alarm Pressures Rupiah",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T09:28:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/indonesia-rate-hike-bets-grow-as-msci-alarm-pressures-rupiah",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
           "source": "Bloomberg Economics",
@@ -466,75 +240,47 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.058,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 9,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
-      "topPositiveTitle": "Gold Steady as Rate-Hike Bets Ease, Oil Pushes Yields Higher",
+      "topNegativeTitle": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
+      "topPositiveTitle": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
       "items": [
         {
-          "title": "S&P 500 Suffers Worst Week Since June as AI Fears Hit Chipmakers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-16T14:01:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/s-p-500-steady-as-warsh-boosts-expectations-of-rate-hold",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Bonds Fall as Treasury Is Silent on Long End, Oil Climbs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": -0.14,
-          "publishedAt": "2026-10-16T16:31:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/long-term-treasuries-fall-as-dealer-survey-offers-little-signal",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Graza CEO on Market Expansion, Consumer Outlook",
-          "source": "Bloomberg Markets",
+          "title": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T22:02:25+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-16/graza-ceo-on-market-expansion-consumer-outlook-video",
+          "publishedAt": "2026-10-17T13:01:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-17/bank-of-canada-sees-higher-oil-prices-boosting-growth-inflation",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "TGI Fridays CEO on Company Turnaround, Expansion Plans",
+          "title": "Oil Trader Yaoyao Liu Who Made Billions for Vitol Is Leaving",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T21:56:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-16/tgi-fridays-ceo-on-company-turnaround-expansion-plans-video",
+          "publishedAt": "2026-10-17T10:31:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-17/oil-trader-yaoyao-liu-who-made-billions-for-vitol-is-leaving",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Wall Street Anxiety Spreads as AI Rout Meets $110 Oil Shock",
-          "source": "Bloomberg Markets",
+          "title": "Fed’s Job to Get Tougher as Oil Shock Filters Through Economy",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T20:31:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/wall-street-anxiety-spreads-as-ai-rout-meets-110-oil-shock",
+          "publishedAt": "2026-10-16T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-16/energy-shock-filtering-through-us-economy-complicates-fed-s-job",
           "tags": [
             "commodity",
             "market",
@@ -544,40 +290,49 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
-      "topPositiveTitle": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
+      "topNegativeTitle": "Freeland Warns US Alliances Are Fraying",
+      "topPositiveTitle": "Global Aid Cuts Deepen Humanitarian Strain",
       "items": [
         {
-          "title": "Kganyago Says Rand Helping Cushion South Africa From Shocks",
-          "source": "Bloomberg Economics",
+          "title": "Freeland Warns US Alliances Are Fraying",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:57:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/kganyago-says-rand-resilience-cushioning-south-africa-from-shock",
+          "publishedAt": "2026-10-17T13:39:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/freeland-warns-us-alliances-are-fraying-video",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Heinz Solar Panels Power Telford Factory as Iran War Hits Oil",
-          "source": "Bloomberg Economics",
+          "title": "Trump Puts New Russia Sanctions on Hold",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/heinz-solar-panels-power-telford-factory-as-iran-war-hits-oil",
+          "publishedAt": "2026-10-17T11:49:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/trump-puts-new-russia-sanctions-on-hold-video",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Global Aid Cuts Deepen Humanitarian Strain",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-17T12:44:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/global-aid-cuts-deepen-humanitarian-strain-video",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         }
@@ -592,7 +347,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
