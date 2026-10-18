@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-17T23:18:47.582509+09:00",
-  "sourceUpdatedAt": "2026-10-17T14:03:47+00:00",
+  "updatedAt": "2026-10-18T10:19:55.307511+09:00",
+  "sourceUpdatedAt": "2026-10-18T00:53:52+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,15 +29,15 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Can the Fed Fight Inflation Without Hurting Farmers?",
-      "topPositiveTitle": "Foreign Holdings of US Treasuries Rise From Almost One-Year Low",
+      "topPositiveTitle": "Can the Fed Fight Inflation Without Hurting Farmers?",
       "items": [
         {
           "title": "Can the Fed Fight Inflation Without Hurting Farmers?",
@@ -50,69 +50,19 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Job to Get Tougher as Oil Shock Filters Through Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/energy-shock-filtering-through-us-economy-complicates-fed-s-job",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:57:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/warsh-boosts-market-expectations-of-fed-hold-in-october",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Profit Boom Drives Surge in New York Tax Collections",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-16T17:47:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/wall-street-profit-boom-drives-surge-in-new-york-tax-collections",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Foreign Holdings of US Treasuries Rise From Almost One-Year Low",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-16T20:37:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/foreign-holdings-of-us-treasuries-rise-from-almost-one-year-low",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.67,
+      "avgSentiment": -0.335,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "By The Way: Headlines You May Have Missed",
-      "topPositiveTitle": "By The Way: Headlines You May Have Missed",
+      "topPositiveTitle": "CoreWeave Woes Risk Shutting Down AI Junk Market: Credit Weekly",
       "items": [
         {
           "title": "By The Way: Headlines You May Have Missed",
@@ -121,6 +71,18 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-10-17T12:51:57+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-10-17/by-the-way-headlines-you-may-have-missed-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "CoreWeave Woes Risk Shutting Down AI Junk Market: Credit Weekly",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-17T14:27:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-17/coreweave-woes-risk-shutting-down-ai-junk-market-credit-weekly",
           "tags": [
             "market",
             "us_growth"
@@ -214,27 +176,38 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.665,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
-      "topPositiveTitle": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
+      "topNegativeTitle": "Australian Home Auctions Decline as Rate Hikes Dampen Activity",
+      "topPositiveTitle": "UK Inflation Can Seal the Deal on the BOE’s November Rate Hike",
       "items": [
         {
-          "title": "Warsh Boosts Market Expectations of Fed Rate Hold in October",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T04:57:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/warsh-boosts-market-expectations-of-fed-hold-in-october",
+          "title": "Australian Home Auctions Decline as Rate Hikes Dampen Activity",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-17T23:57:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-17/australian-home-auctions-decline-as-rate-hikes-dampen-activity",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "UK Inflation Can Seal the Deal on the BOE’s November Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-17T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-17/uk-inflation-can-seal-the-deal-on-the-boe-s-november-rate-hike",
+          "tags": [
+            "market",
+            "rates"
           ]
         }
       ]
@@ -243,15 +216,15 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
-      "topPositiveTitle": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
+      "topNegativeTitle": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
+      "topPositiveTitle": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
       "items": [
         {
-          "title": "Bank of Canada Sees Higher Oil Prices Boosting Growth, Inflation",
+          "title": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -273,33 +246,32 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Fed’s Job to Get Tougher as Oil Shock Filters Through Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-16T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-16/energy-shock-filtering-through-us-economy-complicates-fed-s-job",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Freeland Warns US Alliances Are Fraying",
+      "topNegativeTitle": "Russia Sanctions Waived, AI Debt Concerns, Making 'GTA VI'",
       "topPositiveTitle": "Global Aid Cuts Deepen Humanitarian Strain",
       "items": [
+        {
+          "title": "Russia Sanctions Waived, AI Debt Concerns, Making 'GTA VI'",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-17T16:31:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-17/bloomberg-this-weekend-10-17-2026-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "Freeland Warns US Alliances Are Fraying",
           "source": "Bloomberg Markets",
