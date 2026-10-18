@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-18T10:19:55.307511+09:00",
-  "sourceUpdatedAt": "2026-10-18T00:53:52+00:00",
+  "updatedAt": "2026-10-18T23:42:34.558432+09:00",
+  "sourceUpdatedAt": "2026-10-18T14:39:06+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -36,16 +36,16 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Can the Fed Fight Inflation Without Hurting Farmers?",
-      "topPositiveTitle": "Can the Fed Fight Inflation Without Hurting Farmers?",
+      "topNegativeTitle": "Can America Rebuild Trust With Its Allies?",
+      "topPositiveTitle": "Can America Rebuild Trust With Its Allies?",
       "items": [
         {
-          "title": "Can the Fed Fight Inflation Without Hurting Farmers?",
+          "title": "Can America Rebuild Trust With Its Allies?",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T14:03:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/can-the-fed-fight-inflation-without-hurting-farmers-video",
+          "publishedAt": "2026-10-18T14:03:47+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/can-america-rebuild-trust-with-its-allies",
           "tags": [
             "market",
             "us_broad"
@@ -54,41 +54,16 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
-      "topPositiveTitle": "CoreWeave Woes Risk Shutting Down AI Junk Market: Credit Weekly",
-      "items": [
-        {
-          "title": "By The Way: Headlines You May Have Missed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-17T12:51:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/by-the-way-headlines-you-may-have-missed-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "CoreWeave Woes Risk Shutting Down AI Junk Market: Credit Weekly",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T14:27:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-17/coreweave-woes-risk-shutting-down-ai-junk-market-credit-weekly",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -115,16 +90,29 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "America’s Downtowns Need More Than Offices",
+      "topPositiveTitle": "America’s Downtowns Need More Than Offices",
+      "items": [
+        {
+          "title": "America’s Downtowns Need More Than Offices",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-18T13:01:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/opinion-how-the-office-bust-could-revive-downtowns-video",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -139,24 +127,38 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "David Byrne Explains How Forgotten Ideas Come Back to Life",
-      "topPositiveTitle": "David Byrne Explains How Forgotten Ideas Come Back to Life",
+      "topNegativeTitle": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
+      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
       "items": [
         {
-          "title": "David Byrne Explains How Forgotten Ideas Come Back to Life",
+          "title": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-17T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-17/david-byrne-explains-how-forgotten-ideas-come-back-to-life",
+          "publishedAt": "2026-10-18T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/option-traders-brace-for-vix-surge-as-ai-jitters-jolt-market",
           "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why Globalization Is Getting Harder to Navigate",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T12:03:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -213,98 +215,78 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
-      "topPositiveTitle": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
+      "topNegativeTitle": "Venezuela Sees Nearly $76 Billion Oil Investment Over Five Years",
+      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
       "items": [
         {
-          "title": "Macklem Sees Higher Oil Prices Boosting Growth, Inflation",
-          "source": "Bloomberg Economics",
+          "title": "Venezuela Sees Nearly $76 Billion Oil Investment Over Five Years",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T13:01:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-17/bank-of-canada-sees-higher-oil-prices-boosting-growth-inflation",
+          "publishedAt": "2026-10-18T00:48:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/venezuela-sees-nearly-76-billion-oil-investment-over-five-years",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Oil Trader Yaoyao Liu Who Made Billions for Vitol Is Leaving",
+          "title": "Why Globalization Is Getting Harder to Navigate",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T10:31:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-17/oil-trader-yaoyao-liu-who-made-billions-for-vitol-is-leaving",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T12:03:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Russia Sanctions Waived, AI Debt Concerns, Making 'GTA VI'",
-      "topPositiveTitle": "Global Aid Cuts Deepen Humanitarian Strain",
+      "topNegativeTitle": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
+      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
       "items": [
         {
-          "title": "Russia Sanctions Waived, AI Debt Concerns, Making 'GTA VI'",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T16:31:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/bloomberg-this-weekend-10-17-2026-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Freeland Warns US Alliances Are Fraying",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T13:39:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/freeland-warns-us-alliances-are-fraying-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Puts New Russia Sanctions on Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-17T11:49:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/trump-puts-new-russia-sanctions-on-hold-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Global Aid Cuts Deepen Humanitarian Strain",
+          "title": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-17T12:44:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-17/global-aid-cuts-deepen-humanitarian-strain-video",
+          "publishedAt": "2026-10-18T14:23:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/rep-veasey-calls-for-scrutiny-of-trump-russia-ties-video",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Why Globalization Is Getting Harder to Navigate",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T12:03:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -319,7 +301,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
