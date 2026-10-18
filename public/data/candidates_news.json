@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-18T23:42:34.558432+09:00",
-  "sourceUpdatedAt": "2026-10-18T14:39:06+00:00",
+  "updatedAt": "2026-10-19T08:32:46.813316+09:00",
+  "sourceUpdatedAt": "2026-10-18T23:17:52+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,28 +17,68 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Can America Rebuild Trust With Its Allies?",
+      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "items": [
+        {
+          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T22:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.22,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
       "topPositiveTitle": "Can America Rebuild Trust With Its Allies?",
       "items": [
+        {
+          "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-18T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/cpi-test-set-to-make-or-break-new-zealand-dollar-s-losing-run",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bond Market’s Big Short Bet Gets Wakeup Call as AI Trade Wobbles",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-18T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/bond-market-s-big-short-bet-gets-wakeup-call-as-ai-trade-wobbles",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Can America Rebuild Trust With Its Allies?",
           "source": "Bloomberg Markets",
@@ -54,16 +94,31 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "items": [
+        {
+          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T22:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -127,7 +182,7 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
@@ -135,7 +190,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
-      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
+      "topPositiveTitle": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
       "items": [
         {
           "title": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
@@ -150,12 +205,12 @@
           ]
         },
         {
-          "title": "Why Globalization Is Getting Harder to Navigate",
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T12:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
           "tags": [
             "commodity",
             "geopolitical",
@@ -166,6 +221,45 @@
       ]
     },
     "fx": {
+      "avgSentiment": -0.265,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+      "topPositiveTitle": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
+      "items": [
+        {
+          "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-18T19:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/cpi-test-set-to-make-or-break-new-zealand-dollar-s-losing-run",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-18T23:17:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/euro-falls-as-russia-risk-france-protests-dent-trader-sentiment",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -177,83 +271,7 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "rates": {
-      "avgSentiment": -0.665,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Australian Home Auctions Decline as Rate Hikes Dampen Activity",
-      "topPositiveTitle": "UK Inflation Can Seal the Deal on the BOE’s November Rate Hike",
-      "items": [
-        {
-          "title": "Australian Home Auctions Decline as Rate Hikes Dampen Activity",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-17T23:57:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-17/australian-home-auctions-decline-as-rate-hikes-dampen-activity",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "UK Inflation Can Seal the Deal on the BOE’s November Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-17T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-17/uk-inflation-can-seal-the-deal-on-the-boe-s-november-rate-hike",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
     "commodity": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Venezuela Sees Nearly $76 Billion Oil Investment Over Five Years",
-      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
-      "items": [
-        {
-          "title": "Venezuela Sees Nearly $76 Billion Oil Investment Over Five Years",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-18T00:48:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/venezuela-sees-nearly-76-billion-oil-investment-over-five-years",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Why Globalization Is Getting Harder to Navigate",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T12:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
       "avgSentiment": 0.5,
       "negativeCount": 0,
       "positiveCount": 2,
@@ -261,9 +279,89 @@
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
-      "topPositiveTitle": "Why Globalization Is Getting Harder to Navigate",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T22:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.115,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "items": [
+        {
+          "title": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-10-18T23:17:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/euro-falls-as-russia-risk-france-protests-dent-trader-sentiment",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Talks with Turkey, India, Egypt Over Grain Corridor",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-18T19:08:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/ukraine-talks-with-turkey-india-egypt-over-grain-corridor",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
           "source": "Bloomberg Markets",
@@ -273,20 +371,6 @@
           "url": "https://www.bloomberg.com/news/videos/2026-10-18/rep-veasey-calls-for-scrutiny-of-trump-russia-ties-video",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Why Globalization Is Getting Harder to Navigate",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T12:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/why-globalization-is-getting-harder-to-navigate-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
