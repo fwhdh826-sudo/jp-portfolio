@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-19T08:32:46.813316+09:00",
-  "sourceUpdatedAt": "2026-10-18T23:17:52+00:00",
+  "updatedAt": "2026-10-19T10:28:50.011530+09:00",
+  "sourceUpdatedAt": "2026-10-19T01:07:48+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,16 +17,28 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topNegativeTitle": "Korean Stocks Fall as DeepSeek Model, Funding Worry Rattle Chips",
       "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
       "items": [
+        {
+          "title": "Korean Stocks Fall as DeepSeek Model, Funding Worry Rattle Chips",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-19T00:17:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/korean-stocks-fall-as-deepseek-model-funding-worry-rattle-chips",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
         {
           "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -52,7 +64,7 @@
       "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
-      "topPositiveTitle": "Can America Rebuild Trust With Its Allies?",
+      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
       "items": [
         {
           "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
@@ -80,14 +92,16 @@
           ]
         },
         {
-          "title": "Can America Rebuild Trust With Its Allies?",
+          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-18T14:03:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/can-america-rebuild-trust-with-its-allies",
+          "publishedAt": "2026-10-18T23:47:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
+            "gold",
             "market",
+            "rates",
             "us_broad"
           ]
         }
@@ -133,6 +147,33 @@
       "items": []
     },
     "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "items": [
+        {
+          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-18T23:47:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "reit": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -143,31 +184,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "reit": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "America’s Downtowns Need More Than Offices",
-      "topPositiveTitle": "America’s Downtowns Need More Than Offices",
-      "items": [
-        {
-          "title": "America’s Downtowns Need More Than Offices",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-18T13:01:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/opinion-how-the-office-bust-could-revive-downtowns-video",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -182,33 +198,21 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
-      "topPositiveTitle": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
       "items": [
-        {
-          "title": "Option Traders Brace for VIX Surge as AI Jitters Jolt Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/option-traders-brace-for-vix-surge-as-ai-jitters-jolt-market",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Latest Oil Market News and Analysis for Oct. 19",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-10-18T22:02:51+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
           "tags": [
@@ -221,15 +225,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.265,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
-      "topPositiveTitle": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
+      "topPositiveTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
       "items": [
         {
           "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
@@ -243,59 +247,47 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-18T23:17:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/euro-falls-as-russia-risk-france-protests-dent-trader-sentiment",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "items": [
+        {
+          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-18T23:47:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "commodity": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
       "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
       "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -309,11 +301,25 @@
             "market",
             "us_growth"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.115,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 2,
@@ -331,7 +337,6 @@
           "publishedAt": "2026-10-18T23:17:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/euro-falls-as-russia-risk-france-protests-dent-trader-sentiment",
           "tags": [
-            "fx",
             "geopolitical",
             "market"
           ]
@@ -349,20 +354,6 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -371,6 +362,20 @@
           "url": "https://www.bloomberg.com/news/videos/2026-10-18/rep-veasey-calls-for-scrutiny-of-trump-russia-ties-video",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -385,7 +390,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
