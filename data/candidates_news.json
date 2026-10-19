@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-19T18:10:43.867742+09:00",
-  "sourceUpdatedAt": "2026-10-19T09:09:07+00:00",
+  "updatedAt": "2026-10-20T02:37:23.842523+09:00",
+  "sourceUpdatedAt": "2026-10-19T17:12:49+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,61 +17,33 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
-      "topPositiveTitle": "Stocks Rebound From Chip Rout as Earnings Await: Markets Wrap",
-      "items": [
-        {
-          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
-          "tags": [
-            "commodity",
-            "fx",
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Rebound From Chip Rout as Earnings Await: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T22:07:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_broad": {
+      "avgSentiment": -0.208,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
+      "topPositiveTitle": "Stocks Rise as Tech Rebounds",
       "items": [
         {
-          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
@@ -81,30 +53,65 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Treasuries Fall as Tech Shares Rebound, Weakening Haven Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T16:34:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/treasuries-fall-as-tech-shares-rebound-weakening-haven-demand",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Hassett Says CPI Data Shows Inflation Needs ‘Some Work’",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T14:04:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/hassett-says-cpi-data-shows-inflation-needs-some-work",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Rise as Tech Rebounds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-19T15:14:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/bloomberg-surveillance-10-19-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.557,
+      "avgSentiment": 0.667,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Yoka: Rep. Congo Pursues ‘Real Reforms’ to Boost Economy",
+      "topNegativeTitle": "Hedge Funds Cut Tech at Fastest Pace in a Decade, Goldman Says",
       "topPositiveTitle": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
       "items": [
         {
-          "title": "Yoka: Rep. Congo Pursues ‘Real Reforms’ to Boost Economy",
+          "title": "Hedge Funds Cut Tech at Fastest Pace in a Decade, Goldman Says",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T06:43:04+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/yoka-rep-congo-pursues-real-reforms-to-boost-economy-video",
+          "publishedAt": "2026-10-19T16:53:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/hedge-funds-cut-tech-at-fastest-pace-in-a-decade-goldman-says",
           "tags": [
             "market",
-            "trust",
             "us_growth"
           ]
         },
@@ -131,50 +138,49 @@
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
-      "topPositiveTitle": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
-      "items": [
+        },
         {
-          "title": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
+          "title": "Nasdaq 100 Climbs on AI Trade Revival After Rout: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T06:49:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/horizons-middle-east-africa-10-19-2026-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-18T22:07:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "global_broad",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
     "gold": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -1.0,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
+      "topPositiveTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
       "items": [
         {
-          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
@@ -200,55 +206,28 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
-      "topPositiveTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
-      "items": [
-        {
-          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T06:42:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
-          "tags": [
-            "dividend",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.417,
+      "avgSentiment": 0.134,
       "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Indonesia's Selloff Deepens With Officials set for MSCI Meeting",
-      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+      "topPositiveTitle": "The Copper Rally Faces a Tariff Test",
       "items": [
-        {
-          "title": "Indonesia's Selloff Deepens With Officials set for MSCI Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-19T08:19:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/insonesia-s-selloff-deepens-after-msci-warning-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
           "source": "Bloomberg Economics",
@@ -264,30 +243,51 @@
           ]
         },
         {
-          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+          "title": "Turkey Market Regulator Chief Steps Down During Fund Crisis",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T14:29:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/turkey-market-regulator-chief-steps-down-during-fund-crisis",
           "tags": [
-            "commodity",
-            "fx",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
-          "source": "Bloomberg Markets",
+          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T06:42:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
+          "publishedAt": "2026-10-19T09:30:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
           "tags": [
-            "dividend",
+            "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "CoreWeave Upgraded to Buy at Goldman on Overblown Debt Worries",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-19T17:12:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/coreweave-upgraded-to-buy-at-goldman-on-overblown-debt-worries",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "The Copper Rally Faces a Tariff Test",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-19T15:29:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/the-copper-rally-faces-a-tariff-test-video",
+          "tags": [
             "macro_risk",
             "market"
           ]
@@ -303,7 +303,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "topPositiveTitle": "Walmart Sells US Debt, Eyes Canadian Market as Spending Grows",
       "items": [
         {
           "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
@@ -320,38 +320,47 @@
           ]
         },
         {
-          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+          "title": "Walmart Sells US Debt, Eyes Canadian Market as Spending Grows",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
+          "publishedAt": "2026-10-19T15:36:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/walmart-sells-us-debt-eyes-canadian-market-as-spending-grows",
           "tags": [
-            "commodity",
             "fx",
-            "jp_semiconductor",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": -1.0,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topNegativeTitle": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
+      "topPositiveTitle": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
       "items": [
         {
-          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+          "title": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-19T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/us-homebuilder-sentiment-drops-to-14-year-low-on-depressed-sales",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
@@ -365,21 +374,21 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
+      "avgSentiment": -0.167,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
-      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
       "items": [
         {
-          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
@@ -391,16 +400,15 @@
           ]
         },
         {
-          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
-          "source": "Bloomberg Markets",
+          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
+          "publishedAt": "2026-10-19T09:30:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
           "tags": [
             "commodity",
-            "fx",
-            "jp_semiconductor",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -416,19 +424,31 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-18T22:02:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
+      "avgSentiment": -0.268,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
+      "topPositiveTitle": "Trump Puts US Politics Ahead of Global Strategy:",
       "items": [
         {
           "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
@@ -445,14 +465,38 @@
           ]
         },
         {
-          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
+          "title": "Wheat Falls Even as Strikes Signal Russia-Ukraine Deal Unlikely",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T04:48:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/wheat-futures-rise-as-ukraine-russia-strikes-stoke-supply-fears",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump Puts US Politics Ahead of Global Strategy:",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T06:42:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
+          "publishedAt": "2026-10-19T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-19/trump-puts-us-politics-ahead-of-global-strategy",
           "tags": [
-            "dividend",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T09:30:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -481,7 +525,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
