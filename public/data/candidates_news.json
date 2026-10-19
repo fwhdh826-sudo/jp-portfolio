@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-19T10:28:50.011530+09:00",
-  "sourceUpdatedAt": "2026-10-19T01:07:48+00:00",
+  "updatedAt": "2026-10-19T18:10:43.867742+09:00",
+  "sourceUpdatedAt": "2026-10-19T09:09:07+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,88 +17,65 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Korean Stocks Fall as DeepSeek Model, Funding Worry Rattle Chips",
-      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topNegativeTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "topPositiveTitle": "Stocks Rebound From Chip Rout as Earnings Await: Markets Wrap",
       "items": [
         {
-          "title": "Korean Stocks Fall as DeepSeek Model, Funding Worry Rattle Chips",
+          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-19T00:17:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/korean-stocks-fall-as-deepseek-model-funding-worry-rattle-chips",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
           "tags": [
+            "commodity",
+            "fx",
             "jp_semiconductor",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "title": "Stocks Rebound From Chip Rout as Earnings Await: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-18T22:07:25+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "jp_semiconductor",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.22,
-      "negativeCount": 2,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
-      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
       "items": [
         {
-          "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-18T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/cpi-test-set-to-make-or-break-new-zealand-dollar-s-losing-run",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bond Market’s Big Short Bet Gets Wakeup Call as AI Trade Wobbles",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-18T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/bond-market-s-big-short-bet-gets-wakeup-call-as-ai-trade-wobbles",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
+            "commodity",
             "gold",
             "market",
             "rates",
@@ -108,26 +85,49 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.557,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
-      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topNegativeTitle": "Yoka: Rep. Congo Pursues ‘Real Reforms’ to Boost Economy",
+      "topPositiveTitle": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
       "items": [
         {
-          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "title": "Yoka: Rep. Congo Pursues ‘Real Reforms’ to Boost Economy",
           "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T06:43:04+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/yoka-rep-congo-pursues-real-reforms-to-boost-economy-video",
+          "tags": [
+            "market",
+            "trust",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Malaysia Exports Surge 55% to a Record in September on AI Boom",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T22:07:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-19T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/malaysia-september-exports-surge-to-five-year-high-on-ai-demand",
           "tags": [
-            "commodity",
-            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-19T02:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/china-s-growth-rebounds-to-4-5-puts-annual-target-within-reach",
+          "tags": [
             "market",
             "us_growth"
           ]
@@ -135,18 +135,6 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -154,17 +142,43 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
-      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+      "topNegativeTitle": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
+      "topPositiveTitle": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
       "items": [
         {
-          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
+          "title": "Saudi Arabia Intercepts Drone Waves, Trump Says Riyadh Welcomes US and Israeli Support",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T06:49:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/horizons-middle-east-africa-10-19-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "items": [
+        {
+          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
+            "commodity",
             "gold",
             "market",
             "rates",
@@ -186,37 +200,93 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "macro_risk": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 19",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topNegativeTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
+      "topPositiveTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T06:42:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
+          "tags": [
+            "dividend",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "macro_risk": {
+      "avgSentiment": -0.417,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Indonesia's Selloff Deepens With Officials set for MSCI Meeting",
+      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "items": [
+        {
+          "title": "Indonesia's Selloff Deepens With Officials set for MSCI Meeting",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-19T08:19:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/insonesia-s-selloff-deepens-after-msci-warning-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T08:26:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
           "tags": [
             "commodity",
+            "fx",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T06:42:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
+          "tags": [
+            "dividend",
             "geopolitical",
             "macro_risk",
             "market"
@@ -225,6 +295,48 @@
       ]
     },
     "fx": {
+      "avgSentiment": -0.335,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+      "items": [
+        {
+          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T08:26:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
+          "tags": [
+            "commodity",
+            "fx",
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
       "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
@@ -232,43 +344,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
-      "topPositiveTitle": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
       "items": [
         {
-          "title": "CPI Test Set to Make or Break New Zealand Dollar’s Losing Run",
+          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-18T19:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/cpi-test-set-to-make-or-break-new-zealand-dollar-s-losing-run",
-          "tags": [
-            "fx",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
-      "topPositiveTitle": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
-      "items": [
-        {
-          "title": "Gold Edges Higher as Traders Ease Rate-Hike Bets on Warsh Speech",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
           "publishedAt": "2026-10-18T23:47:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
+            "commodity",
             "gold",
             "market",
             "rates",
@@ -278,66 +365,96 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
-      "topPositiveTitle": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+      "topNegativeTitle": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
+      "topPositiveTitle": "Don Wilson on the GPU Market’s Trillion Dollar Question",
       "items": [
         {
-          "title": "US Stock Futures Bounce After Chip Rout, Oil Slips: Markets Wrap",
+          "title": "Gold Edges Higher as Traders Monitor Oil Price and Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T22:07:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-18T23:47:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
           "tags": [
             "commodity",
-            "jp_semiconductor",
+            "gold",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
+          "title": "Don Wilson on the GPU Market’s Trillion Dollar Question",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-19/don-wilson-on-the-gpu-market-s-trillion-dollar-question",
           "tags": [
             "commodity",
-            "geopolitical",
+            "fx",
+            "jp_semiconductor",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "France Riots Over Cost of Living as Macron Urges Calm",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T02:10:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/france-riots-over-cost-of-living-as-macron-urges-calm-video",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.2,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+      "topPositiveTitle": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
       "items": [
         {
-          "title": "Euro Falls as Russia Risk, France Protests Dent Trader Sentiment",
-          "source": "Bloomberg Markets",
+          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-10-18T23:17:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/euro-falls-as-russia-risk-france-protests-dent-trader-sentiment",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T08:26:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
           "tags": [
+            "fx",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Dubai Sweetens First IPO Since War With $592 Million Dividend",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T06:42:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/dubai-sweetens-first-ipo-since-war-with-592-million-dividend",
+          "tags": [
+            "dividend",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -350,32 +467,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-10-18/ukraine-talks-with-turkey-india-egypt-over-grain-corridor",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Rep. Veasey Calls for Scrutiny of Trump Russia Ties",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T14:23:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-18/rep-veasey-calls-for-scrutiny-of-trump-russia-ties-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
