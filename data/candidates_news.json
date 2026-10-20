@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-20T02:37:23.842523+09:00",
-  "sourceUpdatedAt": "2026-10-19T17:12:49+00:00",
+  "updatedAt": "2026-10-20T09:37:05.494328+09:00",
+  "sourceUpdatedAt": "2026-10-20T00:00:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,27 +17,56 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
+      "topPositiveTitle": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
+      "items": [
+        {
+          "title": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T21:00:07+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-10-19/korea-plans-new-samsung-sk-hynix-chip-hub-in-gwangju-risking-trump-s-ire",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "us_broad": {
-      "avgSentiment": -0.208,
-      "negativeCount": 3,
+      "avgSentiment": -0.332,
+      "negativeCount": 4,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Stocks Rise as Tech Rebounds",
+      "topPositiveTitle": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
       "items": [
         {
           "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
@@ -55,13 +84,15 @@
           ]
         },
         {
-          "title": "Treasuries Fall as Tech Shares Rebound, Weakening Haven Demand",
+          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T16:34:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/treasuries-fall-as-tech-shares-rebound-weakening-haven-demand",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T23:55:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
           "tags": [
+            "commodity",
+            "gold",
             "market",
             "us_broad"
           ]
@@ -79,39 +110,71 @@
           ]
         },
         {
-          "title": "Stocks Rise as Tech Rebounds",
+          "title": "Treasuries Fall as Tech Shares Rebound, Denting Haven Demand",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-19T15:14:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/bloomberg-surveillance-10-19-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T16:34:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/treasuries-fall-as-tech-shares-rebound-weakening-haven-demand",
           "tags": [
             "market",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.667,
+      "avgSentiment": 0.734,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Hedge Funds Cut Tech at Fastest Pace in a Decade, Goldman Says",
+      "topNegativeTitle": "Amazon Rallies as Morgan Stanley Sees Major AI Upside | Closing Bell",
       "topPositiveTitle": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
       "items": [
         {
-          "title": "Hedge Funds Cut Tech at Fastest Pace in a Decade, Goldman Says",
+          "title": "Amazon Rallies as Morgan Stanley Sees Major AI Upside | Closing Bell",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T16:53:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/hedge-funds-cut-tech-at-fastest-pace-in-a-decade-goldman-says",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-19T20:56:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-19/amazon-rallies-on-ai-upside-closing-bell-video",
           "tags": [
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -154,27 +217,41 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
+      "topNegativeTitle": "Cboe’s Early Session for Single-Stock Options Makes Debut",
+      "topPositiveTitle": "Cboe’s Early Session for Single-Stock Options Makes Debut",
+      "items": [
+        {
+          "title": "Cboe’s Early Session for Single-Stock Options Makes Debut",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T20:57:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/cboe-s-early-session-for-single-stock-options-makes-debut",
+          "tags": [
+            "global_broad",
+            "market",
+            "trust"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -0.835,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
       "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
+      "topPositiveTitle": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
       "items": [
         {
           "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
@@ -190,20 +267,47 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T23:55:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
+      "topPositiveTitle": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
+      "items": [
+        {
+          "title": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T20:13:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/bond-sale-tied-to-manhattan-office-building-is-latest-on-hold",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -218,15 +322,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.134,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "The Copper Rally Faces a Tariff Test",
+      "topPositiveTitle": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
       "items": [
         {
           "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
@@ -238,18 +342,6 @@
           "tags": [
             "fx",
             "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Turkey Market Regulator Chief Steps Down During Fund Crisis",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T14:29:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/turkey-market-regulator-chief-steps-down-during-fund-crisis",
-          "tags": [
             "macro_risk",
             "market"
           ]
@@ -269,41 +361,33 @@
           ]
         },
         {
-          "title": "CoreWeave Upgraded to Buy at Goldman on Overblown Debt Worries",
+          "title": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-19T17:12:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/coreweave-upgraded-to-buy-at-goldman-on-overblown-debt-worries",
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "jp_semiconductor",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "The Copper Rally Faces a Tariff Test",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-19T15:29:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/the-copper-rally-faces-a-tariff-test-video",
-          "tags": [
-            "macro_risk",
-            "market"
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": -0.585,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "Walmart Sells US Debt, Eyes Canadian Market as Spending Grows",
+      "topPositiveTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
       "items": [
         {
           "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
@@ -320,13 +404,14 @@
           ]
         },
         {
-          "title": "Walmart Sells US Debt, Eyes Canadian Market as Spending Grows",
+          "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T15:36:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/walmart-sells-us-debt-eyes-canadian-market-as-spending-grows",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T20:50:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/new-zealand-s-year-end-inflation-surge-points-to-more-rate-hikes",
           "tags": [
+            "commodity",
             "fx",
             "market"
           ]
@@ -334,15 +419,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -1.0,
-      "negativeCount": 2,
+      "avgSentiment": -0.777,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
-      "topPositiveTitle": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
+      "topPositiveTitle": "Traders, Economists Boost Bets on Canada Rate Hike Next Week",
       "items": [
         {
           "title": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
@@ -370,19 +455,31 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Traders, Economists Boost Bets on Canada Rate Hike Next Week",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T19:23:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/bank-of-canada-hike-bets-grow-among-economists-traders",
+          "tags": [
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": -0.062,
+      "negativeCount": 3,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 19",
+      "topPositiveTitle": "Asian Stocks Shrug Off US Chip Rally, Oil Steadies: Markets Wrap",
       "items": [
         {
           "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
@@ -397,6 +494,33 @@
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-19T23:55:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T20:50:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/new-zealand-s-year-end-inflation-surge-points-to-more-rate-hikes",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
           ]
         },
         {
@@ -424,28 +548,16 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-18T22:02:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/latest-oil-market-news-and-analysis-for-oct-19",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.268,
-      "negativeCount": 2,
+      "avgSentiment": -0.168,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
       "topPositiveTitle": "Trump Puts US Politics Ahead of Global Strategy:",
@@ -461,18 +573,6 @@
             "fx",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Wheat Falls Even as Strikes Signal Russia-Ukraine Deal Unlikely",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T04:48:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/wheat-futures-rise-as-ukraine-russia-strikes-stoke-supply-fears",
-          "tags": [
-            "geopolitical",
             "market"
           ]
         },
@@ -503,16 +603,17 @@
           ]
         },
         {
-          "title": "Ukraine Talks with Turkey, India, Egypt Over Grain Corridor",
-          "source": "Bloomberg Economics",
+          "title": "ロシアによる記者拘束から1週間 政府「領事面会」強く求める",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-18T19:08:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/ukraine-talks-with-turkey-india-egypt-over-grain-corridor",
+          "publishedAt": "2026-10-19T20:18:11+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261019de61872",
           "tags": [
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "ロシアによる記者拘束から1週間 政府「領事面会」強く求める"
         }
       ]
     }
@@ -525,7 +626,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 8,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
