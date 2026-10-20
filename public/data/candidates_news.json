@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-20T17:45:53.466333+09:00",
-  "sourceUpdatedAt": "2026-10-20T08:30:59+00:00",
+  "updatedAt": "2026-10-21T00:43:13.473623+09:00",
+  "sourceUpdatedAt": "2026-10-20T15:30:41+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,40 +17,27 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
-      "topPositiveTitle": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
-      "items": [
-        {
-          "title": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T21:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-10-19/korea-plans-new-samsung-sk-hynix-chip-hub-in-gwangju-risking-trump-s-ire",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.053,
+      "avgSentiment": 0.14,
       "negativeCount": 2,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
-      "topPositiveTitle": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
+      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
       "items": [
         {
           "title": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
@@ -65,26 +52,44 @@
           ]
         },
         {
-          "title": "Hassett Says CPI Data Shows Inflation Needs ‘Some Work’",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T14:04:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/hassett-says-cpi-data-shows-inflation-needs-some-work",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
+          "title": "S&P 500 Rebounds as Big Bank Stocks Climb, SpaceX Results Loom",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.56,
+          "publishedAt": "2026-10-20T11:57:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
           "tags": [
             "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-20T15:11:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -92,50 +97,64 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
+      "avgSentiment": 0.265,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "CME's Terry Duffy on the Disconcerting State of Finance Regulation",
-      "topPositiveTitle": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
+      "topNegativeTitle": "AI Fears Roar Back, Tech Earnings on Deck",
+      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
       "items": [
         {
-          "title": "CME's Terry Duffy on the Disconcerting State of Finance Regulation",
+          "title": "AI Fears Roar Back, Tech Earnings on Deck",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-20T15:06:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/ai-fears-roar-back-tech-earnings-on-deck",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T08:00:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/cme-s-terry-duffy-on-the-disconcerting-state-of-finance-regulation",
+          "publishedAt": "2026-10-20T12:45:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/amazon-to-hire-over-300-000-in-holiday-season-up-20-from-2025",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
+          "title": "S&P 500 Rebounds as Big Bank Stocks Climb, SpaceX Results Loom",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-20T08:08:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-s-advance-has-fx-market-asking-whether-governance-can-keep-up",
+          "sentimentScore": 0.56,
+          "publishedAt": "2026-10-20T11:57:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
           "tags": [
-            "fx",
             "market",
+            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
+          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-20T15:11:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
           "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -143,23 +162,47 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
-      "topPositiveTitle": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
+      "topNegativeTitle": "AI Fears Return With Data Center IPO Flop; SpaceX, Netflix Earnings",
+      "topPositiveTitle": "Citadel's Esposito on Bank Partnerships, Fixed Income Growth",
       "items": [
         {
-          "title": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
+          "title": "AI Fears Return With Data Center IPO Flop; SpaceX, Netflix Earnings",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-20T11:47:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/bloomberg-brief-10-20-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Citadel's Esposito on Bank Partnerships, Fixed Income Growth",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T07:31:28+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/horizons-middle-east-africa-10-20-2026-video",
+          "publishedAt": "2026-10-20T15:30:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/citadel-s-esposito-on-bank-partners-fixed-income-growth-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Citadel Looking to Grow in Fixed Income, Esposito Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T15:13:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/citadel-looking-to-grow-in-fixed-income-esposito-says-video",
           "tags": [
             "global_broad",
             "market"
@@ -168,29 +211,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
-      "topPositiveTitle": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
-      "items": [
-        {
-          "title": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T18:32:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/ghana-plans-to-ban-raw-mineral-exports-by-2030-president-says",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -217,37 +247,79 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": -0.12,
+      "negativeCount": 4,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Copper Holds Drop as Traders Gauge Risks From US Tariff Policy",
-      "topPositiveTitle": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
+      "topNegativeTitle": "Elice Plunges in Trading Debut; General Motors Falls on Forecast | Stock Movers",
+      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
       "items": [
         {
-          "title": "Copper Holds Drop as Traders Gauge Risks From US Tariff Policy",
+          "title": "Elice Plunges in Trading Debut; General Motors Falls on Forecast | Stock Movers",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T03:05:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/copper-holds-drop-as-traders-gauge-risks-from-us-tariff-policy",
+          "sentimentScore": -0.56,
+          "publishedAt": "2026-10-20T14:37:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/elice-plunges-in-debut-general-motors-falls-on-forecast-video",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
+          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Top-Rated Junk Debt Becomes Sweet Spot as Investors Flee Risk",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-20T14:25:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/top-rated-junk-debt-becomes-sweet-spot-as-investors-flee-risk",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 20",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T22:04:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T06:03:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/china-s-huachen-energy-risks-fresh-default-on-956-million-debt",
+          "publishedAt": "2026-10-20T11:35:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -255,179 +327,239 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.085,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
-      "topPositiveTitle": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
+      "topNegativeTitle": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
+      "topPositiveTitle": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
       "items": [
         {
-          "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
-          "source": "Bloomberg Economics",
+          "title": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T20:50:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/new-zealand-s-year-end-inflation-surge-points-to-more-rate-hikes",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-20T11:05:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/senegal-eurobonds-fall-as-budget-standoff-puts-imf-deal-at-risk",
           "tags": [
-            "commodity",
             "fx",
             "market"
-          ]
-        },
-        {
-          "title": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-20T08:08:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-s-advance-has-fx-market-asking-whether-governance-can-keep-up",
-          "tags": [
-            "fx",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.417,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Polish Policymaker Flags Zloty Weakness Among Rate Hike Triggers",
-      "topPositiveTitle": "Japan’s 20-Year Bond Auction Sees Strongest Demand on Record",
+      "topNegativeTitle": "US Pending Home Sales Plunged in September to a Record Low",
+      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
       "items": [
         {
-          "title": "Polish Policymaker Flags Zloty Weakness Among Rate Hike Triggers",
+          "title": "US Pending Home Sales Plunged in September to a Record Low",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-10-20T04:45:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/polish-policymaker-flags-zloty-weakness-among-rate-hike-triggers",
+          "publishedAt": "2026-10-20T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-pending-home-sales-fall-to-record-low-as-mortgage-rates-rise",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-19T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/us-homebuilder-sentiment-drops-to-14-year-low-on-depressed-sales",
+          "title": "Bessent Sees No Spillover From France Bond Market’s Turmoil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T14:08:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/bessent-sees-no-spillover-from-france-bond-market-s-turmoil",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Hungary Set to Hold Rates After Magyar Unveils Budget Plan",
+          "title": "Hungary Holds Key Rate With Budget and Euro Path In Focus",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T04:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/hungary-set-to-hold-rates-after-magyar-unveils-budget-plan",
+          "publishedAt": "2026-10-20T12:01:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/hungary-holds-interest-rate-with-budget-and-euro-path-in-focus",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Japan’s 20-Year Bond Auction Sees Strongest Demand on Record",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-20T03:39:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/japan-s-20-year-bond-sale-sees-strongest-demand-on-record",
+          "title": "Bank Indonesia Rate-Hike Bets Rise as MSCI Shock Tests Rupiah",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T08:47:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/bank-indonesia-rate-hike-bets-rise-as-msci-shock-tests-rupiah",
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-20T15:11:31+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": -0.3,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
-      "topPositiveTitle": "Odd Lots: CME’s Duffy on State of Finance Regulation (Podcast)",
+      "topNegativeTitle": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
+      "topPositiveTitle": "European Gas Prices Slump After Climbing to Four-Year Highs",
       "items": [
         {
-          "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
+          "title": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-20T12:33:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/uk-insolvencies-drop-as-businesses-endure-higher-costs",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
           "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T20:50:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/new-zealand-s-year-end-inflation-surge-points-to-more-rate-hikes",
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Odd Lots: CME’s Duffy on State of Finance Regulation (Podcast)",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-20/odd-lots-cme-s-duffy-on-state-of-finance-regulation-podcast",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T06:03:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/china-s-huachen-energy-risks-fresh-default-on-956-million-debt",
-          "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 20",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T22:04:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T11:35:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "European Gas Prices Slump After Climbing to Four-Year Highs",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-20T11:23:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/european-gas-prices-rise-above-90-for-first-time-since-2022",
+          "tags": [
+            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.277,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
-      "topPositiveTitle": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
+      "topNegativeTitle": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+      "topPositiveTitle": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
       "items": [
         {
-          "title": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
-          "source": "NHK 経済",
+          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 20",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-19T22:04:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T05:45:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261020de62014",
+          "publishedAt": "2026-10-20T11:35:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
-          ],
-          "titleJa": "新しいイスラエル大使に加納雄大氏 政府が閣議決定"
+          ]
         }
       ]
     }
@@ -440,7 +572,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
