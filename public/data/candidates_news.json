@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-20T10:58:47.824556+09:00",
-  "sourceUpdatedAt": "2026-10-20T01:43:07+00:00",
+  "updatedAt": "2026-10-20T17:45:53.466333+09:00",
+  "sourceUpdatedAt": "2026-10-20T08:30:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,15 +17,15 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.07,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
-      "topPositiveTitle": "Asian Stocks Decline in Break From US Chip Rally: Markets Wrap",
+      "topPositiveTitle": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
       "items": [
         {
           "title": "Korea Plans New Samsung, SK Hynix Chip Hub in Gwangju, Risking Trump's Ire",
@@ -38,59 +38,28 @@
             "jp_semiconductor",
             "market"
           ]
-        },
-        {
-          "title": "Asian Stocks Decline in Break From US Chip Rally: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.42,
-      "negativeCount": 5,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": -0.053,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Asian Stocks Decline in Break From US Chip Rally: Markets Wrap",
+      "topNegativeTitle": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
+      "topPositiveTitle": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
       "items": [
         {
-          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-          "source": "Bloomberg Markets",
+          "title": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-18T23:47:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-20T06:08:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/uk-payrolls-bounce-back-ahead-of-chancellor-healey-s-budget",
           "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T23:55:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
-          "tags": [
-            "commodity",
-            "gold",
             "market",
             "us_broad"
           ]
@@ -108,90 +77,66 @@
           ]
         },
         {
-          "title": "Treasuries Losing Luster as Hedge Tool, Citi Australia CEO Says",
+          "title": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T00:34:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/treasuries-losing-luster-as-hedge-tool-citi-australia-ceo-says",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Fall as Tech Shares Rebound, Denting Haven Demand",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T16:34:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/treasuries-fall-as-tech-shares-rebound-weakening-haven-demand",
-          "tags": [
-            "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.535,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Decline in Break From US Chip Rally: Markets Wrap",
-      "topPositiveTitle": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
+      "topNegativeTitle": "CME's Terry Duffy on the Disconcerting State of Finance Regulation",
+      "topPositiveTitle": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
       "items": [
         {
-          "title": "Asian Stocks Decline in Break From US Chip Rally: Markets Wrap",
+          "title": "CME's Terry Duffy on the Disconcerting State of Finance Regulation",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T08:00:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/cme-s-terry-duffy-on-the-disconcerting-state-of-finance-regulation",
           "tags": [
-            "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Amazon Rallies as Morgan Stanley Sees Major AI Upside | Closing Bell",
+          "title": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-19T20:56:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/amazon-rallies-on-ai-upside-closing-bell-video",
+          "publishedAt": "2026-10-20T08:08:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-s-advance-has-fx-market-asking-whether-governance-can-keep-up",
           "tags": [
+            "fx",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Malaysia Exports Surge 55% to a Record in September on AI Boom",
-          "source": "Bloomberg Economics",
+          "title": "US Stocks Waver, Bonds Gain as AI Rebound Falters: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-19T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/malaysia-september-exports-surge-to-five-year-high-on-ai-demand",
+          "publishedAt": "2026-10-19T22:09:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "China Puts Growth Back on Target With Stimulus Push, Export Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-19T02:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/china-s-growth-rebounds-to-4-5-puts-annual-target-within-reach",
-          "tags": [
-            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -205,90 +150,59 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Cboe’s Early Session for Single-Stock Options Makes Debut",
-      "topPositiveTitle": "Cboe’s Early Session for Single-Stock Options Makes Debut",
+      "topNegativeTitle": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
+      "topPositiveTitle": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
       "items": [
         {
-          "title": "Cboe’s Early Session for Single-Stock Options Makes Debut",
+          "title": "Saudi Arabia Delays Flagship Investment Summit to 2027 After Houthi Attacks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T20:57:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/cboe-s-early-session-for-single-stock-options-makes-debut",
+          "publishedAt": "2026-10-20T07:31:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/horizons-middle-east-africa-10-20-2026-video",
           "tags": [
             "global_broad",
-            "market",
-            "trust"
+            "market"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": -0.835,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
+      "topNegativeTitle": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
+      "topPositiveTitle": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
       "items": [
         {
-          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-18T23:47:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
+          "title": "Ghana Plans to Ban Raw Mineral Exports by 2030, President Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-19T18:32:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-19/ghana-plans-to-ban-raw-mineral-exports-by-2030-president-says",
           "tags": [
-            "commodity",
             "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T23:55:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
-      "topPositiveTitle": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
-      "items": [
-        {
-          "title": "Bond Sale Tied to Manhattan Office Building Is Latest On Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T20:13:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/bond-sale-tied-to-manhattan-office-building-is-latest-on-hold",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -303,53 +217,37 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
+      "topNegativeTitle": "Copper Holds Drop as Traders Gauge Risks From US Tariff Policy",
+      "topPositiveTitle": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
       "items": [
         {
-          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T08:26:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Malaysia’s Anwar Says No Financial Support Agreed for AirAsia",
+          "title": "Copper Holds Drop as Traders Gauge Risks From US Tariff Policy",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T00:57:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/malaysia-s-anwar-says-no-financial-support-agreed-for-airasia",
+          "publishedAt": "2026-10-20T03:05:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/copper-holds-drop-as-traders-gauge-risks-from-us-tariff-policy",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
-          "source": "Bloomberg Economics",
+          "title": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T09:30:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
+          "publishedAt": "2026-10-20T06:03:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/china-s-huachen-energy-risks-fresh-default-on-956-million-debt",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -357,33 +255,19 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.585,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
+      "topNegativeTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
+      "topPositiveTitle": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
       "items": [
         {
-          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T08:26:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.5,
           "publishedAt": "2026-10-19T20:50:29+00:00",
@@ -393,20 +277,45 @@
             "fx",
             "market"
           ]
+        },
+        {
+          "title": "AI’s Advance Has FX Market Asking Whether Governance Can Keep Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-20T08:08:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-s-advance-has-fx-market-asking-whether-governance-can-keep-up",
+          "tags": [
+            "fx",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.665,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": -0.417,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
-      "topPositiveTitle": "Treasuries Losing Luster as Hedge Tool, Citi Australia CEO Says",
+      "topNegativeTitle": "Polish Policymaker Flags Zloty Weakness Among Rate Hike Triggers",
+      "topPositiveTitle": "Japan’s 20-Year Bond Auction Sees Strongest Demand on Record",
       "items": [
+        {
+          "title": "Polish Policymaker Flags Zloty Weakness Among Rate Hike Triggers",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-20T04:45:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/polish-policymaker-flags-zloty-weakness-among-rate-hike-triggers",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "US Homebuilder Sentiment Drops to 14-Year Low on Weak Sales",
           "source": "Bloomberg Economics",
@@ -420,40 +329,24 @@
           ]
         },
         {
-          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-18T23:47:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
+          "title": "Hungary Set to Hold Rates After Magyar Unveils Budget Plan",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T04:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/hungary-set-to-hold-rates-after-magyar-unveils-budget-plan",
           "tags": [
-            "commodity",
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Treasuries Losing Luster as Hedge Tool, Citi Australia CEO Says",
+          "title": "Japan’s 20-Year Bond Auction Sees Strongest Demand on Record",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T00:34:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/treasuries-losing-luster-as-hedge-tool-citi-australia-ceo-says",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Traders, Economists Boost Bets on Canada Rate Hike Next Week",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T19:23:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/bank-of-canada-hike-bets-grow-among-economists-traders",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-20T03:39:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/japan-s-20-year-bond-sale-sees-strongest-demand-on-record",
           "tags": [
             "market",
             "rates"
@@ -462,48 +355,19 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.25,
-      "negativeCount": 3,
-      "positiveCount": 1,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 20",
+      "topNegativeTitle": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
+      "topPositiveTitle": "Odd Lots: CME’s Duffy on State of Finance Regulation (Podcast)",
       "items": [
         {
-          "title": "Gold Declines as Bond Yields Stay Elevated Despite Oil Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-18T23:47:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-18/gold-edges-higher-as-traders-ease-rate-hike-bets-on-warsh-speech",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Decline as Energy-Led Inflation Weighs on Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T23:55:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/gold-holds-decline-as-energy-led-inflation-weighs-on-rate-path",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
           "title": "New Zealand’s Year-End Inflation Surge Points to More Rate Hikes",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.5,
           "publishedAt": "2026-10-19T20:50:29+00:00",
@@ -515,109 +379,55 @@
           ]
         },
         {
-          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
-          "source": "Bloomberg Economics",
+          "title": "Odd Lots: CME’s Duffy on State of Finance Regulation (Podcast)",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T09:30:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
+          "publishedAt": "2026-10-20T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-20/odd-lots-cme-s-duffy-on-state-of-finance-regulation-podcast",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "France Riots Over Cost of Living as Macron Urges Calm",
-          "source": "Bloomberg Economics",
+          "title": "China’s Huachen Energy Risks Fresh Default on $956 Million Debt",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T02:10:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-19/france-riots-over-cost-of-living-as-macron-urges-calm-video",
+          "publishedAt": "2026-10-20T06:03:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/china-s-huachen-energy-risks-fresh-default-on-956-million-debt",
           "tags": [
             "commodity",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-      "topPositiveTitle": "Trump Puts US Politics Ahead of Global Strategy:",
+      "topNegativeTitle": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
+      "topPositiveTitle": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
       "items": [
         {
-          "title": "Kenyan Remittances Dented by New US Tax, Fallout from Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-19T08:26:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/kenyan-remittances-dented-by-new-us-tax-fallout-from-iran-war",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Malaysia’s Anwar Says No Financial Support Agreed for AirAsia",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T00:57:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/malaysia-s-anwar-says-no-financial-support-agreed-for-airasia",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Puts US Politics Ahead of Global Strategy:",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-19/trump-puts-us-politics-ahead-of-global-strategy",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "South Africa’s Business Mood Steadies Despite Ongoing Iran War",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T09:30:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/south-africa-s-business-mood-steadies-despite-ongoing-iran-war",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ロシアによる記者拘束から1週間 政府「領事面会」強く求める",
+          "title": "新しいイスラエル大使に加納雄大氏 政府が閣議決定",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-19T20:18:11+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261019de61872",
+          "publishedAt": "2026-10-20T05:45:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261020de62014",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "ロシアによる記者拘束から1週間 政府「領事面会」強く求める"
+          "titleJa": "新しいイスラエル大使に加納雄大氏 政府が閣議決定"
         }
       ]
     }
@@ -630,7 +440,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 8,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
