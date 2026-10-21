@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-21T00:43:13.473623+09:00",
-  "sourceUpdatedAt": "2026-10-20T15:30:41+00:00",
+  "updatedAt": "2026-10-21T09:03:36.281391+09:00",
+  "sourceUpdatedAt": "2026-10-20T23:13:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,28 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.14,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "avgSentiment": -0.34,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
-      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+      "topNegativeTitle": "Netflix Sales Growth to Decline for Fourth Quarter in a Row",
+      "topPositiveTitle": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
       "items": [
+        {
+          "title": "Netflix Sales Growth to Decline for Fourth Quarter in a Row",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-20T21:58:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/netflix-forecasts-adds-to-growth-concerns-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "UK Payrolls Rebound and Unemployment Drops Ahead of Budget",
           "source": "Bloomberg Economics",
@@ -52,25 +64,24 @@
           ]
         },
         {
-          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-20T21:29:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
+            "rates",
+            "reit",
             "us_broad"
           ]
         },
         {
-          "title": "S&P 500 Rebounds as Big Bank Stocks Climb, SpaceX Results Loom",
+          "title": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.56,
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
           "publishedAt": "2026-10-20T11:57:42+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
           "tags": [
@@ -78,47 +89,20 @@
             "us_broad",
             "us_growth"
           ]
-        },
-        {
-          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T15:11:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.265,
-      "negativeCount": 1,
+      "avgSentiment": 0.535,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Fears Roar Back, Tech Earnings on Deck",
-      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+      "topNegativeTitle": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
+      "topPositiveTitle": "AI Stocks Rally After Super Micro Preliminary Sales Bring Relief",
       "items": [
-        {
-          "title": "AI Fears Roar Back, Tech Earnings on Deck",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-20T15:06:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/ai-fears-roar-back-tech-earnings-on-deck",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
           "source": "Bloomberg Economics",
@@ -132,10 +116,10 @@
           ]
         },
         {
-          "title": "S&P 500 Rebounds as Big Bank Stocks Climb, SpaceX Results Loom",
+          "title": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.56,
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
           "publishedAt": "2026-10-20T11:57:42+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
           "tags": [
@@ -145,70 +129,42 @@
           ]
         },
         {
-          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+          "title": "AI Stocks Rally After Super Micro Preliminary Sales Bring Relief",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T15:11:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
+          "publishedAt": "2026-10-20T22:14:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-stocks-rally-after-super-micro-preliminary-sales-bring-relief",
           "tags": [
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stock Futures Advance on AI Earnings Boost: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-20T22:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "AI Fears Return With Data Center IPO Flop; SpaceX, Netflix Earnings",
-      "topPositiveTitle": "Citadel's Esposito on Bank Partnerships, Fixed Income Growth",
-      "items": [
-        {
-          "title": "AI Fears Return With Data Center IPO Flop; SpaceX, Netflix Earnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-20T11:47:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/bloomberg-brief-10-20-2026-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Citadel's Esposito on Bank Partnerships, Fixed Income Growth",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T15:30:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/citadel-s-esposito-on-bank-partners-fixed-income-growth-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Citadel Looking to Grow in Fixed Income, Esposito Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T15:13:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/citadel-looking-to-grow-in-fixed-income-esposito-says-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -223,16 +179,31 @@
       "items": []
     },
     "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
+      "topPositiveTitle": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
+      "items": [
+        {
+          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-20T21:29:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
+          "tags": [
+            "market",
+            "rates",
+            "reit",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -247,78 +218,64 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.12,
-      "negativeCount": 4,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 6,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Elice Plunges in Trading Debut; General Motors Falls on Forecast | Stock Movers",
-      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+      "topNegativeTitle": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
+      "topPositiveTitle": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
       "items": [
         {
-          "title": "Elice Plunges in Trading Debut; General Motors Falls on Forecast | Stock Movers",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.56,
-          "publishedAt": "2026-10-20T14:37:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/elice-plunges-in-debut-general-motors-falls-on-forecast-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Top-Rated Junk Debt Becomes Sweet Spot as Investors Flee Risk",
+          "title": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T14:25:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/top-rated-junk-debt-becomes-sweet-spot-as-investors-flee-risk",
+          "publishedAt": "2026-10-20T16:23:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/lithium-miner-pls-markets-700-million-bond-in-expansion-push",
           "tags": [
+            "fx",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 20",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T22:04:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+          "title": "Latest Oil Market News and Analysis for Oct. 21",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T11:35:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
+          "publishedAt": "2026-10-20T22:04:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russian Satellite Raises Space Warfare Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T20:01:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/russian-satellite-raises-space-warfare-fears-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-20T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/south-africa-set-to-tighten-budget-rules-as-pressures-from-iran-war-mount",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -327,40 +284,41 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.67,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
-      "topPositiveTitle": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
+      "topNegativeTitle": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
+      "topPositiveTitle": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
       "items": [
         {
-          "title": "Senegal Bonds Plunge as Budget Standoff Puts IMF Deal at Risk",
+          "title": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-20T11:05:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/senegal-eurobonds-fall-as-budget-standoff-puts-imf-deal-at-risk",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-20T16:23:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/lithium-miner-pls-markets-700-million-bond-in-expansion-push",
           "tags": [
             "fx",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "US Pending Home Sales Plunged in September to a Record Low",
-      "topPositiveTitle": "Jeanne Sun Favors US Stocks as AI Rally Continues",
+      "topPositiveTitle": "Hungary Holds Key Rate With Budget and Euro Path In Focus",
       "items": [
         {
           "title": "US Pending Home Sales Plunged in September to a Record Low",
@@ -375,15 +333,17 @@
           ]
         },
         {
-          "title": "Bessent Sees No Spillover From France Bond Market’s Turmoil",
+          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T14:08:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/bessent-sees-no-spillover-from-france-bond-market-s-turmoil",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-20T21:29:42+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "reit",
+            "us_broad"
           ]
         },
         {
@@ -409,34 +369,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Jeanne Sun Favors US Stocks as AI Rally Continues",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T15:11:31+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/jeanne-sun-favors-us-stocks-as-ai-rally-continues-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.3,
-      "negativeCount": 3,
-      "positiveCount": 1,
+      "avgSentiment": -0.443,
+      "negativeCount": 2,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
-      "topPositiveTitle": "European Gas Prices Slump After Climbing to Four-Year Highs",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 21",
       "items": [
         {
           "title": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
@@ -451,95 +396,51 @@
           ]
         },
         {
-          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 20",
+          "title": "Carney to Unveil Budget Nov 5 as PBO Warns Oil Windfall Gone",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T22:04:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
+          "publishedAt": "2026-10-20T16:21:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/carney-spent-oil-windfall-on-tax-write-off-budget-watchdog-says",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+          "title": "Latest Oil Market News and Analysis for Oct. 21",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T11:35:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
+          "publishedAt": "2026-10-20T22:04:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "European Gas Prices Slump After Climbing to Four-Year Highs",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-20T11:23:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/european-gas-prices-rise-above-90-for-first-time-since-2022",
-          "tags": [
-            "commodity",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.277,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
+      "avgSentiment": 0.223,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
-      "topPositiveTitle": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 21",
+      "topPositiveTitle": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
       "items": [
         {
-          "title": "Stocks Rise as US-Iran Hopes Trigger Oil Decline: Markets Wrap",
+          "title": "Latest Oil Market News and Analysis for Oct. 21",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-19T22:09:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 20",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-19T22:04:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-19/latest-oil-market-news-and-analysis-for-oct-20",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-20T22:04:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
           "tags": [
             "commodity",
             "geopolitical",
@@ -548,14 +449,26 @@
           ]
         },
         {
-          "title": "Halliburton Sees Lasting Growth as Mideast Rebuilds From War",
+          "title": "Russian Satellite Raises Space Warfare Fears",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T11:35:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/halliburton-sees-multi-year-demand-growth-from-energy-disruption",
+          "publishedAt": "2026-10-20T20:01:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-20/russian-satellite-raises-space-warfare-fears-video",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-20T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/south-africa-set-to-tighten-budget-rules-as-pressures-from-iran-war-mount",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
