@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-21T10:48:04.389779+09:00",
-  "sourceUpdatedAt": "2026-10-21T01:18:33+00:00",
+  "updatedAt": "2026-10-21T17:46:33.188176+09:00",
+  "sourceUpdatedAt": "2026-10-21T08:35:20+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+      "topPositiveTitle": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+      "items": [
+        {
+          "title": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T03:40:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/boj-likely-to-keep-hiking-rates-every-quarter-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.165,
@@ -55,28 +69,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.297,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": 0.335,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Netflix Sales Growth to Decline for Fourth Quarter in a Row",
-      "topPositiveTitle": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
+      "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
+      "topPositiveTitle": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
       "items": [
-        {
-          "title": "Netflix Sales Growth to Decline for Fourth Quarter in a Row",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-20T21:58:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/netflix-forecasts-adds-to-growth-concerns-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
           "source": "Bloomberg Markets",
@@ -94,36 +96,22 @@
           ]
         },
         {
-          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
+          "title": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T21:29:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-21T07:00:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/chiriseri-france-s-fiscal-picture-concern-bond-markets-video",
           "tags": [
             "market",
             "rates",
-            "reit",
             "us_broad"
-          ]
-        },
-        {
-          "title": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-10-20T11:57:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.494,
+      "avgSentiment": 0.466,
       "negativeCount": 0,
       "positiveCount": 3,
       "neutralCount": 2,
@@ -131,7 +119,7 @@
       "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
-      "topPositiveTitle": "AI Stocks Rally After Super Micro Preliminary Sales Bring Relief",
+      "topPositiveTitle": "AI Stocks Rally After Super Micro Prelim Sales Bring Relief",
       "items": [
         {
           "title": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
@@ -146,15 +134,14 @@
           ]
         },
         {
-          "title": "S&P 500 Climbs as Big Bank Stocks Rally, SpaceX Results Loom",
+          "title": "Will SpaceX and Tesla Merge? Why Elon Musk Wants to Combine His Companies",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
-          "sentimentScore": 0.14,
-          "publishedAt": "2026-10-20T11:57:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-futures-slip-as-neocloud-ipo-elice-flops-spacex-results-loom",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-07-06T09:00:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-07-06/will-spacex-and-tesla-merge-why-elon-musk-may-combine-his-companies",
           "tags": [
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
@@ -172,7 +159,7 @@
           ]
         },
         {
-          "title": "AI Stocks Rally After Super Micro Preliminary Sales Bring Relief",
+          "title": "AI Stocks Rally After Super Micro Prelim Sales Bring Relief",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -184,7 +171,7 @@
           ]
         },
         {
-          "title": "Asian Shares, US Futures Rise on AI-Trade Revival: Markets Wrap",
+          "title": "Stocks Climb as SpaceX Results Reignite AI Trade: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -198,16 +185,29 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
+      "topPositiveTitle": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
+      "items": [
+        {
+          "title": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T06:40:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/horizons-middle-east-africa-10-21-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": -0.33,
@@ -239,31 +239,16 @@
       ]
     },
     "reit": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
-      "topPositiveTitle": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
-      "items": [
-        {
-          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T21:29:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
-          "tags": [
-            "market",
-            "rates",
-            "reit",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -278,16 +263,28 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.003,
+      "avgSentiment": 0.113,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-      "topPositiveTitle": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
+      "topNegativeTitle": "Indonesia Holds Rate, Cuts RRR as MSCI Shock Hits Rupiah",
+      "topPositiveTitle": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
       "items": [
+        {
+          "title": "Indonesia Holds Rate, Cuts RRR as MSCI Shock Hits Rupiah",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-21T06:55:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/bank-indonesia-holds-rate-as-msci-shock-threatens-rupiah",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
           "source": "Bloomberg Markets",
@@ -305,25 +302,38 @@
           ]
         },
         {
-          "title": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
+          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T16:23:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/lithium-miner-pls-markets-700-million-bond-in-expansion-push",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T06:48:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
           "tags": [
-            "fx",
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
-          "source": "Bloomberg Economics",
+          "title": "Belgian Government Facing Push to Sell 5.7% BNP Stake",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T05:05:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/belgian-government-facing-push-to-sell-5-7-bnp-paribas-stake",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-20T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/south-africa-set-to-tighten-budget-rules-as-pressures-from-iran-war-mount",
+          "publishedAt": "2026-10-21T08:33:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/south-africa-eyes-new-fiscal-anchor-to-rein-in-debt-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -333,41 +343,27 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
-      "topPositiveTitle": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
-      "items": [
-        {
-          "title": "Lithium Miner PLS Sells $700 Million Bond in Expansion Push",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T16:23:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/lithium-miner-pls-markets-700-million-bond-in-expansion-push",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.332,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": -0.047,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "US Pending Home Sales Plunged in September to a Record Low",
-      "topPositiveTitle": "Hungary Holds Key Rate With Budget and Euro Path In Focus",
+      "topPositiveTitle": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
       "items": [
         {
           "title": "US Pending Home Sales Plunged in September to a Record Low",
@@ -398,17 +394,28 @@
           ]
         },
         {
-          "title": "PGIM’s Bryan McDonnell on 2027 Real Estate Credit Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T21:29:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-20/pgim-s-bryan-mcdonnell-on-2027-real-estate-credit-market-video",
+          "title": "UK Inflation Hits 11-Month High as Bank of England Eyes Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T06:04:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/inflation-jumps-to-11-month-high-as-bank-of-england-considers-a-hike",
           "tags": [
             "market",
-            "rates",
-            "reit",
-            "us_broad"
+            "rates"
+          ]
+        },
+        {
+          "title": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T03:40:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/boj-likely-to-keep-hiking-rates-every-quarter-ex-official-says",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
           ]
         },
         {
@@ -422,31 +429,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Indonesia Rate-Hike Bets Rise as MSCI Shock Tests Rupiah",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T08:47:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/bank-indonesia-rate-hike-bets-rise-as-msci-shock-tests-rupiah",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.443,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": -0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
-      "topPositiveTitle": "RBA’s Hauser Says Australia Inflation Outlook ‘Materially Worse’",
+      "topPositiveTitle": "South African Inflation Rate Up Less Than Expected in September",
       "items": [
         {
           "title": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
@@ -461,41 +456,57 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 21",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-20T22:04:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
+          "title": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T08:35:20+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261021de62983",
           "tags": [
             "commodity",
+            "market"
+          ],
+          "titleJa": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”"
+        },
+        {
+          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T06:48:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "RBA’s Hauser Says Australia Inflation Outlook ‘Materially Worse’",
+          "title": "South African Inflation Rate Up Less Than Expected in September",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T23:51:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/rba-s-hauser-says-australia-inflation-outlook-materially-worse",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T08:04:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/south-african-inflation-rate-up-less-than-expected-in-september",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.113,
+      "avgSentiment": 0.239,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-      "topPositiveTitle": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
+      "topPositiveTitle": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
       "items": [
         {
           "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
@@ -514,11 +525,25 @@
           ]
         },
         {
+          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T06:48:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
           "title": "外務省局長がロシア外務省幹部と会談 記者の即時解放強く要請",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T22:44:00+00:00",
+          "publishedAt": "2026-10-21T03:58:05+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261021de62531",
           "tags": [
             "geopolitical",
@@ -527,15 +552,27 @@
           "titleJa": "外務省局長がロシア外務省幹部と会談 記者の即時解放強く要請"
         },
         {
-          "title": "South Africa Set to Tighten Budget Rules as Pressures From Iran War Mount",
+          "title": "South African Inflation Rate Up Less Than Expected in September",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-20T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/south-africa-set-to-tighten-budget-rules-as-pressures-from-iran-war-mount",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T08:04:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/south-african-inflation-rate-up-less-than-expected-in-september",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine’s Anti-Graft Agencies Search Central Bank Building",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T07:59:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/ukraine-s-anti-graft-agencies-search-central-bank-building",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
