@@ -1,10 +1,35 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-21T17:46:33.188176+09:00",
-  "sourceUpdatedAt": "2026-10-21T08:35:20+00:00",
+  "updatedAt": "2026-10-22T01:01:10.103454+09:00",
+  "sourceUpdatedAt": "2026-10-21T15:51:38+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
+      "topPositiveTitle": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
+      "items": [
+        {
+          "title": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T09:11:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/japan-has-195-trillion-inflation-windfall-ex-boj-official-says",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -12,97 +37,69 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
-      "topPositiveTitle": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+      "topNegativeTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
+      "topPositiveTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
       "items": [
         {
-          "title": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
+          "title": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T03:40:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/boj-likely-to-keep-hiking-rates-every-quarter-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Japan’s Export Growth Stays Solid, Supported by Chips, Cars",
-      "topPositiveTitle": "S. Korea’s Export Boom Stays Strong Ahead of BOK Rate Decision",
-      "items": [
-        {
-          "title": "Japan’s Export Growth Stays Solid, Supported by Chips, Cars",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T00:02:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/japan-s-export-growth-stays-solid-supported-by-chips-cars",
+          "publishedAt": "2026-10-21T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-21/asia-s-chip-exports-soar-as-ai-bubble-debate-rages",
           "tags": [
             "jp_semiconductor",
             "market"
-          ]
-        },
-        {
-          "title": "S. Korea’s Export Boom Stays Strong Ahead of BOK Rate Decision",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/s-korea-s-export-boom-stays-strong-ahead-of-bok-rate-decision",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.11,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-      "topPositiveTitle": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
+      "topNegativeTitle": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
+      "topPositiveTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
       "items": [
         {
-          "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
+          "title": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
+          "publishedAt": "2026-10-21T14:21:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/bofa-s-cabana-asks-fed-on-rate-hikes-why-wait-now-video",
           "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
+          "title": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T15:05:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/boe-s-bailey-defends-speaking-out-over-trump-attacks-on-powell",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-21T07:00:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/chiriseri-france-s-fiscal-picture-concern-bond-markets-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T00:13:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
           "tags": [
+            "commodity",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -111,67 +108,42 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.466,
+      "avgSentiment": 0.667,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
-      "topPositiveTitle": "AI Stocks Rally After Super Micro Prelim Sales Bring Relief",
+      "topNegativeTitle": "A SpaceX-Tesla Merger? Why Elon Musk Thinks It’s a Good Idea",
+      "topPositiveTitle": "US Futures Climb With SpaceX Results Helping Boost AI Sentiment",
       "items": [
         {
-          "title": "Amazon to Hire Over 300,000 in Holiday Season, Up 20% From 2025",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T12:45:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/amazon-to-hire-over-300-000-in-holiday-season-up-20-from-2025",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Will SpaceX and Tesla Merge? Why Elon Musk Wants to Combine His Companies",
+          "title": "A SpaceX-Tesla Merger? Why Elon Musk Thinks It’s a Good Idea",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-07-06T09:00:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-07-06/will-spacex-and-tesla-merge-why-elon-musk-may-combine-his-companies",
+          "publishedAt": "2026-10-21T15:28:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/a-spacex-tesla-merger-why-elon-musk-thinks-it-s-a-good-idea",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "S. Korea’s Export Boom Stays Strong Ahead of BOK Rate Decision",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/s-korea-s-export-boom-stays-strong-ahead-of-bok-rate-decision",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Stocks Rally After Super Micro Prelim Sales Bring Relief",
+          "title": "US Futures Climb With SpaceX Results Helping Boost AI Sentiment",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T22:14:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/ai-stocks-rally-after-super-micro-preliminary-sales-bring-relief",
+          "publishedAt": "2026-10-21T12:18:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/us-futures-climb-with-spacex-results-helping-boost-ai-sentiment",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Climb as SpaceX Results Reignite AI Trade: Markets Wrap",
+          "title": "Nasdaq 100 Climbs as SpaceX Results Fuel AI Trade: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -185,52 +157,38 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
-      "topPositiveTitle": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
-      "items": [
-        {
-          "title": "UK to Send Fighter Jets to Defend Saudi Arabia From Houthi Attacks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T06:40:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/horizons-middle-east-africa-10-21-2026-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-      "topPositiveTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
+      "topNegativeTitle": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
+      "topPositiveTitle": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
       "items": [
         {
-          "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
+          "title": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-21T00:13:21+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
           "tags": [
-            "geopolitical",
+            "commodity",
             "gold",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -263,78 +221,90 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.113,
-      "negativeCount": 2,
-      "positiveCount": 2,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Indonesia Holds Rate, Cuts RRR as MSCI Shock Hits Rupiah",
-      "topPositiveTitle": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
+      "topNegativeTitle": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
+      "topPositiveTitle": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
       "items": [
         {
-          "title": "Indonesia Holds Rate, Cuts RRR as MSCI Shock Hits Rupiah",
-          "source": "Bloomberg Markets",
+          "title": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-10-21T06:55:59+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/bank-indonesia-holds-rate-as-msci-shock-threatens-rupiah",
           "tags": [
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
-          "source": "Bloomberg Markets",
+          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T06:48:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
+          "publishedAt": "2026-10-21T09:59:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
           "tags": [
-            "commodity",
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Belgian Government Facing Push to Sell 5.7% BNP Stake",
-          "source": "Bloomberg Markets",
+          "title": "秋田 氾濫特別警報 政府が官邸連絡室設置",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T05:05:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/belgian-government-facing-push-to-sell-5-7-bnp-paribas-stake",
+          "publishedAt": "2026-10-21T11:39:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261021de63165",
           "tags": [
             "macro_risk",
+            "market"
+          ],
+          "titleJa": "秋田 氾濫特別警報 政府が官邸連絡室設置"
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
+      "topPositiveTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
+      "items": [
+        {
+          "title": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T11:05:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/imf-urges-currency-flexibility-as-rbi-mounts-rupee-defense",
+          "tags": [
+            "fx",
             "market"
           ]
         },
         {
-          "title": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-21T08:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/south-africa-eyes-new-fiscal-anchor-to-rein-in-debt-video",
+          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T09:59:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
           "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
@@ -342,55 +312,66 @@
         }
       ]
     },
-    "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "rates": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": -0.094,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "US Pending Home Sales Plunged in September to a Record Low",
-      "topPositiveTitle": "Chiriseri: France’s Fiscal Picture Concern Bond Markets",
+      "topNegativeTitle": "Moody’s Earnings Fall Short of Estimates, Shares Decline",
+      "topPositiveTitle": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
       "items": [
         {
-          "title": "US Pending Home Sales Plunged in September to a Record Low",
-          "source": "Bloomberg Economics",
+          "title": "Moody’s Earnings Fall Short of Estimates, Shares Decline",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-10-20T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/us-pending-home-sales-fall-to-record-low-as-mortgage-rates-rise",
+          "publishedAt": "2026-10-21T14:29:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/moody-s-earnings-fall-short-of-estimates-shares-decline",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
+          "title": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
+          "publishedAt": "2026-10-21T14:21:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/bofa-s-cabana-asks-fed-on-rate-hikes-why-wait-now-video",
           "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-21T06:55:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/bank-indonesia-holds-rate-as-msci-shock-threatens-rupiah",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Israel Holds Rates, Hikes Growth Forecasts Ahead of Election",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T13:07:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/israel-pauses-interest-rate-cuts-ahead-of-crucial-election",
+          "tags": [
+            "geopolitical",
+            "market",
+            "rates"
           ]
         },
         {
@@ -404,54 +385,42 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "BOJ Likely to Keep Hiking Rates Every Quarter, Ex-Official Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T03:40:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/boj-likely-to-keep-hiking-rates-every-quarter-ex-official-says",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Hungary Holds Key Rate With Budget and Euro Path In Focus",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T12:01:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/hungary-holds-interest-rate-with-budget-and-euro-path-in-focus",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.19,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
-      "topPositiveTitle": "South African Inflation Rate Up Less Than Expected in September",
+      "topNegativeTitle": "Lula, Bolsonaro Court Brazil Voters With Free Bus Rides, Cash Back",
+      "topPositiveTitle": "French Bond Risk Hits 15-Year High as Risk Gauge Climbs",
       "items": [
         {
-          "title": "Drop in Insolvencies Adds to Signs of Resilience in UK Economy",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-20T12:33:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/uk-insolvencies-drop-as-businesses-endure-higher-costs",
+          "title": "Lula, Bolsonaro Court Brazil Voters With Free Bus Rides, Cash Back",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T14:06:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/free-bus-rides-cash-back-lula-bolsonaro-court-brazil-voters-ahead-of-election",
           "tags": [
             "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T13:59:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/middle-east-oil-flows-near-prewar-levels-defy-hormuz-attacks",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         },
@@ -469,16 +438,14 @@
           "titleJa": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”"
         },
         {
-          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
+          "title": "Latest Oil Market News and Analysis for Oct. 21",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T06:48:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
+          "publishedAt": "2026-10-20T22:04:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -498,58 +465,55 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.239,
-      "negativeCount": 1,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": 0.083,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-      "topPositiveTitle": "South Africa Eyes New Fiscal Anchor to Rein in Debt",
+      "topNegativeTitle": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
+      "topPositiveTitle": "South African Inflation Rate Up Less Than Expected in September",
       "items": [
         {
-          "title": "Gold Steadies as Conflicting Iran Signals Cloud Path for Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Wants India’s Reliance to Refine More Venezuelan Oil",
+          "title": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T06:48:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/us-wants-india-s-reliance-to-refine-more-venezuelan-oil-video",
+          "publishedAt": "2026-10-21T13:59:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/middle-east-oil-flows-near-prewar-levels-defy-hormuz-attacks",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "外務省局長がロシア外務省幹部と会談 記者の即時解放強く要請",
-          "source": "NHK 経済",
+          "title": "Israel Holds Rates, Hikes Growth Forecasts Ahead of Election",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T03:58:05+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261021de62531",
+          "publishedAt": "2026-10-21T13:07:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/israel-pauses-interest-rate-cuts-ahead-of-crucial-election",
           "tags": [
             "geopolitical",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T09:59:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
-          ],
-          "titleJa": "外務省局長がロシア外務省幹部と会談 記者の即時解放強く要請"
+          ]
         },
         {
           "title": "South African Inflation Rate Up Less Than Expected in September",
@@ -560,18 +524,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/south-african-inflation-rate-up-less-than-expected-in-september",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Ukraine’s Anti-Graft Agencies Search Central Bank Building",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T07:59:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/ukraine-s-anti-graft-agencies-search-central-bank-building",
-          "tags": [
             "geopolitical",
             "market"
           ]
