@@ -1,20 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-22T01:01:10.103454+09:00",
-  "sourceUpdatedAt": "2026-10-21T15:51:38+00:00",
+  "updatedAt": "2026-10-22T09:12:31.723930+09:00",
+  "sourceUpdatedAt": "2026-10-22T00:02:19+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
+      "topNegativeTitle": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
       "topPositiveTitle": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
       "items": [
+        {
+          "title": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-21T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/most-boj-watchers-expect-next-interest-rate-hike-in-december",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
           "source": "Bloomberg Economics",
@@ -55,29 +68,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.665,
+      "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
-      "topPositiveTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
+      "topNegativeTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
+      "topPositiveTitle": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
       "items": [
-        {
-          "title": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T14:21:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/bofa-s-cabana-asks-fed-on-rate-hikes-why-wait-now-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
           "source": "Bloomberg Economics",
@@ -91,59 +91,7 @@
           ]
         },
         {
-          "title": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.667,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "A SpaceX-Tesla Merger? Why Elon Musk Thinks It’s a Good Idea",
-      "topPositiveTitle": "US Futures Climb With SpaceX Results Helping Boost AI Sentiment",
-      "items": [
-        {
-          "title": "A SpaceX-Tesla Merger? Why Elon Musk Thinks It’s a Good Idea",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T15:28:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/a-spacex-tesla-merger-why-elon-musk-thinks-it-s-a-good-idea",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Futures Climb With SpaceX Results Helping Boost AI Sentiment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-21T12:18:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/us-futures-climb-with-spacex-results-helping-boost-ai-sentiment",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Climbs as SpaceX Results Fuel AI Trade: Markets Wrap",
+          "title": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
@@ -151,6 +99,58 @@
           "url": "https://www.bloomberg.com/news/articles/2026-10-20/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": 0.557,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Nextdc Investor UniSuper Says ‘Not That Keen’ on Data Centers",
+      "topPositiveTitle": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
+      "items": [
+        {
+          "title": "Nextdc Investor UniSuper Says ‘Not That Keen’ on Data Centers",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T21:55:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/nextdc-investor-unisuper-says-not-that-keen-on-data-centers",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stock Futures Slip After Earnings, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-21T22:13:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-20T22:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-20/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -169,32 +169,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
-      "topPositiveTitle": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
-      "items": [
-        {
-          "title": "Gold Wavers as Oil Eases With Traders Focused on Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T00:13:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-steadies-as-conflicting-iran-signals-cloud-path-for-rates",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -221,27 +205,28 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
-      "topPositiveTitle": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
+      "topNegativeTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+      "topPositiveTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
       "items": [
         {
-          "title": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T06:55:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/bank-indonesia-holds-rate-as-msci-shock-threatens-rupiah",
+          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         },
         {
@@ -313,50 +298,37 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.094,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": -0.082,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Moody’s Earnings Fall Short of Estimates, Shares Decline",
+      "topNegativeTitle": "US Mortgage Rates Fall for First Time Since Early August",
       "topPositiveTitle": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
       "items": [
         {
-          "title": "Moody’s Earnings Fall Short of Estimates, Shares Decline",
-          "source": "Bloomberg Markets",
+          "title": "US Mortgage Rates Fall for First Time Since Early August",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-21T14:29:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/moody-s-earnings-fall-short-of-estimates-shares-decline",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-21T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/us-mortgage-rates-fall-for-first-time-since-early-august",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "BofA’s Cabana Asks Fed on Rate Hikes ‘Why Wait Now?’",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T14:21:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/bofa-s-cabana-asks-fed-on-rate-hikes-why-wait-now-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Indonesia Holds Rates in ‘Policy Mix’ to Support FX and Growth",
+          "title": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T06:55:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/bank-indonesia-holds-rate-as-msci-shock-threatens-rupiah",
+          "publishedAt": "2026-10-21T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/most-boj-watchers-expect-next-interest-rate-hike-in-december",
           "tags": [
-            "macro_risk",
+            "jp_broad",
             "market",
             "rates"
           ]
@@ -375,12 +347,12 @@
           ]
         },
         {
-          "title": "UK Inflation Hits 11-Month High as Bank of England Eyes Rate Hike",
+          "title": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T06:04:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/inflation-jumps-to-11-month-high-as-bank-of-england-considers-a-hike",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-21T10:09:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/ecb-s-kazaks-says-more-tightening-may-be-needed-econostream",
           "tags": [
             "market",
             "rates"
@@ -389,38 +361,63 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.19,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 4,
-      "sourceCount": 3,
+      "avgSentiment": 0.049,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Lula, Bolsonaro Court Brazil Voters With Free Bus Rides, Cash Back",
-      "topPositiveTitle": "French Bond Risk Hits 15-Year High as Risk Gauge Climbs",
+      "topNegativeTitle": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
+      "topPositiveTitle": "US Stock Futures Slip After Earnings, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Lula, Bolsonaro Court Brazil Voters With Free Bus Rides, Cash Back",
+          "title": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T14:06:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/free-bus-rides-cash-back-lula-bolsonaro-court-brazil-voters-ahead-of-election",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-21T22:23:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/apa-to-build-major-australia-gas-pipeline-to-avert-shortfalls",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
+          "title": "El Niño Stresses China’s Power Market With Return to Costly Gas",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-21T23:31:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/el-nino-stresses-china-s-power-market-with-return-to-costly-gas",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Santos Posts Record Quarterly Output on New LNG, Oil Projects",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T13:59:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/middle-east-oil-flows-near-prewar-levels-defy-hormuz-attacks",
+          "publishedAt": "2026-10-21T23:09:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/santos-posts-record-quarterly-output-on-new-lng-oil-projects",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -436,31 +433,6 @@
             "market"
           ],
           "titleJa": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 21",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-20T22:04:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/latest-oil-market-news-and-analysis-for-oct-21",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "South African Inflation Rate Up Less Than Expected in September",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T08:04:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/south-african-inflation-rate-up-less-than-expected-in-september",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
@@ -472,19 +444,20 @@
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
-      "topPositiveTitle": "South African Inflation Rate Up Less Than Expected in September",
+      "topNegativeTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+      "topPositiveTitle": "BlackRock Director on Investment Shifts, Wealth Transfer",
       "items": [
         {
-          "title": "Middle East Oil Flows Near Prewar Levels Defy Hormuz Attacks",
+          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T13:59:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/middle-east-oil-flows-near-prewar-levels-defy-hormuz-attacks",
+          "publishedAt": "2026-10-21T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -516,16 +489,16 @@
           ]
         },
         {
-          "title": "South African Inflation Rate Up Less Than Expected in September",
-          "source": "Bloomberg Economics",
+          "title": "BlackRock Director on Investment Shifts, Wealth Transfer",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T08:04:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/south-african-inflation-rate-up-less-than-expected-in-september",
+          "publishedAt": "2026-10-21T21:26:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-21/blackrock-director-on-investment-shifts-wealth-transfer-video",
           "tags": [
-            "commodity",
             "geopolitical",
-            "market"
+            "market",
+            "trust"
           ]
         }
       ]
@@ -539,7 +512,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 4,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
