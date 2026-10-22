@@ -1,19 +1,19 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-22T09:12:31.723930+09:00",
-  "sourceUpdatedAt": "2026-10-22T00:02:19+00:00",
+  "updatedAt": "2026-10-22T10:40:46.948758+09:00",
+  "sourceUpdatedAt": "2026-10-22T01:10:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
-      "topPositiveTitle": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
+      "topPositiveTitle": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
       "items": [
         {
           "title": "Most BOJ Watchers Expect Next Interest Rate Hike in December",
@@ -27,18 +27,6 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Japan Has ¥195 Trillion Inflation Windfall, Ex-BOJ Official Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T09:11:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/japan-has-195-trillion-inflation-windfall-ex-boj-official-says",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
         }
       ]
     },
@@ -46,13 +34,39 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
-      "topPositiveTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
+      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+      "topPositiveTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
       "items": [
+        {
+          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T00:55:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "BOK Holds Rate After Rare Back-to-Back Increase Due to Chip Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T00:52:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/bok-holds-rate-as-it-takes-stock-of-back-to-back-increases",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
         {
           "title": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
           "source": "Bloomberg Economics",
@@ -68,16 +82,30 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.665,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
-      "topPositiveTitle": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
+      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+      "topPositiveTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
       "items": [
+        {
+          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T23:56:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
           "source": "Bloomberg Economics",
@@ -89,68 +117,44 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T22:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.557,
+      "avgSentiment": 0.215,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Nextdc Investor UniSuper Says ‘Not That Keen’ on Data Centers",
-      "topPositiveTitle": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
+      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+      "topPositiveTitle": "Stocks Slip After Mixed Megacap Results, Oil Rises: Markets Wrap",
       "items": [
         {
-          "title": "Nextdc Investor UniSuper Says ‘Not That Keen’ on Data Centers",
+          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T21:55:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/nextdc-investor-unisuper-says-not-that-keen-on-data-centers",
+          "publishedAt": "2026-10-22T00:55:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
           "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "US Stock Futures Slip After Earnings, Oil Gains: Markets Wrap",
+          "title": "Stocks Slip After Mixed Megacap Results, Oil Rises: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
+          "sentimentScore": 0.43,
           "publishedAt": "2026-10-21T22:13:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Climb in Late Hours on Meta’s Big AI Wagers: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-20T22:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-20/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -169,16 +173,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+      "topPositiveTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+      "items": [
+        {
+          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T23:56:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -208,15 +227,29 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
-      "topPositiveTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+      "topPositiveTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
       "items": [
         {
-          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T00:55:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -259,15 +292,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
-      "topPositiveTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
+      "topPositiveTitle": "Singapore Dollar Gains on Yen as Carry Funder, Analysts Say",
       "items": [
         {
           "title": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
@@ -294,16 +327,28 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Singapore Dollar Gains on Yen as Carry Funder, Analysts Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-22T01:10:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/singapore-dollar-gains-on-yen-as-carry-funder-analysts-say",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.082,
+      "avgSentiment": -0.066,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "US Mortgage Rates Fall for First Time Since Early August",
       "topPositiveTitle": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
@@ -334,6 +379,20 @@
           ]
         },
         {
+          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-21T23:56:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Israel Holds Rates, Hikes Growth Forecasts Ahead of Election",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -361,7 +420,7 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.049,
+      "avgSentiment": 0.014,
       "negativeCount": 2,
       "positiveCount": 2,
       "neutralCount": 3,
@@ -369,7 +428,7 @@
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
-      "topPositiveTitle": "US Stock Futures Slip After Earnings, Oil Gains: Markets Wrap",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 22",
       "items": [
         {
           "title": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
@@ -408,7 +467,7 @@
           ]
         },
         {
-          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -437,18 +496,18 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
-      "topPositiveTitle": "BlackRock Director on Investment Shifts, Wealth Transfer",
+      "topNegativeTitle": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
+      "topPositiveTitle": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
       "items": [
         {
-          "title": "Eight Months of War Turns China Petrochemical Glut Into a Crunch",
+          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -486,19 +545,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "BlackRock Director on Investment Shifts, Wealth Transfer",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T21:26:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/blackrock-director-on-investment-shifts-wealth-transfer-video",
-          "tags": [
-            "geopolitical",
-            "market",
-            "trust"
           ]
         }
       ]
