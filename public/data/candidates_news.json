@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-22T10:40:46.948758+09:00",
-  "sourceUpdatedAt": "2026-10-22T01:10:26+00:00",
+  "updatedAt": "2026-10-22T17:48:37.223500+09:00",
+  "sourceUpdatedAt": "2026-10-22T08:45:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -34,39 +34,13 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
-      "topPositiveTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+      "topNegativeTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
+      "topPositiveTitle": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
       "items": [
-        {
-          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T00:55:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BOK Holds Rate After Rare Back-to-Back Increase Due to Chip Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T00:52:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/bok-holds-rate-as-it-takes-stock-of-back-to-back-increases",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
         {
           "title": "Asia’s Chip Exports Soar as AI Bubble Debate Rages",
           "source": "Bloomberg Economics",
@@ -82,28 +56,42 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": -0.113,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
-      "topPositiveTitle": "BOE’s Bailey Defends Speaking Out Over Trump Attacks on Powell",
+      "topNegativeTitle": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
+      "topPositiveTitle": "Nasdaq 100 Futures Fall 1.8% as AI Optimism Fades: Markets Wrap",
       "items": [
         {
-          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+          "title": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-21T23:56:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
           "tags": [
+            "commodity",
             "gold",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Futures Fall 1.8% as AI Optimism Fades: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-21T22:13:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -121,79 +109,142 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.215,
-      "negativeCount": 0,
+      "avgSentiment": -0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
-      "topPositiveTitle": "Stocks Slip After Mixed Megacap Results, Oil Rises: Markets Wrap",
+      "topNegativeTitle": "China Stocks Enter Bear Market as Tech Slumps, Policy Hopes Ebb",
+      "topPositiveTitle": "Nasdaq 100 Futures Fall 1.8% as AI Optimism Fades: Markets Wrap",
       "items": [
         {
-          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+          "title": "China Stocks Enter Bear Market as Tech Slumps, Policy Hopes Ebb",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T00:55:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-22T02:51:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/china-stocks-set-for-bear-market-as-ai-trade-policy-hopes-fade",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
+            "global_broad",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Slip After Mixed Megacap Results, Oil Rises: Markets Wrap",
+          "title": "Citi ECM Chief Sees Near-Term IPO Caution on Neocloud Wobbles",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T07:23:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/citi-ecm-chief-sees-near-term-ipo-caution-on-neocloud-wobbles",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Lead Asia Rout, Houthi Attacks Prompt US Diplomat Departures",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T06:54:22+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/insight-with-haslinda-amin-10-22-2026-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nasdaq 100 Futures Fall 1.8% as AI Optimism Fades: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.43,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-21T22:13:33+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
-      "topPositiveTitle": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+      "topNegativeTitle": "China Stocks Enter Bear Market as Tech Slumps, Policy Hopes Ebb",
+      "topPositiveTitle": "US Orders Some Diplomats Out of Saudi Arabia After Deadly Attacks, Brent Tops $110",
       "items": [
         {
-          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
+          "title": "China Stocks Enter Bear Market as Tech Slumps, Policy Hopes Ebb",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-22T02:51:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/china-stocks-set-for-bear-market-as-ai-trade-policy-hopes-fade",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Stocks Drop Most Since Liberation Day",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-22T06:43:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/the-china-show-10-22-2026-video",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "US Orders Some Diplomats Out of Saudi Arabia After Deadly Attacks, Brent Tops $110",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T07:10:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/horizons-middle-east-africa-10-22-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
+      "topPositiveTitle": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
+      "items": [
+        {
+          "title": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
           "publishedAt": "2026-10-21T23:56:16+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
           "tags": [
+            "commodity",
             "gold",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -224,83 +275,68 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.667,
+      "negativeCount": 2,
       "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
-      "topPositiveTitle": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
+      "topNegativeTitle": "Turkey Consumer Confidence Slumps Most in Years on Fund Rout",
+      "topPositiveTitle": "Al Falasi: Satellites for Disaster Prevention Over War",
       "items": [
         {
-          "title": "AI Boom Likely to Cushion Asia Despite Earnings Woes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T00:55:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-22/ai-boom-likely-to-cushion-asia-despite-earnings-woes-video",
+          "title": "Turkey Consumer Confidence Slumps Most in Years on Fund Rout",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-22T08:04:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/turkey-consumer-confidence-slumps-most-in-years-after-fund-rout",
           "tags": [
-            "jp_semiconductor",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
+          "title": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-21T23:56:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
           "tags": [
             "commodity",
+            "gold",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Al Falasi: Satellites for Disaster Prevention Over War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T08:03:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/al-falasi-satellites-for-disaster-prevention-over-war-video",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T09:59:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "秋田 氾濫特別警報 政府が官邸連絡室設置",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T11:39:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261021de63165",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "秋田 氾濫特別警報 政府が官邸連絡室設置"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
-      "topPositiveTitle": "Singapore Dollar Gains on Yen as Carry Funder, Analysts Say",
+      "topPositiveTitle": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
       "items": [
         {
           "title": "IMF Urges Currency Flexibility as RBI Mounts Rupee Defense",
@@ -313,42 +349,16 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T09:59:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore Dollar Gains on Yen as Carry Funder, Analysts Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-22T01:10:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/singapore-dollar-gains-on-yen-as-carry-funder-analysts-say",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.066,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": -0.055,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "US Mortgage Rates Fall for First Time Since Early August",
       "topPositiveTitle": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
@@ -379,17 +389,15 @@
           ]
         },
         {
-          "title": "Gold Edges Lower as Traders Weigh Mideast Signals, Fed Rate Path",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T23:56:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
+          "title": "RBI Minutes Show Split Over Signal for More Rate Hikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-21T11:33:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/inflation-weak-rupee-keep-rbi-rate-hikes-in-play-minutes-show",
           "tags": [
-            "gold",
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -406,12 +414,12 @@
           ]
         },
         {
-          "title": "ECB’s Kazaks Says More Tightening May Be Needed: Econostream",
+          "title": "Philippines Ready to Tighten Further After Surprise Jumbo Hike",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-21T10:09:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/ecb-s-kazaks-says-more-tightening-may-be-needed-econostream",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-22T06:31:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/philippines-delivers-jumbo-rate-hike-as-inflation-heats-up-anew",
           "tags": [
             "market",
             "rates"
@@ -420,63 +428,54 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.014,
+      "avgSentiment": -0.333,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 22",
+      "topNegativeTitle": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
+      "topPositiveTitle": "US Orders Some Diplomats Out of Saudi Arabia After Deadly Attacks, Brent Tops $110",
       "items": [
         {
-          "title": "APA to Build Major Australia Gas Pipeline to Avert Shortfalls",
+          "title": "Gold Falls as Higher Oil Fuels Inflation Fears Ahead of Fed Meet",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-21T22:23:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/apa-to-build-major-australia-gas-pipeline-to-avert-shortfalls",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-21T23:56:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-21/gold-edges-lower-as-traders-weigh-mideast-signals-fed-rate-path",
           "tags": [
             "commodity",
-            "market"
+            "gold",
+            "macro_risk",
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "El Niño Stresses China’s Power Market With Return to Costly Gas",
+          "title": "Alhasan: Iran Chokepoints Squeeze Energy Markets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T23:31:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/el-nino-stresses-china-s-power-market-with-return-to-costly-gas",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Santos Posts Record Quarterly Output on New LNG, Oil Projects",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T23:09:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/santos-posts-record-quarterly-output-on-new-lng-oil-projects",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
+          "publishedAt": "2026-10-22T07:42:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/alhasan-iran-chokepoints-squeeze-energy-markets-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Orders Some Diplomats Out of Saudi Arabia After Deadly Attacks, Brent Tops $110",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-22T07:10:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/horizons-middle-east-africa-10-22-2026-video",
+          "tags": [
+            "commodity",
+            "global_broad",
             "market"
           ]
         },
@@ -496,25 +495,37 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
-      "topPositiveTitle": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
+      "topNegativeTitle": "Alhasan: Iran Chokepoints Squeeze Energy Markets",
+      "topPositiveTitle": "Al Falasi: Satellites for Disaster Prevention Over War",
       "items": [
         {
-          "title": "China’s Petrochemicals Glut Turns to Crunch After Months of War",
+          "title": "Alhasan: Iran Chokepoints Squeeze Energy Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-22T07:42:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/alhasan-iran-chokepoints-squeeze-energy-markets-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Al Falasi: Satellites for Disaster Prevention Over War",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/eight-months-of-war-turns-china-petrochemical-glut-into-a-crunch",
+          "publishedAt": "2026-10-22T08:03:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-22/al-falasi-satellites-for-disaster-prevention-over-war-video",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -532,20 +543,6 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Merz Says EU Isn't Looking for a Trade 'Conflict' With China",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T09:59:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/merz-eu-isn-t-looking-for-a-trade-conflict-with-china-video",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -558,7 +555,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 4,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
