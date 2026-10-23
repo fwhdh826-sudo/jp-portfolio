@@ -1,184 +1,35 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-23T10:43:26.988945+09:00",
-  "sourceUpdatedAt": "2026-10-23T01:20:33+00:00",
+  "updatedAt": "2026-10-23T17:44:13.049847+09:00",
+  "sourceUpdatedAt": "2026-10-23T08:30:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Japan Inflation Rises Above BOJ Target, Backing Rate Hikes",
-      "topPositiveTitle": "Japan Inflation Rises Above BOJ Target, Backing Rate Hikes",
-      "items": [
-        {
-          "title": "Japan Inflation Rises Above BOJ Target, Backing Rate Hikes",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-22T23:32:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/japan-inflation-rises-above-boj-target-level-backing-rate-hikes",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
-      "avgSentiment": -0.5,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
-      "topPositiveTitle": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
+      "topNegativeTitle": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
+      "topPositiveTitle": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
       "items": [
         {
-          "title": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
-          "source": "Bloomberg Markets",
+          "title": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:06:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/korean-stocks-drop-on-chip-losses-after-us-selloff-oil-gains",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T08:10:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/boj-is-said-to-keep-rate-hikes-on-fast-track-december-in-focus",
           "tags": [
-            "commodity",
-            "jp_semiconductor",
-            "macro_risk",
+            "jp_broad",
             "market"
           ]
         }
       ]
     },
-    "us_broad": {
-      "avgSentiment": 0.25,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
-      "topPositiveTitle": "Treasuries Surge as Worldwide Worries Spark Rush to Safety",
-      "items": [
-        {
-          "title": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:42:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/japanese-bond-yields-fall-as-ai-jitters-spur-haven-demand",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Yen Hits One-Month High as US Tech Rout Revives Haven Appeal",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-23T01:15:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/yen-hits-one-month-high-as-us-tech-rout-revives-haven-appeal",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Tech Stock Selloff Deepens in Asia, Yen Gains: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-22T22:05:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Treasuries Surge as Worldwide Worries Spark Rush to Safety",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-22T03:46:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/long-end-us-yield-hits-one-month-low-as-ai-fears-fuel-haven-bid",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": -0.723,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Nasdaq Drops as Doubts Grow Over AI Spending",
-      "topPositiveTitle": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
-      "items": [
-        {
-          "title": "Nasdaq Drops as Doubts Grow Over AI Spending",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-23T00:17:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/nasdaq-drops-as-doubts-grow-over-ai-spending-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "China AI Model Stocks’ $150 Billion Drop Shows No Sign of Easing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T00:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/china-ai-model-stocks-150-billion-drop-shows-no-sign-of-easing",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:42:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/japanese-bond-yields-fall-as-ai-jitters-spur-haven-demand",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -190,6 +41,111 @@
       "topPositiveTitle": null,
       "items": []
     },
+    "us_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "us_growth": {
+      "avgSentiment": -0.223,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Copper Pares Weekly Decline as Selloff in AI Stocks Eases",
+      "topPositiveTitle": "Tech Rout Pauses With Oil Rise Capping Relief: Markets Wrap",
+      "items": [
+        {
+          "title": "Copper Pares Weekly Decline as Selloff in AI Stocks Eases",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-23T03:00:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/copper-heads-for-weekly-loss-as-ai-selloff-hurts-risk-appetite",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-23T07:34:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Rout Pauses With Oil Rise Capping Relief: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-22T22:05:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.165,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
+      "topPositiveTitle": "China Stocks Rebound as National Team ETF Buying Picks Up",
+      "items": [
+        {
+          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-23T07:34:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Stocks Rebound as National Team ETF Buying Picks Up",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-23T02:13:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/china-stocks-sink-deeper-into-bear-market-despite-state-buying",
+          "tags": [
+            "global_broad",
+            "market",
+            "trust"
+          ]
+        }
+      ]
+    },
     "gold": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
@@ -198,19 +154,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Near Three-Month Low as AI Jitters Fuel Volatility",
-      "topPositiveTitle": "Gold Holds Near Three-Month Low as AI Jitters Fuel Volatility",
+      "topNegativeTitle": "Bridgewater China Cut Gold and Is ‘Optimistic’ on Local Stocks",
+      "topPositiveTitle": "Bridgewater China Cut Gold and Is ‘Optimistic’ on Local Stocks",
       "items": [
         {
-          "title": "Gold Holds Near Three-Month Low as AI Jitters Fuel Volatility",
+          "title": "Bridgewater China Cut Gold and Is ‘Optimistic’ on Local Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T00:15:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gold-holds-near-three-month-low-as-ai-jitters-fuel-volatility",
+          "publishedAt": "2026-10-23T06:53:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/bridgewater-china-cut-gold-and-is-optimistic-on-local-stocks",
           "tags": [
             "gold",
-            "macro_risk",
             "market"
           ]
         }
@@ -241,21 +196,34 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.223,
-      "negativeCount": 6,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": -0.286,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "UK Consumer Confidence in Slump as Big as Brexit Shock, GfK Says",
-      "topPositiveTitle": "Yen Jumps as Traders Seek Safety Amid Global Flight From Risk",
+      "topNegativeTitle": "Copper Pares Weekly Decline as Selloff in AI Stocks Eases",
+      "topPositiveTitle": "Big Business on the Israeli Election",
       "items": [
         {
-          "title": "UK Consumer Confidence in Slump as Big as Brexit Shock, GfK Says",
-          "source": "Bloomberg Economics",
+          "title": "Copper Pares Weekly Decline as Selloff in AI Stocks Eases",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
+          "publishedAt": "2026-10-23T03:00:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/copper-heads-for-weekly-loss-as-ai-selloff-hurts-risk-appetite",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-22T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-22/uk-consumer-confidence-in-slump-as-big-as-brexit-shock-gfk-says",
           "tags": [
@@ -265,55 +233,40 @@
           ]
         },
         {
-          "title": "Turkey Consumer Confidence Slumps Most in Years on Fund Rout",
+          "title": "UK Growth Hits Eight-Month High and Jobs Slump Ends, PMI Shows",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-22T08:04:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/turkey-consumer-confidence-slumps-most-in-years-after-fund-rout",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China AI Model Stocks’ $150 Billion Drop Shows No Sign of Easing",
+          "title": "Big Business on the Israeli Election",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T00:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/china-ai-model-stocks-150-billion-drop-shows-no-sign-of-easing",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T08:29:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/big-business-on-the-israeli-election-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
+          "title": "Hidden Rallies Emerge From Tech Selloff: Market Analysis",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:42:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/japanese-bond-yields-fall-as-ai-jitters-spur-haven-demand",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T08:06:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/hidden-rallies-emerge-from-tech-selloff-3-minutes-mliv-video",
           "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:06:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/korean-stocks-drop-on-chip-losses-after-us-selloff-oil-gains",
-          "tags": [
-            "commodity",
-            "jp_semiconductor",
             "macro_risk",
             "market"
           ]
@@ -321,123 +274,36 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.2,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "UGX/USD: Uganda Shilling Drops 2.5%, Erasing Gains After Rate Hike",
-      "topPositiveTitle": "Yen Jumps as Traders Seek Safety Amid Global Flight From Risk",
-      "items": [
-        {
-          "title": "UGX/USD: Uganda Shilling Drops 2.5%, Erasing Gains After Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-22T10:31:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/ugx-usd-uganda-shilling-drops-2-5-erasing-gains-after-rate-hike",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "SNB Judged Franc Threat No Longer Needed as Haven Flows Ebbed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T07:54:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/snb-judged-franc-threat-no-longer-needed-as-haven-flows-ebbed",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Yen Hits One-Month High as US Tech Rout Revives Haven Appeal",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-23T01:15:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/yen-hits-one-month-high-as-us-tech-rout-revives-haven-appeal",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Tech Stock Selloff Deepens in Asia, Yen Gains: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-10-22T22:05:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Yen Jumps as Traders Seek Safety Amid Global Flight From Risk",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-22T11:35:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/yen-outpaces-peers-as-risk-aversion-rises-flows-in-focus",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.009,
-      "negativeCount": 4,
-      "positiveCount": 4,
-      "neutralCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
-      "topPositiveTitle": "Japan Inflation Rises Above BOJ Target, Backing Rate Hikes",
+      "topNegativeTitle": "Margin Trade Liquidation Speeds Indian Small-Cap Stock Decline",
+      "topPositiveTitle": "China Offshore Yuan Bonds Priced at Record Lows Amid Rally",
       "items": [
         {
-          "title": "Japanese Bond Yields Fall as AI Jitters Spur Haven Demand",
+          "title": "Margin Trade Liquidation Speeds Indian Small-Cap Stock Decline",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:42:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/japanese-bond-yields-fall-as-ai-jitters-spur-haven-demand",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T07:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/margin-trade-liquidation-speeds-indian-small-cap-stock-decline",
           "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "UGX/USD: Uganda Shilling Drops 2.5%, Erasing Gains After Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.43,
-          "publishedAt": "2026-10-22T10:31:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/ugx-usd-uganda-shilling-drops-2-5-erasing-gains-after-rate-hike",
-          "tags": [
-            "fx",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -455,25 +321,40 @@
           ]
         },
         {
-          "title": "RBI Minutes Show Split Over Signal for More Rate Hikes",
+          "title": "Kazakhstan Cuts Base Rate by 50 Basis Points as Inflation Slows",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-21T11:33:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-21/inflation-weak-rupee-keep-rbi-rate-hikes-in-play-minutes-show",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T07:02:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/kazakhstan-cuts-base-rate-by-50-basis-points-as-inflation-slows",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB Set to Raise Rates in December After Pause, Economists Say",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T04:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ecb-set-to-raise-rates-in-december-after-pause-economists-say",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Mexico Inflation Ticks Up as Banxico Weighs Next Rate Move",
+          "title": "Russia to Extend Rate-Cut Pause as Ukraine Strikes Push Inflation Above Target",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T12:26:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/mexico-inflation-ticks-up-as-banxico-weighs-next-rate-move",
+          "publishedAt": "2026-10-23T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/russia-to-extend-rate-cut-pause-as-ukraine-strikes-push-inflation-above-target",
           "tags": [
+            "commodity",
+            "geopolitical",
             "market",
             "rates"
           ]
@@ -481,49 +362,51 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.028,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.041,
+      "negativeCount": 2,
+      "positiveCount": 2,
       "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 6,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 23",
+      "topNegativeTitle": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
+      "topPositiveTitle": "Tech Rout Pauses With Oil Rise Capping Relief: Markets Wrap",
       "items": [
         {
-          "title": "Korean Stocks Drop on Chip Losses After US Selloff, Oil Gains",
+          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-10-23T00:06:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/korean-stocks-drop-on-chip-losses-after-us-selloff-oil-gains",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-23T07:34:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
           "tags": [
             "commodity",
-            "jp_semiconductor",
+            "global_broad",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "UK Growth Hits Eight-Month High and Jobs Slump Ends, PMI Shows",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Australia’s Victoria State Approves $700 Million Gas Project",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T23:25:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/australia-s-victoria-state-approves-700-million-gas-project",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Czech Policymaker Sees Tough Rate Hike Call on Energy Risks",
+          "title": "Kazakhstan Cuts Base Rate by 50 Basis Points as Inflation Slows",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T12:13:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/czech-policymaker-sees-tough-rate-hike-call-as-energy-risks-grow",
+          "publishedAt": "2026-10-23T07:02:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/kazakhstan-cuts-base-rate-by-50-basis-points-as-inflation-slows",
           "tags": [
             "commodity",
             "market",
@@ -531,48 +414,51 @@
           ]
         },
         {
-          "title": "Spain Faces Oil Disruption Danger of a Different Kind",
-          "source": "Bloomberg Economics",
+          "title": "Eni Raises Payouts as High Fuel Prices Bolster Cash Flow",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-22/spain-faces-oil-disruption-danger-of-a-different-kind",
+          "publishedAt": "2026-10-23T05:37:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/eni-raises-investor-payouts-as-high-fuel-prices-boost-cash-flow",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”",
-          "source": "NHK 経済",
+          "title": "Russia to Extend Rate-Cut Pause as Ukraine Strikes Push Inflation Above Target",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-21T08:35:20+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261021de62983",
+          "publishedAt": "2026-10-23T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/russia-to-extend-rate-cut-pause-as-ukraine-strikes-push-inflation-above-target",
           "tags": [
             "commodity",
-            "market"
-          ],
-          "titleJa": "木原官房長官 冬の電気・ガス支援“原油価格注視し適切対応”"
+            "geopolitical",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": -0.143,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "UK Consumer Confidence in Slump as Big as Brexit Shock, GfK Says",
-      "topPositiveTitle": "BlackRock's Senra on Investment Shifts, Wealth Transfer",
+      "topNegativeTitle": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
+      "topPositiveTitle": "Big Business on the Israeli Election",
       "items": [
         {
-          "title": "UK Consumer Confidence in Slump as Big as Brexit Shock, GfK Says",
+          "title": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-22T23:01:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-22/uk-consumer-confidence-in-slump-as-big-as-brexit-shock-gfk-says",
           "tags": [
@@ -582,44 +468,57 @@
           ]
         },
         {
-          "title": "Turkey Delivers Cautious Rate Cut, Leaves Room for Another",
+          "title": "UK Growth Hits Eight-Month High and Jobs Slump Ends, PMI Shows",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T11:02:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/turkey-cuts-interest-rate-for-first-time-since-start-of-iran-war",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "SNB Judged Franc Threat No Longer Needed as Haven Flows Ebbed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-22T07:54:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/snb-judged-franc-threat-no-longer-needed-as-haven-flows-ebbed",
-          "tags": [
-            "fx",
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "BlackRock's Senra on Investment Shifts, Wealth Transfer",
+          "title": "Big Business on the Israeli Election",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-21T21:26:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-21/blackrock-director-on-investment-shifts-wealth-transfer-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T08:29:36+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/big-business-on-the-israeli-election-video",
           "tags": [
             "geopolitical",
-            "market",
-            "trust"
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Nigeria's Shift to Solar",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T06:48:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/nigeria-s-shift-to-solar-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Eni Raises Payouts as High Fuel Prices Bolster Cash Flow",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T05:37:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/eni-raises-investor-payouts-as-high-fuel-prices-boost-cash-flow",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         }
       ]
