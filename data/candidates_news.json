@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-24T10:46:28.086964+09:00",
-  "sourceUpdatedAt": "2026-10-24T01:07:34+00:00",
+  "updatedAt": "2026-10-24T23:42:33.003740+09:00",
+  "sourceUpdatedAt": "2026-10-24T14:36:22+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
-      "topPositiveTitle": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
-      "items": [
-        {
-          "title": "BOJ Is Said to Keep Rate Hikes on Fast Track, December in Focus",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T08:10:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/boj-is-said-to-keep-rate-hikes-on-fast-track-december-in-focus",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -42,42 +29,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.047,
-      "negativeCount": 2,
+      "avgSentiment": 0.083,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
-      "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+      "topNegativeTitle": "Kalshi Courts Wall Street in Bid to Be the ‘Inflation Exchange’ With CPI Futures",
+      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
       "items": [
-        {
-          "title": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T20:32:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ai-trade-stumbles-again-as-investors-rediscover-treasury-haven",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "GM Shares Suffer Worst Week Since 2023 Amid Wider Autos Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gm-analysts-say-buy-the-dip-as-stock-eyes-worst-week-since-2025",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Kalshi Courts Wall Street in Bid to Be the ‘Inflation Exchange’ With CPI Futures",
           "source": "Bloomberg Economics",
@@ -91,64 +52,78 @@
           ]
         },
         {
-          "title": "Growth, Value Stocks Set for Reshuffle as S&P Adopts New Rules",
+          "title": "Inside Gershkovich’s 16 Months in Russian Prisons",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T00:12:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/growth-value-stocks-set-for-reshuffle-as-s-p-adopts-new-rules",
+          "publishedAt": "2026-10-24T13:53:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/inside-gershkovich-s-16-months-in-russian-prisons-video",
           "tags": [
+            "geopolitical",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Chipmakers Post Longest Weekly Drop Since November",
+          "title": "Gershkovich Says Putin Seeks His Terms, Not a Deal",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T20:57:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
+          "publishedAt": "2026-10-24T11:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/gershkovich-says-putin-seeks-his-terms-not-a-deal-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Persistent Oil Prices Threaten Inflation Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-24T13:19:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.335,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
-      "topPositiveTitle": "AI-Driven Job Losses and Inequality: A Guide to Proposals for Helping Workers",
+      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
+      "topPositiveTitle": "HR Navigates AI and a Changing Workplace",
       "items": [
         {
-          "title": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
+          "title": "By The Way: Headlines You May Have Missed",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T20:32:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ai-trade-stumbles-again-as-investors-rediscover-treasury-haven",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-24T13:38:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/by-the-way-headlines-you-may-have-missed-video",
           "tags": [
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "AI-Driven Job Losses and Inequality: A Guide to Proposals for Helping Workers",
-          "source": "Bloomberg Economics",
+          "title": "HR Navigates AI and a Changing Workplace",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T13:27:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ai-driven-job-losses-and-inequality-a-guide-to-proposals-for-helping-workers",
+          "publishedAt": "2026-10-24T13:29:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/hr-navigates-ai-and-a-changing-workplace-video",
           "tags": [
             "market",
             "us_growth"
@@ -157,16 +132,32 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "topPositiveTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "items": [
+        {
+          "title": "Oil Markets Brace for Renewed Iran Fighting",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T11:39:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0,
@@ -205,15 +196,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.165,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
-      "topPositiveTitle": "Coffins and Canoes From Canada Get 50% Tariff Under New Trump Order",
+      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
       "items": [
         {
           "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
@@ -229,16 +220,18 @@
           ]
         },
         {
-          "title": "GM Shares Suffer Worst Week Since 2023 Amid Wider Autos Selloff",
+          "title": "Oil Markets Brace for Renewed Iran Fighting",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gm-analysts-say-buy-the-dip-as-stock-eyes-worst-week-since-2025",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T11:39:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -254,16 +247,18 @@
           ]
         },
         {
-          "title": "UK’s Two-Speed Economy Motors on for Now as Firms Defy the Gloom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
+          "title": "Persistent Oil Prices Threaten Inflation Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-24T13:19:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
           "tags": [
             "commodity",
+            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
@@ -281,15 +276,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": -0.066,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
-      "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+      "topPositiveTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
       "items": [
         {
           "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
@@ -303,146 +298,163 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Macklem Ensnared by Market Pricing and Will Hike, Economists Say",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/macklem-ensnared-by-market-pricing-and-will-hike-economists-say",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Chipmakers Post Longest Weekly Drop Since November",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T20:57:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Consumer Sentiment Slips to Five-Month Low on Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/us-consumer-sentiment-slips-to-five-month-low-on-inflation-woes",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-22T22:05:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.132,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Chipmakers Post Longest Weekly Drop Since November",
-      "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
       "items": [
         {
-          "title": "Chipmakers Post Longest Weekly Drop Since November",
+          "title": "Oil Markets Brace for Renewed Iran Fighting",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T20:57:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
+          "publishedAt": "2026-10-24T11:39:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Hedge Funds Are Record Short Natural Gas on Mild Winter Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T20:54:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/hedge-funds-are-record-short-natural-gas-on-mild-winter-outlook",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UK’s Two-Speed Economy Motors on for Now as Firms Defy the Gloom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T08:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
-          "tags": [
-            "commodity",
+            "geopolitical",
+            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+          "title": "US LNG Project Developer Funded by Russia’s Novatek, FT Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T04:24:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/us-lng-project-developer-funded-by-russia-s-novatek-ft-says",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T05:25:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261024de64758",
+          "tags": [
+            "commodity",
+            "market"
+          ],
+          "titleJa": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整"
+        },
+        {
+          "title": "Persistent Oil Prices Threaten Inflation Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-22T22:05:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-24T13:19:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market",
-            "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Indonesia Begins Trimming Pipeline Gas Exports to Singapore",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-24T07:48:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/indonesia-begins-trimming-pipeline-gas-exports-to-singapore",
+          "tags": [
+            "commodity",
+            "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.047,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
-      "topPositiveTitle": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
+      "topNegativeTitle": "Inside Gershkovich’s 16 Months in Russian Prisons",
+      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
       "items": [
         {
-          "title": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
-          "source": "Bloomberg Economics",
+          "title": "Inside Gershkovich’s 16 Months in Russian Prisons",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T10:44:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/russia-holds-key-rate-as-ukrainian-strikes-spur-inflation",
+          "publishedAt": "2026-10-24T13:53:29+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/inside-gershkovich-s-16-months-in-russian-prisons-video",
           "tags": [
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Russian Diesel Deal Confronts Legal Uncertainty",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T12:55:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/russian-diesel-deal-confronts-legal-uncertainty-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Gershkovich Says Putin Seeks His Terms, Not a Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T11:54:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/gershkovich-says-putin-seeks-his-terms-not-a-deal-video",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Oil Markets Brace for Renewed Iran Fighting",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T11:39:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US LNG Project Developer Funded by Russia’s Novatek, FT Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T04:24:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/us-lng-project-developer-funded-by-russia-s-novatek-ft-says",
+          "tags": [
+            "commodity",
             "geopolitical",
             "market"
           ]
