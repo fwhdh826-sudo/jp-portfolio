@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-24T00:48:27.421319+09:00",
-  "sourceUpdatedAt": "2026-10-23T15:45:52+00:00",
+  "updatedAt": "2026-10-24T10:46:28.086964+09:00",
+  "sourceUpdatedAt": "2026-10-24T01:07:34+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -42,38 +42,38 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.235,
+      "avgSentiment": -0.047,
       "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Treasuries’ AI Link Shows Sharp Shift as Haven Trade Returns",
+      "topNegativeTitle": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
       "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
       "items": [
         {
-          "title": "Treasuries’ AI Link Shows Sharp Shift as Haven Trade Returns",
+          "title": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T03:19:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/treasuries-link-to-ai-shows-sharp-shift-as-haven-trade-returns",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T20:32:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ai-trade-stumbles-again-as-investors-rediscover-treasury-haven",
           "tags": [
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
-          "title": "Gold Falls to July Low as Inflation Concerns Weigh Before Fed",
+          "title": "GM Shares Suffer Worst Week Since 2023 Amid Wider Autos Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-23T00:15:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gold-holds-near-three-month-low-as-ai-jitters-fuel-volatility",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gm-analysts-say-buy-the-dip-as-stock-eyes-worst-week-since-2025",
           "tags": [
-            "commodity",
-            "gold",
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -91,12 +91,24 @@
           ]
         },
         {
-          "title": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+          "title": "Growth, Value Stocks Set for Reshuffle as S&P Adopts New Rules",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-22T22:05:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T00:12:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/growth-value-stocks-set-for-reshuffle-as-s-p-adopts-new-rules",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Chipmakers Post Longest Weekly Drop Since November",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T20:57:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
           "tags": [
             "commodity",
             "market",
@@ -107,42 +119,26 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
+      "topNegativeTitle": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
       "topPositiveTitle": "AI-Driven Job Losses and Inequality: A Guide to Proposals for Helping Workers",
       "items": [
         {
-          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T07:34:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Tech Fears Push Global Credit Spreads to 17-Month High",
+          "title": "AI Trade Stumbles Again as Investors Rediscover Treasury Haven",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T15:37:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/ai-fears-push-global-credit-spreads-to-17-month-high-video",
+          "publishedAt": "2026-10-23T20:32:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/ai-trade-stumbles-again-as-investors-rediscover-treasury-haven",
           "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
             "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -161,86 +157,28 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.17,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
-      "topPositiveTitle": "French Buyers Not Ready To Step in Right Now: Kumra",
-      "items": [
-        {
-          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T07:34:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "French Buyers Not Ready To Step in Right Now: Kumra",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-22T18:50:54+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-22/french-buyers-not-ready-to-step-in-right-now-kumra-video",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": -0.465,
-      "negativeCount": 2,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Falls to July Low as Inflation Concerns Weigh Before Fed",
-      "topPositiveTitle": "AI Tech Fears Push Global Credit Spreads to 17-Month High",
-      "items": [
-        {
-          "title": "Gold Falls to July Low as Inflation Concerns Weigh Before Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-23T00:15:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gold-holds-near-three-month-low-as-ai-jitters-fuel-volatility",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Tech Fears Push Global Credit Spreads to 17-Month High",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T15:37:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/ai-fears-push-global-credit-spreads-to-17-month-high-video",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -267,78 +205,63 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.186,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.165,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Hedge Funds Suffer Widest Daily Drawdown Since Covid",
-      "topPositiveTitle": "French Bond Risk Nears Biggest Weekly Rise as Crisis Deepens",
+      "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
+      "topPositiveTitle": "Coffins and Canoes From Canada Get 50% Tariff Under New Trump Order",
       "items": [
         {
-          "title": "Hedge Funds Suffer Widest Daily Drawdown Since Covid",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-23T14:42:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/hedge-funds-suffer-widest-daily-drawdown-since-covid-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
+          "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-22T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/uk-consumer-confidence-in-slump-as-big-as-brexit-shock-gfk-says",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T21:02:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/france-avoids-moody-s-downgrade-in-reprieve-after-week-of-crisis",
           "tags": [
-            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "AI Tech Fears Push Global Credit Spreads to 17-Month High",
+          "title": "GM Shares Suffer Worst Week Since 2023 Amid Wider Autos Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T15:37:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/ai-fears-push-global-credit-spreads-to-17-month-high-video",
+          "publishedAt": "2026-10-23T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gm-analysts-say-buy-the-dip-as-stock-eyes-worst-week-since-2025",
           "tags": [
-            "geopolitical",
-            "gold",
             "macro_risk",
             "market",
-            "us_growth"
+            "us_broad"
           ]
         },
         {
-          "title": "CFTC Takes Oil Trading Oversight ‘Very Seriously,’ Selig Says",
-          "source": "Bloomberg Markets",
+          "title": "Coffins and Canoes From Canada Get 50% Tariff Under New Trump Order",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T15:26:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/cftc-takes-very-seriously-oil-trading-oversight-selig-says",
+          "publishedAt": "2026-10-23T20:54:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/coffins-and-canoes-from-canada-get-50-tariff-under-new-trump-order",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Jio’s Record IPO Draws Strong Demand, Defying India Market Rout",
-          "source": "Bloomberg Markets",
+          "title": "UK’s Two-Speed Economy Motors on for Now as Firms Defy the Gloom",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T12:03:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/jio-s-record-ipo-draws-strong-demand-defying-india-market-rout",
+          "publishedAt": "2026-10-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
           "tags": [
+            "commodity",
             "macro_risk",
             "market"
           ]
@@ -358,16 +281,29 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.055,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Macklem Ensnared by Market Pricing and Will Hike, Economists Say",
+      "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
       "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
       "items": [
+        {
+          "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-23T21:02:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/france-avoids-moody-s-downgrade-in-reprieve-after-week-of-crisis",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Macklem Ensnared by Market Pricing and Will Hike, Economists Say",
           "source": "Bloomberg Economics",
@@ -381,38 +317,27 @@
           ]
         },
         {
-          "title": "India’s RBI Governor Open to Rate Use to Curb Financial Risks",
+          "title": "Chipmakers Post Longest Weekly Drop Since November",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T15:24:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/india-s-rbi-governor-open-to-rate-use-to-curb-financial-risks",
+          "publishedAt": "2026-10-23T20:57:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
           "tags": [
+            "commodity",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
           "title": "US Consumer Sentiment Slips to Five-Month Low on Inflation",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
           "publishedAt": "2026-10-23T14:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-23/us-consumer-sentiment-slips-to-five-month-low-on-inflation-woes",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Kazakhstan Cuts Base Rate by 50 Basis Points as Inflation Slows",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T07:02:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/kazakhstan-cuts-base-rate-by-50-basis-points-as-inflation-slows",
-          "tags": [
-            "commodity",
             "market",
             "rates"
           ]
@@ -434,151 +359,82 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.227,
-      "negativeCount": 4,
+      "avgSentiment": 0.083,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Wheat Slides for Eighth Week in Longest Losing Streak Since 1997",
+      "topNegativeTitle": "Chipmakers Post Longest Weekly Drop Since November",
       "topPositiveTitle": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
       "items": [
         {
-          "title": "Wheat Slides for Eighth Week in Longest Losing Streak Since 1997",
+          "title": "Chipmakers Post Longest Weekly Drop Since November",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-23T04:40:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/wheat-slides-for-eighth-week-in-longest-losing-streak-since-1997",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T20:57:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-23/chipmakers-post-longest-weekly-drop-since-november-video",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "European Stocks Fall as China Woes Hit Volvo Car, Gucci",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-23T07:34:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/european-stocks-fall-as-china-woes-hit-volvo-car-gucci",
-          "tags": [
-            "commodity",
-            "global_broad",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Falls to July Low as Inflation Concerns Weigh Before Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-23T00:15:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/gold-holds-near-three-month-low-as-ai-jitters-fuel-volatility",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Germany Wants to Stop More Oil Refinery Closures as Costs Mount",
+          "title": "Hedge Funds Are Record Short Natural Gas on Mild Winter Outlook",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T13:25:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/germany-wants-to-stop-more-oil-refinery-closures-as-costs-mount",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-23T20:54:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/hedge-funds-are-record-short-natural-gas-on-mild-winter-outlook",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "CFTC Takes Oil Trading Oversight ‘Very Seriously,’ Selig Says",
-          "source": "Bloomberg Markets",
+          "title": "UK’s Two-Speed Economy Motors on for Now as Firms Defy the Gloom",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T15:26:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/cftc-takes-very-seriously-oil-trading-oversight-selig-says",
+          "publishedAt": "2026-10-23T08:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-23/uk-growth-hits-eight-month-high-and-jobs-slump-ends-pmi-shows",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Stocks Fall as Oil Rally Keeps a Lid on Treasuries: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-22T22:05:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-22/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.167,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
-      "topPositiveTitle": "CFTC Takes Oil Trading Oversight ‘Very Seriously,’ Selig Says",
+      "topNegativeTitle": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
+      "topPositiveTitle": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
       "items": [
-        {
-          "title": "UK Retail Sales Drop Amid Brexit-Sized Slump in Confidence",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-22T23:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-22/uk-consumer-confidence-in-slump-as-big-as-brexit-shock-gfk-says",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "AI Tech Fears Push Global Credit Spreads to 17-Month High",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T15:37:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-23/ai-fears-push-global-credit-spreads-to-17-month-high-video",
-          "tags": [
-            "geopolitical",
-            "gold",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "CFTC Takes Oil Trading Oversight ‘Very Seriously,’ Selig Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T15:26:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/cftc-takes-very-seriously-oil-trading-oversight-selig-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "SLB Sees Growth Driven by Middle East Oil Field Recovery",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T11:27:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/slb-sees-growth-driven-by-middle-east-oil-field-recovery",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Bank of Russia Sees Key Rate High for Longer on Refinery Strikes",
           "source": "Bloomberg Economics",
