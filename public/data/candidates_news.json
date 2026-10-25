@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-25T23:59:36.526393+09:00",
-  "sourceUpdatedAt": "2026-10-25T14:07:40+00:00",
+  "updatedAt": "2026-10-26T08:30:16.174105+09:00",
+  "sourceUpdatedAt": "2026-10-25T23:20:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,10 +29,10 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.2,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
@@ -67,12 +67,12 @@
           ]
         },
         {
-          "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
+          "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/fed-set-to-lead-g7-trio-in-hawkish-rate-pause-eco-week-ahead",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/warsh-tells-traders-to-watch-the-data-they-still-follow-the-fed",
           "tags": [
             "market",
             "rates",
@@ -108,15 +108,15 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
-      "topPositiveTitle": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
+      "topPositiveTitle": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
       "items": [
         {
           "title": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
@@ -126,6 +126,19 @@
           "publishedAt": "2026-10-25T07:44:43+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-cuts-kospi-12-month-target-by-25-as-ai-trade-unravels",
           "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-25T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
+          "tags": [
+            "commodity",
             "market",
             "us_growth"
           ]
@@ -196,15 +209,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.083,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
-      "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
       "items": [
         {
           "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
@@ -214,6 +227,20 @@
           "publishedAt": "2026-10-25T08:47:01+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-25/brookfield-to-open-doha-office-to-deepen-its-middle-east-reach",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T22:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -243,19 +270,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "French Protesters Dispersed with Gas as Tensions Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T16:31:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/french-protestors-dispersed-with-gas-as-tensions-rise-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -272,10 +286,10 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.057,
+      "avgSentiment": 0.112,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
@@ -322,12 +336,12 @@
           ]
         },
         {
-          "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
+          "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/fed-set-to-lead-g7-trio-in-hawkish-rate-pause-eco-week-ahead",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/warsh-tells-traders-to-watch-the-data-they-still-follow-the-fed",
           "tags": [
             "market",
             "rates",
@@ -350,16 +364,30 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Inside The Two Argentinas Under Javier Milei",
-      "topPositiveTitle": "Indonesia Begins Trimming Pipeline Gas Exports to Singapore",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 26",
+      "topPositiveTitle": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
       "items": [
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T22:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Inside The Two Argentinas Under Javier Milei",
           "source": "Bloomberg Markets",
@@ -367,18 +395,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-10-25T14:04:15+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-10-25/inside-the-two-argentinas-under-javier-milei-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Singapore’s Wong Vows More Support for Workers, Energy Security",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T05:40:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/singapore-s-wong-vows-more-support-for-workers-energy-security",
           "tags": [
             "commodity",
             "market"
@@ -398,29 +414,30 @@
           "titleJa": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整"
         },
         {
-          "title": "Indonesia Begins Trimming Pipeline Gas Exports to Singapore",
+          "title": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T07:48:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/indonesia-begins-trimming-pipeline-gas-exports-to-singapore",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-25T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
-      "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
       "items": [
         {
           "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
@@ -432,6 +449,32 @@
           "tags": [
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T22:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "9 Days to Midterm Elections, Big Tech Earnings",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T15:42:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-25/bloomberg-this-weekend-10-25-2026-video",
+          "tags": [
+            "geopolitical",
             "market"
           ]
         },
@@ -459,19 +502,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "French Protesters Dispersed with Gas as Tensions Rise",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T16:31:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/french-protestors-dispersed-with-gas-as-tensions-rise-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -484,7 +514,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 0,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
