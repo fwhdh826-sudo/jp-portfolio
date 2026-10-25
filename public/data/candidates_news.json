@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-24T23:42:33.003740+09:00",
-  "sourceUpdatedAt": "2026-10-24T14:36:22+00:00",
+  "updatedAt": "2026-10-25T10:23:15.146493+09:00",
+  "sourceUpdatedAt": "2026-10-24T23:37:26+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,23 +29,36 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.066,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Kalshi Courts Wall Street in Bid to Be the ‘Inflation Exchange’ With CPI Futures",
+      "topNegativeTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
       "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
       "items": [
         {
-          "title": "Kalshi Courts Wall Street in Bid to Be the ‘Inflation Exchange’ With CPI Futures",
+          "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T13:00:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/kalshi-courts-wall-street-in-bid-to-be-the-inflation-exchange-with-cpi-futures",
+          "publishedAt": "2026-10-24T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/fed-set-to-lead-g7-trio-in-hawkish-rate-pause-eco-week-ahead",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "New Middle East Threats, Russian Diesel Coming to US",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T15:57:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/bloomberg-this-weekend-10-24-2026-video",
           "tags": [
             "market",
             "us_broad"
@@ -196,29 +209,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": 0.22,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
-      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
+      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
       "items": [
-        {
-          "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T21:02:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/france-avoids-moody-s-downgrade-in-reprieve-after-week-of-crisis",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "Oil Markets Brace for Renewed Iran Fighting",
           "source": "Bloomberg Markets",
@@ -235,13 +235,14 @@
           ]
         },
         {
-          "title": "Coffins and Canoes From Canada Get 50% Tariff Under New Trump Order",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T20:54:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/coffins-and-canoes-from-canada-get-50-tariff-under-new-trump-order",
+          "title": "French Protesters Dispersed with Gas as Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-24T16:31:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/french-protestors-dispersed-with-gas-as-tensions-rise-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -276,38 +277,38 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
-      "topPositiveTitle": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
+      "topNegativeTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
+      "topPositiveTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
       "items": [
         {
-          "title": "France Avoids Moody’s Downgrade in Reprieve After Week of Crisis",
+          "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-23T21:02:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-23/france-avoids-moody-s-downgrade-in-reprieve-after-week-of-crisis",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-24T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-24/fed-set-to-lead-g7-trio-in-hawkish-rate-pause-eco-week-ahead",
           "tags": [
-            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.132,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
       "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
@@ -324,19 +325,6 @@
             "geopolitical",
             "global_broad",
             "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US LNG Project Developer Funded by Russia’s Novatek, FT Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T04:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/us-lng-project-developer-funded-by-russia-s-novatek-ft-says",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         },
@@ -383,15 +371,15 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.047,
+      "avgSentiment": 0.094,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Inside Gershkovich’s 16 Months in Russian Prisons",
-      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
+      "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
       "items": [
         {
           "title": "Inside Gershkovich’s 16 Months in Russian Prisons",
@@ -447,17 +435,17 @@
           ]
         },
         {
-          "title": "US LNG Project Developer Funded by Russia’s Novatek, FT Says",
-          "source": "Bloomberg Markets",
+          "title": "茂木外相 米中ロ首脳会談 アメリカと緊密に意思疎通し対応",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T04:24:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-24/us-lng-project-developer-funded-by-russia-s-novatek-ft-says",
+          "publishedAt": "2026-10-23T06:34:22+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261023de64178",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "茂木外相 米中ロ首脳会談 アメリカと緊密に意思疎通し対応"
         }
       ]
     }
