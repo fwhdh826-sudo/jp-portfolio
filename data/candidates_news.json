@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-25T10:23:15.146493+09:00",
-  "sourceUpdatedAt": "2026-10-24T23:37:26+00:00",
+  "updatedAt": "2026-10-25T23:59:36.526393+09:00",
+  "sourceUpdatedAt": "2026-10-25T14:07:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,43 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.066,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.134,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
-      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
+      "topNegativeTitle": "Fed Looks Set to Pause After September Rate Hike",
+      "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
       "items": [
+        {
+          "title": "Fed Looks Set to Pause After September Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T13:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-25/fed-looks-set-to-pause-after-september-rate-hike-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
           "source": "Bloomberg Economics",
@@ -53,90 +80,51 @@
           ]
         },
         {
-          "title": "New Middle East Threats, Russian Diesel Coming to US",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T15:57:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/bloomberg-this-weekend-10-24-2026-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Inside Gershkovich’s 16 Months in Russian Prisons",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T13:53:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/inside-gershkovich-s-16-months-in-russian-prisons-video",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gershkovich Says Putin Seeks His Terms, Not a Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/gershkovich-says-putin-seeks-his-terms-not-a-deal-video",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Persistent Oil Prices Threaten Inflation Outlook",
+          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T13:19:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
             "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-25T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/zero-day-option-traders-are-betting-against-big-s-p-500-swings",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "By The Way: Headlines You May Have Missed",
-      "topPositiveTitle": "HR Navigates AI and a Changing Workplace",
+      "topNegativeTitle": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
+      "topPositiveTitle": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
       "items": [
         {
-          "title": "By The Way: Headlines You May Have Missed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-24T13:38:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/by-the-way-headlines-you-may-have-missed-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "HR Navigates AI and a Changing Workplace",
+          "title": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T13:29:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/hr-navigates-ai-and-a-changing-workplace-video",
+          "publishedAt": "2026-10-25T07:44:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-cuts-kospi-12-month-target-by-25-as-ai-trade-unravels",
           "tags": [
             "market",
             "us_growth"
@@ -152,22 +140,21 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
-      "topPositiveTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "topNegativeTitle": "What’s Happening in EM: Bond Investors Turn to Developing World",
+      "topPositiveTitle": "What’s Happening in EM: Bond Investors Turn to Developing World",
       "items": [
         {
-          "title": "Oil Markets Brace for Renewed Iran Fighting",
+          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:39:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
           "tags": [
-            "commodity",
-            "geopolitical",
             "global_broad",
-            "macro_risk",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -209,27 +196,50 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
+      "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
       "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
       "items": [
         {
-          "title": "Oil Markets Brace for Renewed Iran Fighting",
+          "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T08:47:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/brookfield-to-open-doha-office-to-deepen-its-middle-east-reach",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "French Bond Rout Puts Crisis at Heart of ECB Succession Endgame",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:39:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
+          "publishedAt": "2026-10-25T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/french-bond-rout-puts-crisis-at-heart-of-ecb-succession-endgame",
           "tags": [
-            "commodity",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Israel Election 2026: War-Focused Campaign Masks Underlying Economic Schism",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T09:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/israel-election-2026-war-focused-campaign-masks-underlying-economic-schism",
+          "tags": [
             "geopolitical",
-            "global_broad",
             "macro_risk",
             "market"
           ]
@@ -245,21 +255,6 @@
             "geopolitical",
             "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Persistent Oil Prices Threaten Inflation Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T13:19:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
           ]
         }
       ]
@@ -277,16 +272,55 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.057,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
-      "topPositiveTitle": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
+      "topNegativeTitle": "Fed Looks Set to Pause After September Rate Hike",
+      "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
       "items": [
+        {
+          "title": "Fed Looks Set to Pause After September Rate Hike",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T13:48:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-25/fed-looks-set-to-pause-after-september-rate-hike-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "RBA’s Hunter Says Rate ‘Not Quite Yet’ Done Fighting Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T10:28:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/rba-s-hunter-says-rate-not-quite-yet-done-fighting-inflation",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
+          "tags": [
+            "global_broad",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
         {
           "title": "Fed Set to Lead G7 Trio in Hawkish Rate Pause: Eco Week Ahead",
           "source": "Bloomberg Economics",
@@ -299,32 +333,54 @@
             "rates",
             "us_broad"
           ]
+        },
+        {
+          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.083,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Oil Markets Brace for Renewed Iran Fighting",
-      "topPositiveTitle": "Persistent Oil Prices Threaten Inflation Outlook",
+      "topNegativeTitle": "Inside The Two Argentinas Under Javier Milei",
+      "topPositiveTitle": "Indonesia Begins Trimming Pipeline Gas Exports to Singapore",
       "items": [
         {
-          "title": "Oil Markets Brace for Renewed Iran Fighting",
+          "title": "Inside The Two Argentinas Under Javier Milei",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:39:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
+          "publishedAt": "2026-10-25T14:04:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-25/inside-the-two-argentinas-under-javier-milei-video",
           "tags": [
             "commodity",
-            "geopolitical",
-            "global_broad",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Singapore’s Wong Vows More Support for Workers, Energy Security",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T05:40:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/singapore-s-wong-vows-more-support-for-workers-energy-security",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
@@ -342,21 +398,6 @@
           "titleJa": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整"
         },
         {
-          "title": "Persistent Oil Prices Threaten Inflation Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-24T13:19:00+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/persistent-oil-prices-threaten-inflation-outlook-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Indonesia Begins Trimming Pipeline Gas Exports to Singapore",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -371,81 +412,66 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.094,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Inside Gershkovich’s 16 Months in Russian Prisons",
+      "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
       "topPositiveTitle": "French Protesters Dispersed with Gas as Tensions Rise",
       "items": [
         {
-          "title": "Inside Gershkovich’s 16 Months in Russian Prisons",
+          "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T13:53:29+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/inside-gershkovich-s-16-months-in-russian-prisons-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T08:47:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/brookfield-to-open-doha-office-to-deepen-its-middle-east-reach",
           "tags": [
             "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Russian Diesel Deal Confronts Legal Uncertainty",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T12:55:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/russian-diesel-deal-confronts-legal-uncertainty-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Gershkovich Says Putin Seeks His Terms, Not a Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:54:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/gershkovich-says-putin-seeks-his-terms-not-a-deal-video",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Oil Markets Brace for Renewed Iran Fighting",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T11:39:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-24/oil-markets-brace-for-renewed-iran-fighting-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "global_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "茂木外相 米中ロ首脳会談 アメリカと緊密に意思疎通し対応",
-          "source": "NHK 経済",
+          "title": "Rubio Plans Trilateral Negotiations Over Ukraine, Johnson Says",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-23T06:34:22+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261023de64178",
+          "publishedAt": "2026-10-25T13:43:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/rubio-plans-trilateral-negotiations-over-ukraine-johnson-says",
           "tags": [
             "geopolitical",
             "market"
-          ],
-          "titleJa": "茂木外相 米中ロ首脳会談 アメリカと緊密に意思疎通し対応"
+          ]
+        },
+        {
+          "title": "Israel Election 2026: War-Focused Campaign Masks Underlying Economic Schism",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-25T09:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/israel-election-2026-war-focused-campaign-masks-underlying-economic-schism",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "French Protesters Dispersed with Gas as Tensions Rise",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-24T16:31:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-24/french-protestors-dispersed-with-gas-as-tensions-rise-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
@@ -458,7 +484,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 0,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
