@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-26T08:30:16.174105+09:00",
-  "sourceUpdatedAt": "2026-10-25T23:20:15+00:00",
+  "updatedAt": "2026-10-26T10:27:17.158921+09:00",
+  "sourceUpdatedAt": "2026-10-26T00:55:28+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,16 +29,30 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.2,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "avgSentiment": 0.085,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed Looks Set to Pause After September Rate Hike",
+      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
       "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
       "items": [
+        {
+          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T23:23:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Fed Looks Set to Pause After September Rate Hike",
           "source": "Bloomberg Markets",
@@ -53,39 +67,12 @@
           ]
         },
         {
-          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
-          "tags": [
-            "global_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
           "publishedAt": "2026-10-25T15:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-25/warsh-tells-traders-to-watch-the-data-they-still-follow-the-fed",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
           "tags": [
             "market",
             "rates",
@@ -108,33 +95,21 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -0.065,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
-      "topPositiveTitle": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
+      "topNegativeTitle": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
+      "topPositiveTitle": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
       "items": [
         {
-          "title": "Goldman Cuts Kospi 12-Month Target by 25% as AI Trade Unravels",
+          "title": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T07:44:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-cuts-kospi-12-month-target-by-25-as-ai-trade-unravels",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-10-25T22:09:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
           "tags": [
@@ -142,37 +117,24 @@
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "What’s Happening in EM: Bond Investors Turn to Developing World",
-      "topPositiveTitle": "What’s Happening in EM: Bond Investors Turn to Developing World",
-      "items": [
+        },
         {
-          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
+          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-25T23:22:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
           "tags": [
-            "global_broad",
+            "fx",
             "market",
             "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
     },
-    "gold": {
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -183,6 +145,33 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "gold": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+      "topPositiveTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+      "items": [
+        {
+          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T23:23:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -209,23 +198,23 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.083,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
+      "topNegativeTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+      "topPositiveTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
       "items": [
         {
-          "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
+          "title": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T08:47:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/brookfield-to-open-doha-office-to-deepen-its-middle-east-reach",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T00:14:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/ingenia-soars-on-fresh-1-6-billion-takeover-bid-from-avid",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -247,18 +236,6 @@
           ]
         },
         {
-          "title": "French Bond Rout Puts Crisis at Heart of ECB Succession Endgame",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/french-bond-rout-puts-crisis-at-heart-of-ecb-succession-endgame",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
           "title": "Israel Election 2026: War-Focused Campaign Masks Underlying Economic Schism",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -274,24 +251,63 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.177,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Western Sydney Airport Opens With Uncertain Prospects",
+      "topPositiveTitle": "Baht to Rebound on Inflows Into Nation’s Bonds, Analysts Say",
+      "items": [
+        {
+          "title": "Western Sydney Airport Opens With Uncertain Prospects",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T00:33:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/western-sydney-airport-opens-with-uncertain-prospects-video",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-25T23:22:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
+          "tags": [
+            "fx",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Baht to Rebound on Inflows Into Nation’s Bonds, Analysts Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/baht-to-rebound-on-inflows-into-nation-s-bonds-analysts-say",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": 0.112,
+      "avgSentiment": 0.108,
       "negativeCount": 2,
-      "positiveCount": 3,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Fed Looks Set to Pause After September Rate Hike",
       "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
@@ -322,17 +338,17 @@
           ]
         },
         {
-          "title": "What’s Happening in EM: Bond Investors Turn to Developing World",
+          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-25/what-s-happening-in-em-bond-investors-turn-to-developing-world",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-25T23:22:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
           "tags": [
-            "global_broad",
+            "fx",
             "market",
             "rates",
-            "us_broad"
+            "us_growth"
           ]
         },
         {
@@ -349,12 +365,12 @@
           ]
         },
         {
-          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
+          "title": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-25T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/zero-day-option-traders-are-betting-against-big-s-p-500-swings",
           "tags": [
             "market",
             "rates",
@@ -364,16 +380,43 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.25,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": -0.11,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 26",
-      "topPositiveTitle": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
+      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
       "items": [
+        {
+          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T23:23:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
+          "tags": [
+            "commodity",
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-25T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
+          "tags": [
+            "commodity",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Oct. 26",
           "source": "Bloomberg Markets",
@@ -401,51 +444,37 @@
           ]
         },
         {
-          "title": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整",
-          "source": "NHK 経済",
+          "title": "Singapore PM Vows More Support for Workers, Energy Security",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-24T05:25:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261024de64758",
+          "publishedAt": "2026-10-25T05:40:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/singapore-s-wong-vows-more-support-for-workers-energy-security",
           "tags": [
             "commodity",
             "market"
-          ],
-          "titleJa": "ペルーのケイコ・フジモリ大統領初来日へ 高市首相と会談調整"
-        },
-        {
-          "title": "US Stock Futures Climb as Crude Oil Price Dips: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-25T22:09:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.066,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Brookfield to Open Doha Office to Deepen Middle East Reach",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
+      "topNegativeTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+      "topPositiveTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
       "items": [
         {
-          "title": "Brookfield to Open Doha Office to Deepen Middle East Reach",
+          "title": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T08:47:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/brookfield-to-open-doha-office-to-deepen-its-middle-east-reach",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T00:14:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/ingenia-soars-on-fresh-1-6-billion-takeover-bid-from-avid",
           "tags": [
             "geopolitical",
             "macro_risk",
