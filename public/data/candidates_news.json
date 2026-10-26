@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-26T18:13:46.330007+09:00",
-  "sourceUpdatedAt": "2026-10-26T09:06:02+00:00",
+  "updatedAt": "2026-10-27T02:30:20.734525+09:00",
+  "sourceUpdatedAt": "2026-10-26T17:12:12+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,23 +29,49 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
-      "topPositiveTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
+      "topNegativeTitle": "Anthropic Files for IPO in Global Race to Raise Cash for AI",
+      "topPositiveTitle": "Sahm Warns Fed Against Waiting",
       "items": [
         {
-          "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
+          "title": "Anthropic Files for IPO in Global Race to Raise Cash for AI",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T16:00:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/bloomberg-surveillance-10-26-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/warsh-tells-traders-to-watch-the-data-they-still-follow-the-fed",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T14:38:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed Meeting Focus Turns to Warsh Messaging With December in Mind",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/fed-meeting-focus-turns-to-warsh-messaging-with-december-in-mind",
           "tags": [
             "market",
             "rates",
@@ -53,56 +79,43 @@
           ]
         },
         {
-          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
+          "title": "Sahm Warns Fed Against Waiting",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-26T15:49:25+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/sahm-warns-fed-against-waiting-video",
           "tags": [
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Gain as Investors Parse Anthropic IPO Filing",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-26T12:38:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/us-stock-futures-gain-ahead-of-big-tech-earnings-fed-decision",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.333,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
+      "topNegativeTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "items": [
-        {
-          "title": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T22:09:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Odd Lots: AI Agents Are Changing the Prices of Goods (Podcast)",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-26T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-26/odd-lots-ai-agents-are-changing-the-prices-of-goods-podcast",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
           "source": "Bloomberg Economics",
@@ -167,64 +180,55 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.055,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Chinese Conglomerate Huafa’s Bonds Plunge in Biggest Daily Drop",
-      "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
+      "topNegativeTitle": "Poland’s Zloty Sinks to Three-Year Low Amid Central Bank Row",
+      "topPositiveTitle": "Trump’s tariff salesman and election politics of trade",
       "items": [
         {
-          "title": "Chinese Conglomerate Huafa’s Bonds Plunge in Biggest Daily Drop",
+          "title": "Poland’s Zloty Sinks to Three-Year Low Amid Central Bank Row",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-10-26T08:35:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/chinese-conglomerate-huafa-s-bonds-plunge-in-biggest-daily-drop",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-26T07:28:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/yen-haven-revived-as-euro-yen-bears-eye-move-below-175-bi-says",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "French Bond Rout Puts Crisis at Heart of ECB Succession Endgame",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/french-bond-rout-puts-crisis-at-heart-of-ecb-succession-endgame",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Israel Election 2026: War-Focused Campaign Masks Underlying Economic Schism",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T09:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/israel-election-2026-war-focused-campaign-masks-underlying-economic-schism",
+          "publishedAt": "2026-10-26T15:58:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/poland-s-zloty-sinks-to-three-year-low-amid-central-bank-row",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Mercuria Says Rival Fears Drove Disputed Baltic Tanker Rate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T13:36:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/mercuria-says-rival-fears-made-baltic-keep-disputed-tanker-rate",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Pakistan Raises Rates as Middle East Conflict Fans Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T10:53:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/pakistan-hikes-interest-rate-to-curb-inflation-risks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
@@ -240,30 +244,68 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T22:04:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": -0.083,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
+      "topNegativeTitle": "Soybeans, Coffee, Sugar Slump as Brazil’s Election Hits Currency",
       "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
       "items": [
         {
-          "title": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
+          "title": "Soybeans, Coffee, Sugar Slump as Brazil’s Election Hits Currency",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-26T07:28:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/yen-haven-revived-as-euro-yen-bears-eye-move-below-175-bi-says",
+          "publishedAt": "2026-10-26T03:18:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/soybeans-hit-2-month-low-as-lula-s-win-lifts-china-trade-outlook",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Brazil Markets Crater, Some Stocks Sink 50% After Lula Victory",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-26T01:21:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/brazil-markets-brace-for-rout-on-lula-s-improbable-election-win",
           "tags": [
             "fx",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Colombia Taps Global Bond Market as Fiscal Pressure Mounts",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T13:31:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/colombia-to-sell-new-dollar-bonds-amid-fiscal-pressures",
+          "tags": [
+            "fx",
             "market"
           ]
         },
@@ -284,15 +326,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.001,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "BOE Officials Most Hawkish Since Inflation Was 10%, Model Shows",
-      "topPositiveTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
+      "topPositiveTitle": "Sahm Warns Fed Against Waiting",
       "items": [
         {
           "title": "BOE Officials Most Hawkish Since Inflation Was 10%, Model Shows",
@@ -319,36 +361,40 @@
           ]
         },
         {
-          "title": "UK Dealers See More Treasury Bills Coming to Cut Debt Costs",
-          "source": "Bloomberg Markets",
+          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T07:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/uk-dealers-see-more-treasury-bills-coming-to-cut-debt-costs",
+          "publishedAt": "2026-10-26T14:38:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
           "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Pakistan Raises Rates as Middle East Conflict Fans Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T10:53:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/pakistan-hikes-interest-rate-to-curb-inflation-risks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Euro-Zone Slowdown Will Help Keep ECB Rates on Hold for Now",
+          "title": "Fed Meeting Focus Turns to Warsh Messaging With December in Mind",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T06:20:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/euro-zone-slowdown-central-bank-ecb-rates-hold-for-now",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/warsh-tells-traders-to-watch-the-data-they-still-follow-the-fed",
+          "publishedAt": "2026-10-26T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/fed-meeting-focus-turns-to-warsh-messaging-with-december-in-mind",
           "tags": [
             "market",
             "rates",
@@ -358,44 +404,71 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": 0.096,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
+      "topNegativeTitle": "NBA Reaches Deal With Prediction Markets Kalshi and Polymarket",
       "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "items": [
         {
-          "title": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
+          "title": "NBA Reaches Deal With Prediction Markets Kalshi and Polymarket",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T22:09:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/us-equity-futures-climb-as-crude-oil-price-dips-markets-wrap",
+          "publishedAt": "2026-10-26T17:12:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/nba-reaches-deal-with-prediction-markets-kalshi-and-polymarket",
           "tags": [
             "commodity",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T08:56:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/bofa-sees-oil-around-120-if-iran-resumes-strikes-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "UK Firms Optimistic Healey Will Remove Levies From Energy Bills",
+          "title": "Soybeans, Coffee, Sugar Slump as Brazil’s Election Hits Currency",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-26T03:18:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/soybeans-hit-2-month-low-as-lula-s-win-lifts-china-trade-outlook",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T14:38:20+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Mercuria Says Rival Fears Drove Disputed Baltic Tanker Rate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T13:36:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/mercuria-says-rival-fears-made-baltic-keep-disputed-tanker-rate",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "UK Firms Optimistic Healey Will Remove Energy Bill Levies",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -405,58 +478,73 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-26T03:58:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/thailand-imports-surge-at-record-pace-on-ai-energy-demand",
-          "tags": [
-            "commodity",
-            "market",
-            "us_growth"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": -0.057,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
+      "topNegativeTitle": "Poland’s Zloty Sinks to Three-Year Low Amid Central Bank Row",
       "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
       "items": [
         {
-          "title": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
+          "title": "Poland’s Zloty Sinks to Three-Year Low Amid Central Bank Row",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T08:56:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/bofa-sees-oil-around-120-if-iran-resumes-strikes-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Israel Election 2026: War-Focused Campaign Masks Underlying Economic Schism",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T09:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/israel-election-2026-war-focused-campaign-masks-underlying-economic-schism",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-26T15:58:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/poland-s-zloty-sinks-to-three-year-low-amid-central-bank-row",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Mercuria Says Rival Fears Drove Disputed Baltic Tanker Rate",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T13:36:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/mercuria-says-rival-fears-made-baltic-keep-disputed-tanker-rate",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Pakistan Raises Rates as Middle East Conflict Fans Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T10:53:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/pakistan-hikes-interest-rate-to-curb-inflation-risks",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T16:10:12+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261026de66041",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省"
         },
         {
           "title": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
