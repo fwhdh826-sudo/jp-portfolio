@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-26T10:27:17.158921+09:00",
-  "sourceUpdatedAt": "2026-10-26T00:55:28+00:00",
+  "updatedAt": "2026-10-26T18:13:46.330007+09:00",
+  "sourceUpdatedAt": "2026-10-26T09:06:02+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -29,43 +29,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.085,
-      "negativeCount": 2,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-      "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
+      "topNegativeTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
+      "topPositiveTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
       "items": [
-        {
-          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T23:23:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Looks Set to Pause After September Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T13:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-25/fed-looks-set-to-pause-after-september-rate-hike-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
           "source": "Bloomberg Economics",
@@ -80,12 +53,12 @@
           ]
         },
         {
-          "title": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
+          "title": "Emerging Debt Outruns Treasuries as Rich-World Fiscal Fears Grow",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-25T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/zero-day-option-traders-are-betting-against-big-s-p-500-swings",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-25T12:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/emerging-debt-outruns-treasuries-as-rich-world-fiscal-fears-grow",
           "tags": [
             "market",
             "rates",
@@ -95,18 +68,18 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.065,
+      "avgSentiment": 0.333,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
-      "topPositiveTitle": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
+      "topNegativeTitle": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
+      "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "items": [
         {
-          "title": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
+          "title": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -119,16 +92,27 @@
           ]
         },
         {
-          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
+          "title": "Odd Lots: AI Agents Are Changing the Prices of Goods (Podcast)",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-25T23:22:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-26T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-26/odd-lots-ai-agents-are-changing-the-prices-of-goods-podcast",
           "tags": [
-            "fx",
             "market",
-            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-26T03:58:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/thailand-imports-surge-at-record-pace-on-ai-energy-demand",
+          "tags": [
+            "commodity",
+            "market",
             "us_growth"
           ]
         }
@@ -147,31 +131,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-      "topPositiveTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-      "items": [
-        {
-          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T23:23:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -198,39 +167,49 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": -0.2,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
-      "topPositiveTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+      "topNegativeTitle": "Chinese Conglomerate Huafa’s Bonds Plunge in Biggest Daily Drop",
+      "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
       "items": [
         {
-          "title": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+          "title": "Chinese Conglomerate Huafa’s Bonds Plunge in Biggest Daily Drop",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T00:14:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/ingenia-soars-on-fresh-1-6-billion-takeover-bid-from-avid",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-26T08:35:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/chinese-conglomerate-huafa-s-bonds-plunge-in-biggest-daily-drop",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "title": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-26T07:28:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/yen-haven-revived-as-euro-yen-bears-eye-move-below-175-bi-says",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "French Bond Rout Puts Crisis at Heart of ECB Succession Endgame",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T22:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "publishedAt": "2026-10-25T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/french-bond-rout-puts-crisis-at-heart-of-ecb-succession-endgame",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -247,82 +226,84 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-26T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/-usd-ugx-shilling-freefall-has-uganda-tapping-meager-reserve-war-chest",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.177,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Western Sydney Airport Opens With Uncertain Prospects",
-      "topPositiveTitle": "Baht to Rebound on Inflows Into Nation’s Bonds, Analysts Say",
+      "topNegativeTitle": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
+      "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
       "items": [
         {
-          "title": "Western Sydney Airport Opens With Uncertain Prospects",
+          "title": "Yen Haven Revived as Euro-Yen Bears Eye Move Below 175, BI Says",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T00:33:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/western-sydney-airport-opens-with-uncertain-prospects-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-26T07:28:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/yen-haven-revived-as-euro-yen-bears-eye-move-below-175-bi-says",
           "tags": [
             "fx",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-25T23:22:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
-          "tags": [
-            "fx",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Baht to Rebound on Inflows Into Nation’s Bonds, Analysts Say",
+          "title": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-25T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/baht-to-rebound-on-inflows-into-nation-s-bonds-analysts-say",
+          "publishedAt": "2026-10-26T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/-usd-ugx-shilling-freefall-has-uganda-tapping-meager-reserve-war-chest",
           "tags": [
             "fx",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.108,
+      "avgSentiment": 0.0,
       "negativeCount": 2,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fed Looks Set to Pause After September Rate Hike",
-      "topPositiveTitle": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
+      "topNegativeTitle": "BOE Officials Most Hawkish Since Inflation Was 10%, Model Shows",
+      "topPositiveTitle": "Warsh Tells Traders to Watch the Data. They Still Follow the Fed",
       "items": [
         {
-          "title": "Fed Looks Set to Pause After September Rate Hike",
-          "source": "Bloomberg Markets",
+          "title": "BOE Officials Most Hawkish Since Inflation Was 10%, Model Shows",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T13:48:02+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-25/fed-looks-set-to-pause-after-september-rate-hike-video",
+          "publishedAt": "2026-10-26T05:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/boe-officials-most-hawkish-since-inflation-was-10-model-shows",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -338,17 +319,27 @@
           ]
         },
         {
-          "title": "Goldman Says Yen Becoming Better Hedge Against AI Market Shock",
+          "title": "UK Dealers See More Treasury Bills Coming to Cut Debt Costs",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-25T23:22:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/goldman-says-yen-becoming-better-hedge-against-ai-market-shock",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T07:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/uk-dealers-see-more-treasury-bills-coming-to-cut-debt-costs",
           "tags": [
-            "fx",
             "market",
-            "rates",
-            "us_growth"
+            "rates"
+          ]
+        },
+        {
+          "title": "Euro-Zone Slowdown Will Help Keep ECB Rates on Hold for Now",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T06:20:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/euro-zone-slowdown-central-bank-ecb-rates-hold-for-now",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -363,49 +354,22 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Zero-Day Option Traders Are Betting Against Big S&P 500 Swings",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-25T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/zero-day-option-traders-are-betting-against-big-s-p-500-swings",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.11,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 26",
+      "topNegativeTitle": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
+      "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "items": [
         {
-          "title": "Gold Steadies After Weekly Drop as Focus Shifts to Fed Meeting",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-25T23:23:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/gold-steadies-after-weekly-drop-as-focus-shifts-to-fed-meeting",
-          "tags": [
-            "commodity",
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Under Pressure Before Earnings, Oil Dips: Markets Wrap",
+          "title": "Stocks Gain Before Tech Earnings as Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -418,103 +382,65 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 26",
+          "title": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T22:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "publishedAt": "2026-10-26T08:56:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/bofa-sees-oil-around-120-if-iran-resumes-strikes-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Inside The Two Argentinas Under Javier Milei",
-          "source": "Bloomberg Markets",
+          "title": "UK Firms Optimistic Healey Will Remove Levies From Energy Bills",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T14:04:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-25/inside-the-two-argentinas-under-javier-milei-video",
+          "publishedAt": "2026-10-25T23:04:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-25/uk-firms-optimistic-healey-will-remove-levies-from-energy-bills",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Singapore PM Vows More Support for Workers, Energy Security",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T05:40:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/singapore-s-wong-vows-more-support-for-workers-energy-security",
+          "title": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-26T03:58:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/thailand-imports-surge-at-record-pace-on-ai-energy-demand",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
-      "topPositiveTitle": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+      "topNegativeTitle": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
+      "topPositiveTitle": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
       "items": [
         {
-          "title": "Ingenia Soars on Fresh $1.6 Billion Takeover Bid From AVID",
+          "title": "BofA Sees Oil Around $120 If Iran Resumes Infrastructure Strikes",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T00:14:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/ingenia-soars-on-fresh-1-6-billion-takeover-bid-from-avid",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 26",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T22:04:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/latest-oil-market-news-and-analysis-for-oct-26",
+          "publishedAt": "2026-10-26T08:56:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-26/bofa-sees-oil-around-120-if-iran-resumes-strikes-video",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "9 Days to Midterm Elections, Big Tech Earnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T15:42:35+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-25/bloomberg-this-weekend-10-25-2026-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Rubio Plans Trilateral Negotiations Over Ukraine, Johnson Says",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T13:43:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/rubio-plans-trilateral-negotiations-over-ukraine-johnson-says",
-          "tags": [
             "geopolitical",
             "market"
           ]
@@ -527,6 +453,20 @@
           "publishedAt": "2026-10-25T09:30:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-25/israel-election-2026-war-focused-campaign-masks-underlying-economic-schism",
           "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "(USD:UGX) Shilling Freefall Has Uganda Tapping Meager Reserve War-Chest",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-26T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/-usd-ugx-shilling-freefall-has-uganda-tapping-meager-reserve-war-chest",
+          "tags": [
+            "fx",
             "geopolitical",
             "macro_risk",
             "market"
