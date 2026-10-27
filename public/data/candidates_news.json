@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-27T18:14:08.762441+09:00",
-  "sourceUpdatedAt": "2026-10-27T09:00:00+00:00",
+  "updatedAt": "2026-10-28T01:45:54.608125+09:00",
+  "sourceUpdatedAt": "2026-10-27T16:34:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,72 +31,6 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "topPositiveTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "items": [
-        {
-          "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-26T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/south-korea-s-economy-beats-forecasts-on-ai-driven-chip-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
-      "topPositiveTitle": "US Futures Waver as AI Optimism Wanes Before Fed: Markets Wrap",
-      "items": [
-        {
-          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T14:38:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "US Futures Waver as AI Optimism Wanes Before Fed: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-26T22:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
       "avgSentiment": -0.17,
       "negativeCount": 1,
       "positiveCount": 1,
@@ -105,7 +39,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "topPositiveTitle": "US Futures Waver as AI Optimism Wanes Before Fed: Markets Wrap",
+      "topPositiveTitle": "10月の月例経済報告 「緩やかに回復」を維持",
       "items": [
         {
           "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
@@ -121,13 +55,141 @@
           ]
         },
         {
-          "title": "US Futures Waver as AI Optimism Wanes Before Fed: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "10月の月例経済報告 「緩やかに回復」を維持",
+          "source": "NHK 経済",
           "sentiment": "positive",
           "sentimentScore": 0.33,
+          "publishedAt": "2026-10-27T12:01:50+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261027de66635",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ],
+          "titleJa": "10月の月例経済報告 「緩やかに回復」を維持"
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.2,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Fed Faces a Different Kind of Inflation Problem, Says Kaplan",
+      "topPositiveTitle": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+      "items": [
+        {
+          "title": "Fed Faces a Different Kind of Inflation Problem, Says Kaplan",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-27T16:12:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/kaplan-fed-facing-different-kind-of-inflation-problem-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-27T14:09:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/stifel-s-piegza-says-fed-should-hike-rates-likely-won-t-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Millennium Taps Prediction Markets Data in Hunt for Trading Edge",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T15:46:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/millennium-taps-prediction-markets-data-in-hunt-for-trading-edge",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-10-26T22:03:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
+      "avgSentiment": -0.118,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
+      "topPositiveTitle": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+      "items": [
+        {
+          "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-26T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/south-korea-s-economy-beats-forecasts-on-ai-driven-chip-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "GM to Leave NYSE for Stock Listing on Tech-Focused Nasdaq",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T16:26:11+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/gm-to-leave-nyse-for-stock-listing-on-nasdaq-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Novogratz Says Credit Markets Are Reaching ‘Peak Nervousness’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T11:37:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/novogratz-s-galaxy-tops-revenue-estimates-shares-rise",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-26T22:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "market",
             "us_broad",
             "us_growth"
@@ -136,37 +198,25 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.6,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Pulled Lower by Banks as HSBC Results Disappoint",
-      "topPositiveTitle": "Egypt Backs Saudi Defense as Regional Powers Push Iran Talks",
+      "topNegativeTitle": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
+      "topPositiveTitle": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
       "items": [
         {
-          "title": "European Stocks Pulled Lower by Banks as HSBC Results Disappoint",
+          "title": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentimentScore": -0.6,
           "publishedAt": "2026-10-27T08:18:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/european-stocks-pulled-lower-by-banks-as-hsbc-results-disappoint",
           "tags": [
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Egypt Backs Saudi Defense as Regional Powers Push Iran Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:12:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/horizons-middle-east-africa-10-27-2026-video",
-          "tags": [
-            "geopolitical",
+            "commodity",
             "global_broad",
             "market"
           ]
@@ -174,42 +224,16 @@
       ]
     },
     "gold": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Amundi Says ‘Worst Is Behind Us’ as Gold Flirts With $4,000",
-      "topPositiveTitle": "Chinese Households Are Buying Gold’s Dip as Prices Test $4,000",
-      "items": [
-        {
-          "title": "Amundi Says ‘Worst Is Behind Us’ as Gold Flirts With $4,000",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T08:54:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/amundi-says-worst-is-behind-us-as-gold-flirts-with-4-000",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Chinese Households Are Buying Gold’s Dip as Prices Test $4,000",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T07:32:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/chinese-households-are-buying-gold-s-dip-as-prices-test-4-000",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -224,52 +248,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": -0.835,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "HSBC Reports Profit Miss, Announces Buyback",
-      "topPositiveTitle": "HSBC Earnings: Profit Jump and $1 Billion Buyback Fall Short of Investors Hopes",
-      "items": [
-        {
-          "title": "HSBC Reports Profit Miss, Announces Buyback",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T07:29:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/hsbc-reports-profit-miss-announces-buyback-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        },
-        {
-          "title": "HSBC Earnings: Profit Jump and $1 Billion Buyback Fall Short of Investors Hopes",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T07:31:27+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-27/hsbc-earnings-profit-jump-and-1-billion-buyback-fall-short-of-investors-hopes",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 8,
-      "isStale": false,
       "topNegativeTitle": "French Consumer Confidence Drops to 13-Year Low After Riots",
-      "topPositiveTitle": "Trump’s tariff salesman and election politics of trade",
+      "topPositiveTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
       "items": [
         {
           "title": "French Consumer Confidence Drops to 13-Year Low After Riots",
@@ -284,107 +283,71 @@
           ]
         },
         {
-          "title": "Amundi Says ‘Worst Is Behind Us’ as Gold Flirts With $4,000",
-          "source": "Bloomberg Markets",
+          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T08:54:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/amundi-says-worst-is-behind-us-as-gold-flirts-with-4-000",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Adnoc Drilling CFO: Deals Continue Despite Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:24:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/adnoc-drilling-cfo-deals-continue-despite-conflict-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ESMA Chair on EU Market Volatility, Supervision",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:20:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/esma-chair-on-eu-market-volatility-supervision-video",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Arabia’s Houthi Battle Shifts Fears to Non-Oil Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T15:17:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/saudi-arabia-s-houthi-challenge-shifts-fears-to-non-oil-economy",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-27T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Trading Platform Rocked by Japan Hack, $50 Million Ransom",
-      "topPositiveTitle": "Trading Platform Rocked by Japan Hack, $50 Million Ransom",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "rates": {
+      "avgSentiment": -0.066,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+      "topPositiveTitle": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
       "items": [
         {
-          "title": "Trading Platform Rocked by Japan Hack, $50 Million Ransom",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T23:57:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/japan-s-katayama-vows-to-address-cyber-attack-on-fx-with-urgency",
+          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-27T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
           "tags": [
-            "fx",
-            "market"
+            "commodity",
+            "macro_risk",
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Euro-Shy Czech Government Backs Constitutional Shield for Koruna",
+          "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T15:07:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/euro-shy-czech-government-backs-constitutional-shield-for-koruna",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-27T14:09:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/stifel-s-piegza-says-fed-should-hike-rates-likely-won-t-video",
           "tags": [
-            "fx",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
-        }
-      ]
-    },
-    "rates": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "ECB Says Banks Tighten Credit Conditions, See Loan Demand Fall",
-      "topPositiveTitle": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
-      "items": [
+        },
         {
           "title": "ECB Says Banks Tighten Credit Conditions, See Loan Demand Fall",
           "source": "Bloomberg Economics",
@@ -398,29 +361,13 @@
           ]
         },
         {
-          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
+          "title": "US New Home Sales Fall Amid Surge in Mortgage Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T14:38:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
+          "publishedAt": "2026-10-27T14:02:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/us-new-home-sales-fall-amid-surge-in-mortgage-rates",
           "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Pakistan Raises Rates as Middle East Conflict Fans Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T10:53:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/pakistan-hikes-interest-rate-to-curb-inflation-risks",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -441,160 +388,119 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
+      "avgSentiment": -0.15,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 5,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Saudi Arabia Contains Fire Near Ras Tanura Oil Hub After Attack",
+      "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
       "topPositiveTitle": "China’s Industrial Profits Surge Most in Three Months on Oil",
       "items": [
         {
-          "title": "Saudi Arabia Contains Fire Near Ras Tanura Oil Hub After Attack",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:25:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/saudi-arabia-contains-fire-near-ras-tanura-oil-hub-after-attack",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Indonesia Bond Yield Hits Four-Year High as MSCI Risk, Oil Weigh",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T06:52:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/indonesia-10-year-yield-at-four-year-high-on-msci-risk-oil",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Arabia’s Houthi Battle Shifts Fears to Non-Oil Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T15:17:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/saudi-arabia-s-houthi-challenge-shifts-fears-to-non-oil-economy",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Claudia Sahm Makes the Case for an October Fed Rate Hike",
+          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T14:38:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/claudia-sahm-makes-case-for-an-october-fed-rate-hike-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-27T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
           "tags": [
             "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "UK Firms Optimistic Healey Will Remove Energy Bill Levies",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-25T23:04:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-25/uk-firms-optimistic-healey-will-remove-levies-from-energy-bills",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.112,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Adnoc Drilling CFO: Deals Continue Despite Conflict",
-      "topPositiveTitle": "China to Dispatch Envoys to Mideast in Bid to Prevent Escalation",
-      "items": [
-        {
-          "title": "Adnoc Drilling CFO: Deals Continue Despite Conflict",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:24:36+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/adnoc-drilling-cfo-deals-continue-despite-conflict-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Egypt Backs Saudi Defense as Regional Powers Push Iran Talks",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T08:12:38+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/horizons-middle-east-africa-10-27-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Saudi Arabia’s Houthi Battle Shifts Fears to Non-Oil Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T15:17:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/saudi-arabia-s-houthi-challenge-shifts-fears-to-non-oil-economy",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Pakistan Raises Rates as Middle East Conflict Fans Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T10:53:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/pakistan-hikes-interest-rate-to-curb-inflation-risks",
-          "tags": [
-            "geopolitical",
             "macro_risk",
             "market",
             "rates"
           ]
         },
         {
-          "title": "小泉防衛相 ASEAN拡大国防相会議出席でフィリピン訪問へ",
-          "source": "NHK 経済",
+          "title": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-27T08:18:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/european-stocks-pulled-lower-by-banks-as-hsbc-results-disappoint",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "CFTC to Publish Commitments of Traders Report Twice Weekly",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-27T14:41:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/cftc-aims-to-publish-commitments-of-traders-report-twice-weekly",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 27",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T06:22:58+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261027de66353",
+          "publishedAt": "2026-10-26T22:03:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/latest-oil-market-news-and-analysis-for-oct-27",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-10-26T22:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
+      "topPositiveTitle": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
+      "items": [
+        {
+          "title": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T15:39:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/anglo-american-s-aal-ln-sanches-says-brazil-needs-to-negotiate-with-everyone",
           "tags": [
             "geopolitical",
-            "macro_risk",
             "market"
-          ],
-          "titleJa": "小泉防衛相 ASEAN拡大国防相会議出席でフィリピン訪問へ"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 27",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-26T22:03:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/latest-oil-market-news-and-analysis-for-oct-27",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     }
