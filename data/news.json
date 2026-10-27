@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27T00:40:03+00:00",
+  "updatedAt": "2026-10-27T02:15:03+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,20 +18,81 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-10-26T23:30:00+00:00",
+    "Bloomberg Markets": "2026-10-27T02:01:24+00:00",
     "Bloomberg Economics": "2026-10-26T23:57:11+00:00",
-    "NHK 経済": "2026-10-26T23:19:32+00:00",
-    "reddit r/investing": "2026-10-26T21:14:45+00:00",
+    "NHK 経済": "2026-10-27T02:13:40+00:00",
+    "reddit r/investing": "2026-10-27T01:38:23+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
     {
-      "id": "8fd842180c6b",
+      "id": "bc9e12b80663",
+      "source": "Bloomberg Markets",
+      "title": "China 5-Year Yield Hits Record Low on PBOC’s Cash Injection",
+      "summary": "China’s five-year government bond yield dropped to a record low after the central bank increased its cash injection into the banking system.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/china-5-year-yield-hits-record-low-on-pboc-s-cash-injection",
+      "publishedAt": "2026-10-27T02:01:24+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e339f4b840fc",
+      "source": "Bloomberg Markets",
+      "title": "Yen’s Role in Latin American Carry Trade Withstands Brazil Rout",
+      "summary": "The yen’s funding role for the carry trade in Latin America is alive and well.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/yen-s-role-in-latin-american-carry-trade-withstands-brazil-rout",
+      "publishedAt": "2026-10-27T01:53:33+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "155cdbeb59ad",
+      "source": "Bloomberg Markets",
+      "title": "Asian Chip Stocks Rise as Anthropic IPO Filing Rekindles AI Bets",
+      "summary": "Asian semiconductor stocks jumped, as Anthropic PBC’s initial public offering filing helped renew investor enthusiasm for the artificial intelligence trade.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/asian-chip-stocks-rise-as-anthropic-ipo-filing-rekindles-ai-bets",
+      "publishedAt": "2026-10-27T01:00:52+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "jp_semiconductor",
+        "market",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "358932454e14",
       "source": "Bloomberg Economics",
-      "title": "Japan’s Katayama Vows to Address Cyber Attack on FX with Urgency",
-      "summary": "Japan will address the damage stemming from a cyber attack on a foreign exchange trading platform with a sense of urgency, and no new attacks have been detected, the nation’s finance minister said.",
+      "title": "Japan Vows to Address Cyber Attack on FX with Urgency",
+      "summary": "Japan will address the damage stemming from a cyber attack on a foreign exchange trading platform with a sense of urgency but no new attacks have been detected, the nation’s finance minister said.",
       "url": "https://www.bloomberg.com/news/articles/2026-10-26/japan-s-katayama-vows-to-address-cyber-attack-on-fx-with-urgency",
       "publishedAt": "2026-10-26T23:57:11+00:00",
       "sentiment": "neutral",
@@ -131,14 +192,14 @@
       "translationStatus": "pending"
     },
     {
-      "id": "7f837cf70774",
+      "id": "a5e477e81a99",
       "source": "Bloomberg Markets",
-      "title": "Asian Stocks Rebound on Tech, Brent Extends Fall: Markets Wrap",
-      "summary": "Asian stocks rose, tracking gains on Wall Street after Anthropic PBC’s initial public offering filing revived enthusiasm for artificial intelligence ahead of big tech earnings and the Federal Reserve’s rate decision.",
+      "title": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
+      "summary": "A rally in Wall Street tech stocks following Anthropic PBC’s filing for an initial public offering carried into Asia, rekindling enthusiasm for the artificial intelligence trade. Crude oil extended its decline.",
       "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
       "publishedAt": "2026-10-26T22:03:56+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.6,
+      "sentiment": "negative",
+      "sentimentScore": -0.5,
       "importance": 0.33,
       "tags": [
         "commodity",
@@ -147,7 +208,7 @@
         "us_growth"
       ],
       "tickers": [],
-      "impact": "positive",
+      "impact": "negative",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -296,29 +357,9 @@
       "translationStatus": "pending"
     },
     {
-      "id": "3080a8b64900",
+      "id": "1a346433fe6a",
       "source": "Bloomberg Markets",
-      "title": "Como os mercados reagiram após a vitória do Lula",
-      "summary": "Daniela Milanese conta como os mercados reagiram após a vitória do Lula nas eleições. Com produção de Beatriz Amat, Daniel Carvalho e Patricia Xavier e edição de Mariana Lumy. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/como-os-mercados-reagiram-apos-a-vitoria-do-lula-video",
-      "publishedAt": "2026-10-26T20:49:30+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "5ac1e89b9545",
-      "source": "Bloomberg Markets",
-      "title": "Universal Music Group Discussed Going Private With Buyout Firms",
+      "title": "Universal Music Discussed Going Private With Buyout Firms",
       "summary": "Universal Music Group, the world’s largest record company, has discussed going private with a few prominent Wall Street firms, according to people familiar with the matter.",
       "url": "https://www.bloomberg.com/news/articles/2026-10-26/universal-music-group-discussed-going-private-with-buyout-firms",
       "publishedAt": "2026-10-26T20:46:36+00:00",
@@ -662,26 +703,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "dc2f66c2664e",
-      "source": "Bloomberg Markets",
-      "title": "Lula Upset Jolts Brazil Markets, Emerging Assets Sink",
-      "summary": "Brazil’s surprise election result dominated emerging-market trading Monday as the country’s stocks, currencies and debt plunged following Luiz Inácio Lula da Silva victory.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/em-stocks-fall-before-key-earnings-brazil-in-focus-as-lula-wins",
-      "publishedAt": "2026-10-26T03:53:33+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "cb8625b57b67",
       "source": "Bloomberg Economics",
       "title": "UK Firms Optimistic Healey Will Remove Energy Bill Levies",
@@ -741,6 +762,72 @@
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
+    },
+    {
+      "id": "200e5dee7587",
+      "source": "NHK 経済",
+      "title": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
+      "summary": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66041",
+      "publishedAt": "2026-10-27T02:13:40+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
+      "summaryJa": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "96f36ab7d4f9",
+      "source": "NHK 経済",
+      "title": "衆財金委 与党“30日の質疑を” 野党“支援金対象など明示を”",
+      "summary": "食料品の消費税減税関連法案の審議日程をめぐり、衆議院財務金融委員会の理事会で、与党側が今週30日に質疑を行いたいと提案したのに対し、野党側は所得に応じた支援金の対象などを示すよう重ねて求め、引き続き協…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66122",
+      "publishedAt": "2026-10-27T02:09:45+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "衆財金委 与党“30日の質疑を” 野党“支援金対象など明示を”",
+      "summaryJa": "食料品の消費税減税関連法案の審議日程をめぐり、衆議院財務金融委員会の理事会で、与党側が今週30日に質疑を行いたいと提案したのに対し、野党側は所得に応じた支援金の対象などを示すよう重ねて求め、引き続き協…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "3a1b7d213401",
+      "source": "NHK 経済",
+      "title": "「副首都」指定要件を決定 4道府県に指定可能性 政府",
+      "summary": "大規模災害の際に首都の代替機能を担う「副首都」について、政府は、全国の総人口の1.2％以上の市町村があるなどとした指定要件を決定しました。 これに基づき、「副首都」に指定される可能性があるのは現在、北…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66118",
+      "publishedAt": "2026-10-27T01:44:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "「副首都」指定要件を決定 4道府県に指定可能性 政府",
+      "summaryJa": "大規模災害の際に首都の代替機能を担う「副首都」について、政府は、全国の総人口の1.2％以上の市町村があるなどとした指定要件を決定しました。 これに基づき、「副首都」に指定される可能性があるのは現在、北…",
+      "translationStatus": "ja-original"
     },
     {
       "id": "e9c96f7c01a5",
@@ -806,28 +893,6 @@
       "recommendation": "監視継続。次回更新時に再評価する。",
       "titleJa": "衆議院議員定数 31削減案できょう政党間協議",
       "summaryJa": "衆議院議員の定数削減をめぐり、自民党の実務者が示した比例代表で31議席を削減するなどとした案について、与野党は27日、改めて協議を行うことにしています。比例代表での削減を容認する声がある一方、削減幅の…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "200e5dee7587",
-      "source": "NHK 経済",
-      "title": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
-      "summary": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66041",
-      "publishedAt": "2026-10-26T16:10:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "geopolitical",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
-      "summaryJa": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
       "translationStatus": "ja-original"
     },
     {
@@ -961,72 +1026,6 @@
       "titleJa": "自民合同会議 ガソリン補助基準価格引き上げなど求める提言案",
       "summaryJa": "中東情勢を受けて実施しているガソリン価格などの激変緩和措置について、自民党の合同会議は、持続可能な制度に移行すべきだとして、基準となる価格の段階的な引き上げなどを求める提言案をまとめました。",
       "translationStatus": "ja-original"
-    },
-    {
-      "id": "829473a0cc07",
-      "source": "NHK 経済",
-      "title": "高市首相 不正アクセスで\"来週中メドに対策パッケージを\"",
-      "summary": "不正アクセスによる情報漏えいが相次いでいることを受けて、26日夜、関係閣僚会議が開かれ、高市総理大臣は、来週中をメドに政府の緊急対策パッケージをとりまとめるよう指示しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65587",
-      "publishedAt": "2026-10-26T11:07:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "高市首相 不正アクセスで\"来週中メドに対策パッケージを\"",
-      "summaryJa": "不正アクセスによる情報漏えいが相次いでいることを受けて、26日夜、関係閣僚会議が開かれ、高市総理大臣は、来週中をメドに政府の緊急対策パッケージをとりまとめるよう指示しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "071b28b3b7d5",
-      "source": "NHK 経済",
-      "title": "自民 31議席削減案 各党との協議の進め方を実務者に一任",
-      "summary": "衆議院議員の定数削減をめぐり、自民党は比例代表で31議席を削減するなどとした新たな案について意見を交わし、今後の各党との協議の進め方を実務者を務める鈴木元法務大臣らに一任しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65745",
-      "publishedAt": "2026-10-26T10:55:23+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "自民 31議席削減案 各党との協議の進め方を実務者に一任",
-      "summaryJa": "衆議院議員の定数削減をめぐり、自民党は比例代表で31議席を削減するなどとした新たな案について意見を交わし、今後の各党との協議の進め方を実務者を務める鈴木元法務大臣らに一任しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "b03cc4941ac0",
-      "source": "NHK 経済",
-      "title": "山下法相 旧姓使用拡大 法整備の必要性を強調",
-      "summary": "旧姓の通称使用の拡大をめぐり、男女共同参画担当を兼務する山下法務大臣は、報道各社のインタビューで、結婚により姓を変えた人が不便さや不利益を感じる状況を解消したいと強調し、法整備の必要性を強調しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65927",
-      "publishedAt": "2026-10-26T09:55:34+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "山下法相 旧姓使用拡大 法整備の必要性を強調",
-      "summaryJa": "旧姓の通称使用の拡大をめぐり、男女共同参画担当を兼務する山下法務大臣は、報道各社のインタビューで、結婚により姓を変えた人が不便さや不利益を感じる状況を解消したいと強調し、法整備の必要性を強調しました。",
-      "translationStatus": "ja-original"
     }
   ],
   "stockNews": [
@@ -1099,27 +1098,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "9dee069e79c1",
-      "source": "Bloomberg Markets",
-      "title": "We Support Zuckerberg's Vision: Cassidy",
-      "summary": "Lauren Cassidy, CIO at Founders 100 ETF, joins Scarlet Fu and Athanasios Psarofagis on \"Bloomberg ETF IQ.\" They discuss the Founders 100 ETF (ticker: FFF), the possible merger between Tesla and SpaceX, and how Meta is seeking to raise as mu",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/we-support-zuckerberg-s-vision-cassidy-video",
-      "publishedAt": "2026-10-26T20:51:58+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "trust",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "f73064eed8ab",
       "source": "reddit r/investing",
       "title": "Is there an instrument that combines the safety of bonds with at least some possibility of upside?",
@@ -1143,9 +1121,9 @@
     }
   ],
   "meta": {
-    "totalCount": 53,
+    "totalCount": 52,
     "marketCount": 48,
-    "stockCount": 5,
+    "stockCount": 4,
     "duplicateRemoved": 2
   }
 }

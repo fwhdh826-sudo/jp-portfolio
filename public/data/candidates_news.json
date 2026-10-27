@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-27T09:46:56.955967+09:00",
-  "sourceUpdatedAt": "2026-10-26T23:57:11+00:00",
+  "updatedAt": "2026-10-27T11:15:32.092753+09:00",
+  "sourceUpdatedAt": "2026-10-27T02:13:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,15 +17,15 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.67,
+      "avgSentiment": 0.165,
       "negativeCount": 1,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "topPositiveTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
+      "topPositiveTitle": "Asian Chip Stocks Rise as Anthropic IPO Filing Rekindles AI Bets",
       "items": [
         {
           "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
@@ -39,20 +39,47 @@
             "market",
             "us_growth"
           ]
+        },
+        {
+          "title": "Asian Chip Stocks Rise as Anthropic IPO Filing Rekindles AI Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T01:00:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/asian-chip-stocks-rise-as-anthropic-ipo-filing-rekindles-ai-bets",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.216,
-      "negativeCount": 0,
-      "positiveCount": 3,
+      "avgSentiment": 0.093,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 6,
       "sourceCount": 2,
       "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies Near $4,000 as Traders Prepare for Fed Rate Call",
+      "topNegativeTitle": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
       "topPositiveTitle": "Nucor Profit Beats Estimates as Higher Steel Prices Lift Results",
       "items": [
+        {
+          "title": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-26T22:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
         {
           "title": "Gold Steadies Near $4,000 as Traders Prepare for Fed Rate Call",
           "source": "Bloomberg Markets",
@@ -81,7 +108,7 @@
           ]
         },
         {
-          "title": "Universal Music Group Discussed Going Private With Buyout Firms",
+          "title": "Universal Music Discussed Going Private With Buyout Firms",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -105,32 +132,19 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed Meeting Focus Turns to Warsh Messaging With December in Mind",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T10:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/fed-meeting-focus-turns-to-warsh-messaging-with-december-in-mind",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.18,
-      "negativeCount": 1,
+      "avgSentiment": 0.166,
+      "negativeCount": 2,
       "positiveCount": 3,
-      "neutralCount": 3,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
+      "topPositiveTitle": "Asian Chip Stocks Rise as Anthropic IPO Filing Rekindles AI Bets",
       "items": [
         {
           "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
@@ -142,6 +156,20 @@
           "tags": [
             "jp_semiconductor",
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-26T22:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -167,19 +195,6 @@
           "tags": [
             "market",
             "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "We Support Zuckerberg's Vision: Cassidy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T20:51:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-26/we-support-zuckerberg-s-vision-cassidy-video",
-          "tags": [
-            "market",
-            "trust",
             "us_growth"
           ]
         },
@@ -317,15 +332,27 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Katayama Vows to Address Cyber Attack on FX with Urgency",
-      "topPositiveTitle": "Japan’s Katayama Vows to Address Cyber Attack on FX with Urgency",
+      "topNegativeTitle": "Yen’s Role in Latin American Carry Trade Withstands Brazil Rout",
+      "topPositiveTitle": "Yen’s Role in Latin American Carry Trade Withstands Brazil Rout",
       "items": [
         {
-          "title": "Japan’s Katayama Vows to Address Cyber Attack on FX with Urgency",
+          "title": "Yen’s Role in Latin American Carry Trade Withstands Brazil Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T01:53:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/yen-s-role-in-latin-american-carry-trade-withstands-brazil-rout",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan Vows to Address Cyber Attack on FX with Urgency",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -431,16 +458,30 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.254,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": 0.034,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 27",
+      "topNegativeTitle": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
       "topPositiveTitle": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
       "items": [
+        {
+          "title": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-10-26T22:03:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Oct. 27",
           "source": "Bloomberg Markets",
@@ -479,20 +520,6 @@
           "tags": [
             "commodity",
             "market"
-          ]
-        },
-        {
-          "title": "Asian Stocks Rebound on Tech, Brent Extends Fall: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-10-26T22:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         },
         {
@@ -554,7 +581,7 @@
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T16:10:00+00:00",
+          "publishedAt": "2026-10-27T02:13:40+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261026de66041",
           "tags": [
             "geopolitical",
