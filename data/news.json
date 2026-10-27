@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27T02:15:03+00:00",
+  "updatedAt": "2026-10-27T09:14:08+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,22 +18,42 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-10-27T02:01:24+00:00",
-    "Bloomberg Economics": "2026-10-26T23:57:11+00:00",
-    "NHK 経済": "2026-10-27T02:13:40+00:00",
-    "reddit r/investing": "2026-10-27T01:38:23+00:00",
+    "Bloomberg Markets": "2026-10-27T08:56:11+00:00",
+    "Bloomberg Economics": "2026-10-27T09:00:00+00:00",
+    "NHK 経済": "2026-10-27T08:59:42+00:00",
+    "reddit r/investing": "2026-10-27T08:00:23+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
     {
-      "id": "bc9e12b80663",
+      "id": "e143759d57c4",
+      "source": "Bloomberg Economics",
+      "title": "ECB Says Banks Tighten Credit Conditions, See Loan Demand Fall",
+      "summary": "Euro-zone banks tightened credit conditions and reported waning demand for loans in the third quarter, supporting the European Central Bank’s caution on raising interest rates further.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/ecb-says-banks-tighten-credit-conditions-see-loan-demand-fall",
+      "publishedAt": "2026-10-27T09:00:00+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "fd108c432d68",
       "source": "Bloomberg Markets",
-      "title": "China 5-Year Yield Hits Record Low on PBOC’s Cash Injection",
-      "summary": "China’s five-year government bond yield dropped to a record low after the central bank increased its cash injection into the banking system.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-27/china-5-year-yield-hits-record-low-on-pboc-s-cash-injection",
-      "publishedAt": "2026-10-27T02:01:24+00:00",
+      "title": "Chinese Stocks’ Final-Hour Slide Shows Reliance on National Team",
+      "summary": "Chinese stocks extended their slide in the final hour of trading as investors disappointed by a lack of national team buying dumped shares.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/chinese-stocks-final-hour-slide-shows-reliance-on-national-team",
+      "publishedAt": "2026-10-27T08:56:11+00:00",
       "sentiment": "negative",
       "sentimentScore": -0.67,
       "importance": 0.33,
@@ -48,75 +68,55 @@
       "translationStatus": "pending"
     },
     {
-      "id": "e339f4b840fc",
+      "id": "9fdd78fe09cc",
       "source": "Bloomberg Markets",
-      "title": "Yen’s Role in Latin American Carry Trade Withstands Brazil Rout",
-      "summary": "The yen’s funding role for the carry trade in Latin America is alive and well.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-27/yen-s-role-in-latin-american-carry-trade-withstands-brazil-rout",
-      "publishedAt": "2026-10-27T01:53:33+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "155cdbeb59ad",
-      "source": "Bloomberg Markets",
-      "title": "Asian Chip Stocks Rise as Anthropic IPO Filing Rekindles AI Bets",
-      "summary": "Asian semiconductor stocks jumped, as Anthropic PBC’s initial public offering filing helped renew investor enthusiasm for the artificial intelligence trade.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-27/asian-chip-stocks-rise-as-anthropic-ipo-filing-rekindles-ai-bets",
-      "publishedAt": "2026-10-27T01:00:52+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "jp_semiconductor",
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "358932454e14",
-      "source": "Bloomberg Economics",
-      "title": "Japan Vows to Address Cyber Attack on FX with Urgency",
-      "summary": "Japan will address the damage stemming from a cyber attack on a foreign exchange trading platform with a sense of urgency but no new attacks have been detected, the nation’s finance minister said.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/japan-s-katayama-vows-to-address-cyber-attack-on-fx-with-urgency",
-      "publishedAt": "2026-10-26T23:57:11+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "dd356638605d",
-      "source": "Bloomberg Markets",
-      "title": "Indonesia’s Rupiah Defense Seen Needing a Rate-Hike Turbocharge",
-      "summary": "Bank Indonesia may need to deploy more aggressive measures, including further rate hikes, to sustainably lift the rupiah from near-record lows, according to analysts.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/indonesia-s-rupiah-defense-seen-needing-a-rate-hike-turbocharge",
-      "publishedAt": "2026-10-26T23:30:00+00:00",
+      "title": "Amundi Says ‘Worst Is Behind Us’ as Gold Flirts With $4,000",
+      "summary": "Amundi SA, Europe’s largest asset manager, expects a recovery in the gold price to around $4,500 an ounce following a selloff that dragged the metal to a three-month low.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/amundi-says-worst-is-behind-us-as-gold-flirts-with-4-000",
+      "publishedAt": "2026-10-27T08:54:48+00:00",
       "sentiment": "negative",
       "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "gold",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e279f1c5356c",
+      "source": "Bloomberg Markets",
+      "title": "This Paint Can Keep Your House Cooler",
+      "summary": "Something as simple as paint might be the solution to keeping your house up to 20 degrees cooler, says Bloomberg Opinion columnist Lara Williams. (Source: Bloomberg)",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/opinion-this-paint-can-keep-your-house-cooler-video",
+      "publishedAt": "2026-10-27T08:53:24+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "0ccfb4a5a52d",
+      "source": "Bloomberg Markets",
+      "title": "Pop Mart Third-Quarter Sales Fall Up to 50% as Labubu Fad Cools",
+      "summary": "Pop Mart International Group Ltd. reported a decline in third-quarter sales from a year earlier, hurt by fading Labubu momentum and a tough base of comparison following last year’s blockbuster results.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/pop-mart-s-quarterly-sales-drop-on-high-base-sluggish-demand",
+      "publishedAt": "2026-10-27T08:42:00+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
       "importance": 0.33,
       "tags": [
         "market",
@@ -129,20 +129,401 @@
       "translationStatus": "pending"
     },
     {
-      "id": "4cace48b2ddd",
+      "id": "3046ee9a9dec",
       "source": "Bloomberg Markets",
-      "title": "Gold Steadies Near $4,000 as Traders Prepare for Fed Rate Call",
-      "summary": "Gold held near $4,000 an ounce as traders prepared for a Federal Reserve decision this week that’s expected to keep interest rates steady.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/gold-steadies-above-4-000-with-fed-rate-decision-in-focus",
-      "publishedAt": "2026-10-26T23:20:28+00:00",
+      "title": "Saudi Arabia Contains Fire Near Ras Tanura Oil Hub After Attack",
+      "summary": "Saudi Arabia contained a fire near its biggest export terminal of Ras Tanura along the Persian Gulf following an attack in the region, a person with knowledge of the matter said.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/saudi-arabia-contains-fire-near-ras-tanura-oil-hub-after-attack",
+      "publishedAt": "2026-10-27T08:25:42+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "a726fefa0418",
+      "source": "Bloomberg Markets",
+      "title": "Adnoc Drilling CFO: Deals Continue Despite Conflict",
+      "summary": "Adnoc Drilling has reported 3Q results, with revenue at $1.25 billion and profit at $366.3 million largely unchanged from a year ago. Youssef Salem, CFO at Adnoc Drilling spoke to Bloomberg’s Abeer Abu Omar on Horizons Middle East & Africa.",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/adnoc-drilling-cfo-deals-continue-despite-conflict-video",
+      "publishedAt": "2026-10-27T08:24:36+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "2a2ea55c981c",
+      "source": "Bloomberg Markets",
+      "title": "ESMA Chair on EU Market Volatility, Supervision",
+      "summary": "The European Securities and Markets Authority is closely monitoring market activity amid volatility in sovereign bond markets and high tech-stock valuations. In an interview on Bloomberg Daybreak Europe, ESMA's outgoing chair Verena Ross to",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/esma-chair-on-eu-market-volatility-supervision-video",
+      "publishedAt": "2026-10-27T08:20:39+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "ba7aab8a14d9",
+      "source": "Bloomberg Markets",
+      "title": "European Stocks Pulled Lower by Banks as HSBC Results Disappoint",
+      "summary": "European stocks fell for a third day in four as disappointing earnings from benchmark heavyweight HSBC Holdings Plc dragged down the banking sector.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/european-stocks-pulled-lower-by-banks-as-hsbc-results-disappoint",
+      "publishedAt": "2026-10-27T08:18:07+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "global_broad",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "ad16db63503c",
+      "source": "Bloomberg Markets",
+      "title": "Egypt Backs Saudi Defense as Regional Powers Push Iran Talks",
+      "summary": "Horizons Middle East & Africa is your daily spotlight on one of the world's fastest-growing regions. Live from Dubai, we bring you the latest global markets and analysis, plus news-making interviews, with a special focus on MEA. All that an",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/horizons-middle-east-africa-10-27-2026-video",
+      "publishedAt": "2026-10-27T08:12:38+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "global_broad",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f4bfe701ceb1",
+      "source": "Bloomberg Markets",
+      "title": "AFC, Munich Re to Share $1 Billion Trade Finance Risk",
+      "summary": "Africa Finance Corporation says it's agreed to share 1 billion dollars worth of risk on African trade finance with Munich Re. In an exclusive conversation with Bloomberg’s Jennifer Zabasajja, AFC CEO and Founder Samaila Zubairu spoke on how",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/afc-munich-re-to-share-1-billion-trade-finance-risk-video",
+      "publishedAt": "2026-10-27T07:49:54+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "e842c6d97675",
+      "source": "Bloomberg Markets",
+      "title": "China to Dispatch Envoys to Mideast in Bid to Prevent Escalation",
+      "summary": "China has signaled it’s preparing to embark on a new round of diplomacy in the Middle East, adding to efforts to defuse tensions and revive talks aimed at preventing the resumption of US-Israeli strikes against Iran.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/china-dispatch-envoys-mideast-prevent-escalation-us-israeli-strikes-iran",
+      "publishedAt": "2026-10-27T07:48:29+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "5e5ceed53773",
+      "source": "Bloomberg Economics",
+      "title": "Senegal Premier Expects Budget Impasse to Resolve Within Days",
+      "summary": "Senegal’s prime minister said he expects to resolve a stand-off over the country’s budget within days, as the authorities seek approval for a new International Monetary Fund program as soon as next month.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/senegal-premier-expects-budget-impasse-to-resolve-within-days",
+      "publishedAt": "2026-10-27T07:47:41+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "8f321368cbb9",
+      "source": "Bloomberg Economics",
+      "title": "French Consumer Confidence Drops to 13-Year Low After Riots",
+      "summary": "French consumer confidence plummeted to its lowest level in 13 years in October as households reckoned with multiple shocks from a bond market selloff to protests that descended into rioting.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/french-consumer-confidence-hits-lowest-since-2013-after-riots",
+      "publishedAt": "2026-10-27T07:45:00+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -1.0,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "3975aeb389f1",
+      "source": "Bloomberg Markets",
+      "title": "Dangote Refinery IPO Set for Record on African, Global Demand",
+      "summary": "Africa’s biggest initial public offering has already secured enough commitments from Nigerian and retail investors to meet its fundraising target, according to people familiar with the matter.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/dangote-refinery-ipo-set-for-record-on-african-global-demand",
+      "publishedAt": "2026-10-27T07:34:18+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "aa5c09e8937e",
+      "source": "Bloomberg Markets",
+      "title": "Chinese Households Are Buying Gold’s Dip as Prices Test $4,000",
+      "summary": "Chinese households’ appetite for gold has grown over the past two months as prices soften and onshore equities lose their shine, providing support at a time when bullion is testing $4,000 an ounce.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/chinese-households-are-buying-gold-s-dip-as-prices-test-4-000",
+      "publishedAt": "2026-10-27T07:32:04+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
         "gold",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "0c6ca25bbc02",
+      "source": "Bloomberg Markets",
+      "title": "HSBC Earnings: Profit Jump and $1 Billion Buyback Fall Short of Investors Hopes",
+      "summary": "Plus: gilts, bunds and OATs",
+      "url": "https://www.bloomberg.com/news/newsletters/2026-10-27/hsbc-earnings-profit-jump-and-1-billion-buyback-fall-short-of-investors-hopes",
+      "publishedAt": "2026-10-27T07:31:27+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "dividend",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "65971511fd43",
+      "source": "Bloomberg Markets",
+      "title": "HSBC Reports Profit Miss, Announces Buyback",
+      "summary": "HSBC fell in Hong Kong after reporting earnings that fell short of estimates in the third quarter. The bank kept its outlook for the rest of year unchanged and announced a $1 billion share buyback. Phil Richards of Bloomberg Intelligence br",
+      "url": "https://www.bloomberg.com/news/videos/2026-10-27/hsbc-reports-profit-miss-announces-buyback-video",
+      "publishedAt": "2026-10-27T07:29:20+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
+      "importance": 0.33,
+      "tags": [
+        "dividend",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "75ab52edbebc",
+      "source": "Bloomberg Economics",
+      "title": "UK’s Renewed Appeal Runs Into a Tough Budget Test: Taking Stock",
+      "summary": "This week’s UK budget looms as a major test for the country’s stocks, just as the market gains renewed appeal among global investors.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/uk-s-renewed-appeal-runs-into-a-tough-budget-test-taking-stock",
+      "publishedAt": "2026-10-27T07:16:57+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
         "market",
-        "rates",
-        "us_broad"
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "a17dc6f3bd71",
+      "source": "Bloomberg Markets",
+      "title": "Indonesia Bond Yield Hits Four-Year High as MSCI Risk, Oil Weigh",
+      "summary": "Indonesia’s 10-year government bond yield climbed to a four-year high and the rupiah weakened toward a record low as elevated oil prices and MSCI Inc.’s threat of a stocks downgrade hurt investor sentiment.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/indonesia-10-year-yield-at-four-year-high-on-msci-risk-oil",
+      "publishedAt": "2026-10-27T06:52:38+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "4984b555e7ac",
+      "source": "Bloomberg Economics",
+      "title": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
+      "summary": "The Bank of Japan’s gauge of underlying inflation surged to the highest in three years, well above the bank’s 2% target, backing the case for authorities to continue raising interest rates.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/boj-s-price-trend-indicator-jumps-to-above-3-backing-hike-case",
+      "publishedAt": "2026-10-27T06:11:28+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 1.0,
+      "importance": 0.33,
+      "tags": [
+        "jp_broad",
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "42a787e60f21",
+      "source": "Bloomberg Economics",
+      "title": "Japan’s UA Zensen Union Seeks 6% Pay Hike in 2027 Wage Talks",
+      "summary": "One of Japan’s largest labor union groups plans to seek 2027 wage increases for regular employees in line with this year’s target, signaling sustained pressure for higher salaries.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/japan-s-ua-zensen-union-seeks-6-pay-hike-in-2027-wage-talks",
+      "publishedAt": "2026-10-27T03:25:04+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f9cf098476ad",
+      "source": "Bloomberg Markets",
+      "title": "CIMB Said to Attract BPI, Metrobank for Philippine Unit Sale",
+      "summary": "CIMB Group Holdings Bhd.’s planned sale of its business in the Philippines has drawn interest from local rivals including Bank of the Philippine Islands and Metropolitan Bank &amp; Trust Co., according to people with knowledge of the matter",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/cimb-bpi-metrobank-philippine-unit-sale",
+      "publishedAt": "2026-10-27T03:23:22+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f06e7697c0ed",
+      "source": "Bloomberg Economics",
+      "title": "China’s Industrial Profits Surge Most in Three Months on Oil",
+      "summary": "Chinese industrial companies saw their earnings grow at the fastest in three months, lifted by rising producer prices against the backdrop of higher energy costs.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-27/china-s-industrial-profits-jump-most-in-three-months-on-oil-ai",
+      "publishedAt": "2026-10-27T01:40:26+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.5,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "1dfa032fd1a7",
+      "source": "Bloomberg Markets",
+      "title": "Trading Platform Rocked by Japan Hack, $50 Million Ransom",
+      "summary": "Hackers targeting a currency trading platform claimed to have published customer information after failing to receive a $50 million ransom, adding to a wave of cyberattacks in Japan that have prompted the government to draw up emergency mea",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-26/japan-s-katayama-vows-to-address-cyber-attack-on-fx-with-urgency",
+      "publishedAt": "2026-10-26T23:57:11+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -172,226 +553,42 @@
       "translationStatus": "pending"
     },
     {
-      "id": "8923f3166999",
+      "id": "cde3e7a6bae2",
       "source": "Bloomberg Markets",
-      "title": "Dave Lee: Anthropic Brings ‘Anti-Sell’ Strategy to Its IPO",
-      "summary": "Dave Lee, Bloomberg Opinion US Technology Columnist, joins Bloomberg Businessweek Daily to discuss his piece about Anthropic's IPO announcement. Lee writes about the firm's S-1 containing warnings about the company and prospects for humanit",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/dave-lee-anthropic-brings-anti-sell-strategy-to-ipo-video",
-      "publishedAt": "2026-10-26T22:26:18+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "a5e477e81a99",
-      "source": "Bloomberg Markets",
-      "title": "Tech Rally Extends to Asia on Anthropic, Oil Falls: Markets Wrap",
-      "summary": "A rally in Wall Street tech stocks following Anthropic PBC’s filing for an initial public offering carried into Asia, rekindling enthusiasm for the artificial intelligence trade. Crude oil extended its decline.",
+      "title": "US Futures Waver as AI Optimism Wanes Before Fed: Markets Wrap",
+      "summary": "The burst of enthusiasm for the artificial intelligence trade that followed Anthropic PBC’s filing for an initial public offering lost some momentum on Tuesday, with US equity futures stalling as traders turned their attention back to a bus",
       "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
       "publishedAt": "2026-10-26T22:03:56+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.5,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "market",
-        "us_broad",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "b948c317c23a",
-      "source": "Bloomberg Markets",
-      "title": "Latest Oil Market News and Analysis for Oct. 27",
-      "summary": "Oil declined for a second day — pulling further back from a six-month high — as stepped-up diplomatic efforts strengthened expectations that a broader escalation in the US-Iran war may be averted.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/latest-oil-market-news-and-analysis-for-oct-27",
-      "publishedAt": "2026-10-26T22:03:22+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "geopolitical",
-        "macro_risk",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "d8251c5a794b",
-      "source": "Bloomberg Markets",
-      "title": "Duke’s Mayo CEO: Our Room for Growth Is Substantial",
-      "summary": "E. Yuri Hermida, CEO of Duke’s Mayo Company, discussed the company’s name change from Sauer Brands as it enters a new growth chapter. After divesting its spice business, the company is centering its identity on Duke’s Mayo, whose heritage a",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/duke-s-mayo-ceo-our-room-for-growth-is-substantial-video",
-      "publishedAt": "2026-10-26T21:48:43+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "2c6891c5f826",
-      "source": "Bloomberg Markets",
-      "title": "Pimco Scoops Up $4 Billion of Massive SpaceX AI Debt Package",
-      "summary": "Pacific Investment Management Co. bought a $4 billion slice of a huge SpaceX financing deal that will help expand its artificial intelligence ambitions, according to people familiar with the matter.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/pimco-scoops-up-4-billion-of-massive-spacex-ai-debt-package",
-      "publishedAt": "2026-10-26T21:43:04+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "70e73c227016",
-      "source": "Bloomberg Markets",
-      "title": "Jennifer Garner on Expanding Reach of Once Upon a Farm",
-      "summary": "Actress Jennifer Garner is also the chief brand officer and co-founder of Once Upon a Farm that makes organic food for babies and children. She talks about her involvement in the business, keeping prices affordable and the introduction of f",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/jennifer-garner-on-expanding-reach-of-once-upon-a-farm-video",
-      "publishedAt": "2026-10-26T21:29:40+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "74e57da53e95",
-      "source": "Bloomberg Markets",
-      "title": "Nucor Profit Beats Estimates as Higher Steel Prices Lift Results",
-      "summary": "Nucor Corp. reported third-quarter earnings that beat Wall Street expectations as higher steel prices helped boost profits at the largest US steelmaker.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/nucor-profit-beats-estimates-as-higher-steel-prices-lift-results",
-      "publishedAt": "2026-10-26T21:09:05+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "87e8757c9a92",
-      "source": "Bloomberg Markets",
-      "title": "Blackstone Data-Center Operator QTS Seeks $800 Million in Private Placement Debt",
-      "summary": "QTS, a data-center operator backed by Blackstone Inc., is looking to raise around $800 million through a private placement of debt, as Wall Street looks to every corner of global credit to finance artificial intelligence infrastructure.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/blackstone-data-center-operator-qts-seeks-800-million-in-private-placement-debt",
-      "publishedAt": "2026-10-26T21:01:54+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "9fb88885d444",
-      "source": "Bloomberg Markets",
-      "title": "Anthropic Mum on Investment Grade as It Warns of More Debt",
-      "summary": "Anthropic PBC warned it may need to seek more financing sooner than the artificial-intelligence company had anticipated while saying little about its potential path to an investment-grade credit rating in its closely watched IPO filing.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/anthropic-remains-mum-on-investment-grade-as-it-flags-more-debt",
-      "publishedAt": "2026-10-26T20:56:09+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "1a346433fe6a",
-      "source": "Bloomberg Markets",
-      "title": "Universal Music Discussed Going Private With Buyout Firms",
-      "summary": "Universal Music Group, the world’s largest record company, has discussed going private with a few prominent Wall Street firms, according to people familiar with the matter.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/universal-music-group-discussed-going-private-with-buyout-firms",
-      "publishedAt": "2026-10-26T20:46:36+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "4c83f09b5d09",
-      "source": "Bloomberg Markets",
-      "title": "AI Funding Drives US High-Grade Bond Sales to Annual Record",
-      "summary": "US investment-grade bond sales set an annual record on Monday, as a surge in artificial intelligence spending drives companies to borrow hundreds of billions of dollars.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/ai-funding-needs-drive-us-high-grade-bond-sales-to-annual-record",
-      "publishedAt": "2026-10-26T19:13:48+00:00",
       "sentiment": "positive",
       "sentimentScore": 0.33,
       "importance": 0.33,
       "tags": [
         "market",
+        "us_broad",
         "us_growth"
       ],
       "tickers": [],
       "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "2a6d78f8130d",
+      "source": "Bloomberg Economics",
+      "title": "UK to Raise Pay Floor 4% as Burnham Seeks Cost of Living Fix",
+      "summary": "Chancellor of the Exchequer John Healey is poised to raise the UK’s national living wage by about 4%, but will not close the pay gap with younger workers, amid growing concern that hiring costs are driving youth unemployment.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-26/uk-minimum-wages-set-for-4-rise-as-healey-slows-hike-for-youth",
+      "publishedAt": "2026-10-26T18:15:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -409,6 +606,48 @@
       "tags": [
         "market",
         "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "d1fe132a6945",
+      "source": "Bloomberg Markets",
+      "title": "Saudi Arabia’s Houthi Battle Shifts Fears to Non-Oil Economy",
+      "summary": "Saudi Arabia’s oil industry managed to ride out concerns in the early days of the Iran war and keep exports flowing. Now, with the Houthis staging deadly attacks on the kingdom and signs of disruption stacking up, the worry has shifted to t",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-26/saudi-arabia-s-houthi-challenge-shifts-fears-to-non-oil-economy",
+      "publishedAt": "2026-10-26T15:17:18+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "geopolitical",
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c9bc2b779dbc",
+      "source": "Bloomberg Economics",
+      "title": "Euro-Shy Czech Government Backs Constitutional Shield for Koruna",
+      "summary": "The Czech government backed a proposal to entrench the koruna in the nation’s constitution, potentially setting a political obstacle for future administrations seeking to adopt the European Union’s single currency.",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-26/euro-shy-czech-government-backs-constitutional-shield-for-koruna",
+      "publishedAt": "2026-10-26T15:07:42+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -451,26 +690,6 @@
       "tags": [
         "market",
         "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "6d4ab4ce955e",
-      "source": "Bloomberg Markets",
-      "title": "Colombia Sells $5.2 Billion in New Bonds Amid Fiscal Strain",
-      "summary": "Colombia sold a record $5.2 billion in dollar-denominated bonds on Monday as a new administration pledges to rein in the widening budget gap and put the nation’s debt back on a sustainable path.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/colombia-to-sell-new-dollar-bonds-amid-fiscal-pressures",
-      "publishedAt": "2026-10-26T13:31:11+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -581,47 +800,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "4216bd4d574a",
-      "source": "Bloomberg Economics",
-      "title": "Fed Meeting Focus Turns to Warsh Messaging With December in Mind",
-      "summary": "Kevin Warsh faces a familiar challenge this week if the Federal Reserve holds interest rates steady: He must reassure investors the central bank is committed to quashing inflation while explaining why officials chose not to raise rates.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/fed-meeting-focus-turns-to-warsh-messaging-with-december-in-mind",
-      "publishedAt": "2026-10-26T10:00:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "f20f56f45dce",
-      "source": "Bloomberg Economics",
-      "title": "Germany’s Business Outlook Unexpectedly Improves for Sixth Month",
-      "summary": "Germany’s business outlook unexpectedly brightened for a sixth month in a row, underscoring the economy’s rebound from a prolonged downturn.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/germany-s-business-outlook-unexpectedly-improves-for-sixth-month",
-      "publishedAt": "2026-10-26T09:05:45+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "4d1a0ac9111a",
       "source": "Bloomberg Economics",
       "title": "EU Plans to Hit China With More Import Curbs in Early 2027",
@@ -637,67 +815,6 @@
       ],
       "tickers": [],
       "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "7ec73d748029",
-      "source": "Bloomberg Economics",
-      "title": "Euro-Zone Slowdown Will Help Keep ECB Rates on Hold for Now",
-      "summary": "Waning economic momentum is one reason the European Central Bank will probably hold off from raising interest rates for the time being.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/euro-zone-slowdown-central-bank-ecb-rates-hold-for-now",
-      "publishedAt": "2026-10-26T06:20:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "c2265051d603",
-      "source": "Bloomberg Economics",
-      "title": "BOE Officials Most Hawkish Since Inflation Was 10%, Model Shows",
-      "summary": "Bank of England officials are sending their most hawkish signals in over three years, laying the ground for an interest-rate hike as early as next month.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/boe-officials-most-hawkish-since-inflation-was-10-model-shows",
-      "publishedAt": "2026-10-26T05:00:00+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "4d806c7c2adf",
-      "source": "Bloomberg Economics",
-      "title": "Thailand Imports Surge at Record Pace on AI, Energy Demand",
-      "summary": "Thailand’s imports surged at the fastest pace on record in September as higher energy costs and an investment boom in artificial intelligence and advanced electronics drove demand for fuel and capital goods.",
-      "url": "https://www.bloomberg.com/news/articles/2026-10-26/thailand-imports-surge-at-record-pace-on-ai-energy-demand",
-      "publishedAt": "2026-10-26T03:58:35+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "positive",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -723,75 +840,12 @@
       "translationStatus": "pending"
     },
     {
-      "id": "7517843c5cc8",
-      "source": "Bloomberg Markets",
-      "title": "Wall Street Week | Rerouting Global Trade, Private Equity Tested, Realizing Cuba’s Potential",
-      "summary": "This week, inflation may be edging lower, but as markets push rates higher, the Fed’s 2% inflation target might be a long way off. And, Mexico is building a land-based trade corridor that could give shipping companies more options when trad",
-      "url": "https://www.bloomberg.com/news/videos/2026-08-14/wall-street-week-rerouting-trade-private-equity-test-video",
-      "publishedAt": "2026-08-14T23:14:24+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "rates",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "29d56f06caeb",
-      "source": "Bloomberg Markets",
-      "title": "Wall Street Week | High Stakes Summit, New Zealand's Brain Drain, Stablecoin Adoption, Bubbly Water",
-      "summary": "This week, China thinks it's cracked the code on Trump heading into a summit in Beijing. And, what happens when a country's best and brightest travel overseas and stop coming back? Plus, the most useful thing about crypto might be the one n",
-      "url": "https://www.bloomberg.com/news/videos/2026-05-08/wall-street-week-high-stakes-summit-talent-troubles-video",
-      "publishedAt": "2026-05-08T23:14:55+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "200e5dee7587",
+      "id": "5917d5be7e49",
       "source": "NHK 経済",
-      "title": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
-      "summary": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66041",
-      "publishedAt": "2026-10-27T02:13:40+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "geopolitical",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "北海道新聞記者と「領事面会」実施 健康状態に問題なし 外務省",
-      "summaryJa": "ロシアの治安機関に北海道新聞の記者が拘束されていることをめぐり、外務省は26日、記者との「領事面会」を行ったと発表しました。記者の健康状態に問題はないとしています。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "96f36ab7d4f9",
-      "source": "NHK 経済",
-      "title": "衆財金委 与党“30日の質疑を” 野党“支援金対象など明示を”",
-      "summary": "食料品の消費税減税関連法案の審議日程をめぐり、衆議院財務金融委員会の理事会で、与党側が今週30日に質疑を行いたいと提案したのに対し、野党側は所得に応じた支援金の対象などを示すよう重ねて求め、引き続き協…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66122",
-      "publishedAt": "2026-10-27T02:09:45+00:00",
+      "title": "衆議院議員 定数31議席削減案で各党隔たり あす改めて協議へ",
+      "summary": "衆議院議員の定数削減をめぐって与野党が協議を行い、自民党の実務者が示した比例代表で31議席を削減する案などについて意見を交わしました。この中では、日本維新の会が45議席の削減を求めた一方、国民民主党は…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66067",
+      "publishedAt": "2026-10-27T08:59:42+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -803,8 +857,96 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "衆財金委 与党“30日の質疑を” 野党“支援金対象など明示を”",
+      "titleJa": "衆議院議員 定数31議席削減案で各党隔たり あす改めて協議へ",
+      "summaryJa": "衆議院議員の定数削減をめぐって与野党が協議を行い、自民党の実務者が示した比例代表で31議席を削減する案などについて意見を交わしました。この中では、日本維新の会が45議席の削減を求めた一方、国民民主党は…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "d7e6852c376e",
+      "source": "NHK 経済",
+      "title": "茂木外相“高市首相 APECへの出席調整 個別会談は検討中”",
+      "summary": "茂木外務大臣は参議院外交防衛委員会で、高市総理大臣が11月に中国で開かれるAPEC＝アジア太平洋経済協力会議の首脳会議に出席する方向で調整していると明らかにしました。各国首脳との個別の会談については検…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66484",
+      "publishedAt": "2026-10-27T08:55:04+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "茂木外相“高市首相 APECへの出席調整 個別会談は検討中”",
+      "summaryJa": "茂木外務大臣は参議院外交防衛委員会で、高市総理大臣が11月に中国で開かれるAPEC＝アジア太平洋経済協力会議の首脳会議に出席する方向で調整していると明らかにしました。各国首脳との個別の会談については検…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "f73ae71573c6",
+      "source": "NHK 経済",
+      "title": "武部農相 運動員登録のカメラマン“報告書の訂正を依頼”",
+      "summary": "武部農林水産大臣は、2024年の衆議院選挙で「運動員」として登録されたカメラマンに陣営が報酬を支払った疑いがあると一部で報じられたことについて、27日の衆議院農林水産委員会でカメラマンは選挙活動をして…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66416",
+      "publishedAt": "2026-10-27T08:15:11+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "武部農相 運動員登録のカメラマン“報告書の訂正を依頼”",
+      "summaryJa": "武部農林水産大臣は、2024年の衆議院選挙で「運動員」として登録されたカメラマンに陣営が報酬を支払った疑いがあると一部で報じられたことについて、27日の衆議院農林水産委員会でカメラマンは選挙活動をして…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "6e324c34c19c",
+      "source": "NHK 経済",
+      "title": "“財源確保重要”“税率を元に戻す際の影響大きい”参考人質疑",
+      "summary": "食料品の消費税減税関連法案の審議日程をめぐり、衆議院財務金融委員会の理事会で、与党側が今週30日に質疑を行いたいと提案したのに対し、野党側は所得に応じた支援金の対象などを示すよう重ねて求め、引き続き協…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66122",
+      "publishedAt": "2026-10-27T08:00:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "“財源確保重要”“税率を元に戻す際の影響大きい”参考人質疑",
       "summaryJa": "食料品の消費税減税関連法案の審議日程をめぐり、衆議院財務金融委員会の理事会で、与党側が今週30日に質疑を行いたいと提案したのに対し、野党側は所得に応じた支援金の対象などを示すよう重ねて求め、引き続き協…",
+      "translationStatus": "ja-original"
+    },
+    {
+      "id": "24be9d1b8d55",
+      "source": "NHK 経済",
+      "title": "高市首相 バングラデシュ首脳と会談 経済や安全保障 協力確認",
+      "summary": "高市総理大臣は、バングラデシュのラーマン首相と会談し、インフラ整備を含む経済や安全保障など幅広い分野での協力を確認しました。",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66383",
+      "publishedAt": "2026-10-27T07:34:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.25,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "titleJa": "高市首相 バングラデシュ首脳と会談 経済や安全保障 協力確認",
+      "summaryJa": "高市総理大臣は、バングラデシュのラーマン首相と会談し、インフラ整備を含む経済や安全保障など幅広い分野での協力を確認しました。",
       "translationStatus": "ja-original"
     },
     {
@@ -813,7 +955,7 @@
       "title": "「副首都」指定要件を決定 4道府県に指定可能性 政府",
       "summary": "大規模災害の際に首都の代替機能を担う「副首都」について、政府は、全国の総人口の1.2％以上の市町村があるなどとした指定要件を決定しました。 これに基づき、「副首都」に指定される可能性があるのは現在、北…",
       "url": "https://news.web.nhk/newsweb/na/nd-20261027de66118",
-      "publishedAt": "2026-10-27T01:44:00+00:00",
+      "publishedAt": "2026-10-27T07:23:06+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -830,78 +972,35 @@
       "translationStatus": "ja-original"
     },
     {
-      "id": "e9c96f7c01a5",
+      "id": "0825522720ef",
       "source": "NHK 経済",
-      "title": "高市首相動静 2026年10月26日",
-      "summary": "（高市首相動静 2026年10月26日）",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66090",
-      "publishedAt": "2026-10-26T23:19:32+00:00",
+      "title": "小泉防衛相 ASEAN拡大国防相会議出席でフィリピン訪問へ",
+      "summary": "小泉防衛大臣は、ASEAN＝東南アジア諸国連合の拡大国防相会議に出席するため、28日からフィリピンを訪問します。 会議では、地域の一体性を尊重しながら紛争を未然に防ぐ力を高めていく重要性を訴えたい考え…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66353",
+      "publishedAt": "2026-10-27T06:22:58+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
       "tags": [
-        "market",
-        "unknown"
+        "geopolitical",
+        "macro_risk",
+        "market"
       ],
       "tickers": [],
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "高市首相動静 2026年10月26日",
-      "summaryJa": "（高市首相動静 2026年10月26日）",
+      "titleJa": "小泉防衛相 ASEAN拡大国防相会議出席でフィリピン訪問へ",
+      "summaryJa": "小泉防衛大臣は、ASEAN＝東南アジア諸国連合の拡大国防相会議に出席するため、28日からフィリピンを訪問します。 会議では、地域の一体性を尊重しながら紛争を未然に防ぐ力を高めていく重要性を訴えたい考え…",
       "translationStatus": "ja-original"
     },
     {
-      "id": "6d0d2ec046e1",
+      "id": "7e67cd902e27",
       "source": "NHK 経済",
-      "title": "障害者団体が国に要望 “期間が短い場合の投票環境改善を”",
-      "summary": "解散から投票日までの期間が戦後最短となったことし2月の衆議院選挙を受けて、障害者団体などでつくるNPO法人が26日、記者会見を行い、障害などで投票に困難を抱える人たちが確実に投票できる環境を整えるよう…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66066",
-      "publishedAt": "2026-10-26T20:15:00+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "障害者団体が国に要望 “期間が短い場合の投票環境改善を”",
-      "summaryJa": "解散から投票日までの期間が戦後最短となったことし2月の衆議院選挙を受けて、障害者団体などでつくるNPO法人が26日、記者会見を行い、障害などで投票に困難を抱える人たちが確実に投票できる環境を整えるよう…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "60799ce49406",
-      "source": "NHK 経済",
-      "title": "衆議院議員定数 31削減案できょう政党間協議",
-      "summary": "衆議院議員の定数削減をめぐり、自民党の実務者が示した比例代表で31議席を削減するなどとした案について、与野党は27日、改めて協議を行うことにしています。比例代表での削減を容認する声がある一方、削減幅の…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66067",
-      "publishedAt": "2026-10-26T19:56:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "衆議院議員定数 31削減案できょう政党間協議",
-      "summaryJa": "衆議院議員の定数削減をめぐり、自民党の実務者が示した比例代表で31議席を削減するなどとした案について、与野党は27日、改めて協議を行うことにしています。比例代表での削減を容認する声がある一方、削減幅の…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "d762fd5d6e74",
-      "source": "NHK 経済",
-      "title": "政府 AIのリスク対応で法改正に向け検討開始へ",
-      "summary": "AIの悪用や暴走で社会に深刻な影響を与える懸念が高まる中、政府はAIに関する法律の改正に向け、検討を始めることになりました。今後、AIの開発や提供を行う業者への規制のあり方などをめぐって検討を進めてい…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66039",
-      "publishedAt": "2026-10-26T15:44:24+00:00",
+      "title": "赤澤経産相 ドイツ首相にEUのEV優遇策への懸念伝える考え",
+      "summary": "赤澤経済産業大臣は、EU＝ヨーロッパ連合が域内で生産されたEVへの優遇措置を検討していることについて、日本の自動車メーカーに大きな影響が生じうるという認識を示した上で、28日に来日する予定のドイツのメ…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261027de66278",
+      "publishedAt": "2026-10-27T05:23:11+00:00",
       "sentiment": "negative",
       "sentimentScore": -0.33,
       "importance": 0.25,
@@ -913,144 +1012,12 @@
       "impact": "negative",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "政府 AIのリスク対応で法改正に向け検討開始へ",
-      "summaryJa": "AIの悪用や暴走で社会に深刻な影響を与える懸念が高まる中、政府はAIに関する法律の改正に向け、検討を始めることになりました。今後、AIの開発や提供を行う業者への規制のあり方などをめぐって検討を進めてい…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "7c15f276b813",
-      "source": "NHK 経済",
-      "title": "福田康夫元首相が死去 90歳",
-      "summary": "福田康夫元総理大臣が今月22日に亡くなりました。90歳でした。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65501",
-      "publishedAt": "2026-10-26T14:20:24+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "福田康夫元首相が死去 90歳",
-      "summaryJa": "福田康夫元総理大臣が今月22日に亡くなりました。90歳でした。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "1d64f56337f4",
-      "source": "NHK 経済",
-      "title": "政府 外国不当干渉防止「代理人登録制度」導入の方向性提示",
-      "summary": "インテリジェンス機能のさらなる強化に向けた有識者会議の会合が開かれ、政府は、外国政府などによる不当な干渉を防ぐため、「外国代理人」を登録する制度を導入するとした今後の法整備の方向性を示しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66011",
-      "publishedAt": "2026-10-26T12:37:58+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "政府 外国不当干渉防止「代理人登録制度」導入の方向性提示",
-      "summaryJa": "インテリジェンス機能のさらなる強化に向けた有識者会議の会合が開かれ、政府は、外国政府などによる不当な干渉を防ぐため、「外国代理人」を登録する制度を導入するとした今後の法整備の方向性を示しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "e5200ff0070c",
-      "source": "NHK 経済",
-      "title": "政府 OSAで完成済み防衛装備品を同志国に初供与へ",
-      "summary": "政府は、同志国との安全保障協力の枠組み、OSAを通じて完成済みの防衛装備品の沿岸監視レーダーシステムを、フィリピンに供与する方向で調整に入りました。この枠組みで完成済みの防衛装備品が供与されれば、初め…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de66000",
-      "publishedAt": "2026-10-26T11:43:23+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "政府 OSAで完成済み防衛装備品を同志国に初供与へ",
-      "summaryJa": "政府は、同志国との安全保障協力の枠組み、OSAを通じて完成済みの防衛装備品の沿岸監視レーダーシステムを、フィリピンに供与する方向で調整に入りました。この枠組みで完成済みの防衛装備品が供与されれば、初め…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "2749465b2d71",
-      "source": "NHK 経済",
-      "title": "日本・フィンランド防衛相会談 防衛協力と交流深化で一致",
-      "summary": "小泉防衛大臣は、フィンランドのハッカネン国防相と会談し、ヨーロッパ大西洋とインド太平洋の安全保障は不可分だとして、緊密に連携し、防衛協力や交流を深めていくことで一致しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65997",
-      "publishedAt": "2026-10-26T11:19:23+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "日本・フィンランド防衛相会談 防衛協力と交流深化で一致",
-      "summaryJa": "小泉防衛大臣は、フィンランドのハッカネン国防相と会談し、ヨーロッパ大西洋とインド太平洋の安全保障は不可分だとして、緊密に連携し、防衛協力や交流を深めていくことで一致しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "cb0d4cc49004",
-      "source": "NHK 経済",
-      "title": "自民合同会議 ガソリン補助基準価格引き上げなど求める提言案",
-      "summary": "中東情勢を受けて実施しているガソリン価格などの激変緩和措置について、自民党の合同会議は、持続可能な制度に移行すべきだとして、基準となる価格の段階的な引き上げなどを求める提言案をまとめました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261026de65961",
-      "publishedAt": "2026-10-26T11:11:22+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "自民合同会議 ガソリン補助基準価格引き上げなど求める提言案",
-      "summaryJa": "中東情勢を受けて実施しているガソリン価格などの激変緩和措置について、自民党の合同会議は、持続可能な制度に移行すべきだとして、基準となる価格の段階的な引き上げなどを求める提言案をまとめました。",
+      "titleJa": "赤澤経産相 ドイツ首相にEUのEV優遇策への懸念伝える考え",
+      "summaryJa": "赤澤経済産業大臣は、EU＝ヨーロッパ連合が域内で生産されたEVへの優遇措置を検討していることについて、日本の自動車メーカーに大きな影響が生じうるという認識を示した上で、28日に来日する予定のドイツのメ…",
       "translationStatus": "ja-original"
     }
   ],
   "stockNews": [
-    {
-      "id": "4384fa9b5c8b",
-      "source": "Bloomberg Markets",
-      "title": "Schwab CEO Says It's Easy to Find Top Talent in Texas",
-      "summary": "Schwab Corp. Chief Executive Officer Rick Wurster says Texas' cost of living, strong universities and tax advantages versus other states have helped the Westlake-based company recruit employees since relocating from San Francisco in 2021. S",
-      "url": "https://www.bloomberg.com/news/videos/2026-10-26/schwab-ceo-says-they-keep-finding-top-talent-in-texas-video",
-      "publishedAt": "2026-10-26T21:01:18+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.47,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [
-        "6098"
-      ],
-      "impact": "positive",
-      "whyImportant": "関連銘柄の前提確認に必要なため。",
-      "recommendation": "分割エントリー可能か、理想PF差分と合わせて確認する。",
-      "translationStatus": "pending"
-    },
     {
       "id": "b5e20d03c4cd",
       "source": "NHK 経済",
@@ -1121,9 +1088,9 @@
     }
   ],
   "meta": {
-    "totalCount": 52,
+    "totalCount": 51,
     "marketCount": 48,
-    "stockCount": 4,
-    "duplicateRemoved": 2
+    "stockCount": 3,
+    "duplicateRemoved": 3
   }
 }
