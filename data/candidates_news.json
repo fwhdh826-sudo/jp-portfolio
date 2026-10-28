@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-28T09:43:12.276686+09:00",
-  "sourceUpdatedAt": "2026-10-28T00:32:33+00:00",
+  "updatedAt": "2026-10-28T11:29:40.674486+09:00",
+  "sourceUpdatedAt": "2026-10-28T01:51:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,28 +17,16 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Banks Eye $21 Billion Bonds for Broadcom Chip-Financing Deal",
+      "topNegativeTitle": "きょう日独首脳会談 サプライチェーン強じん化など確認へ",
       "topPositiveTitle": "10月の月例経済報告 「緩やかに回復」を維持",
       "items": [
-        {
-          "title": "Banks Eye $21 Billion Bonds for Broadcom Chip-Financing Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T20:09:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/banks-eye-21-billion-of-bonds-for-broadcom-chip-financing-deal",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        },
         {
           "title": "きょう日独首脳会談 サプライチェーン強じん化など確認へ",
           "source": "NHK 経済",
@@ -68,15 +56,15 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.239,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
-      "topPositiveTitle": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
       "items": [
         {
           "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
@@ -85,6 +73,19 @@
           "sentimentScore": -0.33,
           "publishedAt": "2026-10-27T14:09:56+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-10-27/stifel-s-piegza-says-fed-should-hike-rates-likely-won-t-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Robert Kaplan: Fed Can Wait Before Hiking Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T00:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/robert-kaplan-fed-can-wait-before-hiking-rates-video",
           "tags": [
             "market",
             "rates",
@@ -105,6 +106,19 @@
           ]
         },
         {
+          "title": "Fed Seen Holding Rates With Nod to December: Decision-Day Guide",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/fed-seen-holding-rates-with-nod-to-december-decision-day-guide",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
           "title": "Bullish Treasury Bets Face Reversal Risk From Hawkish Fed",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -115,38 +129,25 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-27T22:09:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
+      "avgSentiment": 0.11,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Dongshan Precision Set to Debut After $1.3 Billion HK Listing",
-      "topPositiveTitle": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
+      "topNegativeTitle": "Dongshan Precision Slips in Debut After $1.3 Billion HK Listing",
+      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Dongshan Precision Set to Debut After $1.3 Billion HK Listing",
+          "title": "Dongshan Precision Slips in Debut After $1.3 Billion HK Listing",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-27T23:00:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/dongshan-precision-set-to-debut-after-1-3-billion-hk-listing",
           "tags": [
@@ -167,13 +168,14 @@
           ]
         },
         {
-          "title": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
+          "title": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 1.0,
           "publishedAt": "2026-10-27T22:09:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "market",
             "us_broad",
             "us_growth"
@@ -194,16 +196,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
+      "topNegativeTitle": "India Jewelers Hold Off Gold Buying, Betting Prices Will Drop",
       "topPositiveTitle": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
       "items": [
+        {
+          "title": "India Jewelers Hold Off Gold Buying, Betting Prices Will Drop",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-28T00:21:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/india-jewelers-hold-off-gold-buying-betting-prices-will-drop",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
         {
           "title": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
           "source": "Bloomberg Markets",
@@ -220,29 +234,16 @@
       ]
     },
     "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Real Estate Investors on Commercial Market Opportunities",
-      "topPositiveTitle": "Real Estate Investors on Commercial Market Opportunities",
-      "items": [
-        {
-          "title": "Real Estate Investors on Commercial Market Opportunities",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T20:51:44+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/real-estate-investors-on-commercial-market-opportunities-video",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 1.0,
@@ -270,129 +271,99 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": -0.223,
-      "negativeCount": 4,
-      "positiveCount": 2,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "French Consumer Confidence Drops to 13-Year Low After Riots",
-      "topPositiveTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "fx": {
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
+      "topPositiveTitle": "India’s Record Bank Cash Surplus Fades as RBI Curbs Rupee Bets",
       "items": [
         {
-          "title": "French Consumer Confidence Drops to 13-Year Low After Riots",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-27T07:45:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/french-consumer-confidence-hits-lowest-since-2013-after-riots",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Indonesia’s MSCI Downgrade Threat – What It Means for Investors: Podcast",
+          "title": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T21:13:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/indonesia-s-msci-downgrade-threat-what-it-means-for-investors-podcast",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-28T01:50:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/new-zealand-dollar-slides-most-versus-aussie-since-2017-on-rbnz",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
-          "tags": [
-            "commodity",
-            "macro_risk",
+            "fx",
             "market",
             "rates"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 28",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T22:04:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
+          "title": "New Zealand Raises Rate for Third Straight Meeting on Fuel Price",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T01:04:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/new-zealand-unexpectedly-holds-interest-rates-steady-kiwi-falls",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
+            "fx",
             "market"
           ]
         },
         {
-          "title": "Haiti Crisis: El Salvador Surges Hundreds of Troops to Find Missing Soldiers",
+          "title": "India’s Record Bank Cash Surplus Fades as RBI Curbs Rupee Bets",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-27T22:23:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/haiti-crisis-el-salvador-surges-hundreds-of-troops-to-find-missing-soldiers",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
-      "topPositiveTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
-      "items": [
-        {
-          "title": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-27T21:01:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/barclays-sees-fx-volatility-staying-elevated-as-dollar-rises",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-28T01:51:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/india-s-record-bank-cash-surplus-fades-as-rbi-curbs-rupee-bets",
           "tags": [
             "fx",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.167,
+      "avgSentiment": -0.148,
       "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 6,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+      "topNegativeTitle": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
       "topPositiveTitle": "Bank of Canada Decision: Markets Prepare for Higher Interest Rates",
       "items": [
         {
-          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+          "title": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-28T01:50:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/new-zealand-dollar-slides-most-versus-aussie-since-2017-on-rbnz",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Australia Under Pressure to Hike Rates Further as Prices Quicken",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-28T00:32:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/australian-inflation-exceeds-estimate-ahead-of-rba-meeting",
           "tags": [
-            "commodity",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -411,36 +382,25 @@
           ]
         },
         {
-          "title": "ECB Says Banks Tighten Credit Conditions, See Loan Demand Fall",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/ecb-says-banks-tighten-credit-conditions-see-loan-demand-fall",
+          "title": "Robert Kaplan: Fed Can Wait Before Hiking Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T00:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/robert-kaplan-fed-can-wait-before-hiking-rates-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Thailand Seen Holding Rate to Support Growth as 1% Emerges as Policy Floor",
+          "title": "RBA’s Bullock Says Upside Inflation Risks Are Materializing",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/thailand-seen-holding-rate-to-support-growth-as-1-emerges-as-policy-floor",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US New Home Sales Fall Amid Surge in Mortgage Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T14:02:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/us-new-home-sales-fall-amid-surge-in-mortgage-rates",
+          "publishedAt": "2026-10-28T00:31:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/rba-s-bullock-says-upside-inflation-risks-are-materializing",
           "tags": [
             "market",
             "rates"
@@ -449,71 +409,69 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.5,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "avgSentiment": 0.667,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 28",
+      "topNegativeTitle": "Malaysian Palm Oil Glut Swamps Storage in Top-Growing State",
+      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
       "items": [
         {
-          "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T10:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bank-of-canada-rate-hike-expected-as-oil-prices-at-115-fuel-inflation-fears",
+          "title": "Malaysian Palm Oil Glut Swamps Storage in Top-Growing State",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T09:10:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/malaysian-palm-oil-glut-swamps-storage-in-top-producing-state",
           "tags": [
             "commodity",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
             "market",
-            "rates"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
           "title": "Latest Oil Market News and Analysis for Oct. 28",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
           "publishedAt": "2026-10-27T22:04:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.5,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 28",
-      "topPositiveTitle": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
+      "topNegativeTitle": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 28",
       "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 28",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T22:04:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
           "source": "Bloomberg Markets",
@@ -524,6 +482,20 @@
           "tags": [
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T22:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market",
+            "us_broad"
           ]
         }
       ]
