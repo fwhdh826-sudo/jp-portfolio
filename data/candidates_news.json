@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-28T11:29:40.674486+09:00",
-  "sourceUpdatedAt": "2026-10-28T01:51:10+00:00",
+  "updatedAt": "2026-10-28T18:54:49.744712+09:00",
+  "sourceUpdatedAt": "2026-10-28T09:50:44+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,104 +17,51 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "きょう日独首脳会談 サプライチェーン強じん化など確認へ",
-      "topPositiveTitle": "10月の月例経済報告 「緩やかに回復」を維持",
+      "topNegativeTitle": "Anthropic IPO Shutout Sends Asia’s Investors Into Proxy Bets",
+      "topPositiveTitle": "Anthropic IPO Shutout Sends Asia’s Investors Into Proxy Bets",
       "items": [
         {
-          "title": "きょう日独首脳会談 サプライチェーン強じん化など確認へ",
-          "source": "NHK 経済",
+          "title": "Anthropic IPO Shutout Sends Asia’s Investors Into Proxy Bets",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T20:08:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261028de66709",
+          "publishedAt": "2026-10-28T07:07:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/anthropic-ipo-shutout-sends-asia-s-investors-into-proxy-bets",
           "tags": [
             "jp_semiconductor",
             "market"
-          ],
-          "titleJa": "きょう日独首脳会談 サプライチェーン強じん化など確認へ"
-        },
-        {
-          "title": "10月の月例経済報告 「緩やかに回復」を維持",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-27T12:01:50+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261027de66635",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ],
-          "titleJa": "10月の月例経済報告 「緩やかに回復」を維持"
+          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.239,
-      "negativeCount": 1,
+      "avgSentiment": 0.25,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
-      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "UK Budget Tests Bond Markets as Fed, ECB and Oil Risks Loom",
+      "topPositiveTitle": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
       "items": [
         {
-          "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T14:09:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/stifel-s-piegza-says-fed-should-hike-rates-likely-won-t-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Robert Kaplan: Fed Can Wait Before Hiking Rates",
+          "title": "UK Budget Tests Bond Markets as Fed, ECB and Oil Risks Loom",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T00:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-28/robert-kaplan-fed-can-wait-before-hiking-rates-video",
+          "publishedAt": "2026-10-28T07:44:07+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-28/uk-budget-tests-bond-markets-as-fed-ecb-and-oil-risks-loom",
           "tags": [
+            "commodity",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T23:36:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/gold-holds-above-4-000-as-traders-look-to-fed-rate-decision",
-          "tags": [
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Seen Holding Rates With Nod to December: Decision-Day Guide",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/fed-seen-holding-rates-with-nod-to-december-decision-day-guide",
-          "tags": [
-            "market",
-            "rates",
             "us_broad"
           ]
         },
@@ -129,49 +76,65 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Sprake: Fed Now Concerned About High Energy Prices",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-28T09:11:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/sprake-fed-now-concerned-about-high-energy-prices-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-27T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.11,
-      "negativeCount": 1,
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Dongshan Precision Slips in Debut After $1.3 Billion HK Listing",
-      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "Thailand Holds Key Rate, Lifts Growth Outlook on AI Exports",
+      "topPositiveTitle": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
       "items": [
         {
-          "title": "Dongshan Precision Slips in Debut After $1.3 Billion HK Listing",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/dongshan-precision-set-to-debut-after-1-3-billion-hk-listing",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq Texas & Walmart Discuss Corp Listing Strategies",
-          "source": "Bloomberg Markets",
+          "title": "Thailand Holds Key Rate, Lifts Growth Outlook on AI Exports",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T21:42:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/nasdaq-texas-walmart-discuss-corp-listing-strategies-video",
+          "publishedAt": "2026-10-28T07:00:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/thailand-holds-key-rate-as-high-energy-costs-weigh-on-economy",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+          "title": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.67,
           "publishedAt": "2026-10-27T22:09:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -184,6 +147,32 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Houthi Strike Hits Aramco Refinery as Israel Election Ends in Deadlock",
+      "topPositiveTitle": "Houthi Strike Hits Aramco Refinery as Israel Election Ends in Deadlock",
+      "items": [
+        {
+          "title": "Houthi Strike Hits Aramco Refinery as Israel Election Ends in Deadlock",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T08:08:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/horizons-middle-east-africa-10-28-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -194,44 +183,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "India Jewelers Hold Off Gold Buying, Betting Prices Will Drop",
-      "topPositiveTitle": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
-      "items": [
-        {
-          "title": "India Jewelers Hold Off Gold Buying, Betting Prices Will Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-28T00:21:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/india-jewelers-hold-off-gold-buying-betting-prices-will-drop",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T23:36:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/gold-holds-above-4-000-as-traders-look-to-fed-rate-decision",
-          "tags": [
-            "gold",
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -246,31 +197,6 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "SK Hynix Posts Record Profit Amid AI Rush",
-      "topPositiveTitle": "SK Hynix Posts Record Profit Amid AI Rush",
-      "items": [
-        {
-          "title": "SK Hynix Posts Record Profit Amid AI Rush",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-28T00:18:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-28/sk-hynix-posts-record-profit-amid-ai-rush-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -282,28 +208,78 @@
       "topPositiveTitle": null,
       "items": []
     },
+    "macro_risk": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
+      "topPositiveTitle": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
+      "items": [
+        {
+          "title": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T09:01:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/-usd-ugx-uganda-s-treasury-chief-vows-to-weather-shocks-buffeting-shilling",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Cancels License of Brokerage at Heart of Fund Crisis",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T08:46:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/turkey-cancels-license-of-brokerage-at-heart-of-fund-crisis",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
+    },
     "fx": {
-      "avgSentiment": -0.11,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
-      "topPositiveTitle": "India’s Record Bank Cash Surplus Fades as RBI Curbs Rupee Bets",
+      "topNegativeTitle": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
+      "topPositiveTitle": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
       "items": [
         {
-          "title": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-28T01:50:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/new-zealand-dollar-slides-most-versus-aussie-since-2017-on-rbnz",
+          "title": "(USD:UGX) Uganda’s Treasury Chief Vows to Weather Shocks Buffeting Shilling",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T09:01:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/-usd-ugx-uganda-s-treasury-chief-vows-to-weather-shocks-buffeting-shilling",
           "tags": [
             "fx",
-            "market",
-            "rates"
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "PHP/USD: Marcos Pledges to “Do All We Can” to Defend Philippine Peso",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T04:28:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/php-usd-marcos-pledges-to-do-all-we-can-to-defend-philippine-peso",
+          "tags": [
+            "fx",
+            "market"
           ]
         },
         {
@@ -317,41 +293,28 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "India’s Record Bank Cash Surplus Fades as RBI Curbs Rupee Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-28T01:51:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/india-s-record-bank-cash-surplus-fades-as-rbi-curbs-rupee-bets",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.148,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
-      "topPositiveTitle": "Bank of Canada Decision: Markets Prepare for Higher Interest Rates",
+      "topNegativeTitle": "RBNZ Governor Says Further Rate Increases Highly Likely",
+      "topPositiveTitle": "Sprake: Fed Now Concerned About High Energy Prices",
       "items": [
         {
-          "title": "New Zealand Dollar Slides Most Versus Aussie Since 2017 on RBNZ",
+          "title": "RBNZ Governor Says Further Rate Increases Highly Likely",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-28T01:50:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/new-zealand-dollar-slides-most-versus-aussie-since-2017-on-rbnz",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-28T07:07:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/rbnz-governor-says-further-rate-increases-highly-likely-video",
           "tags": [
-            "fx",
             "market",
             "rates"
           ]
@@ -369,29 +332,15 @@
           ]
         },
         {
-          "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
+          "title": "Commonwealth Bank Now Expects RBA to Hike to 4.85% in November",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T14:09:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/stifel-s-piegza-says-fed-should-hike-rates-likely-won-t-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Robert Kaplan: Fed Can Wait Before Hiking Rates",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T00:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-28/robert-kaplan-fed-can-wait-before-hiking-rates-video",
+          "publishedAt": "2026-10-28T02:52:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/commonwealth-bank-now-expects-rba-to-hike-to-4-85-in-november",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -405,37 +354,89 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Thailand Seen Holding Rate to Support Growth as 1% Emerges as Policy Floor",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/thailand-seen-holding-rate-to-support-growth-as-1-emerges-as-policy-floor",
+          "tags": [
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.667,
+      "avgSentiment": 0.266,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Malaysian Palm Oil Glut Swamps Storage in Top-Growing State",
-      "topPositiveTitle": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+      "topNegativeTitle": "Oil Is the Real Risk for Another Week: Market Analysis",
+      "topPositiveTitle": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
       "items": [
         {
-          "title": "Malaysian Palm Oil Glut Swamps Storage in Top-Growing State",
+          "title": "Oil Is the Real Risk for Another Week: Market Analysis",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T09:10:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/malaysian-palm-oil-glut-swamps-storage-in-top-producing-state",
+          "publishedAt": "2026-10-28T08:43:15+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/oil-is-the-real-risk-for-another-week-3-minutes-mliv-video",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "Asian Stocks Climb on AI Trade Optimism, Oil Gains: Markets Wrap",
+          "title": "UK Budget Tests Bond Markets as Fed, ECB and Oil Risks Loom",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T07:44:07+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-28/uk-budget-tests-bond-markets-as-fed-ecb-and-oil-risks-loom",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Sprake: Fed Now Concerned About High Energy Prices",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-28T09:11:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/sprake-fed-now-concerned-about-high-energy-prices-video",
+          "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-27T22:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US Stocks Drift as Caution Sets In Ahead of Fed: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
           "publishedAt": "2026-10-27T22:09:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -444,43 +445,42 @@
             "us_broad",
             "us_growth"
           ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 28",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-27T22:04:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.5,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": 0.168,
+      "negativeCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 28",
+      "topNegativeTitle": "Sachs: Netanyahu, Eisenkot Share Strategic Goals",
+      "topPositiveTitle": "IMF Lauds South Africa’s Fiscal Gains, Sees Growth as Next Test",
       "items": [
         {
-          "title": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
+          "title": "Sachs: Netanyahu, Eisenkot Share Strategic Goals",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-28T07:37:55+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/sachs-netanyahu-eisenkot-share-strategic-goals-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Houthi Strike Hits Aramco Refinery as Israel Election Ends in Deadlock",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T21:31:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/montage-intl-ceo-future-bookings-are-higher-into-2027-video",
+          "publishedAt": "2026-10-28T08:08:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/horizons-middle-east-africa-10-28-2026-video",
           "tags": [
             "geopolitical",
+            "global_broad",
             "market"
           ]
         },
@@ -488,14 +488,25 @@
           "title": "Latest Oil Market News and Analysis for Oct. 28",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-27T22:04:57+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
           "tags": [
             "commodity",
             "geopolitical",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "IMF Lauds South Africa’s Fiscal Gains, Sees Growth as Next Test",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-28T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/imf-lauds-south-africa-s-fiscal-gains-sees-growth-as-next-test",
+          "tags": [
+            "geopolitical",
+            "market"
           ]
         }
       ]
