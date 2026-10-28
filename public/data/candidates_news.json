@@ -1,58 +1,56 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-28T01:45:54.608125+09:00",
-  "sourceUpdatedAt": "2026-10-27T16:34:27+00:00",
+  "updatedAt": "2026-10-28T09:43:12.276686+09:00",
+  "sourceUpdatedAt": "2026-10-28T00:32:33+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
-      "topPositiveTitle": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
-      "items": [
-        {
-          "title": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-27T06:11:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/boj-s-price-trend-indicator-jumps-to-above-3-backing-hike-case",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.17,
-      "negativeCount": 1,
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
+      "topNegativeTitle": "Banks Eye $21 Billion Bonds for Broadcom Chip-Financing Deal",
       "topPositiveTitle": "10月の月例経済報告 「緩やかに回復」を維持",
       "items": [
         {
-          "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-26T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/south-korea-s-economy-beats-forecasts-on-ai-driven-chip-boom",
+          "title": "Banks Eye $21 Billion Bonds for Broadcom Chip-Financing Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T20:09:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/banks-eye-21-billion-of-bonds-for-broadcom-chip-financing-deal",
           "tags": [
             "jp_semiconductor",
-            "market",
-            "us_growth"
+            "market"
           ]
+        },
+        {
+          "title": "きょう日独首脳会談 サプライチェーン強じん化など確認へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T20:08:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261028de66709",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ],
+          "titleJa": "きょう日独首脳会談 サプライチェーン強じん化など確認へ"
         },
         {
           "title": "10月の月例経済報告 「緩やかに回復」を維持",
@@ -70,28 +68,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": 0.167,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed Faces a Different Kind of Inflation Problem, Says Kaplan",
-      "topPositiveTitle": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+      "topNegativeTitle": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
+      "topPositiveTitle": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
       "items": [
-        {
-          "title": "Fed Faces a Different Kind of Inflation Problem, Says Kaplan",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-27T16:12:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/kaplan-fed-facing-different-kind-of-inflation-problem-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Stifel's Piegza Says Fed Should Raise Rates But Likely Won’t",
           "source": "Bloomberg Economics",
@@ -106,26 +92,38 @@
           ]
         },
         {
-          "title": "Millennium Taps Prediction Markets Data in Hunt for Trading Edge",
+          "title": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T15:46:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/millennium-taps-prediction-markets-data-in-hunt-for-trading-edge",
+          "publishedAt": "2026-10-27T23:36:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/gold-holds-above-4-000-as-traders-look-to-fed-rate-decision",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bullish Treasury Bets Face Reversal Risk From Hawkish Fed",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T20:30:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/bullish-treasury-bets-face-reversal-risk-from-hawkish-fed",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+          "title": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-26T22:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "market",
             "us_broad",
             "us_growth"
@@ -134,62 +132,48 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.118,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": 0.333,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-      "topPositiveTitle": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+      "topNegativeTitle": "Dongshan Precision Set to Debut After $1.3 Billion HK Listing",
+      "topPositiveTitle": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
       "items": [
         {
-          "title": "S. Korea Growth Tops Forecast as Chip Boom Masks Weak Demand",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-26T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/south-korea-s-economy-beats-forecasts-on-ai-driven-chip-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "GM to Leave NYSE for Stock Listing on Tech-Focused Nasdaq",
+          "title": "Dongshan Precision Set to Debut After $1.3 Billion HK Listing",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T16:26:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-27/gm-to-leave-nyse-for-stock-listing-on-nasdaq-video",
+          "publishedAt": "2026-10-27T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/dongshan-precision-set-to-debut-after-1-3-billion-hk-listing",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Novogratz Says Credit Markets Are Reaching ‘Peak Nervousness’",
+          "title": "Nasdaq Texas & Walmart Discuss Corp Listing Strategies",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T11:37:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/novogratz-s-galaxy-tops-revenue-estimates-shares-rise",
+          "publishedAt": "2026-10-27T21:42:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/nasdaq-texas-walmart-discuss-corp-listing-strategies-video",
           "tags": [
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
+          "title": "Stocks in Asia Advance on Resurgent AI Optimism: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-26T22:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T22:09:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
             "market",
             "us_broad",
             "us_growth"
@@ -198,77 +182,103 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.6,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
+      "topPositiveTitle": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
+      "items": [
+        {
+          "title": "Gold Holds Above $4,000 as Traders Look to Fed Rate Decision",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T23:36:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/gold-holds-above-4-000-as-traders-look-to-fed-rate-decision",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "reit": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Real Estate Investors on Commercial Market Opportunities",
+      "topPositiveTitle": "Real Estate Investors on Commercial Market Opportunities",
+      "items": [
+        {
+          "title": "Real Estate Investors on Commercial Market Opportunities",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-27T20:51:44+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/real-estate-investors-on-commercial-market-opportunities-video",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
+    },
+    "dividend": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
-      "topPositiveTitle": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
+      "topNegativeTitle": "SK Hynix Posts Record Profit Amid AI Rush",
+      "topPositiveTitle": "SK Hynix Posts Record Profit Amid AI Rush",
       "items": [
         {
-          "title": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
+          "title": "SK Hynix Posts Record Profit Amid AI Rush",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-27T08:18:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/european-stocks-pulled-lower-by-banks-as-hsbc-results-disappoint",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-28T00:18:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-28/sk-hynix-posts-record-profit-amid-ai-rush-video",
           "tags": [
-            "commodity",
-            "global_broad",
+            "dividend",
             "market"
           ]
         }
       ]
     },
-    "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "macro_risk": {
-      "avgSentiment": -0.835,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": -0.223,
+      "negativeCount": 4,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "French Consumer Confidence Drops to 13-Year Low After Riots",
-      "topPositiveTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
+      "topPositiveTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
       "items": [
         {
           "title": "French Consumer Confidence Drops to 13-Year Low After Riots",
@@ -277,6 +287,18 @@
           "sentimentScore": -1.0,
           "publishedAt": "2026-10-27T07:45:00+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-27/french-consumer-confidence-hits-lowest-since-2013-after-riots",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Indonesia’s MSCI Downgrade Threat – What It Means for Investors: Podcast",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-27T21:13:38+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/indonesia-s-msci-downgrade-threat-what-it-means-for-investors-podcast",
           "tags": [
             "macro_risk",
             "market"
@@ -295,31 +317,71 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 28",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-27T22:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Haiti Crisis: El Salvador Surges Hundreds of Troops to Find Missing Soldiers",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-27T22:23:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/haiti-crisis-el-salvador-surges-hundreds-of-troops-to-find-missing-soldiers",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
+      "topPositiveTitle": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
+      "items": [
+        {
+          "title": "Barclays Sees FX Volatility Staying Elevated as Dollar Rises",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-27T21:01:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/barclays-sees-fx-volatility-staying-elevated-as-dollar-rises",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": -0.066,
+      "avgSentiment": -0.167,
       "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
-      "topPositiveTitle": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
+      "topPositiveTitle": "Bank of Canada Decision: Markets Prepare for Higher Interest Rates",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
@@ -361,6 +423,18 @@
           ]
         },
         {
+          "title": "Thailand Seen Holding Rate to Support Growth as 1% Emerges as Policy Floor",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-28T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/thailand-seen-holding-rate-to-support-growth-as-1-emerges-as-policy-floor",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "US New Home Sales Fall Amid Surge in Mortgage Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -371,32 +445,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "BOJ’s Price Trend Indicator Jumps to Above 3%, Backing Hike Case",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-27T06:11:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/boj-s-price-trend-indicator-jumps-to-above-3-backing-hike-case",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.15,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "avgSentiment": -0.5,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
-      "topPositiveTitle": "China’s Industrial Profits Surge Most in Three Months on Oil",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 28",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Expected as Oil Prices at $115 Fuel Inflation Fears",
@@ -413,91 +474,54 @@
           ]
         },
         {
-          "title": "European Stocks Advance on Lower Oil, Solid US Data; HSBC Slides",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-27T08:18:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/european-stocks-pulled-lower-by-banks-as-hsbc-results-disappoint",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "CFTC to Publish Commitments of Traders Report Twice Weekly",
+          "title": "Latest Oil Market News and Analysis for Oct. 28",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-27T14:41:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/cftc-aims-to-publish-commitments-of-traders-report-twice-weekly",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 27",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T22:03:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/latest-oil-market-news-and-analysis-for-oct-27",
+          "publishedAt": "2026-10-27T22:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
-          ]
-        },
-        {
-          "title": "Tech Stocks Power Wall Street Gains as Oil Falls: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-10-26T22:03:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
-      "topPositiveTitle": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Oct. 28",
+      "topPositiveTitle": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
       "items": [
         {
-          "title": "Anglo American’s (AAL LN) Sanches Says Brazil Needs to ‘Negotiate With Everyone’",
+          "title": "Latest Oil Market News and Analysis for Oct. 28",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-27T15:39:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/anglo-american-s-aal-ln-sanches-says-brazil-needs-to-negotiate-with-everyone",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-27T22:04:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 27",
+          "title": "Montage Intl. CEO: Future Bookings Are Higher Into 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-26T22:03:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-26/latest-oil-market-news-and-analysis-for-oct-27",
+          "publishedAt": "2026-10-27T21:31:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-27/montage-intl-ceo-future-bookings-are-higher-into-2027-video",
           "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
