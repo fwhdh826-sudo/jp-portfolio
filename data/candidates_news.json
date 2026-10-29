@@ -1,20 +1,32 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-29T10:13:26.589675+09:00",
-  "sourceUpdatedAt": "2026-10-29T00:56:44+00:00",
+  "updatedAt": "2026-10-29T11:36:16.830593+09:00",
+  "sourceUpdatedAt": "2026-10-29T02:30:38+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BOJ Set to Hold Rate as Inflation Reaches Long-Awaited Milestone",
-      "topPositiveTitle": "BOJ Set to Hold Rate as Inflation Reaches Long-Awaited Milestone",
+      "topNegativeTitle": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
+      "topPositiveTitle": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
       "items": [
+        {
+          "title": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T01:02:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/why-does-japan-s-underlying-inflation-guide-boj-rate-decisions",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "BOJ Set to Hold Rate as Inflation Reaches Long-Awaited Milestone",
           "source": "Bloomberg Economics",
@@ -56,15 +68,15 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.033,
+      "avgSentiment": -0.043,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 7,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 8,
       "isStale": false,
       "topNegativeTitle": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
-      "topPositiveTitle": "Stocks Edge Higher After Fed as Oracle Surges 11%: Markets Wrap",
+      "topPositiveTitle": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
       "items": [
         {
           "title": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
@@ -133,35 +145,23 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.165,
+      "avgSentiment": -0.33,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "US Futures Fall as Alphabet, Samsung Disappoint: Markets Wrap",
-      "topPositiveTitle": "Global Bond Sales Shatter Record, Fueled by AI Borrowing Binge",
+      "topNegativeTitle": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
+      "topPositiveTitle": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
       "items": [
         {
-          "title": "US Futures Fall as Alphabet, Samsung Disappoint: Markets Wrap",
+          "title": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
           "publishedAt": "2026-10-28T22:11:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Global Bond Sales Shatter Record, Fueled by AI Borrowing Binge",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T20:17:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/global-bond-sales-shatter-record-fueled-by-ai-borrowing-binge",
           "tags": [
             "market",
             "us_growth"
@@ -286,16 +286,28 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
-      "topPositiveTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
+      "topNegativeTitle": "Philippines May Use More Tools to Stem Peso Slide, Analysts Say",
+      "topPositiveTitle": "HK Dollar Peg Architect Says Narrower Band May Ease Speculation",
       "items": [
+        {
+          "title": "Philippines May Use More Tools to Stem Peso Slide, Analysts Say",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T01:15:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/philippines-may-use-more-tools-to-stem-peso-slide-analysts-say",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
           "source": "Bloomberg Economics",
@@ -308,19 +320,31 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "HK Dollar Peg Architect Says Narrower Band May Ease Speculation",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T02:15:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/hk-dollar-peg-architect-says-narrower-band-may-ease-speculation",
+          "tags": [
+            "fx",
+            "market"
+          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.026,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 9,
+      "avgSentiment": -0.112,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 8,
       "sourceCount": 2,
-      "itemCount": 13,
+      "itemCount": 12,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
-      "topPositiveTitle": "Stocks Edge Higher After Fed as Oracle Surges 11%: Markets Wrap",
+      "topPositiveTitle": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
@@ -348,6 +372,18 @@
           ]
         },
         {
+          "title": "RBNZ Governor Sees ‘High’ Chance of December Interest-Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T02:07:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/rbnz-governor-sees-high-chance-of-december-interest-rate-hike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -370,18 +406,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-10-28/yuan-funding-has-deeper-drivers-than-yields-top-economist-says",
           "tags": [
             "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Bank of Canada Chief Tiff Macklem Warns US Deficits Are Costly and Unsustainable",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T21:25:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/bank-of-canada-chief-tiff-macklem-warns-us-deficits-are-costly-and-unsustainable",
-          "tags": [
             "market",
             "rates"
           ]
