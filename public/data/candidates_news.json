@@ -1,47 +1,10 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-29T19:17:07.336631+09:00",
-  "sourceUpdatedAt": "2026-10-29T09:59:27+00:00",
+  "updatedAt": "2026-10-30T02:29:31.575877+09:00",
+  "sourceUpdatedAt": "2026-10-29T17:20:33+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
-      "topPositiveTitle": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
-      "items": [
-        {
-          "title": "Why Does Japan’s Underlying Inflation Guide BOJ Rate Decisions?",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T01:02:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/why-does-japan-s-underlying-inflation-guide-boj-rate-decisions",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "BOJ Set to Hold Rate as Inflation Reaches Long-Awaited Milestone",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/boj-set-to-hold-rate-as-inflation-reaches-long-awaited-milestone",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
-    },
-    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -53,49 +16,63 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
-      "avgSentiment": -0.068,
-      "negativeCount": 1,
+    "jp_semiconductor": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
+      "topPositiveTitle": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
+      "items": [
+        {
+          "title": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T16:28:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/chipotle-sales-beat-as-new-chicken-bring-diners-back-video",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.118,
+      "negativeCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
-      "topPositiveTitle": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
+      "topNegativeTitle": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
+      "topPositiveTitle": "DWS Americas CEO: Europe Is a Bet on a Physical Economy",
       "items": [
         {
-          "title": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
+          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-28T18:09:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/bond-traders-see-90-chance-of-december-hike-after-fed-holds",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-29T11:39:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
           "tags": [
             "market",
             "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
-          "title": "Fed to Phase In New FOMC Meeting Schedule Starting Next Year, Warsh Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T18:38:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/warsh-says-fomc-schedule-will-change-as-of-next-fall",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "What Wall Street Really Thanks About the AI Trade (Podcast)",
+          "title": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-29/what-wall-street-really-thanks-about-the-ai-trade-podcast",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T16:10:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-surveillance-10-29-2026-video",
           "tags": [
             "market",
             "us_broad",
@@ -103,12 +80,25 @@
           ]
         },
         {
-          "title": "Kochugovindan: Two Dissents Shows Fed Independence",
+          "title": "Stock Rotation Hits AI Winners on Alphabet’s Miss: Markets Wrap",
           "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-28T22:11:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Warsh Puts a Spotlight on AI Financing’s Vulnerability to Fed Policy",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T07:27:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kochugovindan-two-dissents-shows-fed-independence-video",
+          "publishedAt": "2026-10-29T11:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-10-29/warsh-puts-a-spotlight-on-ai-financing-s-vulnerability-to-fed-policy",
           "tags": [
             "market",
             "rates",
@@ -116,38 +106,63 @@
           ]
         },
         {
-          "title": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
-          "source": "Bloomberg Economics",
+          "title": "DWS Americas CEO: Europe Is a Bet on a Physical Economy",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-28T22:44:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/fed-holds-fire-as-warsh-telegraphs-more-hikes-without-saying-it",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T16:08:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/dws-americas-ceo-europe-is-a-bet-on-a-physical-economy-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": -0.565,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "What Wall Street Really Thanks About the AI Trade (Podcast)",
-      "topPositiveTitle": "Nasdaq Futures Sink as AI Trade Shows New Cracks: Markets Wrap",
+      "topNegativeTitle": "Tech Stocks Slide as Alphabet’s Record Plunge Revives AI Fears",
+      "topPositiveTitle": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
       "items": [
         {
-          "title": "What Wall Street Really Thanks About the AI Trade (Podcast)",
+          "title": "Tech Stocks Slide as Alphabet’s Record Plunge Revives AI Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/audio/2026-10-29/what-wall-street-really-thanks-about-the-ai-trade-podcast",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-29T11:09:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/us-stock-futures-fall-as-alphabet-sales-miss-revives-ai-fears",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-29T11:39:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T16:10:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-surveillance-10-29-2026-video",
           "tags": [
             "market",
             "us_broad",
@@ -155,44 +170,31 @@
           ]
         },
         {
-          "title": "Nasdaq Futures Sink as AI Trade Shows New Cracks: Markets Wrap",
+          "title": "Stock Rotation Hits AI Winners on Alphabet’s Miss: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
           "publishedAt": "2026-10-28T22:11:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
-      "topPositiveTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
-      "items": [
-        {
-          "title": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-29T07:41:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/horizons-middle-east-africa-10-29-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": 0,
@@ -219,63 +221,37 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
-      "topPositiveTitle": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
+      "topNegativeTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
+      "topPositiveTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
       "items": [
         {
-          "title": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T07:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/shell-reports-second-highest-profit-ever-as-refining-hits-record",
-          "tags": [
-            "dividend",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "France Debt Crisis: How Does It Compare With Greece?",
-      "topPositiveTitle": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
-      "items": [
-        {
-          "title": "France Debt Crisis: How Does It Compare With Greece?",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T07:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/france-debt-crisis-how-does-it-compare-with-greece",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
+          "title": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T00:04:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kalemli-ozcan-today-s-inflation-lacks-2021-s-force-video",
+          "publishedAt": "2026-10-29T14:23:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ukraine-economy-to-shrink-for-the-first-time-since-full-scale-war",
           "tags": [
-            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -283,41 +259,27 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
-      "topPositiveTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
-      "items": [
-        {
-          "title": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/yuan-funding-has-deeper-drivers-than-yields-top-economist-says",
-          "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": 0.029,
+      "avgSentiment": -0.181,
       "negativeCount": 3,
-      "positiveCount": 4,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 11,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
-      "topPositiveTitle": "Lloyds Profit Beat Marred by Flat Outlook Amid Rising Rates",
+      "topPositiveTitle": "ECB Set to Hold Rates to Assess France and Energy Risks",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
@@ -332,52 +294,52 @@
           ]
         },
         {
-          "title": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
+          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-28T18:09:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/bond-traders-see-90-chance-of-december-hike-after-fed-holds",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-10-29T11:39:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
           "tags": [
             "market",
             "rates",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
-          "title": "RBNZ Governor Sees ‘High’ Chance of December Interest-Rate Hike",
+          "title": "India Finance Ministry Says Liquidity Key to Curbing Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T02:07:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/rbnz-governor-sees-high-chance-of-december-interest-rate-hike",
+          "publishedAt": "2026-10-29T10:54:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/india-finance-ministry-says-liquidity-key-to-curbing-inflation",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Kochugovindan: Two Dissents Shows Fed Independence",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T07:27:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kochugovindan-two-dissents-shows-fed-independence-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
+          "title": "ECB Officials Are Ready to Raise Interest Rates in December",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/yuan-funding-has-deeper-drivers-than-yields-top-economist-says",
+          "publishedAt": "2026-10-29T15:35:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ecb-officials-are-ready-to-raise-interest-rates-in-december",
           "tags": [
-            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T13:15:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ecb-holds-rates-as-lagarde-exit-compounds-alarm-over-oil-france",
+          "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -385,27 +347,39 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.443,
+      "avgSentiment": 0.22,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "ECB Expected to Keep Rates on Hold",
-      "topPositiveTitle": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
+      "topNegativeTitle": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
+      "topPositiveTitle": "Hungary, US Sign Agreement on ‘Trump Peace Pipeline Framework’",
       "items": [
         {
-          "title": "ECB Expected to Keep Rates on Hold",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-29T07:40:08+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/ecb-expected-to-keep-rates-on-hold-video",
+          "title": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T13:15:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ecb-holds-rates-as-lagarde-exit-compounds-alarm-over-oil-france",
           "tags": [
             "commodity",
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Hungary, US Sign Agreement on ‘Trump Peace Pipeline Framework’",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T16:08:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/hungary-us-sign-agreement-on-trump-peace-pipeline-framework",
+          "tags": [
+            "commodity",
+            "market"
           ]
         },
         {
@@ -420,68 +394,42 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T00:04:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kalemli-ozcan-today-s-inflation-lacks-2021-s-force-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
-      "positiveCount": 0,
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
-      "topPositiveTitle": "Taiwan's Deputy Foreign Minister Responds to Pakistan's Airspace U-Turn",
+      "topNegativeTitle": "Polymarket Investigates Suspicious Trades on Israel Election",
+      "topPositiveTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
       "items": [
         {
-          "title": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-29T07:41:40+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/horizons-middle-east-africa-10-29-2026-video",
-          "tags": [
-            "geopolitical",
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T07:06:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/shell-reports-second-highest-profit-ever-as-refining-hits-record",
-          "tags": [
-            "dividend",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan's Deputy Foreign Minister Responds to Pakistan's Airspace U-Turn",
+          "title": "Polymarket Investigates Suspicious Trades on Israel Election",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T08:15:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/insight-with-haslinda-amin-10-29-2026-video",
+          "publishedAt": "2026-10-29T14:57:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/polymarket-investigating-suspicious-trades-on-israeli-election",
           "tags": [
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T14:23:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ukraine-economy-to-shrink-for-the-first-time-since-full-scale-war",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
