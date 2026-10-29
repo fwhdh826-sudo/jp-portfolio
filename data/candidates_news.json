@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-29T11:36:16.830593+09:00",
-  "sourceUpdatedAt": "2026-10-29T02:30:38+00:00",
+  "updatedAt": "2026-10-29T19:17:07.336631+09:00",
+  "sourceUpdatedAt": "2026-10-29T09:59:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -42,38 +42,24 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "日独首脳会談 サプライチェーン強じん化など協力強化で一致",
-      "topPositiveTitle": "日独首脳会談 サプライチェーン強じん化など協力強化で一致",
-      "items": [
-        {
-          "title": "日独首脳会談 サプライチェーン強じん化など協力強化で一致",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T15:56:18+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261028de67318",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ],
-          "titleJa": "日独首脳会談 サプライチェーン強じん化など協力強化で一致"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.043,
+      "avgSentiment": -0.068,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 6,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "US Short-Term Yields Fall as Traders Parse Warsh, Fed Path",
       "topPositiveTitle": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
@@ -104,38 +90,38 @@
           ]
         },
         {
-          "title": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
+          "title": "What Wall Street Really Thanks About the AI Trade (Podcast)",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:44:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/gold-edges-lower-after-fed-holds-rates-with-limited-guidance",
+          "publishedAt": "2026-10-29T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-29/what-wall-street-really-thanks-about-the-ai-trade-podcast",
           "tags": [
-            "gold",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Kochugovindan: Two Dissents Shows Fed Independence",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T07:27:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kochugovindan-two-dissents-shows-fed-independence-video",
+          "tags": [
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Fed mantiene tasas sin dar muchas pistas sobre diciembre",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T21:32:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-28/fed-mantiene-tasas-sin-dar-muchas-pistas-sobre-diciembre-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Officials Left Interest Rates Unchanged",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T21:15:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-28/bloomberg-surveillance-the-fed-decides-10-27-2026-video",
+          "title": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-28T22:44:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-28/fed-holds-fire-as-warsh-telegraphs-more-hikes-without-saying-it",
           "tags": [
             "market",
             "rates",
@@ -145,21 +131,34 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
-      "topPositiveTitle": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
+      "topNegativeTitle": "What Wall Street Really Thanks About the AI Trade (Podcast)",
+      "topPositiveTitle": "Nasdaq Futures Sink as AI Trade Shows New Cracks: Markets Wrap",
       "items": [
         {
-          "title": "Tech Stocks Drop as Alphabet, Samsung Disappoint: Markets Wrap",
+          "title": "What Wall Street Really Thanks About the AI Trade (Podcast)",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-10-29/what-wall-street-really-thanks-about-the-ai-trade-podcast",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nasdaq Futures Sink as AI Trade Shows New Cracks: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-10-28T22:11:47+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
           "tags": [
@@ -170,6 +169,32 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": -0.67,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
+      "topPositiveTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
+      "items": [
+        {
+          "title": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-29T07:41:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/horizons-middle-east-africa-10-29-2026-video",
+          "tags": [
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -180,33 +205,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
-      "topPositiveTitle": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
-      "items": [
-        {
-          "title": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:44:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/gold-edges-lower-after-fed-holds-rates-with-limited-guidance",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -221,51 +219,50 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
+      "topPositiveTitle": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
+      "items": [
+        {
+          "title": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T07:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/shell-reports-second-highest-profit-ever-as-refining-hits-record",
+          "tags": [
+            "dividend",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
     },
     "macro_risk": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Petrobras Pumps at Record as Iran War Upends Oil Markets",
+      "topNegativeTitle": "France Debt Crisis: How Does It Compare With Greece?",
       "topPositiveTitle": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
       "items": [
         {
-          "title": "Petrobras Pumps at Record as Iran War Upends Oil Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:06:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/petrobras-pumps-at-record-as-iran-war-upends-oil-markets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Budget Pledges £4.1 Billion in Cost-of-Living Relief",
+          "title": "France Debt Crisis: How Does It Compare With Greece?",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T15:56:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/uk-budget-pledges-4-1-billion-in-cost-of-living-relief",
+          "publishedAt": "2026-10-29T07:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/france-debt-crisis-how-does-it-compare-with-greece",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -286,28 +283,16 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Philippines May Use More Tools to Stem Peso Slide, Analysts Say",
-      "topPositiveTitle": "HK Dollar Peg Architect Says Narrower Band May Ease Speculation",
+      "topNegativeTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
+      "topPositiveTitle": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
       "items": [
-        {
-          "title": "Philippines May Use More Tools to Stem Peso Slide, Analysts Say",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T01:15:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/philippines-may-use-more-tools-to-stem-peso-slide-analysts-say",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
         {
           "title": "Yuan Funding Has Deeper Drivers Than Yields, Top Economist Says",
           "source": "Bloomberg Economics",
@@ -320,31 +305,19 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "HK Dollar Peg Architect Says Narrower Band May Ease Speculation",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T02:15:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/hk-dollar-peg-architect-says-narrower-band-may-ease-speculation",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.112,
+      "avgSentiment": 0.029,
       "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 8,
+      "positiveCount": 4,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
-      "topPositiveTitle": "Fed Holds Fire as Warsh Telegraphs More Hikes Without Saying It",
+      "topPositiveTitle": "Lloyds Profit Beat Marred by Flat Outlook Amid Rising Rates",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
@@ -384,14 +357,13 @@
           ]
         },
         {
-          "title": "Gold Edges Lower After Fed Holds Rates With Limited Guidance",
+          "title": "Kochugovindan: Two Dissents Shows Fed Independence",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:44:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/gold-edges-lower-after-fed-holds-rates-with-limited-guidance",
+          "publishedAt": "2026-10-29T07:27:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kochugovindan-two-dissents-shows-fed-independence-video",
           "tags": [
-            "gold",
             "market",
             "rates",
             "us_broad"
@@ -413,142 +385,102 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.094,
-      "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.443,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Oil Declines as Traders Parse Signs of Fresh Diplomacy on Iran",
+      "topNegativeTitle": "ECB Expected to Keep Rates on Hold",
       "topPositiveTitle": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
       "items": [
         {
-          "title": "Oil Declines as Traders Parse Signs of Fresh Diplomacy on Iran",
+          "title": "ECB Expected to Keep Rates on Hold",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-28T22:05:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/oil-declines-as-traders-parse-signs-of-fresh-diplomacy-on-iran",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "China’s Green Exports Enough to Offset Brazil’s Emissions: CREA",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T00:01:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/china-s-green-exports-enough-to-offset-brazil-s-emissions-crea",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Budget Does Little to Ease Pressure on BOE for Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-28T16:17:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/uk-budget-does-little-to-ease-pressure-on-boe-for-rate-hikes",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Petrobras Pumps at Record as Iran War Upends Oil Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:06:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/petrobras-pumps-at-record-as-iran-war-upends-oil-markets",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bank of Canada Hikes to 2.5%, Says More Could Be Needed",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T13:45:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/bank-of-canada-hikes-to-2-5-says-more-could-be-needed",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T07:40:08+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/ecb-expected-to-keep-rates-on-hold-video",
           "tags": [
             "commodity",
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "ECB Set to Hold Rates to Assess France and Energy Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ecb-set-to-hold-rates-to-assess-france-and-energy-risks",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Kalemli-Ozcan: Today's Inflation Lacks 2021's Force",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T00:04:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/kalemli-ozcan-today-s-inflation-lacks-2021-s-force-video",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.167,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Oil Declines as Traders Parse Signs of Fresh Diplomacy on Iran",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 28",
+      "topNegativeTitle": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
+      "topPositiveTitle": "Taiwan's Deputy Foreign Minister Responds to Pakistan's Airspace U-Turn",
       "items": [
         {
-          "title": "Oil Declines as Traders Parse Signs of Fresh Diplomacy on Iran",
+          "title": "Netanyahu Bloc Falls Short as Iran Diplomacy Picks Up Across the Region",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-28T22:05:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/oil-declines-as-traders-parse-signs-of-fresh-diplomacy-on-iran",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-10-29T07:41:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/horizons-middle-east-africa-10-29-2026-video",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "global_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Shell Lifts Buyback to $5 Billion as Refining Windfall Grows",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T07:06:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/shell-reports-second-highest-profit-ever-as-refining-hits-record",
+          "tags": [
+            "dividend",
             "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Petrobras Pumps at Record as Iran War Upends Oil Markets",
+          "title": "Taiwan's Deputy Foreign Minister Responds to Pakistan's Airspace U-Turn",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T23:06:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/petrobras-pumps-at-record-as-iran-war-upends-oil-markets",
+          "publishedAt": "2026-10-29T08:15:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/insight-with-haslinda-amin-10-29-2026-video",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Budget Pledges £4.1 Billion in Cost-of-Living Relief",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-28T15:56:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/uk-budget-pledges-4-1-billion-in-cost-of-living-relief",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 28",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-27T22:04:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-27/latest-oil-market-news-and-analysis-for-oct-28",
-          "tags": [
-            "commodity",
             "geopolitical",
             "market"
           ]
