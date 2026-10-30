@@ -1,56 +1,33 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-30T19:19:04.617506+09:00",
-  "sourceUpdatedAt": "2026-10-30T10:15:46+00:00",
+  "updatedAt": "2026-10-31T02:05:25.067817+09:00",
+  "sourceUpdatedAt": "2026-10-30T16:31:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.333,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOJ Holds Rate as Underlying Inflation Hits Target",
-      "topPositiveTitle": "BOJ Inflation Target Signal Supports Yen Gains, Strategists Say",
+      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topPositiveTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
       "items": [
         {
-          "title": "BOJ Holds Rate as Underlying Inflation Hits Target",
+          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T05:12:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/boj-holds-rate-as-underlying-inflation-hits-target-video",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-30T11:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
           "tags": [
             "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "JPY/USD: BOJ Holds Benchmark Rate Steady as Expected After September Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T03:02:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/boj-holds-benchmark-rate-steady-as-expected-after-september-hike",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "BOJ Inflation Target Signal Supports Yen Gains, Strategists Say",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-30T03:32:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/boj-inflation-target-signal-supports-yen-gains-strategists-say",
-          "tags": [
-            "fx",
-            "jp_broad",
+            "macro_risk",
             "market",
-            "trust"
+            "rates",
+            "us_growth"
           ]
         }
       ]
@@ -68,105 +45,127 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": -0.275,
+      "negativeCount": 5,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US Treasuries Gain on Haven Buying After Tech Selloff",
-      "topPositiveTitle": "US Treasuries Gain on Haven Buying After Tech Selloff",
+      "topNegativeTitle": "Fed’s Musalem Says More Rate Hikes Needed Soon to Tame Inflation",
+      "topPositiveTitle": "One Fed Policy Can’t Fix a Two-Speed Economy, Says Janasiewicz",
       "items": [
         {
-          "title": "US Treasuries Gain on Haven Buying After Tech Selloff",
+          "title": "Fed’s Musalem Says More Rate Hikes Needed Soon to Tame Inflation",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T01:13:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T16:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/fed-s-musalem-says-more-rate-hikes-needed-soon-to-tame-inflation",
           "tags": [
-            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Fall After Amazon and Intel Deal Another Blow to AI Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T15:55:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-surveillance-10-30-2026-video",
+          "tags": [
             "market",
             "us_broad",
             "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Barkin Indicates Backing for ‘Gradual’ Rate Increases",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T14:07:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/fed-s-barkin-indicates-backing-for-gradual-rate-increases",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasuries Head for Monthly Gain as Tech Giants Stumble",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T01:13:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T22:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.11,
+      "avgSentiment": -0.443,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Signs of a Tech Slowdown Are the Last Thing This Market Needs",
-      "topPositiveTitle": "AI Darling Taiwan Extends Economic Growth Run Unseen Since 1987",
+      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topPositiveTitle": "Credit Market’s Most Trusted Hedges Are Breaking in AI Era",
       "items": [
         {
-          "title": "Signs of a Tech Slowdown Are the Last Thing This Market Needs",
-          "source": "Bloomberg Markets",
+          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-30T10:13:39+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-30/signs-of-a-tech-slowdown-are-the-last-thing-this-market-needs",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-30T11:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
           "tags": [
+            "jp_broad",
+            "macro_risk",
             "market",
+            "rates",
             "us_growth"
           ]
         },
         {
-          "title": "Taiwan Stocks Near Correction as Global AI Selloff Deepens",
+          "title": "Stocks Fall After Amazon and Intel Deal Another Blow to AI Trade",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T03:34:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/taiwan-stocks-heads-for-correction-as-global-ai-selloff-deepens",
+          "publishedAt": "2026-10-30T15:55:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-surveillance-10-30-2026-video",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Philippine Exports Rise at Fastest in Five Years on Weak Peso, AI Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T02:51:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/philippine-exports-rise-at-fastest-in-five-years-on-weak-peso-ai-boom",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Treasuries Gain on Haven Buying After Tech Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T01:13:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
-          "tags": [
-            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Tech Stock Selloff Deepens on Earnings, Oil Rises: Markets Wrap",
+          "title": "Credit Market’s Most Trusted Hedges Are Breaking in AI Era",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-29T22:07:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T14:25:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/ai-debt-drives-wedge-between-corporate-bonds-and-credit-hedges",
           "tags": [
-            "commodity",
-            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -174,55 +173,28 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Binance says $6.3B Hacked in Crypto Heist",
-      "topPositiveTitle": "Binance says $6.3B Hacked in Crypto Heist",
-      "items": [
-        {
-          "title": "Binance says $6.3B Hacked in Crypto Heist",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T08:07:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/horizons-middle-east-africa-10-30-2026-video",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "SNB Reports Nine-Month Profit on Foreign Currencies and Gold",
-      "topPositiveTitle": "SNB Reports Nine-Month Profit on Foreign Currencies and Gold",
-      "items": [
-        {
-          "title": "SNB Reports Nine-Month Profit on Foreign Currencies and Gold",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T06:24:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/snb-reports-nine-month-profit-on-foreign-currencies-and-gold",
-          "tags": [
-            "fx",
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -249,41 +221,53 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.037,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 4,
+      "avgSentiment": -0.134,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Kia Shares Plunge as Cost Surge Linked to Iran War Hits Profit",
-      "topPositiveTitle": "Kenya Inflation Tops Forecasts, Raises Rate Hike Prospects",
+      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topPositiveTitle": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
       "items": [
         {
-          "title": "Kia Shares Plunge as Cost Surge Linked to Iran War Hits Profit",
-          "source": "Bloomberg Markets",
+          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T08:19:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/kia-shares-plunge-as-cost-surge-linked-to-iran-war-hits-profit",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-30T11:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
           "tags": [
-            "geopolitical",
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Inside Mexico City’s Housing Theft Crisis",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T12:01:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/inside-mexico-city-s-housing-theft-crisis",
+          "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Taiwan Stocks Near Correction as Global AI Selloff Deepens",
+          "title": "UK Debt Chief Sees Volatility Driving Demand for Short Gilts",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T03:34:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/taiwan-stocks-heads-for-correction-as-global-ai-selloff-deepens",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T10:56:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/uk-debt-chief-sees-volatility-driving-demand-for-short-gilts",
           "tags": [
-            "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
@@ -299,27 +283,13 @@
           ]
         },
         {
-          "title": "Japan to Scale Back Fuel Subsidies as Iran War Costs Mount",
+          "title": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T05:19:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/japan-to-scale-back-fuel-subsidies-as-iran-war-costs-mount",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-30T11:44:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/italy-s-inflation-jump-is-dramatic-result-of-war-giorgetti-says",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Whistleblowers Claimed Key Oil Tanker Rate Was Manipulated",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T19:51:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/mercuria-baltic-case-reveals-claims-tanker-rate-was-manipulated",
-          "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -328,90 +298,90 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "SNB Reports Nine-Month Profit on Foreign Currencies and Gold",
-      "topPositiveTitle": "BOJ Inflation Target Signal Supports Yen Gains, Strategists Say",
+      "topNegativeTitle": "World’s Second-Worst Performing Currency Fans Ugandan Inflation",
+      "topPositiveTitle": "World’s Second-Worst Performing Currency Fans Ugandan Inflation",
       "items": [
         {
-          "title": "SNB Reports Nine-Month Profit on Foreign Currencies and Gold",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T06:24:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/snb-reports-nine-month-profit-on-foreign-currencies-and-gold",
-          "tags": [
-            "fx",
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "BOJ Inflation Target Signal Supports Yen Gains, Strategists Say",
+          "title": "World’s Second-Worst Performing Currency Fans Ugandan Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-30T03:32:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/boj-inflation-target-signal-supports-yen-gains-strategists-say",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-30T10:18:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/world-s-second-worst-performing-currency-fans-ugandan-inflation",
           "tags": [
             "fx",
-            "jp_broad",
-            "market",
-            "trust"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "UK Wins Back Bond Investors With Dose of Fiscal Restraint",
-      "topPositiveTitle": "BlackRock Says Bonds Offer Compelling Income Opportunity",
+      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topPositiveTitle": "One Fed Policy Can’t Fix a Two-Speed Economy, Says Janasiewicz",
       "items": [
         {
-          "title": "UK Wins Back Bond Investors With Dose of Fiscal Restraint",
+          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-30T11:47:12+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
+          "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Treasuries Head for Monthly Gain as Tech Giants Stumble",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T01:13:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "One Fed Policy Can’t Fix a Two-Speed Economy, Says Janasiewicz",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T08:48:08+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/uk-wins-back-bond-investors-with-dose-of-fiscal-restraint",
+          "publishedAt": "2026-10-30T15:24:06+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/why-one-fed-policy-can-t-fix-a-two-speed-economy-video",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "BlackRock Says Bonds Offer Compelling Income Opportunity",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T08:12:22+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/blackrock-says-bonds-offer-compelling-income-opportunity-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Kenya Inflation Tops Forecasts, Raises Rate Hike Prospects",
+          "title": "ECB’s Panetta Says More Hikes May Be Needed to Tame Prices",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T08:01:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/record-gasoline-prices-push-kenya-inflation-to-three-year-high",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T10:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/ecb-s-panetta-says-more-rate-hikes-may-be-needed-to-tame-prices",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -419,42 +389,39 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.6,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Whistleblowers Claimed Key Oil Tanker Rate Was Manipulated",
-      "topPositiveTitle": "BOE Agents See Little Sign of Energy Shock Feeding Into Pay",
+      "topNegativeTitle": "Big Oil Scores $56 Billion Windfall on Spiking Fuel Prices",
+      "topPositiveTitle": "BP Profit Hits 18-Year High as Oil Refining Margins Surge",
       "items": [
         {
-          "title": "Whistleblowers Claimed Key Oil Tanker Rate Was Manipulated",
+          "title": "Big Oil Scores $56 Billion Windfall on Spiking Fuel Prices",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T19:51:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/mercuria-baltic-case-reveals-claims-tanker-rate-was-manipulated",
+          "publishedAt": "2026-10-30T16:31:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/big-oil-scores-56b-windfall-on-spiking-fuel-prices-video",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Tech Stock Selloff Deepens on Earnings, Oil Rises: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Strong Earnings Mask Growing Struggle With Inflation, Oil Prices",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-29T22:07:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-30T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/strong-earnings-mask-growing-struggle-with-inflation-oil-prices",
           "tags": [
             "commodity",
-            "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
@@ -468,84 +435,81 @@
             "commodity",
             "market"
           ]
+        },
+        {
+          "title": "BP Profit Hits 18-Year High as Oil Refining Margins Surge",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-30T07:08:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/bp-profit-surges-as-refining-windfall-aids-o-neill-turnaround",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-29T22:02:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.049,
-      "negativeCount": 2,
+      "avgSentiment": 0.443,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 3,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Kia Shares Plunge as Cost Surge Linked to Iran War Hits Profit",
-      "topPositiveTitle": "AI Darling Taiwan Extends Economic Growth Run Unseen Since 1987",
+      "topNegativeTitle": "Big Oil Scores $56 Billion Windfall on Spiking Fuel Prices",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
       "items": [
         {
-          "title": "Kia Shares Plunge as Cost Surge Linked to Iran War Hits Profit",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T08:19:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/kia-shares-plunge-as-cost-surge-linked-to-iran-war-hits-profit",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan Stocks Near Correction as Global AI Selloff Deepens",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T03:34:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/taiwan-stocks-heads-for-correction-as-global-ai-selloff-deepens",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Japan to Scale Back Fuel Subsidies as Iran War Costs Mount",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T05:19:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/japan-to-scale-back-fuel-subsidies-as-iran-war-costs-mount",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Whistleblowers Claimed Key Oil Tanker Rate Was Manipulated",
+          "title": "Big Oil Scores $56 Billion Windfall on Spiking Fuel Prices",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T19:51:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/mercuria-baltic-case-reveals-claims-tanker-rate-was-manipulated",
+          "publishedAt": "2026-10-30T16:31:51+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/big-oil-scores-56b-windfall-on-spiking-fuel-prices-video",
           "tags": [
             "commodity",
             "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-30T11:44:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/italy-s-inflation-jump-is-dramatic-result-of-war-giorgetti-says",
+          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "South Africa Policy Stance Seen as Enough to Curb Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T17:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/south-africa-policy-stance-seen-as-sufficient-to-curb-inflation",
+          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-29T22:02:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
           "tags": [
+            "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
