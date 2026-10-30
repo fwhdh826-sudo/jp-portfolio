@@ -1,39 +1,77 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-30T02:29:31.575877+09:00",
-  "sourceUpdatedAt": "2026-10-29T17:20:33+00:00",
+  "updatedAt": "2026-10-30T10:18:51.757994+09:00",
+  "sourceUpdatedAt": "2026-10-30T00:46:10+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
-      "topPositiveTitle": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
+      "topNegativeTitle": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
+      "topPositiveTitle": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
       "items": [
         {
-          "title": "Chipotle Sales Beat as New Chicken, Chips Bring Diners Back",
+          "title": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T16:28:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/chipotle-sales-beat-as-new-chicken-bring-diners-back-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T23:56:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/topix-overhaul-kicks-off-three-things-investors-need-to-know",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
+        {
+          "title": "Tokyo Inflation Exceeds BOJ’s 2% Target Before Rate Decision",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T23:36:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/tokyo-inflation-exceeds-boj-s-2-target-ahead-of-rate-decision",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+      "topPositiveTitle": "Kioxia Faces Test to Impress With Earnings After 60% Stock Slump",
+      "items": [
+        {
+          "title": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-30T00:20:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/big-tech-s-deepening-ai-funding-concerns-sink-asian-chip-stocks",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Kioxia Faces Test to Impress With Earnings After 60% Stock Slump",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T22:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/kioxia-faces-test-to-impress-with-earnings-after-60-stock-slump",
           "tags": [
             "jp_semiconductor",
             "market"
@@ -42,76 +80,35 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.118,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
-      "topPositiveTitle": "DWS Americas CEO: Europe Is a Bet on a Physical Economy",
+      "topNegativeTitle": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
+      "topPositiveTitle": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
       "items": [
         {
-          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-29T11:39:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
+          "title": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T16:10:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-surveillance-10-29-2026-video",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stock Rotation Hits AI Winners on Alphabet’s Miss: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-28T22:11:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Warsh Puts a Spotlight on AI Financing’s Vulnerability to Fed Policy",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T11:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-10-29/warsh-puts-a-spotlight-on-ai-financing-s-vulnerability-to-fed-policy",
+          "publishedAt": "2026-10-29T22:13:50+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-29/fed-is-facing-same-issues-greenspan-did-in-2001-kelton-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "DWS Americas CEO: Europe Is a Bet on a Physical Economy",
+          "title": "Philippine Bonds Are Most Exposed in Emerging Asia to Fed Hikes",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T16:08:01+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/dws-americas-ceo-europe-is-a-bet-on-a-physical-economy-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/philippine-bonds-are-most-exposed-in-emerging-asia-to-fed-hikes",
           "tags": [
             "market",
             "us_broad"
@@ -120,65 +117,62 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.565,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 2,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Tech Stocks Slide as Alphabet’s Record Plunge Revives AI Fears",
-      "topPositiveTitle": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
+      "topNegativeTitle": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+      "topPositiveTitle": "Foxconn CEO: AI to Drive Consumer Update Cycle",
       "items": [
         {
-          "title": "Tech Stocks Slide as Alphabet’s Record Plunge Revives AI Fears",
+          "title": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-10-29T11:09:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/us-stock-futures-fall-as-alphabet-sales-miss-revives-ai-fears",
+          "publishedAt": "2026-10-30T00:20:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/big-tech-s-deepening-ai-funding-concerns-sink-asian-chip-stocks",
           "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-29T11:39:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Alphabet Set for Largest Loss on Record, Dragging Down Tech Trade",
+          "title": "Tech Stocks Sell Off on Earnings, Bitcoin Drops: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T16:10:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-surveillance-10-29-2026-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-10-29T22:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Stock Rotation Hits AI Winners on Alphabet’s Miss: Markets Wrap",
+          "title": "Blue Owl Looks to Raise Insurance Capital for AI Deals",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-28T22:11:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-28/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T11:02:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/blue-owl-fees-beat-estimates-though-redemptions-weigh-on-inflows",
           "tags": [
             "market",
-            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Foxconn CEO: AI to Drive Consumer Update Cycle",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-30T00:17:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-30/foxconn-ceo-ai-to-drive-consumer-update-cycle-video",
+          "tags": [
+            "market",
             "us_growth"
           ]
         }
@@ -197,16 +191,30 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
+      "topPositiveTitle": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
+      "items": [
+        {
+          "title": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T23:32:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/gold-steadies-near-4-000-as-inflation-keeps-rate-hike-bets-firm",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -233,16 +241,53 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.67,
-      "negativeCount": 0,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
+      "topNegativeTitle": "Hong Kong Stocks Lose a Key Backer as Chinese Investors Head for Exit",
       "topPositiveTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
       "items": [
+        {
+          "title": "Hong Kong Stocks Lose a Key Backer as Chinese Investors Head for Exit",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-30T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/hk-stocks-lose-a-key-backer-as-chinese-investors-head-for-exit",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Why the US Economy Looks Strong but Feels Bad to Americans",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T21:01:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/why-the-us-economy-looks-strong-but-feels-bad-to-americans",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "South Africa Policy Stance Seen as Sufficient to Curb Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-29T17:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/south-africa-policy-stance-seen-as-sufficient-to-curb-inflation",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
           "source": "Bloomberg Economics",
@@ -259,27 +304,53 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 2,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+      "items": [
+        {
+          "title": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-30T00:35:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/dollar-s-rate-fueled-rally-set-to-ride-out-us-midterm-gridlock",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "JPMorgan Asset Sees Yuan Gaining 10% as Global Push Deepens",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-29T23:30:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/jpmorgan-asset-sees-yuan-gaining-10-as-global-push-deepens",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": -0.181,
-      "negativeCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 7,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
-      "topPositiveTitle": "ECB Set to Hold Rates to Assess France and Energy Risks",
+      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
@@ -288,32 +359,6 @@
           "sentimentScore": -0.67,
           "publishedAt": "2026-10-28T20:26:07+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-28/bank-of-canada-rate-hike-hurts-housing-market-already-in-slump",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Tech Stocks Slide After Earnings; Warsh Signals Potential Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-10-29T11:39:48+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/bloomberg-brief-10-29-2026-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "India Finance Ministry Says Liquidity Key to Curbing Inflation",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-29T10:54:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/india-finance-ministry-says-liquidity-key-to-curbing-inflation",
           "tags": [
             "market",
             "rates"
@@ -343,20 +388,46 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-30T00:35:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/dollar-s-rate-fueled-rally-set-to-ride-out-us-midterm-gridlock",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.223,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
-      "topPositiveTitle": "Hungary, US Sign Agreement on ‘Trump Peace Pipeline Framework’",
+      "topNegativeTitle": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
       "items": [
+        {
+          "title": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-29T23:32:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/gold-steadies-near-4-000-as-inflation-keeps-rate-hike-bets-firm",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        },
         {
           "title": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
           "source": "Bloomberg Economics",
@@ -371,52 +442,41 @@
           ]
         },
         {
-          "title": "Hungary, US Sign Agreement on ‘Trump Peace Pipeline Framework’",
+          "title": "Latest Oil Market News and Analysis for Oct. 30",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-29T16:08:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/hungary-us-sign-agreement-on-trump-peace-pipeline-framework",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-29T22:02:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
-          ]
-        },
-        {
-          "title": "ECB Set to Hold Rates to Assess France and Energy Risks",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-29T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ecb-set-to-hold-rates-to-assess-france-and-energy-risks",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.557,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Polymarket Investigates Suspicious Trades on Israel Election",
-      "topPositiveTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
+      "topNegativeTitle": "South Africa Policy Stance Seen as Sufficient to Curb Inflation",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
       "items": [
         {
-          "title": "Polymarket Investigates Suspicious Trades on Israel Election",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Policy Stance Seen as Sufficient to Curb Inflation",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T14:57:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/polymarket-investigating-suspicious-trades-on-israeli-election",
+          "publishedAt": "2026-10-29T17:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/south-africa-policy-stance-seen-as-sufficient-to-curb-inflation",
           "tags": [
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -432,6 +492,19 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-10-29T22:02:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
         }
       ]
     }
@@ -444,7 +517,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
