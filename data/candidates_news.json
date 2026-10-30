@@ -1,32 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-30T10:18:51.757994+09:00",
-  "sourceUpdatedAt": "2026-10-30T00:46:10+00:00",
+  "updatedAt": "2026-10-30T11:45:39.528563+09:00",
+  "sourceUpdatedAt": "2026-10-30T02:30:59+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
-      "topPositiveTitle": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
+      "topNegativeTitle": "Tokyo Inflation Exceeds BOJ’s 2% Target Before Rate Decision",
+      "topPositiveTitle": "Tokyo Inflation Exceeds BOJ’s 2% Target Before Rate Decision",
       "items": [
-        {
-          "title": "Topix Overhaul Kicks Off: Three Things Investors Need to Know",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T23:56:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/topix-overhaul-kicks-off-three-things-investors-need-to-know",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        },
         {
           "title": "Tokyo Inflation Exceeds BOJ’s 2% Target Before Rate Decision",
           "source": "Bloomberg Economics",
@@ -42,21 +30,21 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.5,
+      "avgSentiment": -0.335,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+      "topNegativeTitle": "Big Tech Earnings Stoke Fresh Unease Across Asian Chip Stocks",
       "topPositiveTitle": "Kioxia Faces Test to Impress With Earnings After 60% Stock Slump",
       "items": [
         {
-          "title": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+          "title": "Big Tech Earnings Stoke Fresh Unease Across Asian Chip Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-30T00:20:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-30/big-tech-s-deepening-ai-funding-concerns-sink-asian-chip-stocks",
           "tags": [
@@ -80,26 +68,28 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
-      "topPositiveTitle": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
+      "topNegativeTitle": "Treasuries Extend Rally With Global Peers as Risk-Off Haven",
+      "topPositiveTitle": "Stock Selloff Deepens on Tech Earnings, Bonds Rise: Markets Wrap",
       "items": [
         {
-          "title": "Fed Is Facing Same Issues Greenspan Did in 2001: Kelton",
+          "title": "Treasuries Extend Rally With Global Peers as Risk-Off Haven",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T22:13:50+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-29/fed-is-facing-same-issues-greenspan-did-in-2001-kelton-video",
+          "publishedAt": "2026-10-30T01:13:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
           "tags": [
+            "macro_risk",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -113,25 +103,40 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "Stock Selloff Deepens on Tech Earnings, Bonds Rise: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T22:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "avgSentiment": 0.066,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+      "topNegativeTitle": "Big Tech Earnings Stoke Fresh Unease Across Asian Chip Stocks",
       "topPositiveTitle": "Foxconn CEO: AI to Drive Consumer Update Cycle",
       "items": [
         {
-          "title": "Big Tech’s Deepening AI Funding Concerns Sink Asian Chip Stocks",
+          "title": "Big Tech Earnings Stoke Fresh Unease Across Asian Chip Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
+          "sentimentScore": -0.67,
           "publishedAt": "2026-10-30T00:20:56+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-10-30/big-tech-s-deepening-ai-funding-concerns-sink-asian-chip-stocks",
           "tags": [
@@ -141,26 +146,44 @@
           ]
         },
         {
-          "title": "Tech Stocks Sell Off on Earnings, Bitcoin Drops: Markets Wrap",
+          "title": "Japan’s Top Insurers Revive Lending as Rates Boost Returns",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-29T22:07:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:25:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/japan-s-top-insurers-revive-lending-as-rates-boost-returns",
           "tags": [
             "market",
+            "rates",
             "us_growth"
           ]
         },
         {
-          "title": "Blue Owl Looks to Raise Insurance Capital for AI Deals",
+          "title": "Treasuries Extend Rally With Global Peers as Risk-Off Haven",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-29T11:02:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/blue-owl-fees-beat-estimates-though-redemptions-weigh-on-inflows",
+          "publishedAt": "2026-10-30T01:13:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
           "tags": [
+            "macro_risk",
             "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stock Selloff Deepens on Tech Earnings, Bonds Rise: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T22:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -241,12 +264,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.085,
+      "avgSentiment": 0.096,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Hong Kong Stocks Lose a Key Backer as Chinese Investors Head for Exit",
       "topPositiveTitle": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
@@ -261,6 +284,34 @@
           "tags": [
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "ANZ Raises Oil Price Forecast as Market Tightens on Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:18:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/anz-raises-oil-price-forecast-as-market-tightens-on-iran-war",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Extend Rally With Global Peers as Risk-Off Haven",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T01:13:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/treasuries-extend-rally-with-global-peers-on-tech-stock-selloff",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -287,35 +338,22 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Ukraine Economy to Shrink For the First Time Since Full-Scale War",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T14:23:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/ukraine-economy-to-shrink-for-the-first-time-since-full-scale-war",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "fx": {
       "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
-      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+      "topNegativeTitle": "Dollar’s Rate-Fueled Rally Seen Surviving US Midterm Gridlock",
+      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Seen Surviving US Midterm Gridlock",
       "items": [
         {
-          "title": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+          "title": "Dollar’s Rate-Fueled Rally Seen Surviving US Midterm Gridlock",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -326,18 +364,6 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "JPMorgan Asset Sees Yuan Gaining 10% as Global Push Deepens",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-29T23:30:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/jpmorgan-asset-sees-yuan-gaining-10-as-global-push-deepens",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
@@ -345,12 +371,12 @@
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
       "topNegativeTitle": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
-      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+      "topPositiveTitle": "Dollar’s Rate-Fueled Rally Seen Surviving US Midterm Gridlock",
       "items": [
         {
           "title": "Bank of Canada Rate Hike Hurts Housing Market Already in Slump",
@@ -362,6 +388,19 @@
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Japan’s Top Insurers Revive Lending as Rates Boost Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:25:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/japan-s-top-insurers-revive-lending-as-rates-boost-returns",
+          "tags": [
+            "market",
+            "rates",
+            "us_growth"
           ]
         },
         {
@@ -390,7 +429,7 @@
           ]
         },
         {
-          "title": "Dollar’s Rate-Fueled Rally Set to Ride Out US Midterm Gridlock",
+          "title": "Dollar’s Rate-Fueled Rally Seen Surviving US Midterm Gridlock",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
@@ -405,12 +444,12 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.167,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Gold Steadies Near $4,000 as Inflation Keeps Rate-Hike Bets Firm",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
@@ -429,6 +468,32 @@
           ]
         },
         {
+          "title": "ANZ Raises Oil Price Forecast as Market Tightens on Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:18:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/anz-raises-oil-price-forecast-as-market-tightens-on-iran-war",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "China’s Oil Majors Get More Firepower for Energy Security Push",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:13:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/china-s-oil-majors-get-more-firepower-for-energy-security-push",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
           "title": "Lagarde Downplays Risk of Inflation Broadening as ECB Holds",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
@@ -442,31 +507,47 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "title": "Stock Selloff Deepens on Tech Earnings, Bonds Rise: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-29T22:02:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-29T22:07:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
-            "market"
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.557,
+      "avgSentiment": 0.417,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "South Africa Policy Stance Seen as Sufficient to Curb Inflation",
+      "topNegativeTitle": "ANZ Raises Oil Price Forecast as Market Tightens on Iran War",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
       "items": [
+        {
+          "title": "ANZ Raises Oil Price Forecast as Market Tightens on Iran War",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T02:18:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/anz-raises-oil-price-forecast-as-market-tightens-on-iran-war",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "South Africa Policy Stance Seen as Sufficient to Curb Inflation",
           "source": "Bloomberg Economics",
