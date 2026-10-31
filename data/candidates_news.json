@@ -1,33 +1,31 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-10-31T11:37:02.418685+09:00",
-  "sourceUpdatedAt": "2026-10-31T02:31:04+00:00",
+  "updatedAt": "2026-11-01T01:12:47.096025+09:00",
+  "sourceUpdatedAt": "2026-10-31T16:07:38+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-      "topPositiveTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topNegativeTitle": "BOJ’s Faster ETF Sales May Help Takaichi’s Spending Plan",
+      "topPositiveTitle": "BOJ’s Faster ETF Sales May Help Takaichi’s Spending Plan",
       "items": [
         {
-          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+          "title": "BOJ’s Faster ETF Sales May Help Takaichi’s Spending Plan",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-30T11:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T02:32:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/boj-faster-etf-sales-may-help-takaichi-spending-plan-non-tax-revenue",
           "tags": [
             "jp_broad",
-            "macro_risk",
             "market",
-            "rates",
-            "us_growth"
+            "trust"
           ]
         }
       ]
@@ -45,28 +43,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.332,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": -0.333,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Turns Ruthless as Earnings Misses Fuel Deep Selloffs",
-      "topPositiveTitle": "Wall Street Boom to Cut New York State Budget Deficit in Half",
+      "topNegativeTitle": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
+      "topPositiveTitle": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
       "items": [
-        {
-          "title": "Wall Street Turns Ruthless as Earnings Misses Fuel Deep Selloffs",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-30T12:30:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/wall-street-turns-ruthless-as-earnings-misses-fuel-deep-selloffs",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -93,54 +79,53 @@
           ]
         },
         {
-          "title": "Fed’s Barkin Indicates Backing for ‘Gradual’ Rate Increases",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T14:07:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/fed-s-barkin-indicates-backing-for-gradual-rate-increases",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Boom to Cut New York State Budget Deficit in Half",
+          "title": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-30T20:55:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/wall-street-boom-to-cut-new-york-state-budget-deficit-in-half",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/ai-policy-fears-grip-stock-bond-traders-with-midterms-days-away",
           "tags": [
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0.11,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
+      "topNegativeTitle": "AI Enthusiasm Is Collapsing and Tech Earnings Just Made It Worse",
       "topPositiveTitle": "Lonnie Ali & Marc Rosen on New Muhammad Ali Amazon Show",
       "items": [
         {
-          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-30T11:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
+          "title": "AI Enthusiasm Is Collapsing and Tech Earnings Just Made It Worse",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/ai-enthusiasm-is-collapsing-and-tech-earnings-just-made-it-worse",
           "tags": [
-            "jp_broad",
-            "macro_risk",
             "market",
-            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-30T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-30/ai-policy-fears-grip-stock-bond-traders-with-midterms-days-away",
+          "tags": [
+            "market",
+            "us_broad",
             "us_growth"
           ]
         },
@@ -159,16 +144,29 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "France’s Woes, Brazil’s Limited Contagion Show New Emerging Era",
+      "topPositiveTitle": "France’s Woes, Brazil’s Limited Contagion Show New Emerging Era",
+      "items": [
+        {
+          "title": "France’s Woes, Brazil’s Limited Contagion Show New Emerging Era",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T12:30:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/france-s-woes-brazil-s-limited-contagion-show-new-emerging-era",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": 0,
@@ -207,31 +205,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.335,
-      "negativeCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-      "topPositiveTitle": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
+      "topNegativeTitle": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
+      "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
-        {
-          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-30T11:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
-          "tags": [
-            "jp_broad",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
         {
           "title": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
           "source": "Bloomberg Markets",
@@ -246,25 +229,27 @@
           ]
         },
         {
-          "title": "Inside Mexico City’s Housing Theft Crisis",
-          "source": "Bloomberg Economics",
+          "title": "EU’s Kallas Says Hosting Putin at G20 May Normalize War Crimes",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T12:01:06+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/inside-mexico-city-s-housing-theft-crisis",
+          "publishedAt": "2026-10-31T14:11:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/eu-s-kallas-hosting-putin-at-g20-risks-normalizing-war-crimes",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
-          "source": "Bloomberg Economics",
+          "title": "EU Foreign Policy Chief Warns Against Normalizing Russia",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T11:44:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/italy-s-inflation-jump-is-dramatic-result-of-war-giorgetti-says",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-31T13:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-31/eu-foreign-policy-chief-warns-against-normalizing-russia-video",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -285,39 +270,37 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-      "topPositiveTitle": "ECB’s Panetta Says More Hikes May Be Needed to Tame Prices",
+      "topNegativeTitle": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
+      "topPositiveTitle": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
       "items": [
         {
-          "title": "Tech Selloff Intensifies on Earnings; Binance Estimates $6.3B Hacked",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-10-30T11:47:12+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/bloomberg-brief-10-30-2026-video",
+          "title": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/us-midterm-candidates-tap-rare-bipartisan-issue-credit-card-rates",
           "tags": [
-            "jp_broad",
-            "macro_risk",
             "market",
-            "rates",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "ECB’s Panetta Says More Hikes May Be Needed to Tame Prices",
+          "title": "Charting the Global Economy: Central Banks Hold Rates Steady",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T10:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/ecb-s-panetta-says-more-rate-hikes-may-be-needed-to-tame-prices",
+          "publishedAt": "2026-10-31T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/charting-the-global-economy-central-banks-hold-rates-steady",
           "tags": [
+            "commodity",
             "market",
             "rates"
           ]
@@ -325,16 +308,41 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.268,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Chocolate Price Spook Families for Halloween",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
+      "topNegativeTitle": "Angola Plans to Cut Fuel Subsidies Without Price Increases",
+      "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
+        {
+          "title": "Angola Plans to Cut Fuel Subsidies Without Price Increases",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T09:39:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/angola-plans-to-cut-fuel-subsidies-without-price-increases",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Charting the Global Economy: Central Banks Hold Rates Steady",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/charting-the-global-economy-central-banks-hold-rates-steady",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Chocolate Price Spook Families for Halloween",
           "source": "Bloomberg Markets",
@@ -348,49 +356,75 @@
           ]
         },
         {
-          "title": "Hedge Funds Boost Natural Gas Short Positions to Most on Record",
+          "title": "EU Foreign Policy Chief Warns Against Normalizing Russia",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T20:40:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/hedge-funds-boost-natural-gas-short-positions-to-most-on-record",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-31T13:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-31/eu-foreign-policy-chief-warns-against-normalizing-russia-video",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "title": "Norwegian Firm Has $100 Million Riding on Mercuria’s Baltic Case",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-29T22:02:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-31T11:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/norwegian-firm-has-100-million-riding-on-mercuria-s-baltic-case",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "5年ぶり日ロ外相会談 茂木外相 北海道新聞記者の即時解放要請",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Oct. 30",
+      "topNegativeTitle": "EU’s Kallas Says Hosting Putin at G20 May Normalize War Crimes",
+      "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
+        {
+          "title": "EU’s Kallas Says Hosting Putin at G20 May Normalize War Crimes",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T14:11:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/eu-s-kallas-hosting-putin-at-g20-risks-normalizing-war-crimes",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia Extends Ban on Most Diesel Exports Through January",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T12:13:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/russia-extends-ban-on-most-diesel-exports-through-january",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
         {
           "title": "5年ぶり日ロ外相会談 茂木外相 北海道新聞記者の即時解放要請",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T21:59:22+00:00",
+          "publishedAt": "2026-10-30T21:59:00+00:00",
           "url": "https://news.web.nhk/newsweb/na/nd-20261031de68824",
           "tags": [
             "geopolitical",
@@ -412,28 +446,16 @@
           "titleJa": "G20外相会合が開幕 茂木外相“G20各国が連携・協調を”"
         },
         {
-          "title": "Italy’s Inflation Jump Is Dramatic Result of War, Giorgetti Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T11:44:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/italy-s-inflation-jump-is-dramatic-result-of-war-giorgetti-says",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Oct. 30",
+          "title": "EU Foreign Policy Chief Warns Against Normalizing Russia",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-10-29T22:02:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/latest-oil-market-news-and-analysis-for-oct-30",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-31T13:15:03+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-31/eu-foreign-policy-chief-warns-against-normalizing-russia-video",
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
@@ -448,7 +470,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 1,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
