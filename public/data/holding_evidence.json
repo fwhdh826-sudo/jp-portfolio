@@ -4,7 +4,7 @@
   "_meta": {
     "kind": "holding_evidence",
     "schemaVersion": "holding-evidence-1",
-    "generatedAt": "2026-10-30T17:05:24.809Z",
+    "generatedAt": "2026-10-31T02:37:02.199Z",
     "not_for_trading": true
   },
   "entries": [
@@ -13,7 +13,7 @@
       "ticker": "6098.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:00.850Z",
+        "asOf": "2026-10-31T02:36:43.995Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -21,7 +21,7 @@
             "status": "present"
           },
           "per": {
-            "v": 54.34563710118243,
+            "v": 55.23749244799908,
             "status": "present"
           },
           "pbr": {
@@ -47,16 +47,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 82.62548262548262,
+            "v": 80.81023454157783,
             "status": "present"
           },
           "macd": {
@@ -64,11 +64,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": 51.118665905527564,
+            "v": 52.562053603437356,
             "status": "present"
           }
         }
@@ -79,7 +79,7 @@
       "ticker": "8306.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:02.504Z",
+        "asOf": "2026-10-31T02:36:45.168Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -87,7 +87,7 @@
             "status": "present"
           },
           "per": {
-            "v": 16.31422785287053,
+            "v": 16.23416380162954,
             "status": "present"
           },
           "pbr": {
@@ -113,28 +113,28 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 47.635933806146575,
+            "v": 49.086479902557855,
             "status": "present"
           },
           "macd": {
-            "v": false,
-            "status": "present"
-          },
-          "vol": {
             "v": true,
             "status": "present"
           },
+          "vol": {
+            "v": false,
+            "status": "present"
+          },
           "mom3m": {
-            "v": -7.626516319199739,
+            "v": -4.614951826163161,
             "status": "present"
           }
         }
@@ -145,7 +145,7 @@
       "ticker": "9697.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:04.029Z",
+        "asOf": "2026-10-31T02:36:46.634Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -153,7 +153,7 @@
             "status": "present"
           },
           "per": {
-            "v": 28.703916609182187,
+            "v": 30.328811220970337,
             "status": "present"
           },
           "pbr": {
@@ -179,16 +179,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 30.580825752274308,
+            "v": 35.91731266149871,
             "status": "present"
           },
           "macd": {
@@ -200,7 +200,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": 6.9834256286048335,
+            "v": 12.719307304898875,
             "status": "present"
           }
         }
@@ -211,7 +211,7 @@
       "ticker": "4661.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:05.602Z",
+        "asOf": "2026-10-31T02:36:47.869Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -219,7 +219,7 @@
             "status": "present"
           },
           "per": {
-            "v": 42.64191552327145,
+            "v": 46.25286665527251,
             "status": "present"
           },
           "pbr": {
@@ -227,7 +227,7 @@
             "status": "present"
           },
           "epsG": {
-            "v": -1.692673895794765,
+            "v": -1.7051996826236493,
             "status": "present"
           },
           "cfOk": {
@@ -245,16 +245,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 71.58469945355192,
+            "v": 80.0383877159309,
             "status": "present"
           },
           "macd": {
@@ -266,7 +266,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": 12.30307659946639,
+            "v": 18.756727058217336,
             "status": "present"
           }
         }
@@ -277,7 +277,7 @@
       "ticker": "8593.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:07.189Z",
+        "asOf": "2026-10-31T02:36:48.898Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -285,7 +285,7 @@
             "status": "present"
           },
           "per": {
-            "v": 11.51902101622772,
+            "v": 11.616564689190389,
             "status": "present"
           },
           "pbr": {
@@ -311,16 +311,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 52.247191011235955,
+            "v": 53.03867403314917,
             "status": "present"
           },
           "macd": {
@@ -328,11 +328,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": -9.99013659642456,
+            "v": -9.04229679998827,
             "status": "present"
           }
         }
@@ -343,7 +343,7 @@
       "ticker": "4755.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:08.805Z",
+        "asOf": "2026-10-31T02:36:50.125Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -351,7 +351,7 @@
             "status": "present"
           },
           "per": {
-            "v": -7.503039292572711,
+            "v": -7.640408460977389,
             "status": "present"
           },
           "pbr": {
@@ -377,16 +377,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 38.63635026150148,
+            "v": 39.42895766288644,
             "status": "present"
           },
           "macd": {
@@ -398,7 +398,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": -24.2699371525115,
+            "v": -24.459134615384613,
             "status": "present"
           }
         }
@@ -409,7 +409,7 @@
       "ticker": "5711.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:10.630Z",
+        "asOf": "2026-10-31T02:36:51.361Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -417,7 +417,7 @@
             "status": "present"
           },
           "per": {
-            "v": 14.341834106130861,
+            "v": 13.974755280783102,
             "status": "present"
           },
           "pbr": {
@@ -443,16 +443,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 35.26361279170267,
+            "v": 29.665851670741645,
             "status": "present"
           },
           "macd": {
@@ -464,7 +464,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": 6.6568511752223,
+            "v": 8.821896018594067,
             "status": "present"
           }
         }
@@ -475,7 +475,7 @@
       "ticker": "1605.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:12.109Z",
+        "asOf": "2026-10-31T02:36:52.680Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -483,7 +483,7 @@
             "status": "present"
           },
           "per": {
-            "v": 12.270087124878993,
+            "v": 12.297313649564375,
             "status": "present"
           },
           "pbr": {
@@ -509,16 +509,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 72.1025641025641,
+            "v": 71.9298245614035,
             "status": "present"
           },
           "macd": {
@@ -526,11 +526,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": 11.062431544359264,
+            "v": 13.993269770050487,
             "status": "present"
           }
         }
@@ -541,7 +541,7 @@
       "ticker": "5016.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:13.300Z",
+        "asOf": "2026-10-31T02:36:53.647Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -549,7 +549,7 @@
             "status": "present"
           },
           "per": {
-            "v": 27.956703043208236,
+            "v": 26.217726909768434,
             "status": "present"
           },
           "pbr": {
@@ -575,16 +575,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 32.90629575402636,
+            "v": 28.594351732991015,
             "status": "present"
           },
           "macd": {
@@ -596,7 +596,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": -16.58134993283008,
+            "v": -13.605100917106384,
             "status": "present"
           }
         }
@@ -607,7 +607,7 @@
       "ticker": "8058.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:14.768Z",
+        "asOf": "2026-10-31T02:36:54.903Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -615,7 +615,7 @@
             "status": "present"
           },
           "per": {
-            "v": 23.395938602345314,
+            "v": 22.90494804080465,
             "status": "present"
           },
           "pbr": {
@@ -641,16 +641,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 67.06008583690988,
+            "v": 60.155490767735664,
             "status": "present"
           },
           "macd": {
@@ -658,11 +658,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": 2.5785301149637396,
+            "v": 1.9187335888109613,
             "status": "present"
           }
         }
@@ -673,7 +673,7 @@
       "ticker": "9418.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:16.250Z",
+        "asOf": "2026-10-31T02:36:55.965Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -707,16 +707,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
-            "v": false,
+            "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 51.03448275862069,
+            "v": 49.285714285714285,
             "status": "present"
           },
           "macd": {
@@ -728,7 +728,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": 4.401863373527659,
+            "v": 4.410110955177826,
             "status": "present"
           }
         }
@@ -739,7 +739,7 @@
       "ticker": "1928.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:18.036Z",
+        "asOf": "2026-10-31T02:36:57.144Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -747,7 +747,7 @@
             "status": "present"
           },
           "per": {
-            "v": 9.492150399463657,
+            "v": 9.726800379909491,
             "status": "present"
           },
           "pbr": {
@@ -773,16 +773,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
-            "v": false,
+            "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 57.048458149779734,
+            "v": 62.7151051625239,
             "status": "present"
           },
           "macd": {
@@ -790,11 +790,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": -4.794755321457911,
+            "v": -2.921429321620783,
             "status": "present"
           }
         }
@@ -805,7 +805,7 @@
       "ticker": "7011.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:19.734Z",
+        "asOf": "2026-10-31T02:36:58.334Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -813,7 +813,7 @@
             "status": "present"
           },
           "per": {
-            "v": 35.400647511129094,
+            "v": 34.53055443140429,
             "status": "present"
           },
           "pbr": {
@@ -839,16 +839,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 39.46449359720605,
+            "v": 36.29550321199143,
             "status": "present"
           },
           "macd": {
@@ -860,7 +860,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": -9.749385993227511,
+            "v": -9.977911835504516,
             "status": "present"
           }
         }
@@ -871,7 +871,7 @@
       "ticker": "7974.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:21.510Z",
+        "asOf": "2026-10-31T02:36:59.672Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -879,7 +879,7 @@
             "status": "present"
           },
           "per": {
-            "v": 22.380730295465145,
+            "v": 22.740116869221694,
             "status": "present"
           },
           "pbr": {
@@ -905,16 +905,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
-            "v": false,
+            "v": true,
             "status": "present"
           },
           "rsi": {
-            "v": 59.623824451410655,
+            "v": 54.996505939902164,
             "status": "present"
           },
           "macd": {
@@ -922,11 +922,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": 9.783340061902845,
+            "v": 8.225616921269086,
             "status": "present"
           }
         }
@@ -937,7 +937,7 @@
       "ticker": "9433.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:23.141Z",
+        "asOf": "2026-10-31T02:37:00.947Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -945,7 +945,7 @@
             "status": "present"
           },
           "per": {
-            "v": 15.134840642876599,
+            "v": 15.453554889675837,
             "status": "present"
           },
           "pbr": {
@@ -971,16 +971,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 29.777070063694268,
+            "v": 42.163661581137305,
             "status": "present"
           },
           "macd": {
@@ -988,11 +988,11 @@
             "status": "present"
           },
           "vol": {
-            "v": true,
+            "v": false,
             "status": "present"
           },
           "mom3m": {
-            "v": -4.582040856509306,
+            "v": -3.874768101256987,
             "status": "present"
           }
         }
@@ -1003,7 +1003,7 @@
       "ticker": "7012.T",
       "market": "TSE",
       "fundamentals": {
-        "asOf": "2026-10-30T17:05:24.622Z",
+        "asOf": "2026-10-31T02:37:02.084Z",
         "source": "yfinance annual income_stmt/balance_sheet/cashflow + info",
         "fields": {
           "roe": {
@@ -1037,16 +1037,16 @@
         }
       },
       "technicals": {
-        "asOf": "2026-10-29T06:30:00.000Z",
+        "asOf": "2026-10-30T06:30:00.000Z",
         "source": "yfinance history(period=1y, interval=1d, auto_adjust=True, actions=False)",
-        "bars": 242,
+        "bars": 243,
         "fields": {
           "ma": {
             "v": false,
             "status": "present"
           },
           "rsi": {
-            "v": 38.95705521472392,
+            "v": 34.53169347209082,
             "status": "present"
           },
           "macd": {
@@ -1058,7 +1058,7 @@
             "status": "present"
           },
           "mom3m": {
-            "v": -20.27178110291601,
+            "v": -20.274107830450372,
             "status": "present"
           }
         }
