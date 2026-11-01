@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-01T01:12:47.096025+09:00",
-  "sourceUpdatedAt": "2026-10-31T16:07:38+00:00",
+  "updatedAt": "2026-11-01T11:24:26.600801+09:00",
+  "sourceUpdatedAt": "2026-11-01T01:33:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -31,53 +31,42 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": -0.333,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
-      "topPositiveTitle": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
+      "topNegativeTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
+      "topPositiveTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
       "items": [
         {
-          "title": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-10-29T22:07:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Officials Back More Rate Hikes, Gradual Pace of Tightening",
+          "title": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-10-30T17:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-30/fed-s-logan-sees-two-more-hikes-but-says-pace-can-be-gradual",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-01T00:25:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/south-korea-exports-extend-robust-growth-as-chip-boom-continues",
           "tags": [
+            "jp_semiconductor",
             "market",
-            "us_broad"
+            "us_growth"
           ]
-        },
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
+      "topPositiveTitle": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
+      "items": [
         {
           "title": "AI Policy Risks Loom Over Stock, Bond Traders Ahead of Midterms",
           "source": "Bloomberg Markets",
@@ -90,20 +79,45 @@
             "us_broad",
             "us_growth"
           ]
+        },
+        {
+          "title": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-31T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/us-jobs-pickup-may-keep-fed-on-track-to-hike-rates-again",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "AI Enthusiasm Is Collapsing and Tech Earnings Just Made It Worse",
-      "topPositiveTitle": "Lonnie Ali & Marc Rosen on New Muhammad Ali Amazon Show",
+      "topNegativeTitle": "Final Countdown to Midterm Elections, Tech Stocks Tank",
+      "topPositiveTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
       "items": [
+        {
+          "title": "Final Countdown to Midterm Elections, Tech Stocks Tank",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-10-31T16:13:35+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-10-31/bloomberg-this-weekend-10-31-2026-video",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "AI Enthusiasm Is Collapsing and Tech Earnings Just Made It Worse",
           "source": "Bloomberg Markets",
@@ -130,13 +144,14 @@
           ]
         },
         {
-          "title": "Lonnie Ali & Marc Rosen on New Muhammad Ali Amazon Show",
-          "source": "Bloomberg Markets",
+          "title": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-10-30T22:05:55+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/lonnie-ali-marc-rosen-on-new-muhammad-ali-amazon-show-video",
+          "publishedAt": "2026-11-01T00:25:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/south-korea-exports-extend-robust-growth-as-chip-boom-continues",
           "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -208,24 +223,48 @@
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
+      "topNegativeTitle": "UK’s Healey Hints at Delay in Equalizing Minimum Wage For Youths",
       "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
         {
-          "title": "Stocks Slump as Wall Street Gets AI Wake-Up Call: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "UK’s Healey Hints at Delay in Equalizing Minimum Wage For Youths",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-10-29T22:07:56+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-29/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-10-31T18:32:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/uk-s-healey-hints-at-delay-in-equalizing-minimum-wage-for-youths",
           "tags": [
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Appoints New Top Market Regulator in Fund Crisis Response",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T21:50:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/turkey-appoints-new-top-market-regulator-in-fund-crisis-response",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Rubio Defends Russian G20 Presence Despite Criticism From Allies",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T20:41:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/rubio-defends-russian-g20-presence-despite-criticism-from-allies",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -270,15 +309,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
-      "topPositiveTitle": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
+      "topPositiveTitle": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
       "items": [
         {
           "title": "US Midterm Candidates Tap Rare Bipartisan Issue: Credit Card Rates",
@@ -304,6 +343,19 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-10-31T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/us-jobs-pickup-may-keep-fed-on-track-to-hike-rates-again",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
         }
       ]
     },
@@ -315,9 +367,21 @@
       "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Angola Plans to Cut Fuel Subsidies Without Price Increases",
+      "topNegativeTitle": "An Asian Stock Trader’s Guide Ahead of the US Midterm Elections",
       "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
+        {
+          "title": "An Asian Stock Trader’s Guide Ahead of the US Midterm Elections",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-01T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/an-asian-stock-trader-s-guide-ahead-of-the-us-midterm-elections",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
         {
           "title": "Angola Plans to Cut Fuel Subsidies Without Price Increases",
           "source": "Bloomberg Markets",
@@ -341,18 +405,6 @@
             "commodity",
             "market",
             "rates"
-          ]
-        },
-        {
-          "title": "Chocolate Price Spook Families for Halloween",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T22:21:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-30/chocolate-price-spook-families-for-halloween-video",
-          "tags": [
-            "commodity",
-            "market"
           ]
         },
         {
@@ -384,16 +436,29 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.149,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 7,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "EU’s Kallas Says Hosting Putin at G20 May Normalize War Crimes",
+      "topNegativeTitle": "Rubio Defends Russian G20 Presence Despite Criticism From Allies",
       "topPositiveTitle": "EU Foreign Policy Chief Warns Against Normalizing Russia",
       "items": [
+        {
+          "title": "Rubio Defends Russian G20 Presence Despite Criticism From Allies",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T20:41:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/rubio-defends-russian-g20-presence-despite-criticism-from-allies",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "EU’s Kallas Says Hosting Putin at G20 May Normalize War Crimes",
           "source": "Bloomberg Markets",
@@ -420,44 +485,30 @@
           ]
         },
         {
-          "title": "5年ぶり日ロ外相会談 茂木外相 北海道新聞記者の即時解放要請",
+          "title": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T21:59:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261031de68824",
+          "publishedAt": "2026-10-31T22:25:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261101de69067",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "5年ぶり日ロ外相会談 茂木外相 北海道新聞記者の即時解放要請"
+          "titleJa": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携"
         },
         {
-          "title": "G20外相会合が開幕 茂木外相“G20各国が連携・協調を”",
+          "title": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-10-30T21:47:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261031de68825",
+          "publishedAt": "2026-10-31T21:51:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261101de69063",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "G20外相会合が開幕 茂木外相“G20各国が連携・協調を”"
-        },
-        {
-          "title": "EU Foreign Policy Chief Warns Against Normalizing Russia",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-10-31T13:15:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-10-31/eu-foreign-policy-chief-warns-against-normalizing-russia-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
+          "titleJa": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続"
         }
       ]
     }
@@ -470,7 +521,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 1,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
