@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-02T11:39:49.346865+09:00",
-  "sourceUpdatedAt": "2026-11-02T02:30:55+00:00",
+  "updatedAt": "2026-11-03T05:51:00.553427+09:00",
+  "sourceUpdatedAt": "2026-11-02T20:31:37+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -12,64 +12,36 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
-      "topPositiveTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
+      "topNegativeTitle": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
+      "topPositiveTitle": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
       "items": [
         {
-          "title": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
-          "source": "Bloomberg Markets",
+          "title": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-11-02T00:15:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japanese-stocks-fall-on-tech-selloff-kioxia-s-profit-outlook",
+          "publishedAt": "2026-11-02T07:29:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/boj-signals-low-hopes-for-consumer-spending-as-population-falls",
           "tags": [
             "jp_broad",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
-      "topPositiveTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
+      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topPositiveTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
       "items": [
         {
-          "title": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T00:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/south-korea-exports-extend-robust-growth-as-chip-boom-continues",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "us_broad": {
-      "avgSentiment": -0.113,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
-      "topPositiveTitle": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
-      "items": [
-        {
-          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -77,13 +49,56 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.223,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topPositiveTitle": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
+      "items": [
+        {
+          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-01T21:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
+          "title": "El Niño Could Raise US Inflation, Boost Jobs in 2027: Fed Study",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T18:02:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/el-nino-could-raise-us-inflation-boost-jobs-in-2027-fed-study",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -94,57 +109,78 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-31T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-31/us-jobs-pickup-may-keep-fed-on-track-to-hike-rates-again",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
       "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
-      "topPositiveTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
+      "topNegativeTitle": "White House’s Hassett Dismisses Concern Over Financing of AI",
+      "topPositiveTitle": "AI Risk Needs to Clear Before Any Post-Midterm S&P Rally Begins",
       "items": [
         {
-          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
-          "source": "Bloomberg Markets",
+          "title": "White House’s Hassett Dismisses Concern Over Financing of AI",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T01:00:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-02T13:39:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/white-house-s-hassett-dismisses-concern-over-financing-of-ai",
           "tags": [
-            "geopolitical",
-            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T00:25:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/south-korea-exports-extend-robust-growth-as-chip-boom-continues",
+          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T07:17:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
           "tags": [
-            "jp_semiconductor",
             "macro_risk",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic IPO Explained: S-1 Filing, Nasdaq Listing and Key Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T18:35:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/anthropic-ipo-explained-s-1-filing-nasdaq-listing-and-key-risks",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic Braces for Pre-IPO Election Impact as AI Debate Rages",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T18:03:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/anthropic-braces-for-pre-ipo-election-impact-as-ai-debate-rages",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Tech Stocks Hover Near Correction on Middle East Tensions",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T13:08:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-stock-futures-rise-as-oil-prices-drop-easing-ai-led-selloff",
+          "tags": [
             "market",
             "us_growth"
           ]
@@ -171,11 +207,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
-      "topPositiveTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+      "topNegativeTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
+      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
       "items": [
         {
-          "title": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+          "title": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.2,
@@ -183,37 +219,25 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
           "tags": [
             "commodity",
+            "geopolitical",
             "gold",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
-      "topPositiveTitle": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
-      "items": [
-        {
-          "title": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T04:01:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/australia-home-auction-clearance-rate-falls-to-six-year-low",
-          "tags": [
-            "market",
-            "rates",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -228,31 +252,18 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.134,
+      "avgSentiment": -0.426,
       "negativeCount": 4,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 10,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
-      "topPositiveTitle": "Gulf States Fear Iran Retaliation If US Strikes Again",
+      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
       "items": [
         {
-          "title": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-02T00:15:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japanese-stocks-fall-on-tech-selloff-kioxia-s-profit-outlook",
-          "tags": [
-            "jp_broad",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -260,45 +271,66 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Global AI Selloff, Small-Cap Pain Push Investors Toward India Large Caps",
+          "title": "Latest Oil Market News and Analysis for Nov. 2",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T02:30:55+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-02/global-ai-selloff-small-cap-pain-push-investors-toward-india-large-caps",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-01T23:11:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T01:00:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+          "publishedAt": "2026-11-02T15:08:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T07:17:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
+          "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_growth"
           ]
         },
         {
-          "title": "Colombia at Risk of Default Without a Fix, Restrepo Tells Semana",
+          "title": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T22:38:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/colombia-is-at-risk-of-default-without-fiscal-fix-restrepo-says",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-02T00:03:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
           "tags": [
+            "commodity",
+            "geopolitical",
+            "gold",
             "macro_risk",
             "market"
           ]
@@ -306,68 +338,68 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Katayama Says Ready to Act for Stable FX Market",
-      "topPositiveTitle": "Japan’s Katayama Says Ready to Act for Stable FX Market",
-      "items": [
-        {
-          "title": "Japan’s Katayama Says Ready to Act for Stable FX Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T01:09:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japan-s-katayama-says-ready-to-take-steps-for-stable-fx-market",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "New Zealand Assets Face Headwinds as Election Race Tightens",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T18:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/new-zealand-assets-face-headwinds-as-election-race-tightens",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.002,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
+      "avgSentiment": -0.083,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
-      "topPositiveTitle": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
+      "topNegativeTitle": "BOE to Raise Rates for First Time Since 2023, Survey Shows",
+      "topPositiveTitle": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
       "items": [
         {
-          "title": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
+          "title": "BOE to Raise Rates for First Time Since 2023, Survey Shows",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T04:01:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/australia-home-auction-clearance-rate-falls-to-six-year-low",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T11:24:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/boe-to-raise-rates-for-first-time-since-2023-survey-shows",
           "tags": [
             "market",
-            "rates",
-            "reit"
+            "rates"
           ]
         },
         {
-          "title": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
+          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T07:17:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Pakistan Inflation Stays Elevated as Risks Cloud Outlook",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T10:20:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/pakistan-inflation-cools-as-energy-risks-cloud-outlook",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -378,47 +410,22 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "Australia Set for Fifth Rate Hike as Inflation Fight Intensifies",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/australia-set-for-fifth-rate-hike-as-inflation-fight-intensifies",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "US Jobs Pickup May Keep Fed on Track to Hike Rates Again",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-10-31T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-10-31/us-jobs-pickup-may-keep-fed-on-track-to-hike-rates-again",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.45,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "avgSentiment": -0.257,
+      "negativeCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 3,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
-      "topPositiveTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topPositiveTitle": "ECB’s Kazimir Says Markets May Underestimate What’s Needed",
       "items": [
         {
-          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -426,6 +433,8 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "us_broad"
@@ -441,6 +450,21 @@
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T15:08:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -459,31 +483,46 @@
           "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
         },
         {
-          "title": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+          "title": "Carney’s Push to Fast-Track Oil Pipeline Faces Mounting Indigenous Lawsuits",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-02T00:03:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T19:04:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/carney-s-push-to-fast-track-oil-pipeline-faces-mounting-indigenous-lawsuits",
           "tags": [
             "commodity",
-            "gold",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.031,
-      "negativeCount": 3,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": -0.304,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 11,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 2",
-      "topPositiveTitle": "Gulf States Fear Iran Retaliation If US Strikes Again",
+      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
       "items": [
+        {
+          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-01T21:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Latest Oil Market News and Analysis for Nov. 2",
           "source": "Bloomberg Markets",
@@ -494,21 +533,22 @@
           "tags": [
             "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T01:00:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+          "publishedAt": "2026-11-02T15:08:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
@@ -526,30 +566,16 @@
           "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
         },
         {
-          "title": "イラン 仲介国カタールと協議 駆け引き続く",
-          "source": "NHK 経済",
+          "title": "Russian Strikes Deepen Ukraine’s Foreign-Aid Needs, Report Says",
+          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T19:48:30+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69322",
+          "publishedAt": "2026-11-02T07:48:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/russian-strikes-deepen-ukraine-s-foreign-aid-needs-report-says",
           "tags": [
             "geopolitical",
             "market"
-          ],
-          "titleJa": "イラン 仲介国カタールと協議 駆け引き続く"
-        },
-        {
-          "title": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-31T22:25:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261101de69067",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携"
+          ]
         }
       ]
     }
