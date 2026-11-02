@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-02T10:03:30.531135+09:00",
-  "sourceUpdatedAt": "2026-11-02T00:17:49+00:00",
+  "updatedAt": "2026-11-02T11:39:49.346865+09:00",
+  "sourceUpdatedAt": "2026-11-02T02:30:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -65,11 +65,11 @@
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+      "topNegativeTitle": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
       "topPositiveTitle": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
       "items": [
         {
-          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -111,24 +111,25 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 2,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
-      "topPositiveTitle": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
+      "topNegativeTitle": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+      "topPositiveTitle": "S. Korea Exports Extend Robust Growth as Chip Boom Continues",
       "items": [
         {
-          "title": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
+          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-more-wild-days-in-stocks-after-tech-rout",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T01:00:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
           "tags": [
+            "geopolitical",
             "macro_risk",
             "market",
             "us_growth"
@@ -227,9 +228,9 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.002,
-      "negativeCount": 2,
-      "positiveCount": 6,
+      "avgSentiment": -0.134,
+      "negativeCount": 4,
+      "positiveCount": 4,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 10,
@@ -251,7 +252,7 @@
           ]
         },
         {
-          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -265,6 +266,32 @@
           ]
         },
         {
+          "title": "Global AI Selloff, Small-Cap Pain Push Investors Toward India Large Caps",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T02:30:55+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-02/global-ai-selloff-small-cap-pain-push-investors-toward-india-large-caps",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T01:00:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
           "title": "Colombia at Risk of Default Without a Fix, Restrepo Tells Semana",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -275,31 +302,6 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "Indonesia’s MSCI Crisis Driven By Wash Trades and 5,000% Rallies",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T22:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-11-01/indonesia-s-msci-crisis-driven-by-wash-trades-and-5-000-rallies",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gulf States Fear Iran Retaliation If US Strikes Again",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-02T00:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-02/gulf-states-fear-iran-retaliation-if-us-strikes-again-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -307,13 +309,25 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "New Zealand Assets Face Headwinds as Election Race Tightens",
-      "topPositiveTitle": "New Zealand Assets Face Headwinds as Election Race Tightens",
+      "topNegativeTitle": "Japan’s Katayama Says Ready to Act for Stable FX Market",
+      "topPositiveTitle": "Japan’s Katayama Says Ready to Act for Stable FX Market",
       "items": [
+        {
+          "title": "Japan’s Katayama Says Ready to Act for Stable FX Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T01:09:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japan-s-katayama-says-ready-to-take-steps-for-stable-fx-market",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "New Zealand Assets Face Headwinds as Election Race Tightens",
           "source": "Bloomberg Markets",
@@ -393,18 +407,18 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.294,
+      "avgSentiment": -0.45,
       "negativeCount": 3,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
-      "topPositiveTitle": "Trump Struggles to Sell Voters on the Economy",
+      "topNegativeTitle": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+      "topPositiveTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
       "items": [
         {
-          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+          "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -456,27 +470,13 @@
             "gold",
             "market"
           ]
-        },
-        {
-          "title": "Trump Struggles to Sell Voters on the Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T15:39:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/trump-struggles-to-sell-voters-on-the-economy-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.029,
-      "negativeCount": 2,
-      "positiveCount": 4,
+      "avgSentiment": -0.031,
+      "negativeCount": 3,
+      "positiveCount": 3,
       "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 11,
@@ -495,6 +495,20 @@
             "commodity",
             "geopolitical",
             "market"
+          ]
+        },
+        {
+          "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-02T01:00:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -536,19 +550,6 @@
             "market"
           ],
           "titleJa": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携"
-        },
-        {
-          "title": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-10-31T21:51:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261101de69063",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続"
         }
       ]
     }

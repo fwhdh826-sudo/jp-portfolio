@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02T00:57:36+00:00",
+  "updatedAt": "2026-11-02T02:39:28+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,20 +18,122 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-11-02T00:15:20+00:00",
-    "Bloomberg Economics": "2026-11-01T20:00:01+00:00",
+    "Bloomberg Markets": "2026-11-02T02:30:55+00:00",
+    "Bloomberg Economics": "2026-11-02T01:54:37+00:00",
     "NHK 経済": "2026-11-01T19:48:30+00:00",
-    "reddit r/investing": "2026-11-02T00:17:49+00:00",
+    "reddit r/investing": "2026-11-02T01:54:37+00:00",
     "reddit r/stocks": null,
     "Finnhub": null,
     "X (RSS mirror)": null
   },
   "marketNews": [
     {
+      "id": "430617c4b18e",
+      "source": "Bloomberg Markets",
+      "title": "Global AI Selloff, Small-Cap Pain Push Investors Toward India Large Caps",
+      "summary": "Software services exporters claim all five top spots in the large-cap index in October.",
+      "url": "https://www.bloomberg.com/news/newsletters/2026-11-02/global-ai-selloff-small-cap-pain-push-investors-toward-india-large-caps",
+      "publishedAt": "2026-11-02T02:30:55+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "macro_risk",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "9193fe972bff",
+      "source": "Bloomberg Economics",
+      "title": "Chinese Factory Activity Cools With Slowdown in Export Orders",
+      "summary": "China’s factory activity expanded at a slower pace for the first time since July, a private survey showed, as weaker overseas orders call into question the outlook for the country’s export-led expansion.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/china-factory-activity-expands-but-ends-streak-of-faster-growth",
+      "publishedAt": "2026-11-02T01:54:37+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "210564b45f53",
+      "source": "Bloomberg Markets",
+      "title": "PBOC Conducts Overnight Reverse Repo as Policy Anchor Shifts",
+      "summary": "China’s central bank launched daily overnight reverse repurchase operations on Monday, kicking off a revamped liquidity framework that establishes the short-term tool as its primary policy anchor.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/pboc-conducts-overnight-reverse-repo-as-policy-anchor-shifts",
+      "publishedAt": "2026-11-02T01:39:19+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "aa2c620a9b28",
+      "source": "Bloomberg Markets",
+      "title": "Japan’s Katayama Says Ready to Act for Stable FX Market",
+      "summary": "Japanese authorities are prepared to respond if currency market movements become disorderly, acting in accordance with a standing pact with her US counterpart, Finance Minister Satsuki Katayama said, one day before the US holds its midterm ",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/japan-s-katayama-says-ready-to-take-steps-for-stable-fx-market",
+      "publishedAt": "2026-11-02T01:09:29+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "bc1b7678c1f3",
+      "source": "Bloomberg Markets",
+      "title": "Foreigners Make Record Withdrawal From Taiwan Stocks on AI Rout",
+      "summary": "Foreign outflows from Taiwanese stocks hit a record in October as a global selloff in artificial intelligence play pushed the island’s benchmark closer to a technical correction.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-02/foreigners-make-record-withdrawal-from-taiwan-stocks-on-ai-rout",
+      "publishedAt": "2026-11-02T01:00:27+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "macro_risk",
+        "market",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
       "id": "d5e44d9e4ef7",
       "source": "Bloomberg Markets",
       "title": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
-      "summary": "Japanese stocks fell, with technology shares taking a hit from a steep selloff in their US peers, while chipmaker Kioxia Holdings Corp. was set to drop after a disappointing profit outlook.",
+      "summary": "Japanese stocks fell, with technology shares taking a hit from a steep selloff in their US peers, while chipmaker Kioxia Holdings Corp. slumped after a disappointing profit outlook.",
       "url": "https://www.bloomberg.com/news/articles/2026-11-02/japanese-stocks-fall-on-tech-selloff-kioxia-s-profit-outlook",
       "publishedAt": "2026-11-02T00:15:20+00:00",
       "sentiment": "negative",
@@ -233,10 +335,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "0c02dc945470",
+      "id": "8a6c0fba38ba",
       "source": "Bloomberg Markets",
-      "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
-      "summary": "A selloff in stocks eased in early Monday trade as Asian equities fell less than their Wall Street peers and US equity futures turned higher. Oil declined.",
+      "title": "Stock Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+      "summary": "A selloff in stocks eased during early Monday trading as Asian equities fell less than their Wall Street peers and US equity futures turned higher. Oil declined.",
       "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
       "publishedAt": "2026-11-01T21:28:04+00:00",
       "sentiment": "negative",
@@ -376,12 +478,32 @@
       "translationStatus": "pending"
     },
     {
-      "id": "6529f9c0ba87",
+      "id": "063abb9da5c6",
+      "source": "Bloomberg Economics",
+      "title": "China’s Top Regulators to Address Global Bankers at HK Summit",
+      "summary": "China is sending senior regulators to address some of the world’s biggest bankers in Hong Kong this week, offering an insight on Beijing’s policy priorities amid uneven growth and an expected meeting between Presidents Donald Trump and Xi J",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-01/china-s-top-regulators-to-address-global-bankers-at-hk-summit",
+      "publishedAt": "2026-11-01T10:39:33+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "6a44c0dd756c",
       "source": "Bloomberg Markets",
-      "title": "The Political Debate on Daylight Saving Time",
-      "summary": "Time is ticking on the debate over changing our clocks twice a year. As Americans prepare to fall back, Bloomberg’s Shaquille Omari explains why Washington can’t seem to move forward. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-01/the-political-debate-on-daylight-saving-time-video",
-      "publishedAt": "2026-11-01T16:23:36+00:00",
+      "title": "China Reportedly Discusses Ways to Support Stocks With Banks",
+      "summary": "China’s financial regulators will hold a meeting with banks and securities firms Monday to discuss measures to support the capital market, signaling authorities’ renewed effort to halt the slump in Chinese stocks.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-01/china-to-convene-meeting-on-supporting-stock-market-reports-say",
+      "publishedAt": "2026-11-01T10:08:49+00:00",
       "sentiment": "negative",
       "sentimentScore": -0.33,
       "importance": 0.33,
@@ -391,89 +513,6 @@
       ],
       "tickers": [],
       "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "c61d89061b49",
-      "source": "Bloomberg Markets",
-      "title": "Bookmarked: News Stories On Our Reading List",
-      "summary": "Vinyl record bars and cafes, odd Halloween trick-or-treat offerings, the South Korean trend of being seen reading physical books, and Just Eats apologizing for AI mistake: Join hosts David Gura, Lisa Mateo and Nathan Hager on Bloomberg This",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-01/bookmarked-news-stories-on-our-reading-list-video",
-      "publishedAt": "2026-11-01T15:53:30+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "4c6adb9f5498",
-      "source": "Bloomberg Markets",
-      "title": "Trump Struggles to Sell Voters on the Economy",
-      "summary": "Bloomberg News Senior Executive Editor Wes Kosova tells Bloomberg This Weekend that President Donald Trump is struggling to convince voters the economy is strong as higher fuel prices and affordability concerns weigh on his support, includi",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-01/trump-struggles-to-sell-voters-on-the-economy-video",
-      "publishedAt": "2026-11-01T15:39:27+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "commodity",
-        "geopolitical",
-        "macro_risk",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "ca435f565d18",
-      "source": "Bloomberg Markets",
-      "title": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
-      "summary": "The stock market got a long-awaited jolt of volatility late last week after disappointing earnings from technology giants added to angst around the AI-driven rally.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-more-wild-days-in-stocks-after-tech-rout",
-      "publishedAt": "2026-11-01T15:00:00+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "macro_risk",
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "811d98cb0dad",
-      "source": "Bloomberg Markets",
-      "title": "China to Convene Meeting on Supporting Stock Market, Reports Say",
-      "summary": "China’s central bank and its securities regulator will hold a meeting on Monday to discuss the use of tools designed to support the country’s capital market, according to local media.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-01/china-to-convene-meeting-on-supporting-stock-market-reports-say",
-      "publishedAt": "2026-11-01T10:08:49+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -998,50 +1037,6 @@
       "titleJa": "消費税減税法案 来月4日に質疑 各党の反応は",
       "summaryJa": "食料品の消費税減税関連法案をめぐり、30日朝の衆議院財務金融委員会の理事会で、与野党は来月4日に質疑を行うとともに、国民民主党が提出した対案も審議入りすることを改めて確認しました。",
       "translationStatus": "ja-original"
-    },
-    {
-      "id": "07e3d8382404",
-      "source": "NHK 経済",
-      "title": "官房長官 外為特会の剰余金活用 3割以上留保の考え基づき検討",
-      "summary": "来年度の予算編成に関連し、木原官房長官は、政府が市場介入のために設けている特別会計の剰余金を一般会計の財源として活用することについて、剰余金の3割以上を留保するなどとした、従来の考え方に基づいて検討を…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261030de68624",
-      "publishedAt": "2026-10-30T09:46:16+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "官房長官 外為特会の剰余金活用 3割以上留保の考え基づき検討",
-      "summaryJa": "来年度の予算編成に関連し、木原官房長官は、政府が市場介入のために設けている特別会計の剰余金を一般会計の財源として活用することについて、剰余金の3割以上を留保するなどとした、従来の考え方に基づいて検討を…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "6b8b80a6435b",
-      "source": "NHK 経済",
-      "title": "ガソリン価格などの抑制継続で 予備費1兆1481億円支出決定",
-      "summary": "政府は、30日の閣議で中東情勢を受けて実施しているガソリン価格などを抑える激変緩和措置を当面、継続するため、今年度予算の予備費から1兆1481億円を支出することを決めました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261030de68243",
-      "publishedAt": "2026-10-30T08:35:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "ガソリン価格などの抑制継続で 予備費1兆1481億円支出決定",
-      "summaryJa": "政府は、30日の閣議で中東情勢を受けて実施しているガソリン価格などを抑える激変緩和措置を当面、継続するため、今年度予算の予備費から1兆1481億円を支出することを決めました。",
-      "translationStatus": "ja-original"
     }
   ],
   "stockNews": [
@@ -1093,6 +1088,6 @@
     "totalCount": 50,
     "marketCount": 48,
     "stockCount": 2,
-    "duplicateRemoved": 2
+    "duplicateRemoved": 1
   }
 }
