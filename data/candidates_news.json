@@ -1,20 +1,34 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-02T02:12:03.912629+09:00",
-  "sourceUpdatedAt": "2026-11-01T16:23:36+00:00",
+  "updatedAt": "2026-11-02T10:03:30.531135+09:00",
+  "sourceUpdatedAt": "2026-11-02T00:17:49+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
+      "topPositiveTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
+      "items": [
+        {
+          "title": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-02T00:15:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japanese-stocks-fall-on-tech-selloff-kioxia-s-profit-outlook",
+          "tags": [
+            "jp_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
       "avgSentiment": 0.33,
@@ -44,56 +58,41 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
+      "avgSentiment": -0.113,
+      "negativeCount": 1,
       "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI Talent War Spreads to Wall Street",
-      "topPositiveTitle": "Wall Street Braces for More Wild Days in Stocks After Tech Rout",
+      "topNegativeTitle": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
+      "topPositiveTitle": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
       "items": [
         {
-          "title": "AI Talent War Spreads to Wall Street",
+          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T14:26:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/ai-talent-war-spreads-to-wall-street-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-01T21:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
+            "commodity",
             "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Tech Selloff Could Ease Pressure on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T13:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/tech-selloff-could-ease-pressure-on-the-fed-video",
+          "title": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-01T20:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-biggest-treasury-sales-overhaul-in-years",
           "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Wall Street Braces for More Wild Days in Stocks After Tech Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-more-wild-days-in-stocks-after-tech-rout",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
           ]
         },
         {
@@ -119,11 +118,11 @@
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Braces for More Wild Days in Stocks After Tech Rout",
-      "topPositiveTitle": "Wall Street Braces for More Wild Days in Stocks After Tech Rout",
+      "topNegativeTitle": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
+      "topPositiveTitle": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
       "items": [
         {
-          "title": "Wall Street Braces for More Wild Days in Stocks After Tech Rout",
+          "title": "After Tech Rout, Investors Gird for More Wild Days for Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -132,7 +131,6 @@
           "tags": [
             "macro_risk",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
@@ -165,16 +163,30 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+      "topPositiveTitle": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+      "items": [
+        {
+          "title": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-02T00:03:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
+          "tags": [
+            "commodity",
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": -1.0,
@@ -215,78 +227,75 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.066,
-      "negativeCount": 3,
-      "positiveCount": 5,
+      "avgSentiment": -0.002,
+      "negativeCount": 2,
+      "positiveCount": 6,
       "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "AI Talent War Spreads to Wall Street",
-      "topPositiveTitle": "Trump Struggles to Sell Voters on the Economy",
+      "topNegativeTitle": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
+      "topPositiveTitle": "Gulf States Fear Iran Retaliation If US Strikes Again",
       "items": [
         {
-          "title": "AI Talent War Spreads to Wall Street",
+          "title": "Japanese Stocks Fall on Tech Selloff, Kioxia’s Profit Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T14:26:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/ai-talent-war-spreads-to-wall-street-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-02T00:15:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/japanese-stocks-fall-on-tech-selloff-kioxia-s-profit-outlook",
           "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Tech Selloff Could Ease Pressure on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T13:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/tech-selloff-could-ease-pressure-on-the-fed-video",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Brazil Shakeup Sounds Warning on Crowded Emerging-Market Trades",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/brazil-shakeup-sounds-warning-on-crowded-emerging-market-trades",
-          "tags": [
+            "jp_broad",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Russia Agrees to Halt Recruitment of Ghanaians for Ukraine War",
+          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T14:27:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/russia-agrees-to-halt-recruitment-of-ghanaians-for-ukraine-war",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "OPEC+ Sticks With Plan for Steady Oil Output Quotas in December",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:19:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/opec-set-to-stick-with-plan-for-steady-quotas-delegates-say",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-01T21:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Colombia at Risk of Default Without a Fix, Restrepo Tells Semana",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-01T22:38:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/colombia-is-at-risk-of-default-without-fiscal-fix-restrepo-says",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Indonesia’s MSCI Crisis Driven By Wash Trades and 5,000% Rallies",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-01T22:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-11-01/indonesia-s-msci-crisis-driven-by-wash-trades-and-5-000-rallies",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Gulf States Fear Iran Retaliation If US Strikes Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-02T00:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-02/gulf-states-fear-iran-retaliation-if-us-strikes-again-video",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -295,27 +304,40 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "New Zealand Assets Face Headwinds as Election Race Tightens",
+      "topPositiveTitle": "New Zealand Assets Face Headwinds as Election Race Tightens",
+      "items": [
+        {
+          "title": "New Zealand Assets Face Headwinds as Election Race Tightens",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-01T18:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/new-zealand-assets-face-headwinds-as-election-race-tightens",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
     },
     "rates": {
-      "avgSentiment": -0.186,
-      "negativeCount": 3,
-      "positiveCount": 2,
+      "avgSentiment": -0.002,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
-      "topPositiveTitle": "The $40 Trillion Problem Washington Won’t Talk About",
+      "topPositiveTitle": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
       "items": [
         {
           "title": "Australia Home Auction Clearance Rate Falls to Six-Year Low",
@@ -331,29 +353,28 @@
           ]
         },
         {
-          "title": "Australia’s Home Prices Fall Further Ahead of Expected Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.6,
-          "publishedAt": "2026-11-01T13:01:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/australia-s-home-prices-fall-further-ahead-of-expected-rate-hike",
+          "title": "Wall Street Braces for Biggest Treasury Sales Overhaul in Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-01T20:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-biggest-treasury-sales-overhaul-in-years",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Tech Selloff Could Ease Pressure on the Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T13:33:21+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/tech-selloff-could-ease-pressure-on-the-fed-video",
-          "tags": [
-            "macro_risk",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "Australia Set for Fifth Rate Hike as Inflation Fight Intensifies",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-01T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/australia-set-for-fifth-rate-hike-as-inflation-fight-intensifies",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -368,80 +389,71 @@
             "rates",
             "us_broad"
           ]
-        },
-        {
-          "title": "The $40 Trillion Problem Washington Won’t Talk About",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-01T13:03:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/the-40-trillion-problem-washington-won-t-talk-about-video",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.066,
-      "negativeCount": 0,
+      "avgSentiment": -0.294,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 4,
-      "sourceCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "OPEC+ Leaves Oil Output Targets Unchanged for December",
+      "topNegativeTitle": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
       "topPositiveTitle": "Trump Struggles to Sell Voters on the Economy",
       "items": [
         {
-          "title": "OPEC+ Leaves Oil Output Targets Unchanged for December",
+          "title": "Tech Selloff Eases in Asian Trade, Oil Declines: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T13:02:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/opec-leaves-oil-output-targets-unchanged-for-december",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-01T21:28:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Germany Misses Gas Storage Target as Cold Snap Sets In",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:29:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/germany-misses-gas-storage-target-as-cold-snap-sets-in",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Pakistan LNG Cargo Attacked Near Hormuz Had Iranian Approval",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:23:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/pakistan-lng-cargo-attacked-near-hormuz-had-iranian-approval",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "OPEC+ Sticks With Plan for Steady Oil Output Quotas in December",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:19:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/opec-set-to-stick-with-plan-for-steady-quotas-delegates-say",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 2",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-01T23:11:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く",
+          "source": "NHK 経済",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-01T19:19:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69318",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
+        },
+        {
+          "title": "Gold Climbs Back From One-Year Low as Dip Buyers Arrest Slide",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-02T00:03:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
+          "tags": [
+            "commodity",
+            "gold",
             "market"
           ]
         },
@@ -462,69 +474,55 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.06,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 7,
+      "avgSentiment": 0.029,
+      "negativeCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 5,
       "sourceCount": 3,
       "itemCount": 11,
       "isStale": false,
-      "topNegativeTitle": "AI Talent War Spreads to Wall Street",
-      "topPositiveTitle": "Trump Struggles to Sell Voters on the Economy",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 2",
+      "topPositiveTitle": "Gulf States Fear Iran Retaliation If US Strikes Again",
       "items": [
         {
-          "title": "AI Talent War Spreads to Wall Street",
+          "title": "Latest Oil Market News and Analysis for Nov. 2",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-01T23:11:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く",
+          "source": "NHK 経済",
+          "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T14:26:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-01/ai-talent-war-spreads-to-wall-street-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Russia Agrees to Halt Recruitment of Ghanaians for Ukraine War",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T14:27:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/russia-agrees-to-halt-recruitment-of-ghanaians-for-ukraine-war",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Pakistan LNG Cargo Attacked Near Hormuz Had Iranian Approval",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:23:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/pakistan-lng-cargo-attacked-near-hormuz-had-iranian-approval",
+          "publishedAt": "2026-11-01T19:19:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69318",
           "tags": [
             "commodity",
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
         },
         {
-          "title": "OPEC+ Sticks With Plan for Steady Oil Output Quotas in December",
-          "source": "Bloomberg Markets",
+          "title": "イラン 仲介国カタールと協議 駆け引き続く",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-01T09:19:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/opec-set-to-stick-with-plan-for-steady-quotas-delegates-say",
+          "publishedAt": "2026-11-01T19:48:30+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69322",
           "tags": [
-            "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
-          ]
+          ],
+          "titleJa": "イラン 仲介国カタールと協議 駆け引き続く"
         },
         {
           "title": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携",
@@ -538,6 +536,19 @@
             "market"
           ],
           "titleJa": "日サウジ外相 イエメン情勢など意見交換 中東地域の安定へ連携"
+        },
+        {
+          "title": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-10-31T21:51:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261101de69063",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 ロシア外相と率直な意見交換 記者解放へ働きかけ継続"
         }
       ]
     }
