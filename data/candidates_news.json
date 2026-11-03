@@ -1,57 +1,53 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-03T05:51:00.553427+09:00",
-  "sourceUpdatedAt": "2026-11-02T20:31:37+00:00",
+  "updatedAt": "2026-11-04T03:31:49.048367+09:00",
+  "sourceUpdatedAt": "2026-11-03T18:00:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
-      "topPositiveTitle": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
-      "items": [
-        {
-          "title": "BOJ Signals Low Hopes for Consumer Spending as Population Falls",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-02T07:29:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/boj-signals-low-hopes-for-consumer-spending-as-population-falls",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": 0.57,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-      "topPositiveTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+      "topNegativeTitle": "Shopify Revenue Miss; Yum Brands Jumps on Taco Bell Sales | Stock Movers",
+      "topPositiveTitle": "Chip Rally Powers Stock Gains on US Election Day: Markets Wrap",
       "items": [
         {
-          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "title": "Shopify Revenue Miss; Yum Brands Jumps on Taco Bell Sales | Stock Movers",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T21:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.14,
+          "publishedAt": "2026-11-03T16:11:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-03/shopify-revenue-miss-yum-brands-up-on-taco-bell-sales-video",
           "tags": [
-            "commodity",
-            "geopolitical",
             "jp_semiconductor",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Chip Rally Powers Stock Gains on US Election Day: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-02T22:25:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_broad"
           ]
@@ -59,129 +55,119 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.223,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "avgSentiment": 0.534,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-      "topPositiveTitle": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
+      "topNegativeTitle": "Stocks Bounce Back as Wall Street Awaits Midterm Election Results",
+      "topPositiveTitle": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
       "items": [
         {
-          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "title": "Stocks Bounce Back as Wall Street Awaits Midterm Election Results",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T21:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "El Niño Could Raise US Inflation, Boost Jobs in 2027: Fed Study",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T18:02:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/el-nino-could-raise-us-inflation-boost-jobs-in-2027-fed-study",
+          "publishedAt": "2026-11-03T16:57:48+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-03/bloomberg-surveillance-11-3-2026-video",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T20:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-biggest-treasury-sales-overhaul-in-years",
+          "title": "Treasuries Fall Amid Oil Price Swings, Strong Job Openings Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T16:30:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/treasuries-fall-amid-oil-price-swings-strong-job-openings-data",
           "tags": [
+            "commodity",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Technology Stocks Lead S&P 500 Higher With Midterm Vote Underway",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-03T13:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/us-stocks-waver-as-election-ai-bubble-risks-weigh-on-outlook",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-03T17:49:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/dollar-rises-with-us-yields-as-focus-on-iran-outweighs-election",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Chip Rally Powers Stock Gains on US Election Day: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-02T22:25:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": 0.335,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "White House’s Hassett Dismisses Concern Over Financing of AI",
-      "topPositiveTitle": "AI Risk Needs to Clear Before Any Post-Midterm S&P Rally Begins",
+      "topNegativeTitle": "Asia exports and the AI Boom",
+      "topPositiveTitle": "Technology Stocks Lead S&P 500 Higher With Midterm Vote Underway",
       "items": [
         {
-          "title": "White House’s Hassett Dismisses Concern Over Financing of AI",
+          "title": "Asia exports and the AI Boom",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-02T13:39:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/white-house-s-hassett-dismisses-concern-over-financing-of-ai",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T07:17:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic IPO Explained: S-1 Filing, Nasdaq Listing and Key Risks",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T18:35:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/anthropic-ipo-explained-s-1-filing-nasdaq-listing-and-key-risks",
+          "publishedAt": "2026-11-03T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-03/asia-exports-and-the-ai-boom",
           "tags": [
+            "geopolitical",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Anthropic Braces for Pre-IPO Election Impact as AI Debate Rages",
+          "title": "Technology Stocks Lead S&P 500 Higher With Midterm Vote Underway",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T18:03:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/anthropic-braces-for-pre-ipo-election-impact-as-ai-debate-rages",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-03T13:15:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/us-stocks-waver-as-election-ai-bubble-risks-weigh-on-outlook",
           "tags": [
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "US Tech Stocks Hover Near Correction on Middle East Tensions",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T13:08:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-stock-futures-rise-as-oil-prices-drop-easing-ai-led-selloff",
-          "tags": [
-            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -200,25 +186,24 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.2,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
-      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
+      "topNegativeTitle": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
+      "topPositiveTitle": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
       "items": [
         {
-          "title": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
+          "title": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-02T00:03:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-03T00:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/gold-holds-biggest-jump-in-two-months-on-iran-peace-deal-hopes",
           "tags": [
-            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
@@ -252,160 +237,170 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.426,
-      "negativeCount": 4,
+      "avgSentiment": -0.5,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "sourceCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
+      "topNegativeTitle": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
+      "topPositiveTitle": "超党派議員連盟がオランダへ出発 ICC赤根所長と面会へ",
       "items": [
         {
-          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "title": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T21:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-11-03T00:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/gold-holds-biggest-jump-in-two-months-on-iran-peace-deal-hopes",
           "tags": [
-            "commodity",
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 2",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-01T23:11:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T15:08:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T07:17:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-02T00:03:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/gold-climbs-back-from-one-year-low-as-dip-buyers-arrest-slide",
-          "tags": [
-            "commodity",
             "geopolitical",
             "gold",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "Saudi Budget Deficit More Than Doubles as War Hurts Oil Finances",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-03T13:19:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/saudi-budget-deficit-more-than-doubles-as-war-strains-finances",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Brazil Rate and Inflation Bets Soar After Lula’s Reelection",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-03T12:39:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/brazilian-key-rate-forecasts-soar-after-lula-s-shock-reelection",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "超党派議員連盟がオランダへ出発 ICC赤根所長と面会へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T05:29:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261103de69943",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "超党派議員連盟がオランダへ出発 ICC赤根所長と面会へ"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 1.0,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOE to Raise Rates for First Time Since 2023, Survey Shows",
-      "topPositiveTitle": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
+      "topNegativeTitle": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
+      "topPositiveTitle": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
       "items": [
         {
-          "title": "BOE to Raise Rates for First Time Since 2023, Survey Shows",
-          "source": "Bloomberg Economics",
+          "title": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-03T17:49:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/dollar-rises-with-us-yields-as-focus-on-iran-outweighs-election",
+          "tags": [
+            "fx",
+            "geopolitical",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.1,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
+      "isStale": false,
+      "topNegativeTitle": "Chile Pension Funds Breath Sigh of Relief as Swap Losses Narrow",
+      "topPositiveTitle": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
+      "items": [
+        {
+          "title": "Chile Pension Funds Breath Sigh of Relief as Swap Losses Narrow",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T11:24:28+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/boe-to-raise-rates-for-first-time-since-2023-survey-shows",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-03T16:48:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/chile-pension-funds-breath-sigh-of-relief-as-swap-losses-narrow",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Alphabet Pays Up to Entice Buyers to €6 Billion Bond Sale",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T07:17:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/alphabet-kicks-off-sale-of-its-second-euro-bond-this-year",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Pakistan Inflation Stays Elevated as Risks Cloud Outlook",
+          "title": "ECB Will Probably Have to Raise Rates in December, Nagel Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T10:20:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/pakistan-inflation-cools-as-energy-risks-cloud-outlook",
+          "publishedAt": "2026-11-03T18:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/ecb-will-probably-have-to-raise-rates-in-december-nagel-says",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Wall Street Eyes Biggest Treasury Sales Overhaul in Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-01T20:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/wall-street-braces-for-biggest-treasury-sales-overhaul-in-years",
+          "title": "Treasuries Fall Amid Oil Price Swings, Strong Job Openings Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T16:30:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/treasuries-fall-amid-oil-price-swings-strong-job-openings-data",
           "tags": [
+            "commodity",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Turkish Rate-Cut Path Intact Despite Inflation Topping Estimates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T07:04:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/turkey-inflation-quickens-unexpectedly-clouding-rate-path",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-03T17:49:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/dollar-rises-with-us-yields-as-focus-on-iran-outweighs-election",
+          "tags": [
+            "fx",
+            "geopolitical",
             "market",
             "rates",
             "us_broad"
@@ -414,81 +409,75 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.257,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": -0.125,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 6,
+      "sourceCount": 2,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-      "topPositiveTitle": "ECB’s Kazimir Says Markets May Underestimate What’s Needed",
+      "topNegativeTitle": "Saudi Budget Deficit More Than Doubles as War Hurts Oil Finances",
+      "topPositiveTitle": "Hydro-Quebec Forced to Import More Power After Deals With US Utilities",
       "items": [
         {
-          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-          "source": "Bloomberg Markets",
+          "title": "Saudi Budget Deficit More Than Doubles as War Hurts Oil Finances",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T21:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-03T13:19:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/saudi-budget-deficit-more-than-doubles-as-war-strains-finances",
           "tags": [
             "commodity",
             "geopolitical",
-            "jp_semiconductor",
             "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trading on US Stock Perpetuals Contracts Is Approved by CFTC",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-03T15:50:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/trading-on-us-stock-perpetuals-contracts-is-approved-by-cftc",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Hydro-Quebec Forced to Import More Power After Deals With US Utilities",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T17:18:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/hydro-quebec-forced-to-import-more-power-after-deals-with-us-utilities",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Treasuries Fall Amid Oil Price Swings, Strong Job Openings Data",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-03T16:30:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/treasuries-fall-amid-oil-price-swings-strong-job-openings-data",
+          "tags": [
+            "commodity",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 2",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-01T23:11:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T15:08:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T19:19:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69318",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
-        },
-        {
-          "title": "Carney’s Push to Fast-Track Oil Pipeline Faces Mounting Indigenous Lawsuits",
+          "title": "Physical Oil Prices Tumble as Persian Gulf Crude Flows Recover",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T19:04:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/carney-s-push-to-fast-track-oil-pipeline-faces-mounting-indigenous-lawsuits",
+          "publishedAt": "2026-11-03T15:46:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/physical-oil-prices-tumbling-as-persian-gulf-crude-flows-recover",
           "tags": [
             "commodity",
             "market"
@@ -497,39 +486,37 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.304,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
-      "topPositiveTitle": "Gold Rebounds as Iran Diplomacy Hopes Send Oil Tumbling",
+      "topNegativeTitle": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
+      "topPositiveTitle": "Dollar Rises With US Yields as Focus on Iran Outweighs Election",
       "items": [
         {
-          "title": "S&P 500 Falls as Chip Rout Offsets US-Iran Hopes: Markets Wrap",
+          "title": "Gold Declines as Traders Weigh US-Iran Diplomacy Prospects",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-11-01T21:28:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-11-03T00:20:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/gold-holds-biggest-jump-in-two-months-on-iran-peace-deal-hopes",
           "tags": [
-            "commodity",
             "geopolitical",
-            "jp_semiconductor",
+            "gold",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 2",
-          "source": "Bloomberg Markets",
+          "title": "Saudi Budget Deficit More Than Doubles as War Hurts Oil Finances",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-11-01T23:11:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-01/latest-oil-market-news-and-analysis-for-nov-2",
+          "publishedAt": "2026-11-03T13:19:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-03/saudi-budget-deficit-more-than-doubles-as-war-strains-finances",
           "tags": [
             "commodity",
             "geopolitical",
@@ -538,40 +525,38 @@
           ]
         },
         {
-          "title": "US Natural Gas Falls With Oil as Hope for Iran Talks Reemerges",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-02T15:08:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/us-natural-gas-rises-on-lower-appalachian-output-cooler-weather",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-01T19:19:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261102de69318",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "ウクライナ局地的な停戦で住民退避 攻撃の応酬続く"
-        },
-        {
-          "title": "Russian Strikes Deepen Ukraine’s Foreign-Aid Needs, Report Says",
+          "title": "Asia exports and the AI Boom",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-02T07:48:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-02/russian-strikes-deepen-ukraine-s-foreign-aid-needs-report-says",
+          "publishedAt": "2026-11-03T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-03/asia-exports-and-the-ai-boom",
+          "tags": [
+            "geopolitical",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 3",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-02T23:01:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-02/latest-oil-market-news-and-analysis-for-nov-3",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ship Strikes In Hormuz Leave Both Sides With Economic Pain",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-10-31T10:30:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-31/shipping-strikes-in-hormuz-leave-both-sides-with-economic-pain",
           "tags": [
             "geopolitical",
             "market"
@@ -588,7 +573,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
