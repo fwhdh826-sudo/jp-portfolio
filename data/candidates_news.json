@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-05T10:42:52.402996+09:00",
-  "sourceUpdatedAt": "2026-11-05T00:48:32+00:00",
+  "updatedAt": "2026-11-06T03:53:13.868212+09:00",
+  "sourceUpdatedAt": "2026-11-05T18:40:06+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,78 +17,85 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
-      "topPositiveTitle": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
-      "items": [
-        {
-          "title": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-04T22:15:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.643,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "avgSentiment": -0.002,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Trading Desks Bet on US Stock Rally After Midterms",
-      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+      "topNegativeTitle": "S&P 500 Sinks 4% as AI Washout Rattles Wall Street: Markets Wrap",
+      "topPositiveTitle": "Post-Election Rally Cools on Growing Pressure for AI Buildout",
       "items": [
         {
-          "title": "Wall Street Trading Desks Bet on US Stock Rally After Midterms",
+          "title": "S&P 500 Sinks 4% as AI Washout Rattles Wall Street: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-04T22:02:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/wall-street-trading-desks-bet-on-us-stock-rally-after-midterms",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-04T22:15:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-11-04T23:58:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
+          "title": "How the Federal Reserve Emerged as a Winner From the US Election",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T12:09:40+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-05/how-the-federal-reserve-emerged-as-a-winner-from-the-us-election",
           "tags": [
-            "fx",
-            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trump’s Trouncing Gives Warsh Room for Maneuver on Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/trump-s-trouncing-gives-warsh-more-room-for-maneuver-on-rates",
+          "tags": [
             "market",
             "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+          "title": "Post-Election Rally Cools on Growing Pressure for AI Buildout",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-04T00:01:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/us-equity-futures-inch-higher-as-investors-await-midterm-results",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-05T16:43:00+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-05/bloomberg-surveillance-11-5-2026-video",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasuries Soar as Tech-Stock Selloff Stokes Haven Demand",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-05T15:54:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/treasuries-extend-advance-as-technology-shares-resume-slide",
+          "tags": [
             "macro_risk",
             "market",
             "us_broad"
@@ -97,70 +104,67 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "gold": {
-      "avgSentiment": 0.3,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Energy, Gold Exports Offset US Tariff Impact on Canada",
-      "topPositiveTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+      "topNegativeTitle": "US Selloff Deepens as Democrat Sweep Sparks AI Exposure Worries",
+      "topPositiveTitle": "US Selloff Deepens as Democrat Sweep Sparks AI Exposure Worries",
       "items": [
         {
-          "title": "Energy, Gold Exports Offset US Tariff Impact on Canada",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T13:30:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/higher-energy-gold-exports-offset-us-tariff-impact-on-canada",
-          "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+          "title": "US Selloff Deepens as Democrat Sweep Sparks AI Exposure Worries",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-11-04T23:58:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-05T12:54:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/us-stock-futures-diverge-as-chip-selloff-extends-into-second-day",
           "tags": [
-            "fx",
-            "gold",
+            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
+    },
+    "global_broad": {
+      "avgSentiment": -0.14,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "European Stocks Reverse Gains as Tech Rout Builds, Defense Drops",
+      "topPositiveTitle": "European Stocks Reverse Gains as Tech Rout Builds, Defense Drops",
+      "items": [
+        {
+          "title": "European Stocks Reverse Gains as Tech Rout Builds, Defense Drops",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": -0.14,
+          "publishedAt": "2026-11-05T08:09:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/european-stocks-hit-fresh-record-as-ai-unwind-boosts-region",
+          "tags": [
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
+    },
+    "gold": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -187,54 +191,68 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.083,
-      "negativeCount": 1,
+      "avgSentiment": -0.19,
+      "negativeCount": 4,
       "positiveCount": 2,
-      "neutralCount": 7,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Trump Tariffs, Midterm Losses Leave Canada’s Carney With Tough Deal Choice",
-      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+      "topNegativeTitle": "US Selloff Deepens as Democrat Sweep Sparks AI Exposure Worries",
+      "topPositiveTitle": "US Midterms Came Too Late to Prevent Bank of England Rate Hike",
       "items": [
         {
-          "title": "Trump Tariffs, Midterm Losses Leave Canada’s Carney With Tough Deal Choice",
+          "title": "US Selloff Deepens as Democrat Sweep Sparks AI Exposure Worries",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-05T12:54:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/us-stock-futures-diverge-as-chip-selloff-extends-into-second-day",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Goldman Traders Say Phones ‘Are Exploding’ as AI Selloff Worsens",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T18:40:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/goldman-traders-say-phones-are-exploding-as-ai-selloff-worsens",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-04T18:27:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/trump-tariffs-midterm-losses-leave-canada-s-carney-with-tough-deal-choice",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T00:05:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T16:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "Asian Markets React as Trump Cools Iran Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T23:31:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
+          "title": "ECB’s Zigman Sees ‘Rather Big Chance’ of December Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T10:40:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/ecb-s-zigman-sees-rather-big-chance-of-december-rate-hike",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -246,19 +264,6 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Paraguay Names New Central Banker After Lender Is Taken Over",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T16:18:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/paraguay-names-new-central-banker-after-lender-is-taken-over",
-          "tags": [
             "macro_risk",
             "market"
           ]
@@ -266,99 +271,101 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.6,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
-      "topPositiveTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+      "topNegativeTitle": "Hedge Fund Adviser LB Macro Sees US Midterms Boosting Dollar",
+      "topPositiveTitle": "Hedge Fund Adviser LB Macro Sees US Midterms Boosting Dollar",
       "items": [
         {
-          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+          "title": "Hedge Fund Adviser LB Macro Sees US Midterms Boosting Dollar",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.6,
-          "publishedAt": "2026-11-04T23:58:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T13:27:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/hedge-fund-adviser-lb-macro-sees-us-midterms-boosting-the-dollar",
           "tags": [
             "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
+            "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.133,
-      "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": -0.073,
+      "negativeCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Brazil Holds Rates Steady After Election Blurred Policy Outlook",
-      "topPositiveTitle": "Poland Holds Rates Again as Inflation Outlook Gets Riskier",
+      "topNegativeTitle": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
+      "topPositiveTitle": "US Midterms Came Too Late to Prevent Bank of England Rate Hike",
       "items": [
         {
-          "title": "Brazil Holds Rates Steady After Election Blurred Policy Outlook",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-04T21:32:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/brazil-holds-key-rate-steady-at-13-75-after-lula-s-election-win",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Chile Central Bank Mulled a Key Rate Hike at Its Last Decision",
+          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-04T12:09:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/chile-central-bank-mulled-a-key-rate-hike-at-its-last-decision",
+          "publishedAt": "2026-11-05T16:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Traders Up Bets on Faster BOE Rate-Hike Pace After Hawkish Vote",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T13:13:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/traders-up-bets-on-faster-boe-rate-hike-pace-after-hawkish-vote",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Euro-Zone Inflation Accelerates to Double the ECB’s Target",
+          "title": "BOE United in Delivering First Rate Hike in Three Years",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T12:16:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/boe-united-in-delivering-first-rate-hike-in-three-years",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB’s Zigman Sees ‘Rather Big Chance’ of December Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T10:40:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/ecb-s-zigman-sees-rather-big-chance-of-december-rate-hike",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Czechs Raise Rates as ‘Fine-Tuning’ Move After Rare Tight Vote",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T10:03:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/euro-zone-inflation-accelerates-to-double-the-ecb-s-target",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Malaysia Set to Hold Rates on Strong Growth, Signal Hike in 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-04T23:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/malaysia-set-to-hold-rates-on-strong-growth-signal-hike-in-2027",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Ghana Inflation Hits 11-Month High, Rate Pause Seen Extended",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-04T10:24:34+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/ghana-inflation-hits-11-month-high-may-see-rate-pause-extended",
+          "publishedAt": "2026-11-05T13:30:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/czechs-hike-rates-for-second-time-this-year-to-tame-price-risks",
           "tags": [
             "market",
             "rates"
@@ -367,41 +374,52 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.27,
-      "negativeCount": 0,
-      "positiveCount": 4,
-      "neutralCount": 4,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
-      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+      "topNegativeTitle": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
+      "topPositiveTitle": "ECB’s Lagarde Says Hot Summer Should Be Warning for Europe",
       "items": [
         {
-          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T00:05:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
+          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T16:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Qatar in Talks to Buy More US LNG, Diversify Supply Outside Persian Gulf",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T16:56:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/qatar-in-talks-to-buy-more-us-lng-diversify-supply-outside-persian-gulf",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
         {
-          "title": "Asian Markets React as Trump Cools Iran Fears",
+          "title": "Duke Energy's Data Center Bet",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T23:31:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
+          "publishedAt": "2026-11-05T16:41:14+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-05/duke-energy-s-data-center-bet-video",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -414,27 +432,12 @@
           "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Energy, Gold Exports Offset US Tariff Impact on Canada",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T13:30:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/higher-energy-gold-exports-offset-us-tariff-impact-on-canada",
-          "tags": [
-            "commodity",
-            "gold",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Lagarde Says Hot Summer Should be a Warning for Europe",
+          "title": "ECB’s Lagarde Says Hot Summer Should Be Warning for Europe",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -448,83 +451,84 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.214,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": -0.066,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
-      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+      "topNegativeTitle": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
+      "topPositiveTitle": "US Midterms Came Too Late to Prevent Bank of England Rate Hike",
       "items": [
         {
-          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T00:05:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Asian Markets React as Trump Cools Iran Fears",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T23:31:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 5",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T23:08:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trade policy after Trump and the midterm elections",
+          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T12:04:08+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-04/trade-policy-after-trump-and-the-midterm-elections",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T16:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
-          "title": "米中ロ首脳会談めぐり中国外務省「関係国と意思疎通」",
+          "title": "ECB’s Zigman Sees ‘Rather Big Chance’ of December Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-05T10:40:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/ecb-s-zigman-sees-rather-big-chance-of-december-rate-hike",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "アメリカ中間選挙“敗因は軍事作戦”世界や日本に及ぼす影響は",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T13:35:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261104de70648",
+          "publishedAt": "2026-11-05T13:07:40+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261105de71257",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "米中ロ首脳会談めぐり中国外務省「関係国と意思疎通」"
+          "titleJa": "アメリカ中間選挙“敗因は軍事作戦”世界や日本に及ぼす影響は"
+        },
+        {
+          "title": "小泉防衛相 ウクライナ国防相と会談 平和実現へ国際社会と連携",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T13:07:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261105de71267",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "小泉防衛相 ウクライナ国防相と会談 平和実現へ国際社会と連携"
+        },
+        {
+          "title": "US Midterms Came Too Late to Prevent Bank of England Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-05T18:13:43+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/us-midterms-came-too-late-to-save-bank-of-england-from-rate-hike",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
         }
       ]
     }
@@ -537,7 +541,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
