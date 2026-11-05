@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-05T03:44:50.247034+09:00",
-  "sourceUpdatedAt": "2026-11-04T18:27:14+00:00",
+  "updatedAt": "2026-11-05T10:42:52.402996+09:00",
+  "sourceUpdatedAt": "2026-11-05T00:48:32+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,6 +17,86 @@
       "items": []
     },
     "jp_semiconductor": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
+      "topPositiveTitle": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
+      "items": [
+        {
+          "title": "Asian Stocks Mixed as Investors Rotate From Chips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-04T22:15:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": 0.643,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Wall Street Trading Desks Bet on US Stock Rally After Midterms",
+      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+      "items": [
+        {
+          "title": "Wall Street Trading Desks Bet on US Stock Rally After Midterms",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-04T22:02:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/wall-street-trading-desks-bet-on-us-stock-rally-after-midterms",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-11-04T23:58:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-04T00:01:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/us-equity-futures-inch-higher-as-investors-await-midterm-results",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
+    },
+    "us_growth": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -28,137 +108,20 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "us_broad": {
-      "avgSentiment": 0.326,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Treasuries Gain as Oil Prices Tumble After Democrats Elected",
-      "topPositiveTitle": "Citadel Securities’ Rubner Says Stocks Are Set Up for Year-End Gains After Vote",
-      "items": [
-        {
-          "title": "Treasuries Gain as Oil Prices Tumble After Democrats Elected",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-04T01:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/treasuries-advance-as-traders-eye-us-votes-refinancing-plans",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Hudson River Trading Joins Wall Street’s Prediction Market Shift",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T15:36:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/hudson-river-trading-joins-wall-street-s-prediction-market-shift",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Tech Megacaps Lead S&P 500 Higher as Midterm Uncertainty Eases",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-04T00:01:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/us-equity-futures-inch-higher-as-investors-await-midterm-results",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-04T00:24:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-steadies-as-traders-track-iran-talk-prospects-us-midterms",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Citadel Securities’ Rubner Says Stocks Are Set Up for Year-End Gains After Vote",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-04T15:45:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/citadel-securities-rubner-says-stocks-are-set-up-for-year-end-gains-after-vote",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        }
-      ]
-    },
-    "us_growth": {
-      "avgSentiment": 0.0,
+    "global_broad": {
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Big Tech Soars on Bet Dems Will Save AI Spenders From Themselves",
-      "topPositiveTitle": "Big Tech Soars on Bet Dems Will Save AI Spenders From Themselves",
-      "items": [
-        {
-          "title": "Big Tech Soars on Bet Dems Will Save AI Spenders From Themselves",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T17:07:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/big-tech-stocks-soar-as-traders-bet-democrats-will-slow-ai-spend",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 1.0,
-      "negativeCount": 0,
-      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Rally as US Midterm Result Boosts Sentiment",
-      "topPositiveTitle": "European Stocks Rally as US Midterm Result Boosts Sentiment",
-      "items": [
-        {
-          "title": "European Stocks Rally as US Midterm Result Boosts Sentiment",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-04T05:51:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/european-stocks-set-to-dip-as-democrat-sweep-stokes-ai-worries",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.3,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
@@ -166,7 +129,7 @@
       "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Energy, Gold Exports Offset US Tariff Impact on Canada",
-      "topPositiveTitle": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
+      "topPositiveTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
       "items": [
         {
           "title": "Energy, Gold Exports Offset US Tariff Impact on Canada",
@@ -183,12 +146,12 @@
           ]
         },
         {
-          "title": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
+          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-04T00:24:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-steadies-as-traders-track-iran-talk-prospects-us-midterms",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-11-04T23:58:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
           "tags": [
             "fx",
             "gold",
@@ -224,30 +187,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.227,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": 0.083,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 10,
       "isStale": false,
-      "topNegativeTitle": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
-      "topPositiveTitle": "Stocks, Bonds Climb After US Election as Oil Sinks: Markets Wrap",
+      "topNegativeTitle": "Trump Tariffs, Midterm Losses Leave Canada’s Carney With Tough Deal Choice",
+      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
       "items": [
-        {
-          "title": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-04T17:43:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/north-sea-oil-plunge-deepens-as-traders-weigh-iran-de-escalation",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Trump Tariffs, Midterm Losses Leave Canada’s Carney With Tough Deal Choice",
           "source": "Bloomberg Economics",
@@ -261,12 +210,12 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 4",
+          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-03T23:08:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-03/latest-oil-market-news-and-analysis-for-nov-4",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T00:05:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
           "tags": [
             "commodity",
             "geopolitical",
@@ -275,18 +224,31 @@
           ]
         },
         {
-          "title": "Treasuries Gain as Oil Prices Tumble After Democrats Elected",
+          "title": "Asian Markets React as Trump Cools Iran Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-04T01:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/treasuries-advance-as-traders-eye-us-votes-refinancing-plans",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:31:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 5",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:08:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
           ]
         },
         {
@@ -304,35 +266,23 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
+      "avgSentiment": 0.6,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Dollar Slides Toward Worst Day in Two Months After US Midterms",
-      "topPositiveTitle": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
+      "topNegativeTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
+      "topPositiveTitle": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
       "items": [
         {
-          "title": "Dollar Slides Toward Worst Day in Two Months After US Midterms",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-04T03:11:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/franc-yen-emerge-as-fx-winners-as-us-midterms-weaken-dollar",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
+          "title": "Gold Extends Rebound Above $4,100 as Dollar and Yields Decline",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-04T00:24:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-steadies-as-traders-track-iran-talk-prospects-us-midterms",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-11-04T23:58:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-holds-above-4-000-as-dollar-yields-fall-on-midterm-result",
           "tags": [
             "fx",
             "gold",
@@ -344,16 +294,28 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.234,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": 0.133,
+      "negativeCount": 2,
+      "positiveCount": 4,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Chile Central Bank Mulled a Key Rate Hike at Its Last Decision",
+      "topNegativeTitle": "Brazil Holds Rates Steady After Election Blurred Policy Outlook",
       "topPositiveTitle": "Poland Holds Rates Again as Inflation Outlook Gets Riskier",
       "items": [
+        {
+          "title": "Brazil Holds Rates Steady After Election Blurred Policy Outlook",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-04T21:32:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/brazil-holds-key-rate-steady-at-13-75-after-lula-s-election-win",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
         {
           "title": "Chile Central Bank Mulled a Key Rate Hike at Its Last Decision",
           "source": "Bloomberg Economics",
@@ -379,6 +341,18 @@
           ]
         },
         {
+          "title": "Malaysia Set to Hold Rates on Strong Growth, Signal Hike in 2027",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-04T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/malaysia-set-to-hold-rates-on-strong-growth-signal-hike-in-2027",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
           "title": "Ghana Inflation Hits 11-Month High, Rate Pause Seen Extended",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
@@ -389,99 +363,59 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "Gold Climbs Above $4,000 as Dollar, Yields Fall on Democrat Win",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-04T00:24:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/gold-steadies-as-traders-track-iran-talk-prospects-us-midterms",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Poland Holds Rates Again as Inflation Outlook Gets Riskier",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-04T13:57:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/poland-s-central-bank-holds-rates-for-eighth-straight-month",
-          "tags": [
-            "market",
-            "rates"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.004,
-      "negativeCount": 2,
+      "avgSentiment": 0.27,
+      "negativeCount": 0,
       "positiveCount": 4,
-      "neutralCount": 3,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
-      "topPositiveTitle": "Renewable Stocks Surge After Democrats Sweep Congress",
+      "topNegativeTitle": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
+      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
       "items": [
         {
-          "title": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-04T17:43:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/north-sea-oil-plunge-deepens-as-traders-weigh-iran-de-escalation",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 4",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-03T23:08:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-03/latest-oil-market-news-and-analysis-for-nov-4",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Treasuries Gain as Oil Prices Tumble After Democrats Elected",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-04T01:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/treasuries-advance-as-traders-eye-us-votes-refinancing-plans",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Midterms Shocker Will Reverberate Through the Energy Industry",
+          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-04T16:16:28+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-04/midterms-shocker-will-reverberate-through-the-energy-industry",
+          "publishedAt": "2026-11-05T00:05:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Asian Markets React as Trump Cools Iran Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:31:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 5",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:08:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
@@ -498,27 +432,39 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "ECB’s Lagarde Says Hot Summer Should be a Warning for Europe",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-04T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/ecb-s-lagarde-says-hot-summer-should-be-a-warning-for-europe",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.228,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "avgSentiment": 0.214,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 3,
-      "itemCount": 6,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
-      "topPositiveTitle": "Stocks, Bonds Climb After US Election as Oil Sinks: Markets Wrap",
+      "topNegativeTitle": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
+      "topPositiveTitle": "US Stocks Surge as Election Drives Oil Down, Fuels Tech Optimism",
       "items": [
         {
-          "title": "North Sea Oil Plunge Deepens as Traders Weigh Iran De-Escalation",
+          "title": "Philippine October Inflation Accelerates 7.8%, Close to Four-Year High",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-04T17:43:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/north-sea-oil-plunge-deepens-as-traders-weigh-iran-de-escalation",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-05T00:05:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/philippine-october-inflation-accelerates-7-8-close-to-four-year-high",
           "tags": [
             "commodity",
             "geopolitical",
@@ -527,12 +473,12 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 4",
+          "title": "Asian Markets React as Trump Cools Iran Fears",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-03T23:08:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-03/latest-oil-market-news-and-analysis-for-nov-4",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:31:57+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-04/asian-markets-react-as-trump-cools-iran-fears-video",
           "tags": [
             "commodity",
             "geopolitical",
@@ -541,18 +487,17 @@
           ]
         },
         {
-          "title": "Treasuries Gain as Oil Prices Tumble After Democrats Elected",
+          "title": "Latest Oil Market News and Analysis for Nov. 5",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-04T01:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/treasuries-advance-as-traders-eye-us-votes-refinancing-plans",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-04T23:08:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-04/latest-oil-market-news-and-analysis-for-nov-5",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
