@@ -1,133 +1,120 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-06T10:48:43.456384+09:00",
-  "sourceUpdatedAt": "2026-11-06T01:26:53+00:00",
+  "updatedAt": "2026-11-07T03:09:23.405666+09:00",
+  "sourceUpdatedAt": "2026-11-06T18:07:30+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.165,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
-      "topPositiveTitle": "Japan’s Nominal Wages Rise at Fastest Pace In About 30 Years",
+      "topNegativeTitle": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元",
+      "topPositiveTitle": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
       "items": [
         {
-          "title": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
-          "source": "Bloomberg Markets",
+          "title": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元",
+          "source": "NHK 経済",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-06T00:15:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/japan-s-nikkei-breaks-below-key-60-000-level-on-ai-selloff",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T13:02:19+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71870",
           "tags": [
             "jp_broad",
-            "macro_risk",
-            "market",
-            "us_growth"
+            "market"
+          ],
+          "titleJa": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元"
+        },
+        {
+          "title": "BOJ’s Ueda Says Unclear How Long 2% Inflation Rate Will Remain",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T17:16:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/boj-s-ueda-says-unclear-how-long-2-inflation-rate-will-remain",
+          "tags": [
+            "jp_broad",
+            "market"
           ]
         },
         {
-          "title": "Japan’s Nominal Wages Rise at Fastest Pace In About 30 Years",
-          "source": "Bloomberg Economics",
+          "title": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
+          "source": "NHK 経済",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-05T23:31:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/japan-s-nominal-wages-rise-at-fastest-pace-in-almost-30-years",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-06T07:58:30+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71505",
           "tags": [
             "jp_broad",
             "market",
-            "rates"
-          ]
+            "trust"
+          ],
+          "titleJa": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”"
         }
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.447,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": 0.67,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Tech Selloff Hits Asia After US Market Rout",
-      "topPositiveTitle": "Hedge Funds Tout Disney, ASML at Sohn Queenstown Conference",
+      "topNegativeTitle": "Chip Stocks Roar Back as Strong Data Sink Bonds",
+      "topPositiveTitle": "Chip Stocks Roar Back as Strong Data Sink Bonds",
       "items": [
         {
-          "title": "Tech Selloff Hits Asia After US Market Rout",
+          "title": "Chip Stocks Roar Back as Strong Data Sink Bonds",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-06T00:18:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-06/tech-selloff-hits-asia-after-us-market-rout-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Korea’s Kospi Tumbles Below 5,000 Milestone as AI Fears Spread",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-05T23:35:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/korean-chip-stocks-sink-10-in-pre-market-as-ai-fears-deepen",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-06T16:34:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/chip-stocks-roar-back-as-strong-data-sink-bonds-video",
           "tags": [
             "jp_semiconductor",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Hedge Funds Tout Disney, ASML at Sohn Queenstown Conference",
+          "title": "Chip Stocks Climb in AI Trade Revival After Rout: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T23:00:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/investors-pick-disney-g-mining-at-sohn-conference-in-queenstown",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-05T22:17:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "gold",
             "jp_semiconductor",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.168,
+      "avgSentiment": 0.137,
       "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 4,
+      "neutralCount": 7,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": "AI Slump Deepens as Taiwan Drops Most in a Year: Markets Wrap",
-      "topPositiveTitle": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
+      "topNegativeTitle": "Multiple Fed Rate Hikes Reasonable, Pimco's Wilding Says",
+      "topPositiveTitle": "Chip Stocks Roar Back as Strong Data Sink Bonds",
       "items": [
         {
-          "title": "AI Slump Deepens as Taiwan Drops Most in a Year: Markets Wrap",
+          "title": "Multiple Fed Rate Hikes Reasonable, Pimco's Wilding Says",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-05T22:17:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Fed’s Hammack Says Restrictive Rates Needed to Cool Prices",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-05T13:50:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/fed-s-hammack-says-restrictive-rates-needed-to-cool-inflation",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T16:22:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/multiple-fed-rate-hikes-reasonable-pimco-s-wilding-says-video",
           "tags": [
             "market",
             "rates",
@@ -135,109 +122,88 @@
           ]
         },
         {
-          "title": "Worst Rout Since 2020 Leaves Virtually Nowhere to Hide in Stocks",
+          "title": "Anatomy of a Selloff: Sudden Chain Reaction Rattles Wall Street",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T22:11:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/worst-us-stock-rout-since-2020-leaves-virtually-nowhere-to-hide",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T16:10:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/anatomy-of-a-selloff-sudden-chain-reaction-rattles-wall-street",
           "tags": [
+            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Trump’s Trouncing Gives Warsh Room for Maneuver on Rates",
+          "title": "Fed’s New FOMC Schedule Turns Back the Clock for ‘Strategy’ Sessions",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/trump-s-trouncing-gives-warsh-more-room-for-maneuver-on-rates",
+          "publishedAt": "2026-11-06T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/fed-s-new-fomc-schedule-turns-back-the-clock-for-strategy-sessions",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
+          "title": "Airbnb Moves on Revenue; DraftKings Sinks on Forecast Miss | Stock Movers",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-06T00:09:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/gold-set-for-biggest-weekly-gain-since-august-after-us-midterms",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T16:19:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/airbnb-moves-on-revenue-draftkings-sinks-on-forecast-video",
           "tags": [
-            "fx",
-            "gold",
             "market",
-            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Jobs Report October 2026: Key Takeaways on Employment, Payrolls",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T14:40:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/us-jobs-report-october-2026-key-takeaways-on-employment-payrolls",
+          "tags": [
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.75,
-      "negativeCount": 4,
-      "positiveCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
-      "topPositiveTitle": "Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters",
+      "topNegativeTitle": "Stock Market Selloff: What Correction, Crash and Other Trading Terms Mean",
+      "topPositiveTitle": "Brookfield Raises $25 Billion Amid AI Push as Profits Rise",
       "items": [
         {
-          "title": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
+          "title": "Stock Market Selloff: What Correction, Crash and Other Trading Terms Mean",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-06T00:15:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/japan-s-nikkei-breaks-below-key-60-000-level-on-ai-selloff",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T03:15:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/stock-market-selloff-what-correction-crash-and-other-trading-terms-mean",
           "tags": [
-            "jp_broad",
             "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "AI Slump Deepens as Taiwan Drops Most in a Year: Markets Wrap",
+          "title": "Brookfield Raises $25 Billion Amid AI Push as Profits Rise",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-05T22:17:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-06T12:09:41+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/brookfield-raises-123-billion-amid-ai-build-out-as-profits-rise",
           "tags": [
-            "geopolitical",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Korea’s Kospi Tumbles Below 5,000 Milestone as AI Fears Spread",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-05T23:35:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/korean-chip-stocks-sink-10-in-pre-market-as-ai-fears-deepen",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-06T01:15:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/taiwan-s-currency-weakens-past-33-per-us-dollar-on-ai-jitters",
-          "tags": [
-            "fx",
-            "geopolitical",
             "market",
             "us_growth"
           ]
@@ -245,53 +211,67 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "European Stocks Trim Weekly Gain With Milder Swings Than the US",
+      "topPositiveTitle": "European Stocks Trim Weekly Gain With Milder Swings Than the US",
+      "items": [
+        {
+          "title": "European Stocks Trim Weekly Gain With Milder Swings Than the US",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T08:23:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/european-stocks-join-global-selloff-as-ai-concerns-spread",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.3,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Hedge Funds Tout Disney, ASML at Sohn Queenstown Conference",
-      "topPositiveTitle": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
+      "topNegativeTitle": "Gold Extends Drop on Stronger-Than-Expected US Employment Data",
+      "topPositiveTitle": "Treasuries Fall as Strong Jobs Data Fortifies Tech Rebound",
       "items": [
         {
-          "title": "Hedge Funds Tout Disney, ASML at Sohn Queenstown Conference",
+          "title": "Gold Extends Drop on Stronger-Than-Expected US Employment Data",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T23:00:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/investors-pick-disney-g-mining-at-sohn-conference-in-queenstown",
-          "tags": [
-            "gold",
-            "jp_semiconductor",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
           "publishedAt": "2026-11-06T00:09:55+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-06/gold-set-for-biggest-weekly-gain-since-august-after-us-midterms",
           "tags": [
-            "fx",
             "gold",
             "market",
             "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Treasuries Fall as Strong Jobs Data Fortifies Tech Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-11-06T17:49:28+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/treasuries-fall-as-jobs-data-fortifies-tech-rebound-video",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
             "us_broad"
           ]
         }
@@ -322,62 +302,62 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.251,
-      "negativeCount": 5,
-      "positiveCount": 3,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "avgSentiment": -0.01,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
-      "topPositiveTitle": "Japan Bonds Rally as Global Risk-Off Move Boosts Haven Demand",
+      "topNegativeTitle": "Anatomy of a Selloff: Sudden Chain Reaction Rattles Wall Street",
+      "topPositiveTitle": "Treasuries Fall as Strong Jobs Data Fortifies Tech Rebound",
       "items": [
         {
-          "title": "Japan’s Nikkei Poised to Enter Bear Market as AI Selloff Deepens",
+          "title": "Anatomy of a Selloff: Sudden Chain Reaction Rattles Wall Street",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-06T00:15:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/japan-s-nikkei-breaks-below-key-60-000-level-on-ai-selloff",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T16:10:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/anatomy-of-a-selloff-sudden-chain-reaction-rattles-wall-street",
           "tags": [
-            "jp_broad",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "European Stocks Trim Weekly Gain With Milder Swings Than the US",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T08:23:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/european-stocks-join-global-selloff-as-ai-concerns-spread",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Stock Market Selloff: What Correction, Crash and Other Trading Terms Mean",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T03:15:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/stock-market-selloff-what-correction-crash-and-other-trading-terms-mean",
+          "tags": [
             "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Copper Moves Lower as US Election Undermines AI and Tariff Trade",
+          "title": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-06T01:26:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/copper-moves-lower-as-us-election-undermines-ai-and-tariff-trade",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Tech Selloff Hits Asia After US Market Rout",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-06T00:18:15+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-06/tech-selloff-hits-asia-after-us-market-rout-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 6",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T23:08:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/latest-oil-market-news-and-analysis-for-nov-6",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T08:38:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/oil-declines-on-signs-of-moves-toward-gulf-war-de-escalation",
           "tags": [
             "commodity",
             "geopolitical",
@@ -386,64 +366,32 @@
           ]
         },
         {
-          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T16:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
+          "title": "Goldman US Stock Panic Gauge Hits Extreme, Signaling Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-06T15:28:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/goldman-s-us-stock-panic-gauge-hits-extreme-signaling-rebound",
           "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
-            "market",
-            "rates"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.165,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters",
-      "topPositiveTitle": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
+      "topNegativeTitle": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
+      "topPositiveTitle": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
       "items": [
         {
-          "title": "Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-06T01:15:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/taiwan-s-currency-weakens-past-33-per-us-dollar-on-ai-jitters",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Set for Biggest Weekly Gain Since August After US Midterms",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-06T00:09:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/gold-set-for-biggest-weekly-gain-since-august-after-us-midterms",
-          "tags": [
-            "fx",
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "The Dollar’s Bullish Case Holds Firm After Midterms Shakeout",
+          "title": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
@@ -453,40 +401,27 @@
             "fx",
             "market"
           ]
-        },
-        {
-          "title": "Yen Regains Haven Appeal as AI Rout Sends Investors to Safety",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-05T19:57:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/yen-rises-on-haven-demand-as-cibc-nomura-see-room-for-more-gain",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.0,
-      "negativeCount": 4,
-      "positiveCount": 4,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 10,
+      "avgSentiment": 0.253,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Hammack Says Restrictive Rates Needed to Cool Prices",
-      "topPositiveTitle": "Japan’s Nominal Wages Rise at Fastest Pace In About 30 Years",
+      "topNegativeTitle": "Multiple Fed Rate Hikes Reasonable, Pimco's Wilding Says",
+      "topPositiveTitle": "Chip Stocks Roar Back as Strong Data Sink Bonds",
       "items": [
         {
-          "title": "Fed’s Hammack Says Restrictive Rates Needed to Cool Prices",
-          "source": "Bloomberg Economics",
+          "title": "Multiple Fed Rate Hikes Reasonable, Pimco's Wilding Says",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-05T13:50:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/fed-s-hammack-says-restrictive-rates-needed-to-cool-inflation",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T16:22:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/multiple-fed-rate-hikes-reasonable-pimco-s-wilding-says-video",
           "tags": [
             "market",
             "rates",
@@ -494,203 +429,126 @@
           ]
         },
         {
-          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T16:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Traders Up Bets on Faster BOE Rate-Hike Pace After Hawkish Vote",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T13:13:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/traders-up-bets-on-faster-boe-rate-hike-pace-after-hawkish-vote",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "BOE United in Delivering First Rate Hike in Three Years",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T12:16:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/boe-united-in-delivering-first-rate-hike-in-three-years",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Czechs Raise Rates as ‘Fine-Tuning’ Move After Rare Tight Vote",
-          "source": "Bloomberg Economics",
+          "title": "Gold Extends Drop on Stronger-Than-Expected US Employment Data",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-05T13:30:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/czechs-hike-rates-for-second-time-this-year-to-tame-price-risks",
+          "publishedAt": "2026-11-06T00:09:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/gold-set-for-biggest-weekly-gain-since-august-after-us-midterms",
           "tags": [
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Chip Stocks Roar Back as Strong Data Sink Bonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-06T16:34:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-06/chip-stocks-roar-back-as-strong-data-sink-bonds-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Chip Stocks Climb in AI Trade Revival After Rout: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-05T22:17:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-05/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 6",
-      "topPositiveTitle": "ECB’s Lagarde Says Hot Summer Should Be Warning for Europe",
+      "topNegativeTitle": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
+      "topPositiveTitle": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
       "items": [
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 6",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T23:08:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/latest-oil-market-news-and-analysis-for-nov-6",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T16:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Malaysian Bonds Lure Buyers as Oil Squeezes Peers, Analysts Say",
+          "title": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T00:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/malaysian-bonds-lure-buyers-as-oil-squeezes-peers-analysts-say",
+          "publishedAt": "2026-11-06T08:38:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/oil-declines-on-signs-of-moves-toward-gulf-war-de-escalation",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "ECB’s Lagarde Says Hot Summer Should Be Warning for Europe",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-04T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-04/ecb-s-lagarde-says-hot-summer-should-be-a-warning-for-europe",
-          "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.208,
-      "negativeCount": 4,
-      "positiveCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "AI Slump Deepens as Taiwan Drops Most in a Year: Markets Wrap",
-      "topPositiveTitle": "US Midterms Came Too Late to Prevent Bank of England Rate Hike",
+      "topNegativeTitle": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
+      "topPositiveTitle": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
       "items": [
         {
-          "title": "AI Slump Deepens as Taiwan Drops Most in a Year: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-05T22:17:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-06T01:15:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/taiwan-s-currency-weakens-past-33-per-us-dollar-on-ai-jitters",
-          "tags": [
-            "fx",
-            "geopolitical",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 6",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T23:08:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/latest-oil-market-news-and-analysis-for-nov-6",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Bailey Says Second BOE Hike More Likely Than Not If War Goes On",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-05T16:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/bailey-says-second-boe-hike-more-likely-than-not-if-war-goes-on",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Putin Transfers Japan Tobacco Assets to Local Firm in Latest Asset Seizure",
+          "title": "Oil Swings as Traders Assess Iran War De-Escalation Prospects",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T00:31:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/japan-protests-russia-s-seizure-of-japan-tobacco-assets",
+          "publishedAt": "2026-11-06T08:38:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-06/oil-declines-on-signs-of-moves-toward-gulf-war-de-escalation",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T14:42:52+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71861",
           "tags": [
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”"
+        },
+        {
+          "title": "茂木外相 フランス訪問を発表 G7外相会合出席へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T10:53:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71855",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 フランス訪問を発表 G7外相会合出席へ"
         }
       ]
     }
