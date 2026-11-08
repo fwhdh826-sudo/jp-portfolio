@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-08T11:37:49.266284+09:00",
-  "sourceUpdatedAt": "2026-11-08T00:50:00+00:00",
+  "updatedAt": "2026-11-09T02:09:48.187984+09:00",
+  "sourceUpdatedAt": "2026-11-08T16:30:18+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -57,39 +57,37 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.085,
-      "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
-      "topPositiveTitle": "US Jobs Surge Raises Odds of December Fed Hike",
+      "topNegativeTitle": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
+      "topPositiveTitle": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
       "items": [
         {
-          "title": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
+          "title": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-07T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/wall-street-strategists-call-stock-rout-a-fresh-reason-to-buy",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/wall-street-races-for-megadeals-as-countdown-begins-on-trump-era",
           "tags": [
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "US Jobs Surge Raises Odds of December Fed Hike",
+          "title": "What America’s Factories Reveal About the Economy",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-07T13:16:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/us-jobs-surge-raises-odds-of-december-fed-hike-video",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T13:03:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/what-america-s-factories-reveal-about-the-economy-video",
           "tags": [
             "market",
-            "rates",
             "us_broad"
           ]
         }
@@ -157,76 +155,52 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -0.335,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Berkshire Makes Record $9.6 Billion Buyback",
-      "topPositiveTitle": "Berkshire Hathaway Boosts Buybacks as Operating Income Slips",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "macro_risk": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Ukraine Peace Push Returns to Abu Dhabi",
+      "topPositiveTitle": "Ukraine Peace Push Returns to Abu Dhabi",
       "items": [
         {
-          "title": "Berkshire Makes Record $9.6 Billion Buyback",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-07T14:00:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/berkshire-makes-record-9-6-billion-buyback-video",
-          "tags": [
-            "dividend",
-            "market"
-          ]
-        },
-        {
-          "title": "Berkshire Hathaway Boosts Buybacks as Operating Income Slips",
+          "title": "Ukraine Peace Push Returns to Abu Dhabi",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-07T13:01:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/berkshire-hathaway-s-operating-earnings-fall-buybacks-rise",
+          "publishedAt": "2026-11-08T14:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
           "tags": [
-            "dividend",
-            "market"
-          ]
-        }
-      ]
-    },
-    "macro_risk": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "New Chief of Staff, Chain Reaction Tech Selloff",
-      "topPositiveTitle": "How the Iran War Is Making Alaskans Both Richer and Poorer",
-      "items": [
-        {
-          "title": "New Chief of Staff, Chain Reaction Tech Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-07T17:14:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/bloomberg-this-weekend-11-7-2026-video",
-          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
+          "title": "Poland Probes Krakow Shooting as Terrorism",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-07T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/wall-street-strategists-call-stock-rout-a-fresh-reason-to-buy",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T13:06:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/poland-probes-krakow-shooting-as-terrorism-video",
           "tags": [
+            "geopolitical",
             "macro_risk",
-            "market",
-            "us_broad"
+            "market"
           ]
         },
         {
@@ -241,20 +215,6 @@
             "market"
           ],
           "titleJa": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて"
-        },
-        {
-          "title": "How the Iran War Is Making Alaskans Both Richer and Poorer",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-07T15:04:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/inside-alaska-s-oil-paradox-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     },
@@ -271,15 +231,15 @@
       "items": []
     },
     "rates": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
-      "topPositiveTitle": "US Jobs Surge Raises Odds of December Fed Hike",
+      "topPositiveTitle": "Australia Home Sales Rise in Fledgling Sign of Property Recovery",
       "items": [
         {
           "title": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
@@ -296,7 +256,7 @@
         },
         {
           "title": "Australia Home Sales Rise in Fledgling Sign of Property Recovery",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
           "publishedAt": "2026-11-07T23:54:25+00:00",
@@ -305,72 +265,95 @@
             "market",
             "rates"
           ]
-        },
-        {
-          "title": "US Jobs Surge Raises Odds of December Fed Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-07T13:16:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/us-jobs-surge-raises-odds-of-december-fed-hike-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "ECB Candidate de Cos Says Vigilance Needed on Inflation Risks",
-      "topPositiveTitle": "How the Iran War Is Making Alaskans Both Richer and Poorer",
+      "topNegativeTitle": "Gabon Seeks $2 Billion to Revive Mabounie Rare Earths Project",
+      "topPositiveTitle": "China Set to Lead World in Energy Investment in 2026, CCTV Says",
       "items": [
         {
-          "title": "ECB Candidate de Cos Says Vigilance Needed on Inflation Risks",
-          "source": "Bloomberg Economics",
+          "title": "Gabon Seeks $2 Billion to Revive Mabounie Rare Earths Project",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-07T08:30:32+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/ecb-candidate-de-cos-says-vigilance-needed-on-inflation-risks",
+          "publishedAt": "2026-11-08T11:27:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gabon-seeks-2-billion-to-revive-mabounie-rare-earths-project",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "How the Iran War Is Making Alaskans Both Richer and Poorer",
+          "title": "China Set to Lead World in Energy Investment in 2026, CCTV Says",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-07T15:04:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/inside-alaska-s-oil-paradox-video",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-08T04:02:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/china-set-to-lead-world-in-energy-investment-in-2026-cctv-says",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.2,
+      "avgSentiment": 0.047,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "positiveCount": 1,
+      "neutralCount": 6,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "イスラエル 第2党アイゼンコット氏に組閣要請へ",
-      "topPositiveTitle": "How the Iran War Is Making Alaskans Both Richer and Poorer",
+      "topNegativeTitle": "Israel’s Election Fight Shifts to Coalition Building",
+      "topPositiveTitle": "台湾有事発言1年 対話の糸口探る日本政府 日中の影響は?",
       "items": [
+        {
+          "title": "Israel’s Election Fight Shifts to Coalition Building",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T15:49:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/israel-s-election-fight-shifts-to-coalition-building-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Ukraine Peace Push Returns to Abu Dhabi",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T14:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Poland Probes Krakow Shooting as Terrorism",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T13:06:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/poland-probes-krakow-shooting-as-terrorism-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "イスラエル 第2党アイゼンコット氏に組閣要請へ",
           "source": "NHK 経済",
@@ -396,46 +379,6 @@
             "market"
           ],
           "titleJa": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”"
-        },
-        {
-          "title": "茂木外相 フランス訪問を発表 G7外相会合出席へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T10:53:06+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71855",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "茂木外相 フランス訪問を発表 G7外相会合出席へ"
-        },
-        {
-          "title": "台湾有事発言1年 対話の糸口探る日本政府 日中の影響は?",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-07T10:31:02+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71967",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "台湾有事発言1年 対話の糸口探る日本政府 日中の影響は?"
-        },
-        {
-          "title": "How the Iran War Is Making Alaskans Both Richer and Poorer",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-07T15:04:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-07/inside-alaska-s-oil-paradox-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
         }
       ]
     }
@@ -448,7 +391,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 6,
+    "excludedCount": 7,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
