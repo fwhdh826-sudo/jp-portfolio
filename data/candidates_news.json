@@ -1,16 +1,16 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-08T01:56:27.415725+09:00",
-  "sourceUpdatedAt": "2026-11-07T16:15:30+00:00",
+  "updatedAt": "2026-11-08T11:37:49.266284+09:00",
+  "sourceUpdatedAt": "2026-11-08T00:50:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
       "avgSentiment": 0.0,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元",
       "topPositiveTitle": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
@@ -27,18 +27,6 @@
             "market"
           ],
           "titleJa": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元"
-        },
-        {
-          "title": "BOJ’s Ueda Says Unclear How Long 2% Inflation Rate Will Remain",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T17:16:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/boj-s-ueda-says-unclear-how-long-2-inflation-rate-will-remain",
-          "tags": [
-            "jp_broad",
-            "market"
-          ]
         },
         {
           "title": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
@@ -69,29 +57,16 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.167,
-      "negativeCount": 2,
+      "avgSentiment": 0.085,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Daly Says More Rate Hikes Likely Needed to Tame Prices",
+      "topNegativeTitle": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
       "topPositiveTitle": "US Jobs Surge Raises Odds of December Fed Hike",
       "items": [
-        {
-          "title": "Fed’s Daly Says More Rate Hikes Likely Needed to Tame Prices",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-06T18:24:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/fed-s-daly-says-more-rate-increases-likely-needed-to-tame-prices",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
           "source": "Bloomberg Markets",
@@ -121,16 +96,29 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
+      "topPositiveTitle": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
+      "items": [
+        {
+          "title": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-07T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-07/meta-s-bond-sale-shows-new-reality-for-tech-debt-credit-weekly",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "global_broad": {
       "avgSentiment": 0,
@@ -145,29 +133,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "China Extends Gold-Buying Streak to Two Years as Prices Drop",
-      "topPositiveTitle": "China Extends Gold-Buying Streak to Two Years as Prices Drop",
-      "items": [
-        {
-          "title": "China Extends Gold-Buying Streak to Two Years as Prices Drop",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-07T02:26:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/china-extends-gold-buying-streak-to-two-years-as-prices-drop",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -219,16 +194,28 @@
       ]
     },
     "macro_risk": {
-      "avgSentiment": 0.17,
-      "negativeCount": 1,
+      "avgSentiment": -0.083,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
+      "topNegativeTitle": "New Chief of Staff, Chain Reaction Tech Selloff",
       "topPositiveTitle": "How the Iran War Is Making Alaskans Both Richer and Poorer",
       "items": [
+        {
+          "title": "New Chief of Staff, Chain Reaction Tech Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-07T17:14:41+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-07/bloomberg-this-weekend-11-7-2026-video",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Wall Street Strategists Call Stock Rout a Fresh Reason to Buy",
           "source": "Bloomberg Markets",
@@ -241,6 +228,19 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-07T17:03:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261108de72266",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて"
         },
         {
           "title": "How the Iran War Is Making Alaskans Both Richer and Poorer",
@@ -259,52 +259,51 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
-      "topPositiveTitle": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
-      "items": [
-        {
-          "title": "Bullish Dollar Outlook Shines Through Post-Midterm Market Tumult",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-05T23:59:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-05/the-dollar-s-bullish-case-holds-firm-after-midterms-shakeout",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "rates": {
-      "avgSentiment": -0.085,
+      "avgSentiment": 0.167,
       "negativeCount": 1,
-      "positiveCount": 1,
+      "positiveCount": 2,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Daly Says More Rate Hikes Likely Needed to Tame Prices",
+      "topNegativeTitle": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
       "topPositiveTitle": "US Jobs Surge Raises Odds of December Fed Hike",
       "items": [
         {
-          "title": "Fed’s Daly Says More Rate Hikes Likely Needed to Tame Prices",
-          "source": "Bloomberg Economics",
+          "title": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
+          "source": "NHK 経済",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-06T18:24:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-06/fed-s-daly-says-more-rate-increases-likely-needed-to-tame-prices",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-06T08:45:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71681",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
+          ],
+          "titleJa": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く"
+        },
+        {
+          "title": "Australia Home Sales Rise in Fledgling Sign of Property Recovery",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-07T23:54:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-07/australia-home-sales-rise-in-fledgling-sign-of-property-recovery",
+          "tags": [
+            "market",
+            "rates"
           ]
         },
         {
@@ -362,16 +361,29 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.2,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”",
+      "topNegativeTitle": "イスラエル 第2党アイゼンコット氏に組閣要請へ",
       "topPositiveTitle": "How the Iran War Is Making Alaskans Both Richer and Poorer",
       "items": [
+        {
+          "title": "イスラエル 第2党アイゼンコット氏に組閣要請へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T00:50:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261108de72392",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "イスラエル 第2党アイゼンコット氏に組閣要請へ"
+        },
         {
           "title": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”",
           "source": "NHK 経済",
@@ -436,7 +448,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 6,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
