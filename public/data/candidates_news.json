@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-09T10:09:26.076424+09:00",
-  "sourceUpdatedAt": "2026-11-09T00:04:46+00:00",
+  "updatedAt": "2026-11-09T11:51:41.936816+09:00",
+  "sourceUpdatedAt": "2026-11-09T02:45:32+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -45,12 +45,12 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.4,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Nvidia Probes Huang Affair Amid Spying Controversy",
       "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
@@ -63,6 +63,21 @@
           "publishedAt": "2026-11-08T23:22:53+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
           "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-08T23:40:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
             "jp_semiconductor",
             "market",
             "us_growth"
@@ -84,12 +99,12 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.208,
-      "negativeCount": 2,
+      "avgSentiment": -0.25,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
       "topPositiveTitle": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
@@ -108,20 +123,6 @@
           ]
         },
         {
-          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-08T23:40:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
           "title": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
@@ -132,32 +133,32 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T14:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/wall-street-races-for-megadeals-as-countdown-begins-on-trump-era",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.5,
+      "avgSentiment": 0.3,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Probes Huang Affair Amid Spying Controversy",
+      "topNegativeTitle": "Mizuho Pierces Nomura’s Japan Bubble With Big-Ticket Global IPOs",
       "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
       "items": [
+        {
+          "title": "Mizuho Pierces Nomura’s Japan Bubble With Big-Ticket Global IPOs",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-09T02:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/mizuho-pierces-nomura-s-japan-bubble-with-big-ticket-global-ipos",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Nvidia Probes Huang Affair Amid Spying Controversy",
           "source": "Bloomberg Markets",
@@ -166,6 +167,21 @@
           "publishedAt": "2026-11-08T23:22:53+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
           "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-08T23:40:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "tags": [
+            "commodity",
+            "gold",
             "jp_semiconductor",
             "market",
             "us_growth"
@@ -199,28 +215,29 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
-      "topPositiveTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "topNegativeTitle": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+      "topPositiveTitle": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
       "items": [
         {
-          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-11-08T23:40:10+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
           "tags": [
+            "commodity",
             "gold",
+            "jp_semiconductor",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
         }
       ]
@@ -250,12 +267,12 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.042,
+      "avgSentiment": -0.057,
       "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
@@ -271,19 +288,6 @@
             "macro_risk",
             "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Ukraine Peace Push Returns to Abu Dhabi",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T14:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -316,16 +320,28 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.223,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Japan Says Three-Day Yen Intervention Lifted Yen in Summer",
+      "topNegativeTitle": "Berkshire Plans First Japan Bond Offering Since April",
       "topPositiveTitle": "New Zealand Dollar Advances as Ruling Party Gets Election Edge",
       "items": [
+        {
+          "title": "Berkshire Plans First Japan Bond Offering Since April",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-09T01:04:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/berkshire-hathaway-plans-first-japan-bond-offering-since-april",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "Japan Says Three-Day Yen Intervention Lifted Yen in Summer",
           "source": "Bloomberg Economics",
@@ -353,43 +369,67 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
-      "topPositiveTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "commodity": {
+      "avgSentiment": -0.033,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "China’s Cheap Domestic Gas Curbs LNG Buying as Winter Nears",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
       "items": [
         {
-          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+          "title": "China’s Cheap Domestic Gas Curbs LNG Buying as Winter Nears",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
+          "publishedAt": "2026-11-09T02:20:24+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/china-s-cheap-domestic-gas-curbs-lng-buying-as-winter-nears",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Philippine Economy Unexpectedly Slows, Pressuring Marcos",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-09T02:03:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/philippine-economy-slows-further-adding-to-pressure-on-marcos",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
           "publishedAt": "2026-11-08T23:40:10+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
           "tags": [
+            "commodity",
             "gold",
+            "jp_semiconductor",
             "market",
-            "rates",
-            "us_broad"
+            "us_growth"
           ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 9",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
-      "items": [
+        },
         {
           "title": "Latest Oil Market News and Analysis for Nov. 9",
           "source": "Bloomberg Markets",
@@ -407,12 +447,12 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.094,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 5,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Israel’s Election Fight Shifts to Coalition Building",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
@@ -426,19 +466,6 @@
           "url": "https://www.bloomberg.com/news/videos/2026-11-08/israel-s-election-fight-shifts-to-coalition-building-video",
           "tags": [
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Ukraine Peace Push Returns to Abu Dhabi",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T14:05:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         },
@@ -480,6 +507,20 @@
             "market"
           ],
           "titleJa": "茂木外相 フランス訪問を発表 G7外相会合出席へ"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 9",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-08T23:03:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     }
