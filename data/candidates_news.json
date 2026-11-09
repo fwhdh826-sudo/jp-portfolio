@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-09T02:09:48.187984+09:00",
-  "sourceUpdatedAt": "2026-11-08T16:30:18+00:00",
+  "updatedAt": "2026-11-09T10:09:26.076424+09:00",
+  "sourceUpdatedAt": "2026-11-09T00:04:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -45,28 +45,94 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
-      "topPositiveTitle": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
+      "topNegativeTitle": "Nvidia Probes Huang Affair Amid Spying Controversy",
+      "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
       "items": [
+        {
+          "title": "Nvidia Probes Huang Affair Amid Spying Controversy",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T23:22:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-08T22:20:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.208,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+      "topPositiveTitle": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
+      "items": [
+        {
+          "title": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/treasury-rally-gets-new-boost-as-election-hammers-the-ai-trade",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-08T23:40:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-08T17:03:43+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/bloomberg-this-weekend-11-8-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Wall Street Races for Megadeals as Countdown Begins on Trump Era",
           "source": "Bloomberg Markets",
@@ -78,40 +144,42 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "What America’s Factories Reveal About the Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T13:03:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/what-america-s-factories-reveal-about-the-economy-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.5,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
-      "topPositiveTitle": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
+      "topNegativeTitle": "Nvidia Probes Huang Affair Amid Spying Controversy",
+      "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
       "items": [
         {
-          "title": "Meta’s $25 Billion Bond Sale Highlights Shifting Landscape for Tech Debt",
+          "title": "Nvidia Probes Huang Affair Amid Spying Controversy",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-07T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/meta-s-bond-sale-shows-new-reality-for-tech-debt-credit-weekly",
+          "publishedAt": "2026-11-08T23:22:53+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
           "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-08T22:20:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -131,16 +199,31 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "topPositiveTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "items": [
+        {
+          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-08T23:40:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -167,16 +250,29 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": -0.042,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Ukraine Peace Push Returns to Abu Dhabi",
-      "topPositiveTitle": "Ukraine Peace Push Returns to Abu Dhabi",
+      "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
       "items": [
+        {
+          "title": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/treasury-rally-gets-new-boost-as-election-hammers-the-ai-trade",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
         {
           "title": "Ukraine Peace Push Returns to Abu Dhabi",
           "source": "Bloomberg Markets",
@@ -184,19 +280,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-11-08T14:05:13+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Poland Probes Krakow Shooting as Terrorism",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T13:06:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/poland-probes-krakow-shooting-as-terrorism-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -215,106 +298,124 @@
             "market"
           ],
           "titleJa": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて"
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 9",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-08T23:03:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
-      "topPositiveTitle": "Australia Home Sales Rise in Fledgling Sign of Property Recovery",
+      "topNegativeTitle": "Japan Says Three-Day Yen Intervention Lifted Yen in Summer",
+      "topPositiveTitle": "New Zealand Dollar Advances as Ruling Party Gets Election Edge",
       "items": [
         {
-          "title": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-06T08:45:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71681",
+          "title": "Japan Says Three-Day Yen Intervention Lifted Yen in Summer",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-09T00:04:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/japan-says-three-day-yen-intervention-lifted-yen-in-summer",
           "tags": [
-            "market",
-            "rates"
-          ],
-          "titleJa": "GPIF運用実績 7～9月 5兆2500億円余の赤字 外国債券安が響く"
+            "fx",
+            "market"
+          ]
         },
         {
-          "title": "Australia Home Sales Rise in Fledgling Sign of Property Recovery",
-          "source": "Bloomberg Economics",
+          "title": "New Zealand Dollar Advances as Ruling Party Gets Election Edge",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-07T23:54:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-07/australia-home-sales-rise-in-fledgling-sign-of-property-recovery",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-08T22:07:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/new-zealand-dollar-advances-as-ruling-party-gets-election-edge",
           "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "topPositiveTitle": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+      "items": [
+        {
+          "title": "Gold Holds Decline as US Jobs Data Fan December Rate Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-08T23:40:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "tags": [
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gabon Seeks $2 Billion to Revive Mabounie Rare Earths Project",
-      "topPositiveTitle": "China Set to Lead World in Energy Investment in 2026, CCTV Says",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 9",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
       "items": [
         {
-          "title": "Gabon Seeks $2 Billion to Revive Mabounie Rare Earths Project",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T11:27:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gabon-seeks-2-billion-to-revive-mabounie-rare-earths-project",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "China Set to Lead World in Energy Investment in 2026, CCTV Says",
+          "title": "Latest Oil Market News and Analysis for Nov. 9",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-11-08T04:02:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/china-set-to-lead-world-in-energy-investment-in-2026-cctv-says",
+          "publishedAt": "2026-11-08T23:03:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.047,
+      "avgSentiment": 0.094,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 6,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 2,
       "itemCount": 7,
       "isStale": false,
       "topNegativeTitle": "Israel’s Election Fight Shifts to Coalition Building",
-      "topPositiveTitle": "台湾有事発言1年 対話の糸口探る日本政府 日中の影響は?",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
       "items": [
         {
           "title": "Israel’s Election Fight Shifts to Coalition Building",
@@ -335,19 +436,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-11-08T14:05:13+00:00",
           "url": "https://www.bloomberg.com/news/videos/2026-11-08/ukraine-peace-push-returns-to-abu-dhabi-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Poland Probes Krakow Shooting as Terrorism",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T13:06:23+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/poland-probes-krakow-shooting-as-terrorism-video",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -379,6 +467,19 @@
             "market"
           ],
           "titleJa": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”"
+        },
+        {
+          "title": "茂木外相 フランス訪問を発表 G7外相会合出席へ",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-06T10:53:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71855",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "茂木外相 フランス訪問を発表 G7外相会合出席へ"
         }
       ]
     }
