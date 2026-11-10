@@ -1,202 +1,133 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-09T11:51:41.936816+09:00",
-  "sourceUpdatedAt": "2026-11-09T02:45:32+00:00",
+  "updatedAt": "2026-11-11T03:45:02.373664+09:00",
+  "sourceUpdatedAt": "2026-11-10T18:07:36+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元",
-      "topPositiveTitle": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
-      "items": [
-        {
-          "title": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-06T13:02:19+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71870",
-          "tags": [
-            "jp_broad",
-            "market"
-          ],
-          "titleJa": "アメリカ中間選挙の影響 日本にも トランプ政権 揺らぐ足元"
-        },
-        {
-          "title": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”",
-          "source": "NHK 経済",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-06T07:58:30+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71505",
-          "tags": [
-            "jp_broad",
-            "market",
-            "trust"
-          ],
-          "titleJa": "高市首相“日銀ETF追加売却益は新たな投資枠の財源に”"
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.4,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Probes Huang Affair Amid Spying Controversy",
-      "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
-      "items": [
-        {
-          "title": "Nvidia Probes Huang Affair Amid Spying Controversy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T23:22:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-08T23:40:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
-          "tags": [
-            "commodity",
-            "gold",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-08T22:20:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "us_broad": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": -0.083,
+      "negativeCount": 5,
+      "positiveCount": 3,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
-      "topPositiveTitle": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
+      "topNegativeTitle": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
+      "topPositiveTitle": "US Core CPI Rises by More Than Forecast, Supporting Fed Hike",
       "items": [
         {
-          "title": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+          "title": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-08T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/treasury-rally-gets-new-boost-as-election-hammers-the-ai-trade",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-10T00:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-gain-above-4-100-as-lower-oil-eases-inflation-woes",
           "tags": [
-            "macro_risk",
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks, Bonds Fall as Inflation Spurs Fed Caution: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-09T22:16:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed's Waller Puts Jumbo Rate Hike on the Table Ahead of Hot Inflation Print",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:47:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-10/bloomberg-surveillance-11-10-2026-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Logan Says Two More Hikes Needed, Pace Could Quicken",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T15:50:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-logan-favors-at-least-two-hikes-says-pace-could-quicken",
+          "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Watching Wall Street, Deadly Mass Shooting in Poland, Back to Work After Blue Wave",
+          "title": "Bonds Tumble Most Since Tariff Meltdown on Rising Rate-Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T17:03:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/bloomberg-this-weekend-11-8-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T13:41:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/treasuries-slide-as-hot-us-inflation-cements-december-rate-bets",
           "tags": [
+            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.3,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 3,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Mizuho Pierces Nomura’s Japan Bubble With Big-Ticket Global IPOs",
-      "topPositiveTitle": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
+      "topNegativeTitle": "Wall Street Bonuses Could Rise by 30%, Says Johnson Associates",
+      "topPositiveTitle": "Wall Street Bonuses Could Rise by 30%, Says Johnson Associates",
       "items": [
         {
-          "title": "Mizuho Pierces Nomura’s Japan Bubble With Big-Ticket Global IPOs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-09T02:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-09/mizuho-pierces-nomura-s-japan-bubble-with-big-ticket-global-ipos",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Probes Huang Affair Amid Spying Controversy",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T23:22:53+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/nvidia-probes-huang-affair-amid-spying-controversy-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+          "title": "Wall Street Bonuses Could Rise by 30%, Says Johnson Associates",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-08T23:40:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-10T16:39:38+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-10/wall-street-bonuses-expected-to-rise-by-30-for-some-video",
           "tags": [
-            "commodity",
-            "gold",
-            "jp_semiconductor",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Follow US Gains, Nvidia Probe Looms: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-08T22:20:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "market",
+            "us_broad",
             "us_growth"
           ]
         }
@@ -215,29 +146,28 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0.2,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
-      "topPositiveTitle": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+      "topNegativeTitle": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
+      "topPositiveTitle": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
       "items": [
         {
-          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
+          "title": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-08T23:40:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-10T00:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-gain-above-4-100-as-lower-oil-eases-inflation-woes",
           "tags": [
-            "commodity",
             "gold",
-            "jp_semiconductor",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -267,51 +197,76 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.057,
-      "negativeCount": 1,
+      "avgSentiment": -0.108,
+      "negativeCount": 4,
       "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
+      "topNegativeTitle": "Morgan Stanley Says Argentina Bonds Price In Too Much Pessimism",
+      "topPositiveTitle": "Russian October Budget Gap Widens as War Spending Hits Finances",
       "items": [
         {
-          "title": "Treasury Rally Gets New Boost as Election Hammers the AI Trade",
+          "title": "Morgan Stanley Says Argentina Bonds Price In Too Much Pessimism",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-08T20:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/treasury-rally-gets-new-boost-as-election-hammers-the-ai-trade",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:53:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/morgan-stanley-says-argentina-bonds-price-in-too-much-pessimism",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "UAE Energy Contractor NMDC Plans December Acquisition, CEO Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:37:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/uae-energy-contractor-nmdc-plans-december-acquisition-ceo-says",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Bonds Tumble Most Since Tariff Meltdown on Rising Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T13:41:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/treasuries-slide-as-hot-us-inflation-cements-december-rate-bets",
           "tags": [
             "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-07T17:03:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261108de72266",
+          "title": "BOE’s Breeden Sees AI Selloff as a Welcome Price Correction",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T11:16:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/boe-s-breeden-sees-ai-selloff-as-a-welcome-price-correction",
           "tags": [
             "macro_risk",
             "market"
-          ],
-          "titleJa": "【地震】政府が官邸連絡室設置 愛知県で震度5強を受けて"
+          ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 9",
+          "title": "Saudi Liquidity Squeeze Adds to Challenges for Crown Prince",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-08T23:03:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-10T13:00:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/saudi-liquidity-squeeze-adds-to-economic-stress-for-crown-prince",
           "tags": [
-            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
@@ -320,203 +275,196 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Berkshire Plans First Japan Bond Offering Since April",
-      "topPositiveTitle": "New Zealand Dollar Advances as Ruling Party Gets Election Edge",
+      "topNegativeTitle": "Dollar Set for Best Day Since September as CPI Lifts Hike Bets",
+      "topPositiveTitle": "Dollar Set for Best Day Since September as CPI Lifts Hike Bets",
       "items": [
         {
-          "title": "Berkshire Plans First Japan Bond Offering Since April",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-09T01:04:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-09/berkshire-hathaway-plans-first-japan-bond-offering-since-april",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan Says Three-Day Yen Intervention Lifted Yen in Summer",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-09T00:04:46+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-09/japan-says-three-day-yen-intervention-lifted-yen-in-summer",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "New Zealand Dollar Advances as Ruling Party Gets Election Edge",
+          "title": "Dollar Set for Best Day Since September as CPI Lifts Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-08T22:07:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/new-zealand-dollar-advances-as-ruling-party-gets-election-edge",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-10T17:43:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/dollar-set-for-best-day-since-september-as-cpi-lifts-hike-bets",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "avgSentiment": 0.001,
+      "negativeCount": 5,
+      "positiveCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 13,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "commodity": {
-      "avgSentiment": -0.033,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 4,
-      "isStale": false,
-      "topNegativeTitle": "China’s Cheap Domestic Gas Curbs LNG Buying as Winter Nears",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
+      "topNegativeTitle": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
+      "topPositiveTitle": "US Core CPI Rises by More Than Forecast, Supporting Fed Hike",
       "items": [
         {
-          "title": "China’s Cheap Domestic Gas Curbs LNG Buying as Winter Nears",
+          "title": "Gold Tumbles as Hot US Inflation, Fedspeak Fuel Fed Hike Bets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-09T02:20:24+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-09/china-s-cheap-domestic-gas-curbs-lng-buying-as-winter-nears",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-10T00:04:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-gain-above-4-100-as-lower-oil-eases-inflation-woes",
           "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Philippine Economy Unexpectedly Slows, Pressuring Marcos",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-09T02:03:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-09/philippine-economy-slows-further-adding-to-pressure-on-marcos",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Gains as Oil Extends Fall and Nvidia Probe Rattles Markets",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.2,
-          "publishedAt": "2026-11-08T23:40:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/gold-holds-decline-as-us-jobs-data-fan-december-rate-hike-bets",
-          "tags": [
-            "commodity",
             "gold",
-            "jp_semiconductor",
             "market",
-            "us_growth"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 9",
+          "title": "Stocks, Bonds Fall as Inflation Spurs Fed Caution: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-08T23:03:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-09T22:16:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-09/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed's Waller Puts Jumbo Rate Hike on the Table Ahead of Hot Inflation Print",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:47:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-10/bloomberg-surveillance-11-10-2026-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Bonds Tumble Most Since Tariff Meltdown on Rising Rate-Hike Bets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T13:41:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/treasuries-slide-as-hot-us-inflation-cements-december-rate-bets",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Poland’s Maslowska Sees Growing Case for January Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T12:46:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/poland-s-maslowska-sees-growing-case-for-rate-hike-in-january",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "UAE Energy Contractor NMDC Plans December Acquisition, CEO Says",
+      "topPositiveTitle": "US Raises Forecasts for 2027 Gasoline and Diesel Prices",
+      "items": [
+        {
+          "title": "UAE Energy Contractor NMDC Plans December Acquisition, CEO Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:37:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/uae-energy-contractor-nmdc-plans-december-acquisition-ceo-says",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "US Raises Forecasts for 2027 Gasoline and Diesel Prices",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-10T17:07:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/us-raises-forecasts-for-2027-gasoline-and-diesel-prices",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.11,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 4,
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Israel’s Election Fight Shifts to Coalition Building",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 9",
+      "topNegativeTitle": "UAE Energy Contractor NMDC Plans December Acquisition, CEO Says",
+      "topPositiveTitle": "Russian October Budget Gap Widens as War Spending Hits Finances",
       "items": [
         {
-          "title": "Israel’s Election Fight Shifts to Coalition Building",
+          "title": "UAE Energy Contractor NMDC Plans December Acquisition, CEO Says",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T15:49:43+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-08/israel-s-election-fight-shifts-to-coalition-building-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-10T16:37:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/uae-energy-contractor-nmdc-plans-december-acquisition-ceo-says",
           "tags": [
+            "commodity",
             "geopolitical",
+            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "イスラエル 第2党アイゼンコット氏に組閣要請へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-08T00:50:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261108de72392",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "イスラエル 第2党アイゼンコット氏に組閣要請へ"
-        },
-        {
-          "title": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T14:42:52+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71861",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "高市首相 「台湾有事」答弁1年 “中国と安定的な関係構築を”"
-        },
-        {
-          "title": "茂木外相 フランス訪問を発表 G7外相会合出席へ",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-06T10:53:06+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261106de71855",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "茂木外相 フランス訪問を発表 G7外相会合出席へ"
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 9",
+          "title": "Saudi Liquidity Squeeze Adds to Challenges for Crown Prince",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-08T23:03:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-08/latest-oil-market-news-and-analysis-for-nov-9",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-10T13:00:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/saudi-liquidity-squeeze-adds-to-economic-stress-for-crown-prince",
           "tags": [
-            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russian October Budget Gap Widens as War Spending Hits Finances",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-10T15:14:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/russian-october-budget-gap-widens-as-war-spending-hits-finances",
+          "tags": [
             "geopolitical",
             "macro_risk",
             "market"
@@ -533,7 +481,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 7,
+    "excludedCount": 5,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
