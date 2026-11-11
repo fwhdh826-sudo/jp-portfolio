@@ -1,60 +1,101 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-11T11:53:56.648143+09:00",
-  "sourceUpdatedAt": "2026-11-11T02:47:17+00:00",
+  "updatedAt": "2026-11-12T03:48:52.432086+09:00",
+  "sourceUpdatedAt": "2026-11-11T18:36:51+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Turmoil Raises Stakes for the US-China Tech Rivalry",
-      "topPositiveTitle": "Nvidia Turmoil Raises Stakes for the US-China Tech Rivalry",
+      "topNegativeTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
+      "topPositiveTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
       "items": [
         {
-          "title": "Nvidia Turmoil Raises Stakes for the US-China Tech Rivalry",
+          "title": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-11T10:58:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74430",
+          "tags": [
+            "jp_broad",
+            "market"
+          ],
+          "titleJa": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携"
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+      "topPositiveTitle": "JPMorgan, NVIDIA Leaders on Electrification",
+      "items": [
+        {
+          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-11T16:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "JPMorgan, NVIDIA Leaders on Electrification",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-10T07:39:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-10/insight-with-haslinda-amin-11-9-2026-video",
+          "publishedAt": "2026-11-11T17:54:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/jpmorgan-nvidia-leaders-on-electrification-video",
           "tags": [
             "jp_semiconductor",
             "market",
             "us_growth"
           ]
+        },
+        {
+          "title": "アメリカ中間選挙 敗北で揺れるトランプ政権 その行方は",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T12:42:06+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74444",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ],
+          "titleJa": "アメリカ中間選挙 敗北で揺れるトランプ政権 その行方は"
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.108,
-      "negativeCount": 4,
+      "avgSentiment": -0.124,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 6,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 11,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
-      "topPositiveTitle": "US Core CPI Rises by More Than Forecast, Supporting Fed Hike",
+      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+      "topPositiveTitle": "US Stocks Climb as Wall Street Gets Fresh AI Fuel: Markets Wrap",
       "items": [
         {
-          "title": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
+          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -68,15 +109,17 @@
           ]
         },
         {
-          "title": "Traders Who Rushed to Bonds as Haven Get Rattled in Reversal",
+          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-10T21:30:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/traders-who-rushed-to-safety-of-bonds-get-rattled-in-reversal",
+          "publishedAt": "2026-11-11T16:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
           "tags": [
+            "jp_semiconductor",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
@@ -93,44 +136,68 @@
           ]
         },
         {
-          "title": "Fed’s Logan Says Two More Hikes Needed, Pace Could Quicken",
+          "title": "Fed’s Goolsbee Says October CPI Report ‘Borderline Disturbing’",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-10T15:50:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-logan-favors-at-least-two-hikes-says-pace-could-quicken",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T00:51:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/fed-s-goolsbee-says-october-cpi-report-borderline-disturbing-mwbel9qz",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Asian Stocks Rise on AI Enthusiasm, Bonds Slide: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-10T22:32:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/stock-market-today-dow-s-p-live-updates",
+          "title": "Rate-Hike Debate Ignited by Fed Officials as CPI Comes in Hot",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-10T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-waller-backs-december-rate-hike-says-open-to-larger-move",
           "tags": [
-            "macro_risk",
             "market",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.133,
-      "negativeCount": 1,
+      "avgSentiment": -0.132,
+      "negativeCount": 3,
       "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Bowman Warns of Stock Correction If AI Bets Don’t Pan Out",
-      "topPositiveTitle": "Breaking Down Anthropic's $1.4 Trillion IPO Valuation",
+      "topNegativeTitle": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+      "topPositiveTitle": "Nasdaq 100 Advances 3% as Easing AI Anxiety Draws Dip Buyers In",
       "items": [
+        {
+          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-11T16:49:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Malaise, Midterms Cloud 2027 Profits After Blowout Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-11T13:05:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/ai-malaise-midterms-cloud-2027-profits-after-blowout-quarter",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "Fed’s Bowman Warns of Stock Correction If AI Bets Don’t Pan Out",
           "source": "Bloomberg Economics",
@@ -145,40 +212,26 @@
           ]
         },
         {
-          "title": "Asian Stocks Rise on AI Enthusiasm, Bonds Slide: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-10T22:32:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Breaking Down Anthropic's $1.4 Trillion IPO Valuation",
+          "title": "JPMorgan, NVIDIA Leaders on Electrification",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T00:00:14+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/breaking-down-anthropic-s-1-4-trillion-ipo-valuation-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Turmoil Raises Stakes for the US-China Tech Rivalry",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-10T07:39:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-10/insight-with-haslinda-amin-11-9-2026-video",
+          "publishedAt": "2026-11-11T17:54:49+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/jpmorgan-nvidia-leaders-on-electrification-video",
           "tags": [
             "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Sixth Street CEO Warns AI Race Rife With ‘Speculative Behaviors’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T16:45:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/sixth-street-ceo-warns-ai-race-rife-with-speculative-behaviors",
+          "tags": [
             "market",
             "us_growth"
           ]
@@ -186,16 +239,30 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
+      "topPositiveTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
+      "items": [
+        {
+          "title": "European Stocks Hit Record High as Energy and Tech Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-11T08:29:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/european-stocks-set-for-record-as-miners-and-tech-rally",
+          "tags": [
+            "commodity",
+            "global_broad",
+            "market"
+          ]
+        }
+      ]
     },
     "gold": {
       "avgSentiment": -1.0,
@@ -205,11 +272,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
-      "topPositiveTitle": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
+      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+      "topPositiveTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
       "items": [
         {
-          "title": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
+          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -249,51 +316,37 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.267,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Asian Stocks Rise on AI Enthusiasm, Bonds Slide: Markets Wrap",
-      "topPositiveTitle": "Russian October Budget Gap Widens as War Spending Hits Finances",
+      "topNegativeTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+      "topPositiveTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
       "items": [
         {
-          "title": "Asian Stocks Rise on AI Enthusiasm, Bonds Slide: Markets Wrap",
+          "title": "Iran War Leaves Europe Vulnerable To Harsh Winter",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-10T22:32:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/stock-market-today-dow-s-p-live-updates",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T16:47:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/iran-war-leaves-europe-vulnerable-to-harsh-winter-video",
           "tags": [
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Ternium Says Mexico Steel Imports Need Strict Tariff Enforcement",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-11T01:43:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/ternium-says-mexico-steel-imports-need-strict-tariff-enforcement",
-          "tags": [
+            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Russian October Budget Gap Widens as War Spending Hits Finances",
+          "title": "Chile Finance Minister Jorge Quiroz Says Recession Is Short-Term Blip",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-10T15:14:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/russian-october-budget-gap-widens-as-war-spending-hits-finances",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T11:00:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/chile-finance-minister-jorge-quiroz-says-recession-is-short-term-blip",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -304,9 +357,9 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
       "topPositiveTitle": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
@@ -323,34 +376,22 @@
             "geopolitical",
             "market"
           ]
-        },
-        {
-          "title": "Dollar’s Reliance on Equity Inflows Seen Weighing on Currency",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-10T23:46:30+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/dollar-s-reliance-on-equity-inflows-seen-weighing-on-currency",
-          "tags": [
-            "fx",
-            "market"
-          ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.096,
-      "negativeCount": 2,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "avgSentiment": -0.5,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
-      "topPositiveTitle": "US Core CPI Rises by More Than Forecast, Supporting Fed Hike",
+      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+      "topPositiveTitle": "China Gauges Bond Interest Tax, With Yields Near Record Low",
       "items": [
         {
-          "title": "Gold Holds Loss Near $4,000 on Hot US Inflation, Fed Remarks",
+          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -364,48 +405,12 @@
           ]
         },
         {
-          "title": "Poland’s Maslowska Sees Growing Case for January Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-10T12:46:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/poland-s-maslowska-sees-growing-case-for-rate-hike-in-january",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "India Short-Term Rates May Rise, Weighing on Spending, Investment",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T02:41:05+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-11/india-short-term-rates-may-rise-weighing-on-spending-investment",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB’s Nagel Says December Rate Hike Is ‘Rather Obvious’",
+          "title": "China Gauges Bond Interest Tax, With Yields Near Record Low",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-10T14:54:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/ecb-s-nagel-says-december-rate-hike-is-looking-rather-obvious",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Brazil Central Bank Signals Caution on Price Rise, Slowdown",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-10T12:30:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/brazil-central-bank-sees-economy-slowing-as-inflation-rises",
+          "publishedAt": "2026-11-11T04:45:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/china-gauges-tax-on-bond-interest-with-yields-near-record-low",
           "tags": [
             "market",
             "rates"
@@ -414,41 +419,103 @@
       ]
     },
     "commodity": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
+      "avgSentiment": 0.002,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Petrobras Earnings Disappoint Despite Oil, Refining Tailwinds",
-      "topPositiveTitle": "Petrobras Earnings Disappoint Despite Oil, Refining Tailwinds",
+      "topNegativeTitle": "Officials Work to Speed Grid Connection Amid Data Center Buildout",
+      "topPositiveTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
       "items": [
         {
-          "title": "Petrobras Earnings Disappoint Despite Oil, Refining Tailwinds",
+          "title": "Officials Work to Speed Grid Connection Amid Data Center Buildout",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-10T23:35:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/petrobras-earnings-disappoint-despite-oil-refining-tailwinds",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-11T16:59:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/officials-work-to-speed-up-data-center-grid-connection-video",
           "tags": [
             "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Data Center Gas Plants to Lift US Power Emissions 10%, BNEF Says",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-11T16:40:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/data-center-gas-plants-to-lift-us-power-emissions-10-bnef-says",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Energy Leaders on Accelerating Renewable Deployment",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T17:59:33+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/energy-leaders-on-accelerating-renewable-deployment-video",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Venezuela Sends First Oil Gear in Years to US for Repairs",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T16:00:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/venezuela-oil-gear-to-be-repaired-in-us-for-first-time-in-years",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "European Stocks Hit Record High as Energy and Tech Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-11T08:29:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/european-stocks-set-for-record-as-miners-and-tech-rally",
+          "tags": [
+            "commodity",
+            "global_broad",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.335,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
-      "topPositiveTitle": "Russian October Budget Gap Widens as War Spending Hits Finances",
+      "topNegativeTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+      "topPositiveTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
       "items": [
+        {
+          "title": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T16:47:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/iran-war-leaves-europe-vulnerable-to-harsh-winter-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
           "source": "Bloomberg Economics",
@@ -459,19 +526,6 @@
           "tags": [
             "fx",
             "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Russian October Budget Gap Widens as War Spending Hits Finances",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-10T15:14:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/russian-october-budget-gap-widens-as-war-spending-hits-finances",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
             "market"
           ]
         }
@@ -486,7 +540,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 5,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
