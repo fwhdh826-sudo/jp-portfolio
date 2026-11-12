@@ -1,30 +1,31 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-12T11:29:40.521380+09:00",
-  "sourceUpdatedAt": "2026-11-12T02:06:49+00:00",
+  "updatedAt": "2026-11-13T04:01:18.460053+09:00",
+  "sourceUpdatedAt": "2026-11-12T18:53:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
+      "avgSentiment": -0.17,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Japan Producer Prices Pick Up, Backing Case for Another BOJ Hike",
+      "topNegativeTitle": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
       "topPositiveTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
       "items": [
         {
-          "title": "Japan Producer Prices Pick Up, Backing Case for Another BOJ Hike",
+          "title": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T01:16:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/japan-producer-prices-pick-up-backing-case-for-another-boj-hike",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-12T01:51:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/boj-s-dovish-member-calls-for-caution-on-pace-of-rate-increases",
           "tags": [
             "jp_broad",
-            "market"
+            "market",
+            "rates"
           ]
         },
         {
@@ -43,23 +44,37 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.132,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 3,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Shares Slide as Investors Consider Future Without Huang",
-      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
+      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+      "topPositiveTitle": "Nvidia Boom Raises Stakes for Data Centers",
       "items": [
         {
-          "title": "Nvidia Shares Slide as Investors Consider Future Without Huang",
+          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-11T22:48:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/nvidia-tumbles-as-investors-consider-future-without-ceo-huang",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T17:54:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nvidia’s $10 Billion Anthropic IPO Pledge in Focus With CEO Exit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T15:35:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/nvidia-s-10-billion-anthropic-ipo-pledge-in-focus-with-ceo-exit",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -67,57 +82,42 @@
           ]
         },
         {
-          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
+          "title": "GPU Financing Filters Further Into ABS With Planned Newton Deal",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T23:48:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
+          "publishedAt": "2026-11-11T19:03:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/newton-eyes-equipment-loan-abs-bond-sale-including-ai-chip-debt",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
+          "title": "Nvidia Boom Raises Stakes for Data Centers",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T15:35:27+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/nvidia-boom-raises-stakes-for-data-centers-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Stocks Bounce as Nvidia Rout Spurs Gains Elsewhere: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
           "publishedAt": "2026-11-11T22:08:05+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "jp_semiconductor",
             "macro_risk",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "アメリカ中間選挙 敗北で揺れるトランプ政権 その行方は",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T12:42:06+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74444",
-          "tags": [
-            "jp_semiconductor",
-            "market"
-          ],
-          "titleJa": "アメリカ中間選挙 敗北で揺れるトランプ政権 その行方は"
-        },
-        {
-          "title": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-12T00:58:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/long-us-bonds-reopen-with-gains-as-risk-sentiment-sours-again",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
             "us_growth"
           ]
         }
@@ -125,77 +125,39 @@
     },
     "us_broad": {
       "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
+      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+      "topPositiveTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
       "items": [
         {
-          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-12T00:12:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-12T00:30:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/the-close-11-11-2026-video",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "The Fed’s Other Big Debate: When Should John Williams’ Term End?",
-          "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T15:33:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/retirement-rules-spark-exit-date-debate-for-ny-fed-s-williams",
+          "publishedAt": "2026-11-12T17:54:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
           "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Anthropic IPO Is ‘Jenga Block’ Holding Up Next Leg of AI Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-11T21:15:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/anthropic-ipo-is-jenga-block-holding-up-next-leg-of-ai-trade",
-          "tags": [
+            "jp_semiconductor",
             "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-12T00:58:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/long-us-bonds-reopen-with-gains-as-risk-sentiment-sours-again",
+          "title": "Fed’s Hammack Says More Restrictive Rates Are Needed",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T14:31:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/fed-s-hammack-says-more-restrictive-rates-are-needed",
           "tags": [
-            "jp_semiconductor",
             "market",
+            "rates",
             "us_broad",
             "us_growth"
           ]
@@ -203,79 +165,79 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": 0.124,
+      "negativeCount": 0,
+      "positiveCount": 3,
+      "neutralCount": 5,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Shares Slide as Investors Consider Future Without Huang",
-      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
+      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+      "topPositiveTitle": "Nvidia Boom Raises Stakes for Data Centers",
       "items": [
         {
-          "title": "Nvidia Shares Slide as Investors Consider Future Without Huang",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-11T22:48:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/nvidia-tumbles-as-investors-consider-future-without-ceo-huang",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Malaise, Midterms Cloud 2027 Profits After Blowout Quarter",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T13:05:07+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/ai-malaise-midterms-cloud-2027-profits-after-blowout-quarter",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
+          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T23:48:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
+          "publishedAt": "2026-11-12T17:54:17+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T22:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic IPO Is ‘Jenga Block’ Holding Up Next Leg of AI Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-11T21:15:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/anthropic-ipo-is-jenga-block-holding-up-next-leg-of-ai-trade",
-          "tags": [
             "market",
             "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Nvidia’s $10 Billion Anthropic IPO Pledge in Focus With CEO Exit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T15:35:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/nvidia-s-10-billion-anthropic-ipo-pledge-in-focus-with-ceo-exit",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Hammack Says More Restrictive Rates Are Needed",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T14:31:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/fed-s-hammack-says-more-restrictive-rates-are-needed",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "World Trade’s Achilles’ Heel Grows as AI Boom Fuels Risks",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-12/world-trade-s-achilles-heel-grows-as-ai-boom-fuels-risks",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "GPU Financing Filters Further Into ABS With Planned Newton Deal",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T19:03:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/newton-eyes-equipment-loan-abs-bond-sale-including-ai-chip-debt",
+          "tags": [
+            "jp_semiconductor",
+            "market",
             "us_growth"
           ]
         }
@@ -294,31 +256,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-      "topPositiveTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-      "items": [
-        {
-          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-12T00:12:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -345,118 +292,102 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 5,
+      "avgSentiment": 0.143,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 3,
       "sourceCount": 3,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
-      "topPositiveTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
+      "topNegativeTitle": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請",
+      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
       "items": [
         {
-          "title": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/rare-ipo-bets-on-end-of-war-and-economic-crisis-in-myanmar",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T23:48:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T22:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Chile Finance Minister Jorge Quiroz Says Recession Is Short-Term Blip",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T11:00:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/chile-finance-minister-jorge-quiroz-says-recession-is-short-term-blip",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論",
+          "title": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請",
           "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T19:29:36+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74484",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T08:56:29+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261112de74917",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ],
-          "titleJa": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論"
+          "titleJa": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請"
+        },
+        {
+          "title": "De Beers Suitor Aims to Win Customers Back to Real Diamonds",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T16:46:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/de-beers-suitor-aims-to-win-customers-back-to-real-diamonds",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Sri Lanka Budget Targets Growth, Investment After Debt Crisis",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T11:02:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/sri-lanka-budget-targets-growth-investment-after-debt-crisis",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Raises Inflation Forecasts on War, Fund-Rout Effects",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T08:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/turkey-central-bank-raises-end-2027-inflation-forecast-to-21",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T07:05:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": -0.133,
+      "avgSentiment": 0.208,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
-      "topPositiveTitle": "Japan’s FX Chief Warns Not To Forget Summer Intervention",
+      "topNegativeTitle": "Yen Falls to Cusp of 160 Level, Fanning Intervention Risk",
+      "topPositiveTitle": "Japan’s Yen Jumps After Breaching Key 160-Per-Dollar Level",
       "items": [
         {
-          "title": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
-          "source": "Bloomberg Markets",
+          "title": "Yen Falls to Cusp of 160 Level, Fanning Intervention Risk",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-12T00:19:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/new-zealand-draws-record-us-tourists-with-wellness-and-weak-kiwi-dollar",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-12T00:33:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/yen-hovers-near-key-160-level-fueling-intervention-concerns",
           "tags": [
-            "fx",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "IDR/USD: Indonesian Rupiah Drops to Record Amid MSCI Concerns, Oil Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-12T02:06:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/idr-usd-indonesian-rupiah-drops-to-record-amid-msci-concerns-oil-risks",
-          "tags": [
-            "commodity",
             "fx",
             "market"
           ]
@@ -474,12 +405,24 @@
           ]
         },
         {
-          "title": "Yen Hovers Near Key 160 Level, Fueling Intervention Concerns",
+          "title": "Swiss Franc’s Haven Rally Gets a Boost From Carry-Trade Unwind",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T00:33:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/yen-hovers-near-key-160-level-fueling-intervention-concerns",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T07:59:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/swiss-franc-s-carry-trade-squeeze-adds-fuel-to-haven-rally",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s Yen Jumps After Breaching Key 160-Per-Dollar Level",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-12T16:42:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/yen-falls-to-key-160-level-per-dollar-raising-intervention-risk",
           "tags": [
             "fx",
             "market"
@@ -488,62 +431,74 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.082,
+      "avgSentiment": 0.083,
       "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 1,
+      "positiveCount": 4,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-      "topPositiveTitle": "Indonesia Bonds Lure Global Funds as Yields Hit Six-Year High",
+      "topNegativeTitle": "Sales of Existing US Homes Tumble to Lowest Level Since 2010",
+      "topPositiveTitle": "India’s Inflation Rises, Keeping Rate-Hike Pressure on RBI",
       "items": [
         {
-          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+          "title": "Sales of Existing US Homes Tumble to Lowest Level Since 2010",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.67,
-          "publishedAt": "2026-11-12T00:12:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
+          "publishedAt": "2026-11-12T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/sales-of-existing-us-homes-tumble-to-lowest-level-since-2010",
           "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-12T00:19:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/new-zealand-draws-record-us-tourists-with-wellness-and-weak-kiwi-dollar",
-          "tags": [
-            "fx",
             "market",
             "rates"
           ]
         },
         {
-          "title": "China Gauges Bond Interest Tax, With Yields Near Record Low",
+          "title": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-12T01:51:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/boj-s-dovish-member-calls-for-caution-on-pace-of-rate-increases",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Hammack Says More Restrictive Rates Are Needed",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T04:45:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/china-gauges-tax-on-bond-interest-with-yields-near-record-low",
+          "publishedAt": "2026-11-12T14:31:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/fed-s-hammack-says-more-restrictive-rates-are-needed",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Why China Is Eyeing a Curious Tax on Its Government Bond Market",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-12/why-china-is-eyeing-a-curious-tax-on-its-government-bond-market",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Indonesia Bonds Lure Global Funds as Yields Hit Six-Year High",
-          "source": "Bloomberg Markets",
+          "title": "Serbia Surprises With Rate Hike as Political Shift Weighs on Dinar",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-12T00:05:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/indonesia-bonds-lure-global-funds-as-yields-hit-six-year-high",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T11:18:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/serbia-surprises-with-rate-hike-as-political-shift-weighs-on-dinar",
           "tags": [
             "market",
             "rates"
@@ -552,87 +507,114 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.117,
-      "negativeCount": 1,
-      "positiveCount": 1,
+      "avgSentiment": 0.266,
+      "negativeCount": 0,
+      "positiveCount": 3,
       "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
-      "topPositiveTitle": "Japan Auto Stocks Eye Rebound as Cheaper Oil Brightens Outlook",
+      "topNegativeTitle": "Bond Traders See Elliott’s Citgo Deal Imperiled by Windfall",
+      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
       "items": [
         {
-          "title": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-12T00:30:39+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/the-close-11-11-2026-video",
-          "tags": [
-            "commodity",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "IDR/USD: Indonesian Rupiah Drops to Record Amid MSCI Concerns, Oil Risks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.2,
-          "publishedAt": "2026-11-12T02:06:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/idr-usd-indonesian-rupiah-drops-to-record-amid-msci-concerns-oil-risks",
-          "tags": [
-            "commodity",
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 12",
+          "title": "Bond Traders See Elliott’s Citgo Deal Imperiled by Windfall",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T23:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/latest-oil-market-news-and-analysis-for-nov-12",
+          "publishedAt": "2026-11-12T16:31:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/bond-traders-see-elliott-s-citgo-deal-imperiled-by-oil-windfall",
           "tags": [
             "commodity",
-            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Japan Auto Stocks Eye Rebound as Cheaper Oil Brightens Outlook",
+          "title": "US-Held Venezuela Oil Fund Used $9 Billion to Buoy Bolivar",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-11T23:50:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/japan-auto-stocks-eye-rebound-as-cheaper-oil-brightens-outlook",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T15:56:04+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/us-held-venezuela-oil-sales-fund-paid-out-12-1-billion",
           "tags": [
             "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T07:05:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Romania to Hold Interest Rates as Inflation Rebound Delays Path to Easing",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T04:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/romania-to-hold-interest-rates-as-inflation-rebound-delays-path-to-easing",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T13:14:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/oil-jumps-after-trump-says-us-doesn-t-need-deal-with-iran",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0.25,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
-      "topPositiveTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
+      "topNegativeTitle": "Trump’s Russia Diesel Deal Struggles to Find Willing US Buyer",
+      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
       "items": [
         {
-          "title": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
+          "title": "Trump’s Russia Diesel Deal Struggles to Find Willing US Buyer",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/rare-ipo-bets-on-end-of-war-and-economic-crisis-in-myanmar",
+          "publishedAt": "2026-11-12T17:06:39+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/trump-s-russia-diesel-deal-struggles-to-find-willing-us-buyer",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Turkey Raises Inflation Forecasts on War, Fund-Rout Effects",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T08:01:33+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/turkey-central-bank-raises-end-2027-inflation-forecast-to-21",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -640,31 +622,33 @@
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 12",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T23:04:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/latest-oil-market-news-and-analysis-for-nov-12",
+          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-12T07:05:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
           "tags": [
             "commodity",
             "geopolitical",
-            "market"
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         },
         {
-          "title": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T19:29:36+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74484",
+          "title": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T13:14:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/oil-jumps-after-trump-says-us-doesn-t-need-deal-with-iran",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
-          ],
-          "titleJa": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論"
+          ]
         }
       ]
     }
