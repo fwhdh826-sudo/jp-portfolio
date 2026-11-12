@@ -1,20 +1,32 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-12T03:48:52.432086+09:00",
-  "sourceUpdatedAt": "2026-11-11T18:36:51+00:00",
+  "updatedAt": "2026-11-12T11:29:40.521380+09:00",
+  "sourceUpdatedAt": "2026-11-12T02:06:49+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
+      "topNegativeTitle": "Japan Producer Prices Pick Up, Backing Case for Another BOJ Hike",
       "topPositiveTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
       "items": [
+        {
+          "title": "Japan Producer Prices Pick Up, Backing Case for Another BOJ Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T01:16:55+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/japan-producer-prices-pick-up-backing-case-for-another-boj-hike",
+          "tags": [
+            "jp_broad",
+            "market"
+          ]
+        },
         {
           "title": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
           "source": "NHK 経済",
@@ -31,39 +43,53 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.11,
+      "avgSentiment": 0.0,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
-      "topPositiveTitle": "JPMorgan, NVIDIA Leaders on Electrification",
+      "topNegativeTitle": "Nvidia Shares Slide as Investors Consider Future Without Huang",
+      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
       "items": [
         {
-          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+          "title": "Nvidia Shares Slide as Investors Consider Future Without Huang",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T16:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-11T22:48:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/nvidia-tumbles-as-investors-consider-future-without-ceo-huang",
           "tags": [
             "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "JPMorgan, NVIDIA Leaders on Electrification",
+          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T17:54:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/jpmorgan-nvidia-leaders-on-electrification-video",
+          "publishedAt": "2026-11-11T23:48:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
           "tags": [
             "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T22:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -80,27 +106,41 @@
             "market"
           ],
           "titleJa": "アメリカ中間選挙 敗北で揺れるトランプ政権 その行方は"
+        },
+        {
+          "title": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T00:58:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/long-us-bonds-reopen-with-gains-as-risk-sentiment-sours-again",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.124,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
-      "topPositiveTitle": "US Stocks Climb as Wall Street Gets Fresh AI Fuel: Markets Wrap",
+      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
       "items": [
         {
-          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-10T23:33:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-loss-near-4-000-on-hot-us-inflation-fed-remarks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-12T00:12:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
           "tags": [
             "gold",
             "market",
@@ -109,80 +149,80 @@
           ]
         },
         {
-          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+          "title": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T16:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
+          "publishedAt": "2026-11-12T00:30:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/the-close-11-11-2026-video",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "The Fed’s Other Big Debate: When Should John Williams’ Term End?",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T15:33:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/retirement-rules-spark-exit-date-debate-for-ny-fed-s-williams",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Anthropic IPO Is ‘Jenga Block’ Holding Up Next Leg of AI Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-11T21:15:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/anthropic-ipo-is-jenga-block-holding-up-next-leg-of-ai-trade",
+          "tags": [
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T00:58:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/long-us-bonds-reopen-with-gains-as-risk-sentiment-sours-again",
           "tags": [
             "jp_semiconductor",
             "market",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "Fed’s Bowman Warns of Stock Correction If AI Bets Don’t Pan Out",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-10T20:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-bowman-warns-of-stock-correction-if-ai-bets-don-t-pan-out",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Fed’s Goolsbee Says October CPI Report ‘Borderline Disturbing’",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T00:51:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/fed-s-goolsbee-says-october-cpi-report-borderline-disturbing-mwbel9qz",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Rate-Hike Debate Ignited by Fed Officials as CPI Comes in Hot",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-10T09:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-waller-backs-december-rate-hike-says-open-to-larger-move",
-          "tags": [
-            "market",
-            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.132,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
-      "topPositiveTitle": "Nasdaq 100 Advances 3% as Easing AI Anxiety Draws Dip Buyers In",
+      "topNegativeTitle": "Nvidia Shares Slide as Investors Consider Future Without Huang",
+      "topPositiveTitle": "Long US Bonds Reopen With Gains as Risk Sentiment Sours Again",
       "items": [
         {
-          "title": "Nvidia Gets Rare Downgrade as Jensen Huang Scandal Weighs on Outlook",
+          "title": "Nvidia Shares Slide as Investors Consider Future Without Huang",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T16:49:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/bloomberg-surveillance-11-11-2026-video",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-11T22:48:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/nvidia-tumbles-as-investors-consider-future-without-ceo-huang",
           "tags": [
             "jp_semiconductor",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
@@ -199,89 +239,78 @@
           ]
         },
         {
-          "title": "Fed’s Bowman Warns of Stock Correction If AI Bets Don’t Pan Out",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-10T20:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/fed-s-bowman-warns-of-stock-correction-if-ai-bets-don-t-pan-out",
+          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T23:48:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T22:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic IPO Is ‘Jenga Block’ Holding Up Next Leg of AI Trade",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-11T21:15:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/anthropic-ipo-is-jenga-block-holding-up-next-leg-of-ai-trade",
           "tags": [
             "market",
             "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "JPMorgan, NVIDIA Leaders on Electrification",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T17:54:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/jpmorgan-nvidia-leaders-on-electrification-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Sixth Street CEO Warns AI Race Rife With ‘Speculative Behaviors’",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T16:45:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/sixth-street-ceo-warns-ai-race-rife-with-speculative-behaviors",
-          "tags": [
-            "market",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
-      "topPositiveTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
-      "items": [
-        {
-          "title": "European Stocks Hit Record High as Energy and Tech Rebound",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-11T08:29:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/european-stocks-set-for-record-as-miners-and-tech-rally",
-          "tags": [
-            "commodity",
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": -1.0,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
-      "topPositiveTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+      "topPositiveTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
       "items": [
         {
-          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-10T23:33:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-loss-near-4-000-on-hot-us-inflation-fed-remarks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-12T00:12:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
           "tags": [
             "gold",
             "market",
@@ -319,24 +348,52 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "neutralCount": 5,
+      "sourceCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
-      "topPositiveTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+      "topNegativeTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
+      "topPositiveTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
       "items": [
         {
-          "title": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+          "title": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T16:47:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/iran-war-leaves-europe-vulnerable-to-harsh-winter-video",
+          "publishedAt": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/rare-ipo-bets-on-end-of-war-and-economic-crisis-in-myanmar",
           "tags": [
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Pivotal Advisors CEO: Investors Should See AI as Part of Portfolio",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T23:48:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-11/mcghee-investors-should-see-ai-as-part-of-portfolio-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Asian Stocks Edge Higher, Shrug Off Nvidia Woes: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T22:08:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         },
         {
@@ -350,58 +407,122 @@
             "macro_risk",
             "market"
           ]
+        },
+        {
+          "title": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T19:29:36+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74484",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論"
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.133,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
-      "topPositiveTitle": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
+      "topNegativeTitle": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
+      "topPositiveTitle": "Japan’s FX Chief Warns Not To Forget Summer Intervention",
       "items": [
         {
-          "title": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
+          "title": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T00:19:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/new-zealand-draws-record-us-tourists-with-wellness-and-weak-kiwi-dollar",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "IDR/USD: Indonesian Rupiah Drops to Record Amid MSCI Concerns, Oil Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-11-12T02:06:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/idr-usd-indonesian-rupiah-drops-to-record-amid-msci-concerns-oil-risks",
+          "tags": [
+            "commodity",
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Japan’s FX Chief Warns Not To Forget Summer Intervention",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/russian-push-to-escape-dollar-for-yuan-collapses-under-sanctions",
+          "publishedAt": "2026-11-12T00:40:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/japan-s-fx-chief-warns-against-forgetting-summer-intervention",
           "tags": [
             "fx",
-            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Yen Hovers Near Key 160 Level, Fueling Intervention Concerns",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-12T00:33:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/yen-hovers-near-key-160-level-fueling-intervention-concerns",
+          "tags": [
+            "fx",
             "market"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": -0.082,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
-      "topPositiveTitle": "China Gauges Bond Interest Tax, With Yields Near Record Low",
+      "topNegativeTitle": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+      "topPositiveTitle": "Indonesia Bonds Lure Global Funds as Yields Hit Six-Year High",
       "items": [
         {
-          "title": "Gold Declines as Traders Assess US Inflation, Fed Remarks",
+          "title": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-10T23:33:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/gold-holds-loss-near-4-000-on-hot-us-inflation-fed-remarks",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-12T00:12:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-below-4-000-as-market-looks-ahead-to-fed-rate-hike",
           "tags": [
             "gold",
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "New Zealand Draws Record US Tourists With Wellness and Weak Kiwi Dollar",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T00:19:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/new-zealand-draws-record-us-tourists-with-wellness-and-weak-kiwi-dollar",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
           ]
         },
         {
@@ -415,78 +536,80 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Indonesia Bonds Lure Global Funds as Yields Hit Six-Year High",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T00:05:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/indonesia-bonds-lure-global-funds-as-yields-hit-six-year-high",
+          "tags": [
+            "market",
+            "rates"
+          ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.002,
-      "negativeCount": 2,
+      "avgSentiment": 0.117,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Officials Work to Speed Grid Connection Amid Data Center Buildout",
-      "topPositiveTitle": "European Stocks Hit Record High as Energy and Tech Rebound",
+      "topNegativeTitle": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
+      "topPositiveTitle": "Japan Auto Stocks Eye Rebound as Cheaper Oil Brightens Outlook",
       "items": [
         {
-          "title": "Officials Work to Speed Grid Connection Amid Data Center Buildout",
+          "title": "AI Trade Roars Back, Anthropic IPO Outlook, Nordstrom Co-CEO on Going Private",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T16:59:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/officials-work-to-speed-up-data-center-grid-connection-video",
+          "publishedAt": "2026-11-12T00:30:39+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/the-close-11-11-2026-video",
           "tags": [
             "commodity",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Data Center Gas Plants to Lift US Power Emissions 10%, BNEF Says",
+          "title": "IDR/USD: Indonesian Rupiah Drops to Record Amid MSCI Concerns, Oil Risks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-11T16:40:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/data-center-gas-plants-to-lift-us-power-emissions-10-bnef-says",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-11-12T02:06:49+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/idr-usd-indonesian-rupiah-drops-to-record-amid-msci-concerns-oil-risks",
           "tags": [
             "commodity",
+            "fx",
             "market"
           ]
         },
         {
-          "title": "Energy Leaders on Accelerating Renewable Deployment",
+          "title": "Latest Oil Market News and Analysis for Nov. 12",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T17:59:33+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/energy-leaders-on-accelerating-renewable-deployment-video",
+          "publishedAt": "2026-11-11T23:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/latest-oil-market-news-and-analysis-for-nov-12",
           "tags": [
             "commodity",
+            "geopolitical",
             "market"
           ]
         },
         {
-          "title": "Venezuela Sends First Oil Gear in Years to US for Repairs",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T16:00:49+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/venezuela-oil-gear-to-be-repaired-in-us-for-first-time-in-years",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "European Stocks Hit Record High as Energy and Tech Rebound",
+          "title": "Japan Auto Stocks Eye Rebound as Cheaper Oil Brightens Outlook",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-11T08:29:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/european-stocks-set-for-record-as-miners-and-tech-rally",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-11T23:50:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/japan-auto-stocks-eye-rebound-as-cheaper-oil-brightens-outlook",
           "tags": [
             "commodity",
-            "global_broad",
             "market"
           ]
         }
@@ -496,20 +619,20 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
-      "topPositiveTitle": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+      "topNegativeTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
+      "topPositiveTitle": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
       "items": [
         {
-          "title": "Iran War Leaves Europe Vulnerable To Harsh Winter",
+          "title": "Rare IPO Bets on End of War and Economic Crisis in Myanmar",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T16:47:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-11/iran-war-leaves-europe-vulnerable-to-harsh-winter-video",
+          "publishedAt": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/rare-ipo-bets-on-end-of-war-and-economic-crisis-in-myanmar",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -517,17 +640,31 @@
           ]
         },
         {
-          "title": "Russian Push to Escape Dollar for Yuan Collapses Under Sanctions",
-          "source": "Bloomberg Economics",
+          "title": "Latest Oil Market News and Analysis for Nov. 12",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/russian-push-to-escape-dollar-for-yuan-collapses-under-sanctions",
+          "publishedAt": "2026-11-11T23:04:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-11/latest-oil-market-news-and-analysis-for-nov-12",
           "tags": [
-            "fx",
+            "commodity",
             "geopolitical",
             "market"
           ]
+        },
+        {
+          "title": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-11T19:29:36+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261111de74484",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "フィリピン外相 南シナ海の紛争防止ルールで論点の8割議論"
         }
       ]
     }
@@ -540,7 +677,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 3,
+    "excludedCount": 2,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
