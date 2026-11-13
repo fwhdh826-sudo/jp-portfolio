@@ -1,33 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-13T04:01:18.460053+09:00",
-  "sourceUpdatedAt": "2026-11-12T18:53:27+00:00",
+  "updatedAt": "2026-11-13T11:05:06.419518+09:00",
+  "sourceUpdatedAt": "2026-11-13T01:42:36+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -0.17,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
+      "topNegativeTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
       "topPositiveTitle": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
       "items": [
-        {
-          "title": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-12T01:51:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/boj-s-dovish-member-calls-for-caution-on-pace-of-rate-increases",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates"
-          ]
-        },
         {
           "title": "高市首相 \"予見可能性高い財政運営で成長力強化\" 日銀とも連携",
           "source": "NHK 経済",
@@ -44,23 +31,23 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.132,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 3,
+      "avgSentiment": 0.323,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
-      "topPositiveTitle": "Nvidia Boom Raises Stakes for Data Centers",
+      "topNegativeTitle": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
+      "topPositiveTitle": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
       "items": [
         {
-          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+          "title": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T17:54:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-13T00:23:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-13/the-close-11-12-2026-video",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -69,12 +56,12 @@
           ]
         },
         {
-          "title": "Nvidia’s $10 Billion Anthropic IPO Pledge in Focus With CEO Exit",
+          "title": "Nvidia Is Not a Normal Company Having a CEO Issue: Everson",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T15:35:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/nvidia-s-10-billion-anthropic-ipo-pledge-in-focus-with-ceo-exit",
+          "publishedAt": "2026-11-13T00:19:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-13/nvda-is-not-a-normal-company-having-a-ceo-issue-everson-video",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -82,25 +69,12 @@
           ]
         },
         {
-          "title": "GPU Financing Filters Further Into ABS With Planned Newton Deal",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T19:03:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/newton-eyes-equipment-loan-abs-bond-sale-including-ai-chip-debt",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Boom Raises Stakes for Data Centers",
+          "title": "Singtel Says ‘Fairly Insulated’ From Nvidia, Raises Guidance",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T15:35:27+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/nvidia-boom-raises-stakes-for-data-centers-video",
+          "publishedAt": "2026-11-13T00:45:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/singtel-raises-profit-outlook-as-overseas-businesses-gain-ground",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -108,15 +82,27 @@
           ]
         },
         {
-          "title": "Stocks Bounce as Nvidia Rout Spurs Gains Elsewhere: Markets Wrap",
+          "title": "Jensen Is Not the Only Executive To Have a Relationship With a Spy: Nell Minow",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-11-11T22:08:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-11-12T23:54:21+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-12/minow-boards-need-to-be-careful-about-personal-hacking-video",
           "tags": [
             "jp_semiconductor",
-            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Internet Stock Gains Face Reality Check in Nvidia Fallout",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.6,
+          "publishedAt": "2026-11-13T00:07:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/china-internet-stock-gains-face-reality-check-in-nvidia-fallout",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_growth"
           ]
@@ -124,23 +110,23 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.222,
+      "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 2,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
-      "topPositiveTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+      "topNegativeTitle": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
+      "topPositiveTitle": "US Confirms $500 Million Spent on Yen Intervention, With Euros",
       "items": [
         {
-          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+          "title": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T17:54:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-13T00:23:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-13/the-close-11-12-2026-video",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -149,39 +135,76 @@
           ]
         },
         {
-          "title": "Fed’s Hammack Says More Restrictive Rates Are Needed",
+          "title": "Gold Holds Drop to Near One-Year Low as Rate-Hike Bets Increase",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T23:58:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-drop-to-near-one-year-low-as-rate-hike-bets-increase",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Daly Says More Rate Hikes Needed to Cool Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T18:54:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/fed-s-daly-says-more-rate-hikes-likely-needed-to-cool-inflation",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Confirms $500 Million Spent on Yen Intervention, With Euros",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T14:31:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/fed-s-hammack-says-more-restrictive-rates-are-needed",
+          "publishedAt": "2026-11-13T01:12:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/us-confirms-500-million-spent-on-yen-intervention-with-euros",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Williams Says Inflation ‘Far Too High,’ Work to Do",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-13T00:05:34+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/fed-s-williams-says-inflation-far-too-high-still-work-to-do",
           "tags": [
             "market",
-            "rates",
-            "us_broad",
-            "us_growth"
+            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.124,
-      "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 5,
+      "avgSentiment": 0.251,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
-      "topPositiveTitle": "Nvidia Boom Raises Stakes for Data Centers",
+      "topNegativeTitle": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
+      "topPositiveTitle": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
       "items": [
         {
-          "title": "Jensen Huang Resigns From Nvidia Amid Affairs and Alleged Spy Scandal",
+          "title": "Stocks Fall as Huang Resigns, Nvidia Turns to CFO",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T17:54:17+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-12/bloomberg-surveillance-11-12-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-13T00:23:37+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-13/the-close-11-12-2026-video",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -190,12 +213,12 @@
           ]
         },
         {
-          "title": "Nvidia’s $10 Billion Anthropic IPO Pledge in Focus With CEO Exit",
+          "title": "Nvidia Is Not a Normal Company Having a CEO Issue: Everson",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T15:35:27+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/nvidia-s-10-billion-anthropic-ipo-pledge-in-focus-with-ceo-exit",
+          "publishedAt": "2026-11-13T00:19:02+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-13/nvda-is-not-a-normal-company-having-a-ceo-issue-everson-video",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -229,12 +252,12 @@
           ]
         },
         {
-          "title": "GPU Financing Filters Further Into ABS With Planned Newton Deal",
+          "title": "Singtel Says ‘Fairly Insulated’ From Nvidia, Raises Guidance",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-11T19:03:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-11/newton-eyes-equipment-loan-abs-bond-sale-including-ai-chip-debt",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-13T00:45:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/singtel-raises-profit-outlook-as-overseas-businesses-gain-ground",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -256,28 +279,56 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Holds Drop to Near One-Year Low as Rate-Hike Bets Increase",
+      "topPositiveTitle": "Gold Holds Drop to Near One-Year Low as Rate-Hike Bets Increase",
+      "items": [
+        {
+          "title": "Gold Holds Drop to Near One-Year Low as Rate-Hike Bets Increase",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T23:58:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-drop-to-near-one-year-low-as-rate-hike-bets-increase",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "reit": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "New World Suspends Trading as Investors Watch for Next Steps",
+      "topPositiveTitle": "New World Suspends Trading as Investors Watch for Next Steps",
+      "items": [
+        {
+          "title": "New World Suspends Trading as Investors Watch for Next Steps",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-13T00:57:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/new-world-suspends-trading-as-investors-watch-for-next-steps",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -292,41 +343,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.143,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 3,
-      "sourceCount": 3,
-      "itemCount": 7,
+      "avgSentiment": 0.557,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請",
-      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+      "topNegativeTitle": "Sri Lanka Budget Targets Growth, Investment After Debt Crisis",
+      "topPositiveTitle": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
       "items": [
-        {
-          "title": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請",
-          "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-12T08:56:29+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261112de74917",
-          "tags": [
-            "macro_risk",
-            "market"
-          ],
-          "titleJa": "ICC“制裁で存続の危機”超党派議連が日本政府に財政支援要請"
-        },
-        {
-          "title": "De Beers Suitor Aims to Win Customers Back to Real Diamonds",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T16:46:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/de-beers-suitor-aims-to-win-customers-back-to-real-diamonds",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Sri Lanka Budget Targets Growth, Investment After Debt Crisis",
           "source": "Bloomberg Economics",
@@ -340,28 +366,29 @@
           ]
         },
         {
-          "title": "Turkey Raises Inflation Forecasts on War, Fund-Rout Effects",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T08:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/turkey-central-bank-raises-end-2027-inflation-forecast-to-21",
+          "title": "Latest Oil Market News and Analysis for Nov. 13",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-12T23:02:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/latest-oil-market-news-and-analysis-for-nov-13",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
-          "source": "Bloomberg Economics",
+          "title": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T07:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-12T22:17:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "commodity",
-            "geopolitical",
+            "jp_semiconductor",
             "macro_risk",
             "market",
             "us_growth"
@@ -370,15 +397,15 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.208,
-      "negativeCount": 1,
-      "positiveCount": 2,
+      "avgSentiment": -0.04,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Yen Falls to Cusp of 160 Level, Fanning Intervention Risk",
-      "topPositiveTitle": "Japan’s Yen Jumps After Breaching Key 160-Per-Dollar Level",
+      "topPositiveTitle": "Yuan May Double Global Payment Share as Usage Climbs, HSBC Says",
       "items": [
         {
           "title": "Yen Falls to Cusp of 160 Level, Fanning Intervention Risk",
@@ -393,36 +420,37 @@
           ]
         },
         {
-          "title": "Japan’s FX Chief Warns Not To Forget Summer Intervention",
+          "title": "Japan’s Katayama Warns of FX Steps as Yen Stays Near 160",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-13T00:53:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/japan-s-katayama-warns-of-fx-steps-after-one-sided-rapid-moves",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "US Confirms $500 Million Spent on Yen Intervention, With Euros",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T00:40:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/japan-s-fx-chief-warns-against-forgetting-summer-intervention",
+          "publishedAt": "2026-11-13T01:12:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/us-confirms-500-million-spent-on-yen-intervention-with-euros",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Swiss Franc’s Haven Rally Gets a Boost From Carry-Trade Unwind",
+          "title": "Yuan May Double Global Payment Share as Usage Climbs, HSBC Says",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T07:59:45+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/swiss-franc-s-carry-trade-squeeze-adds-fuel-to-haven-rally",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Japan’s Yen Jumps After Breaching Key 160-Per-Dollar Level",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-12T16:42:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/yen-falls-to-key-160-level-per-dollar-raising-intervention-risk",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-13T00:26:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-13/yuan-may-double-global-payment-share-as-usage-climbs-hsbc-says",
           "tags": [
             "fx",
             "market"
@@ -431,19 +459,19 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.083,
+      "avgSentiment": 0.0,
       "negativeCount": 2,
-      "positiveCount": 4,
+      "positiveCount": 2,
       "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Sales of Existing US Homes Tumble to Lowest Level Since 2010",
       "topPositiveTitle": "India’s Inflation Rises, Keeping Rate-Hike Pressure on RBI",
       "items": [
         {
           "title": "Sales of Existing US Homes Tumble to Lowest Level Since 2010",
-          "source": "Bloomberg Markets",
+          "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
           "publishedAt": "2026-11-12T15:00:00+00:00",
@@ -454,16 +482,17 @@
           ]
         },
         {
-          "title": "Dovish BOJ Board Member Open to Hikes, But Cautious About Pace",
-          "source": "Bloomberg Economics",
+          "title": "Gold Holds Drop to Near One-Year Low as Rate-Hike Bets Increase",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-12T01:51:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/boj-s-dovish-member-calls-for-caution-on-pace-of-rate-increases",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-12T23:58:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/gold-holds-drop-to-near-one-year-low-as-rate-hike-bets-increase",
           "tags": [
-            "jp_broad",
+            "gold",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -507,142 +536,78 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.266,
+      "avgSentiment": 0.835,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Bond Traders See Elliott’s Citgo Deal Imperiled by Windfall",
-      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 13",
+      "topPositiveTitle": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
       "items": [
         {
-          "title": "Bond Traders See Elliott’s Citgo Deal Imperiled by Windfall",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T16:31:57+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/bond-traders-see-elliott-s-citgo-deal-imperiled-by-oil-windfall",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "US-Held Venezuela Oil Fund Used $9 Billion to Buoy Bolivar",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T15:56:04+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/us-held-venezuela-oil-sales-fund-paid-out-12-1-billion",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T07:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Romania to Hold Interest Rates as Inflation Rebound Delays Path to Easing",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T04:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/romania-to-hold-interest-rates-as-inflation-rebound-delays-path-to-easing",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+          "title": "Latest Oil Market News and Analysis for Nov. 13",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-11-12T13:14:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/oil-jumps-after-trump-says-us-doesn-t-need-deal-with-iran",
+          "publishedAt": "2026-11-12T23:02:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/latest-oil-market-news-and-analysis-for-nov-13",
           "tags": [
             "commodity",
             "geopolitical",
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Asian Stocks Gain After Nvidia Upheaval, Oil Holds: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-12T22:17:13+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.25,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trump’s Russia Diesel Deal Struggles to Find Willing US Buyer",
-      "topPositiveTitle": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+      "topNegativeTitle": "防衛研究所 中国にとって南シナ海はアメリカと対抗する基盤",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 13",
       "items": [
         {
-          "title": "Trump’s Russia Diesel Deal Struggles to Find Willing US Buyer",
-          "source": "Bloomberg Markets",
+          "title": "防衛研究所 中国にとって南シナ海はアメリカと対抗する基盤",
+          "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T17:06:39+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/trump-s-russia-diesel-deal-struggles-to-find-willing-us-buyer",
+          "publishedAt": "2026-11-12T20:07:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261113de75106",
           "tags": [
             "geopolitical",
             "market"
-          ]
+          ],
+          "titleJa": "防衛研究所 中国にとって南シナ海はアメリカと対抗する基盤"
         },
         {
-          "title": "Turkey Raises Inflation Forecasts on War, Fund-Rout Effects",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-12T08:01:33+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/turkey-central-bank-raises-end-2027-inflation-forecast-to-21",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "AI Helps UK Economy Post Strongest Growth Since Early 2024",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-12T07:05:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/uk-economy-defies-headwinds-with-strongest-growth-since-2024",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Oil Rises After Trump Declares US Doesn’t Need a Deal With Iran",
+          "title": "Latest Oil Market News and Analysis for Nov. 13",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
           "sentimentScore": 0.67,
-          "publishedAt": "2026-11-12T13:14:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-12/oil-jumps-after-trump-says-us-doesn-t-need-deal-with-iran",
+          "publishedAt": "2026-11-12T23:02:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-12/latest-oil-market-news-and-analysis-for-nov-13",
           "tags": [
             "commodity",
             "geopolitical",
@@ -661,7 +626,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
