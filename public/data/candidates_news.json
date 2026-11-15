@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-15T02:15:07.196472+09:00",
-  "sourceUpdatedAt": "2026-11-14T16:22:29+00:00",
+  "updatedAt": "2026-11-15T11:55:40.003006+09:00",
+  "sourceUpdatedAt": "2026-11-15T02:22:27+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -33,16 +33,29 @@
       ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.268,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "How Wall Street Is Bracing For the Post-Jensen Huang Nvidia Era",
-      "topPositiveTitle": "Bessent, Lutnick Clash Over Nvidia China Curbs",
+      "topNegativeTitle": "Nationwide Ground Stop Lifted, Nvidia Spy Scandal, Starship’s Longest Test Flight",
+      "topPositiveTitle": "Juicy 6% Yields Gain Appeal After Nvidia Drama: Credit Weekly",
       "items": [
+        {
+          "title": "Nationwide Ground Stop Lifted, Nvidia Spy Scandal, Starship’s Longest Test Flight",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-14T16:45:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-14/bloomberg-this-weekend-11-14-2026-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "How Wall Street Is Bracing For the Post-Jensen Huang Nvidia Era",
           "source": "Bloomberg Markets",
@@ -72,6 +85,20 @@
           ]
         },
         {
+          "title": "Juicy 6% Yields Gain Appeal After Nvidia Drama: Credit Weekly",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-14T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-14/juicy-6-yields-gain-appeal-after-nvidia-drama-credit-weekly",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
           "title": "Bessent, Lutnick Clash Over Nvidia China Curbs",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
@@ -87,28 +114,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.047,
-      "negativeCount": 1,
+      "avgSentiment": 0.132,
+      "negativeCount": 0,
       "positiveCount": 2,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Jefferson Says Inflation Will Determine Rate Decisions",
+      "topNegativeTitle": "SpaceX’s S&P 500 Bid Gets New Life as Musk Pitches Tesla Merger",
       "topPositiveTitle": "Fed’s Collins Says ‘Steady, Gradual’ Rate Hikes Appropriate",
       "items": [
-        {
-          "title": "Fed’s Jefferson Says Inflation Will Determine Rate Decisions",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-14T00:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-14/fed-s-jefferson-says-inflation-will-determine-rate-decisions",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
         {
           "title": "SpaceX’s S&P 500 Bid Gets New Life as Musk Pitches Tesla Merger",
           "source": "Bloomberg Markets",
@@ -151,12 +166,24 @@
           ]
         },
         {
-          "title": "Fed Set to Raise Interest Rates Next Month as Debate Moves to January",
+          "title": "Fed’s Collins Says ‘Steady, Gradual’ Rate Hikes Appropriate",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-13T19:55:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-13/fed-set-to-raise-interest-rates-next-month-as-debate-moves-to-january",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-14T15:08:45+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-14/fed-s-collins-says-steady-gradual-rate-hikes-appropriate",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "World Economy Latest: US Inflation Report Supports Fed Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-14T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-14/world-economy-latest-us-inflation-report-supports-fed-rate-hike",
           "tags": [
             "market",
             "rates",
@@ -166,16 +193,29 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.134,
+      "avgSentiment": 0.191,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 4,
+      "positiveCount": 2,
+      "neutralCount": 5,
       "sourceCount": 1,
-      "itemCount": 5,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "SpaceX’s S&P 500 Bid Gets New Life as Musk Pitches Tesla Merger",
-      "topPositiveTitle": "Bessent, Lutnick Clash Over Nvidia China Curbs",
+      "topNegativeTitle": "Nationwide Ground Stop Lifted, Nvidia Spy Scandal, Starship’s Longest Test Flight",
+      "topPositiveTitle": "Juicy 6% Yields Gain Appeal After Nvidia Drama: Credit Weekly",
       "items": [
+        {
+          "title": "Nationwide Ground Stop Lifted, Nvidia Spy Scandal, Starship’s Longest Test Flight",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-14T16:45:01+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-14/bloomberg-this-weekend-11-14-2026-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
         {
           "title": "SpaceX’s S&P 500 Bid Gets New Life as Musk Pitches Tesla Merger",
           "source": "Bloomberg Markets",
@@ -229,19 +269,6 @@
             "jp_semiconductor",
             "market",
             "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Bessent, Lutnick Clash Over Nvidia China Curbs",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-14T14:30:24+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-14/bessent-lutnick-clash-over-nvidia-china-curbs-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
             "us_growth"
           ]
         }
@@ -405,27 +432,26 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.165,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "avgSentiment": 0.335,
+      "negativeCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Fed Set to Raise Interest Rates Next Month as Debate Moves to January",
-      "topPositiveTitle": "World Economy Latest: US Inflation Report Supports Fed Rate Hike",
+      "topNegativeTitle": "Australia Auction Clearances Slump to Six-Year Low as Rates Rise",
+      "topPositiveTitle": "BOE’s Case to Raise Rates Again May Strengthen on UK Price Data",
       "items": [
         {
-          "title": "Fed Set to Raise Interest Rates Next Month as Debate Moves to January",
+          "title": "Australia Auction Clearances Slump to Six-Year Low as Rates Rise",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-13T19:55:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-13/fed-set-to-raise-interest-rates-next-month-as-debate-moves-to-january",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-15T00:29:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/australia-auction-clearances-slump-to-six-year-low-as-rates-rise",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
@@ -439,6 +465,32 @@
             "market",
             "rates",
             "us_broad"
+          ]
+        },
+        {
+          "title": "BOE’s Case to Raise Rates Again May Strengthen on UK Price Data",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-14T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-14/boe-s-case-to-raise-rates-again-may-strengthen-on-uk-price-data",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Juicy 6% Yields Gain Appeal After Nvidia Drama: Credit Weekly",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-14T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-14/juicy-6-yields-gain-appeal-after-nvidia-drama-credit-weekly",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
           ]
         }
       ]
@@ -557,7 +609,7 @@
     "excludedCategories": [
       "social"
     ],
-    "excludedCount": 2,
+    "excludedCount": 3,
     "minItemsForSignal": 3,
     "generator": "data/build_candidates_news.py"
   }
