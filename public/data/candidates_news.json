@@ -1,31 +1,45 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-16T02:54:10.848769+09:00",
-  "sourceUpdatedAt": "2026-11-15T17:17:40+00:00",
+  "updatedAt": "2026-11-16T10:21:24.878032+09:00",
+  "sourceUpdatedAt": "2026-11-16T00:40:46+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Pictet Adds Japan Stocks in Diversification Push After Midterms",
+      "topPositiveTitle": "Pictet Adds Japan Stocks in Diversification Push After Midterms",
+      "items": [
+        {
+          "title": "Pictet Adds Japan Stocks in Diversification Push After Midterms",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-15T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/pictet-adds-japan-stocks-in-diversification-push-after-midterms",
+          "tags": [
+            "jp_broad",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.253,
+      "avgSentiment": -0.22,
       "negativeCount": 2,
-      "positiveCount": 4,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 8,
+      "itemCount": 3,
       "isStale": false,
       "topNegativeTitle": "Nvidia Fallout, Next Mega IPO, FAA Router Failure",
-      "topPositiveTitle": "Congress Presses Nvidia Over China Chip Access",
+      "topPositiveTitle": "Nvidia Shares Primed for Bounce as Investors Eye Comeback Report",
       "items": [
         {
           "title": "Nvidia Fallout, Next Mega IPO, FAA Router Failure",
@@ -54,38 +68,12 @@
           ]
         },
         {
-          "title": "Traders Turn to Kalshi Stock ‘Perps’ on Nvidia and SpaceX as Leverage Fears Grow",
+          "title": "Nvidia Shares Primed for Bounce as Investors Eye Comeback Report",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-15/traders-turn-to-kalshi-stock-perps-on-nvidia-and-spacex-as-leverage-fears-grow",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic IPO Arrives at a Pivotal AI Moment",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T13:17:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/anthropic-ipo-arrives-at-a-pivotal-ai-moment-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Congress Presses Nvidia Over China Chip Access",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-15T14:50:56+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/congress-presses-nvidia-over-china-chip-access-video",
+          "publishedAt": "2026-11-16T00:40:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-16/nvidia-shares-primed-for-bounce-as-investors-eye-comeback-report",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -95,27 +83,53 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Roughed-Up Bond Traders Look to Fedspeak, Minutes for Next Move",
+      "topPositiveTitle": "Roughed-Up Bond Traders Look to Fedspeak, Minutes for Next Move",
+      "items": [
+        {
+          "title": "Roughed-Up Bond Traders Look to Fedspeak, Minutes for Next Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/roughed-up-bond-traders-look-to-fedspeak-minutes-for-next-move",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Schmid Says Fed Has More Work to Do to Bring Down Inflation",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-15T18:40:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/schmid-says-fed-has-more-work-to-do-to-bring-down-inflation",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "us_growth": {
-      "avgSentiment": 0.085,
+      "avgSentiment": -0.222,
       "negativeCount": 3,
-      "positiveCount": 3,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 3,
       "sourceCount": 1,
-      "itemCount": 8,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "By The Way: Headlines You May Have Missed",
-      "topPositiveTitle": "Congress Presses Nvidia Over China Chip Access",
+      "topPositiveTitle": "Nvidia Shares Primed for Bounce as Investors Eye Comeback Report",
       "items": [
         {
           "title": "By The Way: Headlines You May Have Missed",
@@ -156,12 +170,12 @@
           ]
         },
         {
-          "title": "Traders Turn to Kalshi Stock ‘Perps’ on Nvidia and SpaceX as Leverage Fears Grow",
+          "title": "Nvidia Shares Primed for Bounce as Investors Eye Comeback Report",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-15/traders-turn-to-kalshi-stock-perps-on-nvidia-and-spacex-as-leverage-fears-grow",
+          "publishedAt": "2026-11-16T00:40:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-16/nvidia-shares-primed-for-bounce-as-investors-eye-comeback-report",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -169,14 +183,14 @@
           ]
         },
         {
-          "title": "Anthropic IPO Arrives at a Pivotal AI Moment",
+          "title": "Pictet Adds Japan Stocks in Diversification Push After Midterms",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T13:17:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/anthropic-ipo-arrives-at-a-pivotal-ai-moment-video",
+          "publishedAt": "2026-11-15T21:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/pictet-adds-japan-stocks-in-diversification-push-after-midterms",
           "tags": [
-            "jp_semiconductor",
+            "jp_broad",
             "market",
             "us_growth"
           ]
@@ -184,66 +198,28 @@
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 2,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Bond Drought in Emerging Markets Lifts Prices as Sales Slump 41%",
-      "topPositiveTitle": "Bond Drought in Emerging Markets Lifts Prices as Sales Slump 41%",
-      "items": [
-        {
-          "title": "Bond Drought in Emerging Markets Lifts Prices as Sales Slump 41%",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-15T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-15/bond-drought-in-emerging-markets-lifts-prices-as-sales-slump-41",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        },
-        {
-          "title": "State Street, Pictet Call Time on Europe’s Stock Market Rally",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-15T08:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-15/state-street-pictet-call-time-on-europe-s-stock-market-rally",
-          "tags": [
-            "global_broad",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Inside India’s $130 Billion Wedding Economy",
-      "topPositiveTitle": "Inside India’s $130 Billion Wedding Economy",
-      "items": [
-        {
-          "title": "Inside India’s $130 Billion Wedding Economy",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-15T15:03:37+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/inside-india-s-130-billion-wedding-economy-video",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -270,15 +246,15 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.168,
+      "avgSentiment": -0.67,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
       "topNegativeTitle": "Crypto’s Slow-Motion Selloff Leaves Traders Weary and Hopeless",
-      "topPositiveTitle": "Nvidia Crisis Reshapes Washington’s Tech Debate",
+      "topPositiveTitle": "Crypto’s Slow-Motion Selloff Leaves Traders Weary and Hopeless",
       "items": [
         {
           "title": "Crypto’s Slow-Motion Selloff Leaves Traders Weary and Hopeless",
@@ -291,85 +267,80 @@
             "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "The 1973 Oil Crisis Still Matters Today",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T14:27:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/the-1973-oil-crisis-still-matters-today-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Nvidia Crisis Reshapes Washington’s Tech Debate",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-15T14:10:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/nvidia-crisis-reshapes-washington-s-tech-debate-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia Crisis Complicates Trump’s China Trip",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-15T13:05:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/nvidia-crisis-complicates-trump-s-china-trip-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.17,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
-      "positiveCount": 1,
-      "neutralCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Australia Auction Clearances Slump to Six-Year Low as Rates Rise",
+      "topNegativeTitle": "IDR/USD: Indonesian Rupiah May Fall Further Past Record Low, Says Analysts",
+      "topPositiveTitle": "Goldman, Morgan Stanley Split on Yen Outlook on Diverging Forces",
+      "items": [
+        {
+          "title": "IDR/USD: Indonesian Rupiah May Fall Further Past Record Low, Says Analysts",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-16T00:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-16/idr-usd-indonesian-rupiah-may-fall-further-past-record-low-says-analysts",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Goldman, Morgan Stanley Split on Yen Outlook on Diverging Forces",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-16T00:18:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-16/goldman-morgan-stanley-split-on-yen-outlook-on-diverging-forces",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
+      "isStale": false,
+      "topNegativeTitle": "Retail Crowd Dump Vietnam Stocks for Near 10% Bank-Deposit Rates",
       "topPositiveTitle": "BOE’s Case to Raise Rates Again May Strengthen on UK Price Data",
       "items": [
         {
-          "title": "Australia Auction Clearances Slump to Six-Year Low as Rates Rise",
-          "source": "Bloomberg Economics",
+          "title": "Retail Crowd Dump Vietnam Stocks for Near 10% Bank-Deposit Rates",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-15T00:29:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-15/australia-auction-clearances-slump-to-six-year-low-as-rates-rise",
+          "publishedAt": "2026-11-15T22:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/retail-crowd-dump-vietnam-stocks-for-near-10-bank-deposit-rates",
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Roughed-Up Bond Traders Look to Fedspeak, Minutes for Next Move",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/roughed-up-bond-traders-look-to-fedspeak-minutes-for-next-move",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
           ]
         },
         {
@@ -387,27 +358,61 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.335,
-      "negativeCount": 0,
+      "avgSentiment": 0.028,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "The 1973 Oil Crisis Still Matters Today",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 16",
       "topPositiveTitle": "Firms Drive UK Growth Spurt With Little Help From Government",
       "items": [
         {
-          "title": "The 1973 Oil Crisis Still Matters Today",
+          "title": "Latest Oil Market News and Analysis for Nov. 16",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-15T23:03:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/latest-oil-market-news-and-analysis-for-nov-16",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "US Futures Rebound After Two-Day Loss, Oil Slips: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.2,
+          "publishedAt": "2026-11-15T22:11:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Philippines’ Main Coal Mine in Limbo Puts Nation’s Energy Supply at Risk",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T14:27:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/the-1973-oil-crisis-still-matters-today-video",
+          "publishedAt": "2026-11-15T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/philippines-main-coal-mine-in-limbo-puts-nation-s-energy-supply-at-risk",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Diamondback in Talks to Buy Double Eagle for About $5 Billion",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-15T21:49:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-15/diamondback-in-talks-to-buy-double-eagle-for-about-5-billion",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
@@ -426,56 +431,26 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.223,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "The 1973 Oil Crisis Still Matters Today",
-      "topPositiveTitle": "Nvidia Crisis Reshapes Washington’s Tech Debate",
+      "topNegativeTitle": "Trump, Xi and Putin Set for Rare APEC Trilateral Talks",
+      "topPositiveTitle": "Trump, Xi and Putin Set for Rare APEC Trilateral Talks",
       "items": [
         {
-          "title": "The 1973 Oil Crisis Still Matters Today",
+          "title": "Trump, Xi and Putin Set for Rare APEC Trilateral Talks",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-15T14:27:05+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/the-1973-oil-crisis-still-matters-today-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "新ロシア大使に宇山秀樹氏を起用へ 元外務省欧州局長 政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-14T05:20:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261114de75856",
+          "publishedAt": "2026-11-16T00:34:26+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-16/trump-xi-and-putin-set-for-rare-apec-trilateral-talks-video",
           "tags": [
             "geopolitical",
             "market"
-          ],
-          "titleJa": "新ロシア大使に宇山秀樹氏を起用へ 元外務省欧州局長 政府"
-        },
-        {
-          "title": "Nvidia Crisis Reshapes Washington’s Tech Debate",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-15T14:10:32+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-15/nvidia-crisis-reshapes-washington-s-tech-debate-video",
-          "tags": [
-            "geopolitical",
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
           ]
         }
       ]
