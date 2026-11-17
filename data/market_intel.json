@@ -1,13 +1,13 @@
 {
-  "fetched_at": "2026-11-15T17:53:49Z",
+  "fetched_at": "2026-11-17T19:57:09Z",
   "source": "yfinance_hybrid",
-  "vix": 19.3,
-  "nikkei_5d_return": 0.064553,
-  "nikkei_60ma": 65012.3,
-  "nikkei_200ma": 62128.8,
-  "sp500_dd_30d": -0.032902,
-  "usdjpy": 159.88,
-  "risk_level": "low",
+  "vix": 26.22,
+  "nikkei_5d_return": 0.015083,
+  "nikkei_60ma": 64853.0,
+  "nikkei_200ma": 62162.1,
+  "sp500_dd_30d": -0.064318,
+  "usdjpy": 159.34,
+  "risk_level": "medium",
   "signals": [
     {
       "tag": "円安",
@@ -15,25 +15,25 @@
       "direction": "positive"
     },
     {
-      "tag": "短期急騰",
-      "strength": "strong",
-      "direction": "positive"
+      "tag": "調整局面",
+      "strength": "weak",
+      "direction": "negative"
     }
   ],
   "narrative": {
-    "headline": "リスクレベル: 低リスク — VIX 19.3 / USD/JPY 159.9円",
+    "headline": "リスクレベル: 中程度リスク — VIX 26.2 / USD/JPY 159.3円",
     "body_lines": [
-      "VIX 19.3 / 日経5日 +6.5% / USD/JPY 159.9",
-      "リスクレベル: 低リスク",
+      "VIX 26.2 / 日経5日 +1.5% / USD/JPY 159.3",
+      "リスクレベル: 中程度リスク",
       "↑ 円安（moderate）",
-      "↑ 短期急騰（strong）"
+      "↓ 調整局面（weak）"
     ],
     "keywords_summary": [
       "円安",
-      "短期急騰"
+      "調整局面"
     ],
-    "sentiment_label": "bullish",
-    "sentiment_score": 70.0,
+    "sentiment_label": "neutral",
+    "sentiment_score": 53.0,
     "method": "rule_based"
   },
   "sources_status": {
