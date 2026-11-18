@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-18T04:57:22.034288+09:00",
-  "sourceUpdatedAt": "2026-11-17T19:51:47+00:00",
+  "updatedAt": "2026-11-19T04:28:16.549334+09:00",
+  "sourceUpdatedAt": "2026-11-18T19:23:56+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,145 +17,104 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.334,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "avgSentiment": 0.292,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
-      "topPositiveTitle": "Wall Street Awaits First Nvidia Earnings Report Without Jensen Huang",
+      "topNegativeTitle": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
+      "topPositiveTitle": "Need Accountability, Transparency in FAA Funding, Says Sen. Capito",
       "items": [
         {
-          "title": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
+          "title": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-17T08:30:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/european-stocks-fall-as-us-chip-curbs-ignite-fresh-ai-selloff",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-17T22:07:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "global_broad",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Tech Stocks Sink Before Nvidia’s First Results After Huang Exit",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-17T13:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/nasdaq-100-futures-rise-as-investors-prepare-for-nvidia-results",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Fall on Tech Jitters Before Nvidia Results: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T22:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
+            "commodity",
             "jp_semiconductor",
             "macro_risk",
             "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Wall Street Awaits First Nvidia Earnings Report Without Jensen Huang",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T16:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-17/bloomberg-surveillance-11-17-2026-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "SpaceX Debt for AI Chips to Hit Market as Soon as This Week",
+          "title": "Kalshi Turns to Compute Desk in Renewed Push for GPU Futures",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T14:53:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/spacex-debt-for-ai-chips-to-hit-market-as-soon-as-this-week",
+          "publishedAt": "2026-11-18T17:58:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/kalshi-turns-to-compute-desk-in-renewed-push-for-gpu-futures",
           "tags": [
             "jp_semiconductor",
             "market",
             "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Advance as Investors Look to Anthropic IPO Test",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-18T12:34:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-stock-futures-rally-as-nvidia-results-ease-ai-trade-worries",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Need Accountability, Transparency in FAA Funding, Says Sen. Capito",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-18T19:23:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/need-accountability-transparency-in-faa-funding-capito-video",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "market"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.1,
-      "negativeCount": 4,
-      "positiveCount": 1,
-      "neutralCount": 5,
+      "avgSentiment": -0.537,
+      "negativeCount": 7,
+      "positiveCount": 0,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 10,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Tech Stocks Sink Before Nvidia’s First Results After Huang Exit",
-      "topPositiveTitle": "Treasuries Rise as Risk-Averse Investors Dump Stocks, Buy Bonds",
+      "topNegativeTitle": "Gold Slumps 3% to Lowest in Over a Year on Hawkish Fed Signals",
+      "topPositiveTitle": "Fed Minutes Show Almost All Officials Expect More Rate Hikes",
       "items": [
         {
-          "title": "Tech Stocks Sink Before Nvidia’s First Results After Huang Exit",
+          "title": "Gold Slumps 3% to Lowest in Over a Year on Hawkish Fed Signals",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-17T13:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/nasdaq-100-futures-rise-as-investors-prepare-for-nvidia-results",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T23:26:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/gold-steadies-near-14-month-low-as-inflation-pressure-persists",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-17T23:33:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/gold-steadies-near-14-month-low-as-rate-hike-pressure-mounts",
           "tags": [
             "gold",
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Musalem Says ‘Several’ Rate Hikes Likely Needed by Spring",
-          "source": "Bloomberg Economics",
+          "title": "Fed’s Barr Says Higher Rates Are Likely ‘Appropriate’",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T12:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/fed-s-musalem-says-several-rate-hikes-likely-needed-by-spring",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed’s Hammack Prefers Slow, Steady Interest-Rate Hikes",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-16T19:26:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/fed-s-hammack-reiterates-preference-for-small-incremental-hikes",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-18T19:00:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/fed-s-barr-says-higher-rates-are-likely-appropriate-video",
           "tags": [
             "market",
             "rates",
@@ -163,12 +122,41 @@
           ]
         },
         {
-          "title": "Fed's Williams Doesn't See Need for 'Dramatic Action' on Rates",
+          "title": "Treasuries Higher for a Third Day as Oil Prices Slide",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T19:51:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-17/fed-s-williams-no-need-for-dramatic-action-on-rates-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-11-18T05:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/treasuries-ust-bond-yields-risk-appetite-falters",
+          "tags": [
+            "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-17T22:07:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed Minutes Show Almost All Officials Expect More Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-18T19:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-minutes-show-almost-all-officials-expect-more-rate-hikes",
           "tags": [
             "market",
             "rates",
@@ -178,79 +166,65 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.292,
-      "negativeCount": 3,
-      "positiveCount": 0,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 8,
+      "avgSentiment": -0.207,
+      "negativeCount": 2,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
-      "topPositiveTitle": "Wall Street Awaits First Nvidia Earnings Report Without Jensen Huang",
+      "topNegativeTitle": "Copper Plunges Over 5% as AI Trade Unravels in Metals Markets",
+      "topPositiveTitle": "Tech Stocks Advance as Investors Look to Anthropic IPO Test",
       "items": [
         {
-          "title": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
+          "title": "Copper Plunges Over 5% as AI Trade Unravels in Metals Markets",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-11-17T08:30:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/european-stocks-fall-as-us-chip-curbs-ignite-fresh-ai-selloff",
+          "publishedAt": "2026-11-18T05:16:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/copper-prices-industrial-metal-dollar-lme",
           "tags": [
-            "global_broad",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Tech Stocks Sink Before Nvidia’s First Results After Huang Exit",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-17T13:13:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/nasdaq-100-futures-rise-as-investors-prepare-for-nvidia-results",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Fall on Tech Jitters Before Nvidia Results: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T22:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "jp_semiconductor",
             "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Wall Street Awaits First Nvidia Earnings Report Without Jensen Huang",
+          "title": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T16:50:20+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-17/bloomberg-surveillance-11-17-2026-video",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-17T22:07:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "commodity",
             "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "SpaceX Debt for AI Chips to Hit Market as Soon as This Week",
+          "title": "Kalshi Turns to Compute Desk in Renewed Push for GPU Futures",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T14:53:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/spacex-debt-for-ai-chips-to-hit-market-as-soon-as-this-week",
+          "publishedAt": "2026-11-18T17:58:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/kalshi-turns-to-compute-desk-in-renewed-push-for-gpu-futures",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Tech Stocks Advance as Investors Look to Anthropic IPO Test",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-18T12:34:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-stock-futures-rally-as-nvidia-results-ease-ai-trade-worries",
           "tags": [
             "jp_semiconductor",
             "market",
@@ -260,6 +234,18 @@
       ]
     },
     "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
+    },
+    "gold": {
       "avgSentiment": -1.0,
       "negativeCount": 1,
       "positiveCount": 0,
@@ -267,46 +253,18 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
-      "topPositiveTitle": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
+      "topNegativeTitle": "Gold Slumps 3% to Lowest in Over a Year on Hawkish Fed Signals",
+      "topPositiveTitle": "Gold Slumps 3% to Lowest in Over a Year on Hawkish Fed Signals",
       "items": [
         {
-          "title": "European Stocks Extend Fall as Tech Drags; Deutsche Bank Slides",
+          "title": "Gold Slumps 3% to Lowest in Over a Year on Hawkish Fed Signals",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
-          "publishedAt": "2026-11-17T08:30:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/european-stocks-fall-as-us-chip-curbs-ignite-fresh-ai-selloff",
-          "tags": [
-            "global_broad",
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "gold": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
-      "topPositiveTitle": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
-      "items": [
-        {
-          "title": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T23:26:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/gold-steadies-near-14-month-low-as-inflation-pressure-persists",
+          "publishedAt": "2026-11-17T23:33:52+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/gold-steadies-near-14-month-low-as-rate-hike-pressure-mounts",
           "tags": [
             "gold",
-            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -338,68 +296,81 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.168,
-      "negativeCount": 3,
+      "avgSentiment": -0.479,
+      "negativeCount": 6,
       "positiveCount": 1,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
-      "topPositiveTitle": "German Investor Outlook Jumps to Highest Since Iran War Began",
+      "topNegativeTitle": "BOE to Test How Private Credit Could Amplify Shocks",
+      "topPositiveTitle": "UK Energy Bills Could Rise 26%, The Biggest Hike Since 2022",
       "items": [
         {
-          "title": "Gold Steadies as Dip Buyers Cushion Slump Driven by Fed Concerns",
+          "title": "BOE to Test How Private Credit Could Amplify Shocks",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T23:26:48+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/gold-steadies-near-14-month-low-as-inflation-pressure-persists",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-18T18:39:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/boe-to-test-how-private-credit-could-amplify-shocks-video",
           "tags": [
-            "gold",
             "macro_risk",
             "market",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Stocks Fall on Tech Jitters Before Nvidia Results: Markets Wrap",
+          "title": "Weakest Credit Faces More Pain, Hedge Funds Warn",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-16T22:06:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-18T18:26:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/weakest-credit-faces-more-pain-hedge-funds-warn-video",
           "tags": [
-            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Copper Plunges Over 5% as AI Trade Unravels in Metals Markets",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-18T05:16:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/copper-prices-industrial-metal-dollar-lme",
+          "tags": [
             "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Euro Zone to Grow Robustly as It Shrugs Off Inflation, EU Says",
+          "title": "Inner London House Prices Post Largest Annual Drop Since 2009",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T10:03:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/euro-zone-to-grow-robustly-as-it-shrugs-off-inflation-eu-says",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-18T10:58:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/inner-london-house-prices-post-largest-annual-drop-since-2009",
           "tags": [
-            "geopolitical",
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "German Investor Outlook Jumps to Highest Since Iran War Began",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-17T10:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/german-investor-outlook-jumps-to-highest-since-iran-war-began",
+          "title": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-17T22:07:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "geopolitical",
+            "commodity",
+            "jp_semiconductor",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad",
+            "us_growth"
           ]
         }
       ]
@@ -412,92 +383,93 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Danish Central Bank Denies Shift in FX Peg After Krone Weakness",
-      "topPositiveTitle": "Danish Central Bank Denies Shift in FX Peg After Krone Weakness",
+      "topNegativeTitle": "Rand Weakens Further as South African Inflation Heats Up",
+      "topPositiveTitle": "Rand Weakens Further as South African Inflation Heats Up",
       "items": [
         {
-          "title": "Danish Central Bank Denies Shift in FX Peg After Krone Weakness",
+          "title": "Rand Weakens Further as South African Inflation Heats Up",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T13:58:44+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/danish-central-bank-denies-shift-in-fx-peg-after-krone-weakness",
+          "publishedAt": "2026-11-18T08:03:18+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/south-african-inflation-heats-up-on-eve-of-interest-rate-verdict",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.0,
-      "negativeCount": 2,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "avgSentiment": -0.416,
+      "negativeCount": 10,
+      "positiveCount": 1,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "US Homebuilder Sentiment Sags to Fresh 14-Year Low on Rates",
-      "topPositiveTitle": "Bank of America Says US Rates Will Rise ‘Until Activity Cools’",
+      "topNegativeTitle": "BOE to Test How Private Credit Could Amplify Shocks",
+      "topPositiveTitle": "US Housing Starts Climb on Multifamily Construction Rebound",
       "items": [
         {
-          "title": "US Homebuilder Sentiment Sags to Fresh 14-Year Low on Rates",
-          "source": "Bloomberg Economics",
+          "title": "BOE to Test How Private Credit Could Amplify Shocks",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/us-homebuilder-sentiment-sags-to-fresh-14-year-low-on-high-rates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-18T18:39:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/boe-to-test-how-private-credit-could-amplify-shocks-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Weakest Credit Faces More Pain, Hedge Funds Warn",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-18T18:26:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/weakest-credit-faces-more-pain-hedge-funds-warn-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Fed’s Barr Says Higher Rates Are Likely ‘Appropriate’",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-18T19:00:54+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/fed-s-barr-says-higher-rates-are-likely-appropriate-video",
+          "tags": [
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Credit Chiefs Warn of ‘Fear Factor’ With Debt Repricing",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-18T17:30:05+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/credit-chiefs-warn-of-fear-factor-with-debt-repricing-video",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Fed’s Hammack Prefers Slow, Steady Interest-Rate Hikes",
+          "title": "US Pending Home Sales Fall to New Record Low on High Rates",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-16T19:26:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/fed-s-hammack-reiterates-preference-for-small-incremental-hikes",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed's Williams Doesn't See Need for 'Dramatic Action' on Rates",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T19:51:47+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-17/fed-s-williams-no-need-for-dramatic-action-on-rates-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Africa Nations to End Year With High Rates as Fed Risks Loom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T04:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/african-economies-to-end-year-with-high-rates-as-fed-risks-loom",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Bank of America Says US Rates Will Rise ‘Until Activity Cools’",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-17T17:05:38+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/bank-of-america-says-us-rates-will-rise-until-activity-cools",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-18T15:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-pending-home-sales-fall-to-new-record-low-on-high-rates",
           "tags": [
             "market",
             "rates"
@@ -506,60 +478,105 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "avgSentiment": 0.048,
+      "negativeCount": 3,
+      "positiveCount": 2,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Oil Swings as Mideast Flareups Threaten Ample Supply Outlook",
-      "topPositiveTitle": "Oil Swings as Mideast Flareups Threaten Ample Supply Outlook",
+      "topNegativeTitle": "Treasuries Higher for a Third Day as Oil Prices Slide",
+      "topPositiveTitle": "Need Accountability, Transparency in FAA Funding, Says Sen. Capito",
       "items": [
         {
-          "title": "Oil Swings as Mideast Flareups Threaten Ample Supply Outlook",
+          "title": "Treasuries Higher for a Third Day as Oil Prices Slide",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-16T23:02:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-16/latest-oil-market-news-and-analysis-for-nov-17",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-11-18T05:19:28+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/treasuries-ust-bond-yields-risk-appetite-falters",
           "tags": [
             "commodity",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Stocks Churn as Oil Slump Offsets Nvidia Selloff: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-17T22:07:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-17/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Refiners Cut Venezuelan Crude Oil Buys on High Freight Rates",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-18T17:28:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-refiners-cut-venezuelan-crude-oil-buys-on-high-freight-rates",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "UK Energy Bills Could Rise 26%, The Biggest Hike Since 2022",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-18T08:00:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/uk-energy-bills-seen-rising-26-biggest-hike-since-2022",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Need Accountability, Transparency in FAA Funding, Says Sen. Capito",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-18T19:23:56+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-18/need-accountability-transparency-in-faa-funding-capito-video",
+          "tags": [
+            "commodity",
+            "jp_semiconductor",
             "market"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.002,
-      "negativeCount": 3,
+      "avgSentiment": 0.113,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 1,
-      "sourceCount": 3,
-      "itemCount": 5,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Deutsche Bank Seeks to Curb Fallout From Data Leaks",
-      "topPositiveTitle": "German Investor Outlook Jumps to Highest Since Iran War Began",
+      "topNegativeTitle": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
+      "topPositiveTitle": "UK Energy Bills Could Rise 26%, The Biggest Hike Since 2022",
       "items": [
         {
-          "title": "Deutsche Bank Seeks to Curb Fallout From Data Leaks",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T19:43:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-17/deutsche-bank-seeks-to-curb-fallout-from-data-leaks-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Euro Zone to Grow Robustly as It Shrugs Off Inflation, EU Says",
+          "title": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T10:03:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/euro-zone-to-grow-robustly-as-it-shrugs-off-inflation-eu-says",
+          "publishedAt": "2026-11-18T15:56:31+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/boe-s-bailey-says-more-rate-hikes-needed-if-iran-conflict-lasts",
           "tags": [
             "geopolitical",
             "macro_risk",
@@ -567,38 +584,27 @@
           ]
         },
         {
-          "title": "あすからAPEC首脳会議 米中ロ首脳会談や日中接触も焦点",
+          "title": "APEC 高市首相 習近平国家主席と握手 プーチン氏と意見交わす",
           "source": "NHK 経済",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-17T10:27:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261117de77215",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-18T16:54:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261118de77690",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "あすからAPEC首脳会議 米中ロ首脳会談や日中接触も焦点"
+          "titleJa": "APEC 高市首相 習近平国家主席と握手 プーチン氏と意見交わす"
         },
         {
-          "title": "EU and anti-dumping duties on steel and Chinese imports",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-17T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-17/eu-and-anti-dumping-duties-on-steel-and-chinese-imports",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "German Investor Outlook Jumps to Highest Since Iran War Began",
+          "title": "UK Energy Bills Could Rise 26%, The Biggest Hike Since 2022",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-17T10:08:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-17/german-investor-outlook-jumps-to-highest-since-iran-war-began",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-18T08:00:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-18/uk-energy-bills-seen-rising-26-biggest-hike-since-2022",
           "tags": [
+            "commodity",
             "geopolitical",
             "macro_risk",
             "market"
