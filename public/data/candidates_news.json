@@ -1,128 +1,191 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-19T11:48:53.763124+09:00",
-  "sourceUpdatedAt": "2026-11-19T02:38:29+00:00",
+  "updatedAt": "2026-11-20T04:33:02.115838+09:00",
+  "sourceUpdatedAt": "2026-11-19T19:23:40+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "jp_semiconductor": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": 0.002,
-      "negativeCount": 3,
-      "positiveCount": 1,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Fed Minutes Show Almost All Officials Expect More Rate Hikes",
-      "topPositiveTitle": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
+      "topNegativeTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
+      "topPositiveTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
       "items": [
         {
-          "title": "Fed Minutes Show Almost All Officials Expect More Rate Hikes",
+          "title": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T19:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-minutes-show-almost-all-officials-expect-more-rate-hikes",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T03:45:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/boj-s-ueda-unfazed-by-consumption-drop-stays-open-to-rate-hike",
           "tags": [
+            "jp_broad",
             "market",
-            "rates",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+      "topPositiveTitle": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+      "items": [
+        {
+          "title": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T10:51:21+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/imf-s-chief-is-warning-ai-correction-has-little-bit-more-to-go",
+          "tags": [
+            "jp_semiconductor",
+            "market"
+          ]
+        },
+        {
+          "title": "South Korea’s Exports Top $1 Trillion for First Time on AI Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T08:25:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-korea-s-exports-top-1-trillion-for-first-time-on-ai-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.292,
+      "negativeCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+      "topPositiveTitle": "Fed Tells Regional Staff to Expect Lower Pay Increases in 2027",
+      "items": [
+        {
+          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-19T15:34:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed’s Daly Urges Rate Hikes With a Thoughtful, Measured Approach",
-          "source": "Bloomberg Economics",
+          "title": "US Stocks Drop for Sixth Day as Dow Jones Index Eyes Correction",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T18:16:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-s-daly-urges-rate-hikes-with-a-thoughtful-measured-approach",
+          "sentimentScore": -0.5,
+          "publishedAt": "2026-11-19T07:09:16+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-stock-futures-jump-on-blockbuster-reception-to-anthropic-ipo",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Waller Says Fed Should Consider Half-Point Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T12:53:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-s-waller-says-fed-should-consider-half-point-rate-hike",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Korea Investors Buy Record Amount of Treasuries in September",
+          "title": "Fed Tells Regional Staff to Expect Lower Pay Increases in 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:45:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/korea-investors-buy-record-amount-of-treasuries-in-september",
+          "publishedAt": "2026-11-19T19:14:11+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-tells-regional-staff-to-expect-lower-pay-increases-in-2027",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
+          "title": "Anthropic's Blockbuster IPO Surpasses SpaceX Ahead of First Trade",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-18T23:24:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/gold-steadies-near-14-month-low-as-fed-signals-more-rate-hikes",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T17:20:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-19/bloomberg-surveillance-11-19-2026-video",
           "tags": [
-            "gold",
             "market",
-            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.083,
-      "negativeCount": 0,
+      "avgSentiment": 0.112,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "neutralCount": 4,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Morgan Stanley’s Hornbach Says Rogue AI Biggest Underpriced Risk",
-      "topPositiveTitle": "Copper Rebounds After Rout as Physical Tightness Persists",
+      "topNegativeTitle": "China’s Already-Weakened Job Market Starts to the Feel Impact of AI",
+      "topPositiveTitle": "Anthropic Shares Jump 17% After $107.3 Billion IPO Breaks Record",
       "items": [
         {
-          "title": "Morgan Stanley’s Hornbach Says Rogue AI Biggest Underpriced Risk",
+          "title": "China’s Already-Weakened Job Market Starts to the Feel Impact of AI",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-19T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-19/china-s-already-weakened-job-market-starts-to-the-feel-impact-of-ai",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Alphabet Set to Raise $4.2 Billion From Latest Canada Bond Sale",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T01:00:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/morgan-stanley-s-hornbach-says-rogue-ai-biggest-underpriced-risk",
+          "publishedAt": "2026-11-19T16:16:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/alphabet-to-raise-at-least-3-5-billion-with-canadian-debt-sale",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "South Korea’s Exports Top $1 Trillion for First Time on AI Boom",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T08:25:53+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-korea-s-exports-top-1-trillion-for-first-time-on-ai-boom",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Is China Winning the Artificial Intelligence Race That Matters?",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T05:00:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/is-china-winning-the-artificial-intelligence-race-that-matters",
           "tags": [
             "market",
             "us_growth"
@@ -135,30 +198,6 @@
           "sentimentScore": 0.0,
           "publishedAt": "2026-11-19T00:54:52+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-19/blue-owl-plans-513-million-cmbs-for-amazon-leased-data-center",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic Prices at $83 a Share in Record-Sized Offering",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:45:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-19/anthropic-prices-at-83-a-share-in-record-sized-offering-video",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Copper Rebounds After Rout as Physical Tightness Persists",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T01:14:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/copper-rebounds-after-rout-as-physical-tightness-persists",
           "tags": [
             "market",
             "us_growth"
@@ -179,31 +218,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
-      "topPositiveTitle": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
-      "items": [
-        {
-          "title": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-18T23:24:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/gold-steadies-near-14-month-low-as-fed-signals-more-rate-hikes",
-          "tags": [
-            "gold",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -230,78 +254,38 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.2,
+      "avgSentiment": -0.335,
       "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 2,
+      "positiveCount": 0,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 5,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 19",
+      "topNegativeTitle": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+      "topPositiveTitle": "Thailand Says US Agrees to Lower Forced-Labor Tariff to 10%",
       "items": [
         {
-          "title": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
-          "source": "Bloomberg Economics",
+          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T15:56:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/boe-s-bailey-says-more-rate-hikes-needed-if-iran-conflict-lasts",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-19T15:34:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
           "tags": [
-            "geopolitical",
+            "fx",
             "macro_risk",
-            "market"
+            "market",
+            "us_broad"
           ]
         },
         {
-          "title": "Trade and AI Rivalry to Dominate APEC Summit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:18:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-19/trade-and-ai-rivalry-to-dominate-apec-summit-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Europe’s Next Crisis-Fighting Team Takes Shape (Correct)",
+          "title": "Thailand Says US Agrees to Lower Forced-Labor Tariff to 10%",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-18T12:12:52+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-18/europe-s-next-crisis-fighting-team-takes-shape",
+          "publishedAt": "2026-11-19T03:38:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/thailand-says-us-agrees-to-lower-forced-labor-tariff-to-10",
           "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "China Oil Imports Rebound as Beijing Turns Back to Stockpiling",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T00:36:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-oil-imports-rebound-as-beijing-turns-back-to-stockpiling",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-18T23:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/latest-oil-market-news-and-analysis-for-nov-19",
-          "tags": [
-            "commodity",
-            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -309,51 +293,52 @@
       ]
     },
     "fx": {
-      "avgSentiment": 0.167,
-      "negativeCount": 1,
+      "avgSentiment": -0.253,
+      "negativeCount": 3,
       "positiveCount": 1,
-      "neutralCount": 2,
+      "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Anthropic IPO Hands SK Hynix Tycoon’s Firm $3 Billion Windfall",
+      "topNegativeTitle": "Offshore Chinese Yuan Drops to Weakest Level in Over a Month",
       "topPositiveTitle": "Australia’s Jobless Jump Prompts Traders to Price Rate Cuts",
       "items": [
         {
-          "title": "Anthropic IPO Hands SK Hynix Tycoon’s Firm $3 Billion Windfall",
+          "title": "Offshore Chinese Yuan Drops to Weakest Level in Over a Month",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T01:36:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/anthropic-ipo-hands-sk-hynix-tycoon-s-firm-3-billion-windfall",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-19T18:19:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/offshore-chinese-yuan-drops-to-weakest-level-in-over-a-month-mwnvjmz2",
           "tags": [
             "fx",
             "market"
           ]
         },
         {
-          "title": "Australian Dollar Erases 2026 Gain as Rate-Cut Bets Increase",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T01:53:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/australian-dollar-set-to-shed-2026-gain-on-rba-rate-cut-bets",
+          "title": "Lula Forces Central Bank FX Intervention as Brazil Rout Worsens",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-19T15:51:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/brazil-central-bank-steps-into-markets-as-fiscal-woes-hit-real",
           "tags": [
             "fx",
+            "market"
+          ]
+        },
+        {
+          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.67,
+          "publishedAt": "2026-11-19T15:34:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
+          "tags": [
+            "fx",
+            "macro_risk",
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "China Markets $2 Billion of Dollar Bonds as Xi, Trump Meet",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:57:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-markets-up-to-2-billion-of-dollar-bonds-in-hong-kong",
-          "tags": [
-            "fx",
-            "market"
+            "us_broad"
           ]
         },
         {
@@ -371,74 +356,72 @@
       ]
     },
     "rates": {
-      "avgSentiment": 0.057,
+      "avgSentiment": -0.167,
       "negativeCount": 3,
       "positiveCount": 2,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "US Pending Home Sales Fall to New Record Low on High Rates",
-      "topPositiveTitle": "Gold Rises From 14-Month Low as Dip Buying Offsets Hawkish Fed",
+      "topNegativeTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
+      "topPositiveTitle": "Air Cargo Rates Reach Highest Since 2022",
       "items": [
         {
-          "title": "US Pending Home Sales Fall to New Record Low on High Rates",
+          "title": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-18T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-pending-home-sales-fall-to-new-record-low-on-high-rates",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T03:45:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/boj-s-ueda-unfazed-by-consumption-drop-stays-open-to-rate-hike",
+          "tags": [
+            "jp_broad",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Rand Dips After South Africa’s Split Decision to Hold Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-19T13:06:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-africa-hawkishly-holds-rates-as-inflation-risks-widen",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Fed Minutes Show Almost All Officials Expect More Rate Hikes",
+          "title": "ECB’s Nagel Says December Rate Hike Would Send Clear Signal",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T19:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-minutes-show-almost-all-officials-expect-more-rate-hikes",
+          "publishedAt": "2026-11-19T10:41:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/ecb-s-nagel-says-december-rate-hike-would-send-clear-signal",
           "tags": [
             "market",
-            "rates",
-            "us_broad"
+            "rates"
           ]
         },
         {
-          "title": "Waller Says Fed Should Consider Half-Point Rate Hike",
+          "title": "Traders Are Betting on Interest Rates Staying High for Years",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T12:53:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/fed-s-waller-says-fed-should-consider-half-point-rate-hike",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Australian Dollar Erases 2026 Gain as Rate-Cut Bets Increase",
-          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T01:53:37+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/australian-dollar-set-to-shed-2026-gain-on-rba-rate-cut-bets",
+          "publishedAt": "2026-11-19T13:52:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/traders-are-betting-on-interest-rates-staying-high-for-years",
           "tags": [
-            "fx",
             "market",
             "rates"
           ]
         },
         {
-          "title": "US Housing Starts Climb on Multifamily Construction Rebound",
+          "title": "Air Cargo Rates Reach Highest Since 2022",
           "source": "Bloomberg Economics",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-18T13:33:55+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-housing-starts-climb-to-three-month-high-exceeding-forecast",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-19/air-cargo-rates-reach-highest-since-2022",
           "tags": [
             "market",
             "rates"
@@ -447,132 +430,92 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.22,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "avgSentiment": 0.165,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "LNG Exports Through Hormuz Appear to Slow After More Attacks",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 19",
+      "topNegativeTitle": "BP Said to Weigh Divesting Its Key West Africa LNG Plant GTA",
+      "topPositiveTitle": "South Africa Seen Holding Rates for Now as Oil Eases But Could Hike in 2027",
       "items": [
         {
-          "title": "LNG Exports Through Hormuz Appear to Slow After More Attacks",
+          "title": "BP Said to Weigh Divesting Its Key West Africa LNG Plant GTA",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T01:23:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/lng-exports-through-hormuz-appear-to-slow-after-more-attacks",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T17:20:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/bp-said-to-weigh-divesting-its-key-west-africa-lng-plant-gta",
           "tags": [
             "commodity",
             "market"
           ]
         },
         {
-          "title": "China Oil Imports Rebound as Beijing Turns Back to Stockpiling",
-          "source": "Bloomberg Markets",
+          "title": "South Africa Seen Holding Rates for Now as Oil Eases But Could Hike in 2027",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T00:36:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-oil-imports-rebound-as-beijing-turns-back-to-stockpiling",
+          "publishedAt": "2026-11-19T05:15:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-africa-central-bank-rates-oil-2027--lesetja-kganyago",
           "tags": [
             "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 19",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-18T23:03:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/latest-oil-market-news-and-analysis-for-nov-19",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.125,
-      "negativeCount": 1,
-      "positiveCount": 2,
-      "neutralCount": 5,
-      "sourceCount": 3,
-      "itemCount": 8,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 3,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 19",
+      "topNegativeTitle": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
+      "topPositiveTitle": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
       "items": [
         {
-          "title": "BOE’s Bailey Says More Rate Hikes Needed if Iran Conflict Lasts",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-18T15:56:31+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-18/boe-s-bailey-says-more-rate-hikes-needed-if-iran-conflict-lasts",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Jeffrey Sachs Expects Friendly Trilateral Outcome",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:36:42+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-19/jeffrey-sachs-expects-friendly-trilateral-outcome-video",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Trade and AI Rivalry to Dominate APEC Summit",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:18:03+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-19/trade-and-ai-rivalry-to-dominate-apec-summit-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "高市首相 プーチン大統領と意見交換 習主席とは握手",
+          "title": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-18T19:50:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78112",
+          "publishedAt": "2026-11-19T14:48:26+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78721",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "高市首相 プーチン大統領と意見交換 習主席とは握手"
+          "titleJa": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける"
         },
         {
-          "title": "米中ロ首脳会談 ウクライナ外相「当事国抜きの決定は不可能」",
+          "title": "史上初の米中ロ首脳会談 大国の思惑は 日本への影響は",
           "source": "NHK 経済",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-18T19:47:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78096",
+          "publishedAt": "2026-11-19T14:12:37+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78692",
           "tags": [
             "geopolitical",
             "market"
           ],
-          "titleJa": "米中ロ首脳会談 ウクライナ外相「当事国抜きの決定は不可能」"
+          "titleJa": "史上初の米中ロ首脳会談 大国の思惑は 日本への影響は"
+        },
+        {
+          "title": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T12:32:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78117",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を"
         }
       ]
     }
