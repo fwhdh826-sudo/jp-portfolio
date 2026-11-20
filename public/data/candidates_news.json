@@ -1,98 +1,56 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-20T11:35:04.579594+09:00",
-  "sourceUpdatedAt": "2026-11-20T02:16:42+00:00",
+  "updatedAt": "2026-11-21T04:11:31.741400+09:00",
+  "sourceUpdatedAt": "2026-11-20T18:53:00+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
-      "topPositiveTitle": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
-      "items": [
-        {
-          "title": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T23:34:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/japan-cpi-quickens-to-fastest-this-year-backing-boj-hike-case",
-          "tags": [
-            "jp_broad",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
-      "topPositiveTitle": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+      "topNegativeTitle": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
+      "topPositiveTitle": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
       "items": [
         {
-          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T15:07:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "IMF’s Chief Warns AI Correction Has ‘Little Bit More’ to Go",
+          "title": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T10:51:21+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/imf-s-chief-is-warning-ai-correction-has-little-bit-more-to-go",
+          "publishedAt": "2026-11-20T15:05:04+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-11-20/china-s-exports-of-robots-cars-semiconductors-make-life-hard-for-rivals",
           "tags": [
             "jp_semiconductor",
             "market"
-          ]
-        },
-        {
-          "title": "South Korea’s Exports Top $1 Trillion for First Time on AI Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T08:25:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-korea-s-exports-top-1-trillion-for-first-time-on-ai-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
           ]
         }
       ]
     },
     "us_broad": {
-      "avgSentiment": 0.11,
-      "negativeCount": 1,
-      "positiveCount": 5,
+      "avgSentiment": -0.388,
+      "negativeCount": 3,
+      "positiveCount": 0,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 9,
+      "itemCount": 6,
       "isStale": false,
       "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Fed’s Goolsbee Says All Options on FOMC Table Amid Hot Inflation",
+      "topPositiveTitle": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
       "items": [
         {
           "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
@@ -110,12 +68,37 @@
           ]
         },
         {
-          "title": "Fed’s Paulson Says Clear Communication Can Guide Rates",
+          "title": "S&P 500 Falls 10% From Record to Enter Correction: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Paulson Argues for Deliberate Rate Hikes to Tame Inflation",
           "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T18:25:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/fed-s-paulson-argues-for-deliberate-rate-hikes-to-tame-inflation",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T23:40:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-paulson-says-clear-communication-can-guide-rates",
+          "publishedAt": "2026-11-20T18:25:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/fed-s-cook-sees-growing-urgency-to-tackle-inflation-video",
           "tags": [
             "market",
             "rates",
@@ -123,38 +106,15 @@
           ]
         },
         {
-          "title": "Treasury Official Renews Warning on Wave of Tax-Saving Trades",
+          "title": "Goldman Sees Inflation Cooling by the end of 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T22:31:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/treasury-official-renews-warning-on-wave-of-tax-saving-trades",
+          "publishedAt": "2026-11-20T16:57:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
           "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Fed Tells Regional Staff to Expect Lower Pay Hikes in 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T19:14:11+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-tells-regional-staff-to-expect-lower-pay-increases-in-2027",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T23:34:12+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/japan-cpi-quickens-to-fastest-this-year-backing-boj-hike-case",
-          "tags": [
-            "jp_broad",
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
             "us_broad"
@@ -163,15 +123,15 @@
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.167,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": -0.415,
+      "negativeCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 4,
       "isStale": false,
       "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
+      "topPositiveTitle": "Treasuries Rally as AI Selloff Sends Investors to Haven Assets",
       "items": [
         {
           "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
@@ -189,85 +149,60 @@
           ]
         },
         {
-          "title": "China’s Already-Weakened Job Market Starts to the Feel Impact of AI",
-          "source": "Bloomberg Economics",
+          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-19/china-s-already-weakened-job-market-starts-to-the-feel-impact-of-ai",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Anthropic (ANT) IPO on Nasdaq Overcame AI Fears and Warnings",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T02:16:42+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-11-20/anthropic-ant-ipo-on-nasdaq-overcame-ai-fears-and-warnings",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T15:07:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "rates",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "South Korea’s Exports Top $1 Trillion for First Time on AI Boom",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T08:25:53+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-korea-s-exports-top-1-trillion-for-first-time-on-ai-boom",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
-    "global_broad": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
-      "topPositiveTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
-      "items": [
-        {
-          "title": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
+          "publishedAt": "2026-11-20T18:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
           "tags": [
             "fx",
-            "global_broad",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T17:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Treasuries Rally as AI Selloff Sends Investors to Haven Assets",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T04:33:23+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/treasuries-eye-longest-rally-in-five-months-on-haven-demand",
+          "tags": [
+            "macro_risk",
             "market",
             "us_broad",
             "us_growth"
           ]
         }
       ]
+    },
+    "global_broad": {
+      "avgSentiment": 0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
+      "isStale": false,
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "gold": {
       "avgSentiment": -1.0,
@@ -310,41 +245,27 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
-      "topPositiveTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
-      "items": [
-        {
-          "title": "Japan Tobacco Shares Fall After Russia-Related Charges",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T00:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/japan-tobacco-shares-set-to-fall-after-russia-related-charges",
-          "tags": [
-            "dividend",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.5,
-      "negativeCount": 1,
+      "avgSentiment": -0.332,
+      "negativeCount": 7,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 4,
+      "sourceCount": 3,
+      "itemCount": 11,
       "isStale": false,
       "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+      "topPositiveTitle": "Goldman Sees Inflation Cooling by the end of 2027",
       "items": [
         {
           "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
@@ -362,142 +283,144 @@
           ]
         },
         {
-          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+          "title": "S&P 500 Falls 10% From Record to Enter Correction: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T16:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "commodity",
-            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Argentina Hit Hard by Global Turmoil as Bonds Slip Into Distress",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T18:12:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/argentina-hit-hard-by-global-turmoil-as-bonds-slip-into-distress",
+          "tags": [
             "macro_risk",
             "market"
+          ]
+        },
+        {
+          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T18:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T17:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.08,
-      "negativeCount": 1,
-      "positiveCount": 3,
+      "avgSentiment": -0.11,
+      "negativeCount": 2,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Lula Forces Central Bank FX Intervention as Real Sells Off",
-      "topPositiveTitle": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
+      "topNegativeTitle": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
+      "topPositiveTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
       "items": [
         {
-          "title": "Lula Forces Central Bank FX Intervention as Real Sells Off",
-          "source": "Bloomberg Economics",
+          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
+          "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T15:51:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/brazil-central-bank-steps-into-markets-as-fiscal-woes-hit-real",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T18:06:59+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
           "tags": [
             "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-20T00:20:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/dollar-heads-for-fourth-week-of-gains-following-anthropic-ipo",
-          "tags": [
-            "fx",
+            "macro_risk",
             "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "fx",
-            "global_broad",
-            "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "China Sells $2 Billion Bonds at Same Yield as US Treasuries",
+          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
           "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T00:57:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-markets-up-to-2-billion-of-dollar-bonds-in-hong-kong",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T17:00:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
           "tags": [
             "fx",
+            "macro_risk",
             "market",
-            "us_broad"
+            "us_growth"
           ]
+        },
+        {
+          "title": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
+          "source": "NHK 経済",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-20T06:52:00+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261120de79016",
+          "tags": [
+            "fx",
+            "market"
+          ],
+          "titleJa": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え"
         }
       ]
     },
     "rates": {
-      "avgSentiment": 0.139,
-      "negativeCount": 3,
-      "positiveCount": 6,
-      "neutralCount": 3,
+      "avgSentiment": -0.066,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 12,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Greene Blames Loose BOE Policy, Not Bad Luck for Inflation Miss",
-      "topPositiveTitle": "Fed’s Goolsbee Says All Options on FOMC Table Amid Hot Inflation",
+      "topNegativeTitle": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
+      "topPositiveTitle": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
       "items": [
         {
-          "title": "Greene Blames Loose BOE Policy, Not Bad Luck for Inflation Miss",
+          "title": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T20:18:58+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/greene-blames-loose-boe-policy-not-bad-luck-for-inflation-miss",
+          "publishedAt": "2026-11-20T13:56:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ecb-needs-december-rate-hike-into-restrictive-zone-nagel-says",
           "tags": [
             "market",
             "rates"
           ]
         },
         {
-          "title": "Rand Dips After South Africa’s Split Decision to Hold Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T13:06:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-africa-hawkishly-holds-rates-as-inflation-risks-widen",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB’s Nagel Says December Rate Hike Would Send Clear Signal",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T10:41:47+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/ecb-s-nagel-says-december-rate-hike-would-send-clear-signal",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Paulson Says Clear Communication Can Guide Rates",
-          "source": "Bloomberg Economics",
+          "title": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T23:40:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-paulson-says-clear-communication-can-guide-rates",
+          "publishedAt": "2026-11-20T18:25:07+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/fed-s-cook-sees-growing-urgency-to-tackle-inflation-video",
           "tags": [
             "market",
             "rates",
@@ -505,43 +428,82 @@
           ]
         },
         {
-          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+          "title": "Goldman Sees Inflation Cooling by the end of 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T15:07:20+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
+          "publishedAt": "2026-11-20T16:57:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
           "tags": [
-            "jp_semiconductor",
+            "commodity",
+            "macro_risk",
             "market",
             "rates",
-            "us_growth"
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Volatility Surges Over AI Fears After Anthropic IPO",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T16:56:19+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/volatility-surges-over-ai-fears-after-anthropic-ipo-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Romania Needs Further Deficit Cuts to Boost Confidence, IMF Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T16:32:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/romania-needs-further-deficit-cuts-to-boost-confidence-imf-says",
+          "tags": [
+            "market",
+            "rates"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.333,
+      "avgSentiment": 0.11,
       "negativeCount": 0,
-      "positiveCount": 3,
-      "neutralCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 2,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
-      "topPositiveTitle": "Sri Lanka Raises Policy Rate to Ensure Inflation Reaches Target",
+      "topNegativeTitle": "Goldman Sees Inflation Cooling by the end of 2027",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 20",
       "items": [
         {
-          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+          "title": "Goldman Sees Inflation Cooling by the end of 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T16:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
+          "publishedAt": "2026-11-20T16:57:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
           "tags": [
             "commodity",
-            "geopolitical",
             "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T09:50:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/euro-area-pay-growth-accelerated-only-slightly-in-third-quarter",
+          "tags": [
+            "commodity",
             "market"
           ]
         },
@@ -557,109 +519,32 @@
             "geopolitical",
             "market"
           ]
-        },
-        {
-          "title": "South Africa Seen Holding Rates for Now as Oil Eases But Could Hike in 2027",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T05:15:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/south-africa-central-bank-rates-oil-2027--lesetja-kganyago",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Sri Lanka Raises Policy Rate to Ensure Inflation Reaches Target",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-20T02:04:14+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/sri-lanka-raises-policy-rate-to-ensure-inflation-reaches-target",
-          "tags": [
-            "commodity",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.096,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 5,
-      "sourceCount": 2,
-      "itemCount": 7,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 20",
       "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 20",
       "items": [
         {
-          "title": "Japan Tobacco Shares Fall After Russia-Related Charges",
+          "title": "Latest Oil Market News and Analysis for Nov. 20",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T00:10:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/japan-tobacco-shares-set-to-fall-after-russia-related-charges",
-          "tags": [
-            "dividend",
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "Trilateral Talks Yield Few Concrete Results",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T01:15:46+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trilateral-talks-yield-few-concrete-results",
-          "tags": [
-            "geopolitical",
-            "market"
-          ]
-        },
-        {
-          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T16:45:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T23:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/latest-oil-market-news-and-analysis-for-nov-20",
           "tags": [
             "commodity",
             "geopolitical",
-            "macro_risk",
             "market"
           ]
-        },
-        {
-          "title": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T23:04:33+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261120de78749",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府"
-        },
-        {
-          "title": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T14:48:26+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78721",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける"
         }
       ]
     }
