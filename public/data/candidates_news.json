@@ -1,31 +1,32 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-20T04:33:02.115838+09:00",
-  "sourceUpdatedAt": "2026-11-19T19:23:40+00:00",
+  "updatedAt": "2026-11-20T11:35:04.579594+09:00",
+  "sourceUpdatedAt": "2026-11-20T02:16:42+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
-      "topPositiveTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
+      "topNegativeTitle": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
+      "topPositiveTitle": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
       "items": [
         {
-          "title": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
+          "title": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
           "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T03:45:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/boj-s-ueda-unfazed-by-consumption-drop-stays-open-to-rate-hike",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T23:34:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/japan-cpi-quickens-to-fastest-this-year-backing-boj-hike-case",
           "tags": [
             "jp_broad",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -34,15 +35,29 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
-      "topPositiveTitle": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+      "topNegativeTitle": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+      "topPositiveTitle": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
       "items": [
         {
-          "title": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T15:07:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "IMF’s Chief Warns AI Correction Has ‘Little Bit More’ to Go",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -69,44 +84,58 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.292,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 4,
+      "avgSentiment": 0.11,
+      "negativeCount": 1,
+      "positiveCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 9,
       "isStale": false,
-      "topNegativeTitle": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
-      "topPositiveTitle": "Fed Tells Regional Staff to Expect Lower Pay Increases in 2027",
+      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topPositiveTitle": "Fed’s Goolsbee Says All Options on FOMC Table Amid Hot Inflation",
       "items": [
         {
-          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T15:34:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T23:56:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
           "tags": [
-            "fx",
+            "gold",
             "macro_risk",
             "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Fed’s Paulson Says Clear Communication Can Guide Rates",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T23:40:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-paulson-says-clear-communication-can-guide-rates",
+          "tags": [
+            "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "US Stocks Drop for Sixth Day as Dow Jones Index Eyes Correction",
+          "title": "Treasury Official Renews Warning on Wave of Tax-Saving Trades",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-19T07:09:16+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-stock-futures-jump-on-blockbuster-reception-to-anthropic-ipo",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T22:31:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/treasury-official-renews-warning-on-wave-of-tax-saving-trades",
           "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Fed Tells Regional Staff to Expect Lower Pay Increases in 2027",
+          "title": "Fed Tells Regional Staff to Expect Lower Pay Hikes in 2027",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
@@ -118,30 +147,47 @@
           ]
         },
         {
-          "title": "Anthropic's Blockbuster IPO Surpasses SpaceX Ahead of First Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T17:20:13+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-19/bloomberg-surveillance-11-19-2026-video",
+          "title": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T23:34:12+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/japan-cpi-quickens-to-fastest-this-year-backing-boj-hike-case",
           "tags": [
+            "jp_broad",
             "market",
+            "rates",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.112,
-      "negativeCount": 1,
+      "avgSentiment": -0.167,
+      "negativeCount": 2,
       "positiveCount": 1,
-      "neutralCount": 4,
+      "neutralCount": 3,
       "sourceCount": 2,
       "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "China’s Already-Weakened Job Market Starts to the Feel Impact of AI",
-      "topPositiveTitle": "Anthropic Shares Jump 17% After $107.3 Billion IPO Breaks Record",
+      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topPositiveTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
       "items": [
+        {
+          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T23:56:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
         {
           "title": "China’s Already-Weakened Job Market Starts to the Feel Impact of AI",
           "source": "Bloomberg Economics",
@@ -155,14 +201,28 @@
           ]
         },
         {
-          "title": "Alphabet Set to Raise $4.2 Billion From Latest Canada Bond Sale",
+          "title": "Anthropic (ANT) IPO on Nasdaq Overcame AI Fears and Warnings",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T16:16:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/alphabet-to-raise-at-least-3-5-billion-with-canadian-debt-sale",
+          "publishedAt": "2026-11-20T02:16:42+00:00",
+          "url": "https://www.bloomberg.com/news/features/2026-11-20/anthropic-ant-ipo-on-nasdaq-overcame-ai-fears-and-warnings",
           "tags": [
             "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T15:07:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "rates",
             "us_growth"
           ]
         },
@@ -178,56 +238,64 @@
             "market",
             "us_growth"
           ]
-        },
+        }
+      ]
+    },
+    "global_broad": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
+      "topPositiveTitle": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
+      "items": [
         {
-          "title": "Is China Winning the Artificial Intelligence Race That Matters?",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T05:00:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/is-china-winning-the-artificial-intelligence-race-that-matters",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Blue Owl Plans $513 Million CMBS for Amazon-Leased Data Center",
+          "title": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T00:54:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/blue-owl-plans-513-million-cmbs-for-amazon-leased-data-center",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
+            "fx",
+            "global_broad",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
-    "global_broad": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
     "gold": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topPositiveTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "items": [
+        {
+          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T23:56:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
+          "tags": [
+            "gold",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -242,50 +310,67 @@
       "items": []
     },
     "dividend": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
+      "avgSentiment": -1.0,
+      "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
+      "topPositiveTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
+      "items": [
+        {
+          "title": "Japan Tobacco Shares Fall After Russia-Related Charges",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T00:10:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/japan-tobacco-shares-set-to-fall-after-russia-related-charges",
+          "tags": [
+            "dividend",
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
     },
     "macro_risk": {
-      "avgSentiment": -0.335,
+      "avgSentiment": -0.5,
       "negativeCount": 1,
       "positiveCount": 0,
       "neutralCount": 1,
-      "sourceCount": 2,
+      "sourceCount": 1,
       "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
-      "topPositiveTitle": "Thailand Says US Agrees to Lower Forced-Labor Tariff to 10%",
+      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topPositiveTitle": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
       "items": [
         {
-          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T15:34:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-19T23:56:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
           "tags": [
-            "fx",
+            "gold",
             "macro_risk",
             "market",
-            "us_broad"
+            "us_broad",
+            "us_growth"
           ]
         },
         {
-          "title": "Thailand Says US Agrees to Lower Forced-Labor Tariff to 10%",
-          "source": "Bloomberg Economics",
+          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T03:38:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/thailand-says-us-agrees-to-lower-forced-labor-tariff-to-10",
+          "publishedAt": "2026-11-19T16:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
           "tags": [
+            "commodity",
+            "geopolitical",
             "macro_risk",
             "market"
           ]
@@ -293,30 +378,18 @@
       ]
     },
     "fx": {
-      "avgSentiment": -0.253,
-      "negativeCount": 3,
-      "positiveCount": 1,
+      "avgSentiment": 0.08,
+      "negativeCount": 1,
+      "positiveCount": 3,
       "neutralCount": 0,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Offshore Chinese Yuan Drops to Weakest Level in Over a Month",
-      "topPositiveTitle": "Australia’s Jobless Jump Prompts Traders to Price Rate Cuts",
+      "topNegativeTitle": "Lula Forces Central Bank FX Intervention as Real Sells Off",
+      "topPositiveTitle": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
       "items": [
         {
-          "title": "Offshore Chinese Yuan Drops to Weakest Level in Over a Month",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T18:19:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/offshore-chinese-yuan-drops-to-weakest-level-in-over-a-month-mwnvjmz2",
-          "tags": [
-            "fx",
-            "market"
-          ]
-        },
-        {
-          "title": "Lula Forces Central Bank FX Intervention as Brazil Rout Worsens",
+          "title": "Lula Forces Central Bank FX Intervention as Real Sells Off",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
           "sentimentScore": -0.67,
@@ -328,53 +401,68 @@
           ]
         },
         {
-          "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
+          "title": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-19T15:34:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-20T00:20:47+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/dollar-heads-for-fourth-week-of-gains-following-anthropic-ipo",
           "tags": [
             "fx",
-            "macro_risk",
             "market",
+            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Australia’s Jobless Jump Prompts Traders to Price Rate Cuts",
-          "source": "Bloomberg Economics",
+          "title": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
+          "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-19T00:32:02+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/australian-unemployment-jumps-to-4-9-following-rba-rate-hikes",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "fx",
-            "market"
+            "global_broad",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "China Sells $2 Billion Bonds at Same Yield as US Treasuries",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T00:57:50+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-markets-up-to-2-billion-of-dollar-bonds-in-hong-kong",
+          "tags": [
+            "fx",
+            "market",
+            "us_broad"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.167,
+      "avgSentiment": 0.139,
       "negativeCount": 3,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 6,
+      "positiveCount": 6,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 12,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
-      "topPositiveTitle": "Air Cargo Rates Reach Highest Since 2022",
+      "topNegativeTitle": "Greene Blames Loose BOE Policy, Not Bad Luck for Inflation Miss",
+      "topPositiveTitle": "Fed’s Goolsbee Says All Options on FOMC Table Amid Hot Inflation",
       "items": [
         {
-          "title": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
+          "title": "Greene Blames Loose BOE Policy, Not Bad Luck for Inflation Miss",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T03:45:22+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/boj-s-ueda-unfazed-by-consumption-drop-stays-open-to-rate-hike",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-19T20:18:58+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/greene-blames-loose-boe-policy-not-bad-luck-for-inflation-miss",
           "tags": [
-            "jp_broad",
             "market",
             "rates"
           ]
@@ -404,51 +492,69 @@
           ]
         },
         {
-          "title": "Traders Are Betting on Interest Rates Staying High for Years",
+          "title": "Fed’s Paulson Says Clear Communication Can Guide Rates",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T13:52:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/traders-are-betting-on-interest-rates-staying-high-for-years",
+          "publishedAt": "2026-11-19T23:40:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-paulson-says-clear-communication-can-guide-rates",
           "tags": [
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         },
         {
-          "title": "Air Cargo Rates Reach Highest Since 2022",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-19/air-cargo-rates-reach-highest-since-2022",
+          "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T15:07:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
           "tags": [
+            "jp_semiconductor",
             "market",
-            "rates"
+            "rates",
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.165,
+      "avgSentiment": 0.333,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 3,
       "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "BP Said to Weigh Divesting Its Key West Africa LNG Plant GTA",
-      "topPositiveTitle": "South Africa Seen Holding Rates for Now as Oil Eases But Could Hike in 2027",
+      "topNegativeTitle": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+      "topPositiveTitle": "Sri Lanka Raises Policy Rate to Ensure Inflation Reaches Target",
       "items": [
         {
-          "title": "BP Said to Weigh Divesting Its Key West Africa LNG Plant GTA",
+          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T17:20:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/bp-said-to-weigh-divesting-its-key-west-africa-lng-plant-gta",
+          "publishedAt": "2026-11-19T16:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
           "tags": [
             "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 20",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-19T23:05:51+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/latest-oil-market-news-and-analysis-for-nov-20",
+          "tags": [
+            "commodity",
+            "geopolitical",
             "market"
           ]
         },
@@ -464,20 +570,84 @@
             "market",
             "rates"
           ]
+        },
+        {
+          "title": "Sri Lanka Raises Policy Rate to Ensure Inflation Reaches Target",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-20T02:04:14+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/sri-lanka-raises-policy-rate-to-ensure-inflation-reaches-target",
+          "tags": [
+            "commodity",
+            "market"
+          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 1,
-      "itemCount": 3,
+      "avgSentiment": -0.096,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 5,
+      "sourceCount": 2,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
-      "topPositiveTitle": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
+      "topNegativeTitle": "Japan Tobacco Shares Fall After Russia-Related Charges",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 20",
       "items": [
+        {
+          "title": "Japan Tobacco Shares Fall After Russia-Related Charges",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T00:10:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/japan-tobacco-shares-set-to-fall-after-russia-related-charges",
+          "tags": [
+            "dividend",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trilateral Talks Yield Few Concrete Results",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T01:15:46+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trilateral-talks-yield-few-concrete-results",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T16:45:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-19T23:04:33+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261120de78749",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府"
+        },
         {
           "title": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける",
           "source": "NHK 経済",
@@ -490,32 +660,6 @@
             "market"
           ],
           "titleJa": "高市首相 トランプ大統領から米中ロ首脳会談の説明受ける"
-        },
-        {
-          "title": "史上初の米中ロ首脳会談 大国の思惑は 日本への影響は",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T14:12:37+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78692",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "史上初の米中ロ首脳会談 大国の思惑は 日本への影響は"
-        },
-        {
-          "title": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-19T12:32:00+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261119de78117",
-          "tags": [
-            "geopolitical",
-            "market"
-          ],
-          "titleJa": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を"
         }
       ]
     }

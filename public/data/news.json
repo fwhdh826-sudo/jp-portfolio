@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-19T19:32:46+00:00",
+  "updatedAt": "2026-11-20T02:29:34+00:00",
   "sourceStatus": {
     "Yahoo!ファイナンス Market": "timeout",
     "Yahoo!ファイナンス News": "timeout",
@@ -18,9 +18,9 @@
     "Yahoo!ファイナンス News": null,
     "Reuters Business": null,
     "Reuters Markets": null,
-    "Bloomberg Markets": "2026-11-19T19:23:40+00:00",
-    "Bloomberg Economics": "2026-11-19T18:32:19+00:00",
-    "NHK 経済": "2026-11-19T14:48:26+00:00",
+    "Bloomberg Markets": "2026-11-20T02:16:42+00:00",
+    "Bloomberg Economics": "2026-11-20T02:04:14+00:00",
+    "NHK 経済": "2026-11-19T23:11:09+00:00",
     "reddit r/investing": null,
     "reddit r/stocks": null,
     "Finnhub": null,
@@ -28,12 +28,95 @@
   },
   "marketNews": [
     {
-      "id": "3e0def6efccc",
+      "id": "3cbd5a5bd46e",
+      "source": "Bloomberg Economics",
+      "title": "Japan’s CPI Picks Up, Keeping BOJ on Track for Rate Hike",
+      "summary": "Gains by Japan’s consumer prices inched up to the fastest pace this year, firming up the case for the Bank of Japan to raise its benchmark interest rate next month.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/japan-cpi-quickens-to-fastest-this-year-backing-boj-hike-case",
+      "publishedAt": "2026-11-19T23:34:12+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.41,
+      "tags": [
+        "jp_broad",
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "f7b0e15276c1",
+      "source": "Bloomberg Economics",
+      "title": "Fed’s Goolsbee Says All Options on FOMC Table Amid Hot Inflation",
+      "summary": "Federal Reserve Bank of Chicago President Austan Goolsbee said he will consider all options when policymakers meet again next month to set interest rates and did not push back against the possibility of a larger-than-usual interest rate inc",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-goolsbee-says-all-options-on-fomc-table-amid-hot-inflation",
+      "publishedAt": "2026-11-19T20:30:00+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.41,
+      "tags": [
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "4de97f8e231b",
       "source": "Bloomberg Markets",
-      "title": "Anthropic IPO Sets New Standard: Rice Nelson",
-      "summary": "Jaclyn Rice Nelson, co-founder & CEO of Tribe AI, joins Scarlet Fu on a special edition of “Bloomberg Markets.” They discuss the historic Anthropic IPO. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-19/anthropic-ipo-sets-new-standard-rice-nelson-video",
-      "publishedAt": "2026-11-19T19:17:07+00:00",
+      "title": "Anthropic (ANT) IPO on Nasdaq Overcame AI Fears and Warnings",
+      "summary": "The pioneering AI lab saw unprecedented demand for its stock from both retail and institutional investors.",
+      "url": "https://www.bloomberg.com/news/features/2026-11-20/anthropic-ant-ipo-on-nasdaq-overcame-ai-fears-and-warnings",
+      "publishedAt": "2026-11-20T02:16:42+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "dcea53bc7a29",
+      "source": "Bloomberg Economics",
+      "title": "Sri Lanka Raises Policy Rate to Ensure Inflation Reaches Target",
+      "summary": "Sri Lanka’s central bank raised its benchmark interest rate, stepping up its fight against inflation even as easing global oil prices offer some relief from price pressures.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/sri-lanka-raises-policy-rate-to-ensure-inflation-reaches-target",
+      "publishedAt": "2026-11-20T02:04:14+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "ebf3cd4c4a06",
+      "source": "Bloomberg Markets",
+      "title": "Frasers CFO Unleashes on Accent as Australian Bid Turns Personal",
+      "summary": "Frasers Group Plc’s pursuit of Australia’s Accent Group Ltd. turned personal after Frasers’ finance chief flew to the retailer’s annual meeting in Melbourne to publicly accuse it of under-performance and demand the chairman quit.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/frasers-cfo-unleashes-on-accent-as-australian-bid-turns-personal",
+      "publishedAt": "2026-11-20T02:02:33+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
@@ -48,18 +131,18 @@
       "translationStatus": "pending"
     },
     {
-      "id": "eaed6feae74b",
+      "id": "4a291739eda7",
       "source": "Bloomberg Markets",
-      "title": "Fed Tells Regional Staff to Expect Lower Pay Increases in 2027",
-      "summary": "The Federal Reserve has warned employees at its regional outposts to expect lower pay increases next year, according to a memo viewed by Bloomberg News.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-tells-regional-staff-to-expect-lower-pay-increases-in-2027",
-      "publishedAt": "2026-11-19T19:14:11+00:00",
+      "title": "Australian Pension Funds Confront Their Latest Rival: AI Agents",
+      "summary": "Top Australian pension funds are grappling with the potential proliferation of autonomous AI agents, a new source of competition in the lucrative retirement market which senior executives say is creating significant challenges.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/australian-pension-funds-confront-their-latest-rival-ai-agents",
+      "publishedAt": "2026-11-20T01:19:16+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
         "market",
-        "us_broad"
+        "unknown"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -68,12 +151,135 @@
       "translationStatus": "pending"
     },
     {
-      "id": "dc4fc2d47d97",
+      "id": "4ab03af36301",
       "source": "Bloomberg Markets",
-      "title": "Anthropic IPO Backs Up Private Valuations: Schlossman",
-      "summary": "Evan Schlossman, principal at Neostellar, joins Scarlet Fu on a special edition of “Bloomberg Markets.” They discuss Anthropic’s public trading debut and what it tells us about private market valuations. (Source: Bloomberg)",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-19/anthropic-ipo-backs-up-private-valuations-schlossman-video",
-      "publishedAt": "2026-11-19T19:11:45+00:00",
+      "title": "Trilateral Talks Yield Few Concrete Results",
+      "summary": "Power dynamics were on full display as the leaders of the US, China, and Russia met on the sidelines of the APEC summit in Shenzhen. Presidents Donald Trump, Xi Jinping and Vladimir Putin pledged to boost global fuel supplies and held discu",
+      "url": "https://www.bloomberg.com/news/videos/2026-11-20/trilateral-talks-yield-few-concrete-results",
+      "publishedAt": "2026-11-20T01:15:46+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "fb72bb58a781",
+      "source": "Bloomberg Markets",
+      "title": "RBA Seeks to Manage Inflation, Jobs Tradeoffs, Board Member Says",
+      "summary": "Australia’s central bank is trying to manage the difficult tradeoffs in monetary policy of how much weight to put on inflation and how much on employment, as required under its mandate, said Renee Fry-McKibbin, a member of the Reserve Bank’",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/rba-seeks-to-manage-inflation-jobs-tradeoffs-board-member-says",
+      "publishedAt": "2026-11-20T01:15:40+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "c35d15f8727b",
+      "source": "Bloomberg Markets",
+      "title": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
+      "summary": "The dollar is headed for a fourth straight weekly gain as demand tied to the Anthropic PBC IPO further lifts the currency that has been supported by expectations of further Federal Reserve interest-rate hikes and elevated US Treasury yields",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/dollar-heads-for-fourth-week-of-gains-following-anthropic-ipo",
+      "publishedAt": "2026-11-20T00:20:47+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "14cafb4404c8",
+      "source": "Bloomberg Markets",
+      "title": "Japan Tobacco Shares Fall After Russia-Related Charges",
+      "summary": "Japan Tobacco Inc. shares declined after the cigarette maker said it expects to swing to an operating loss and slashed its dividend forecast after losing control of its Russian business.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/japan-tobacco-shares-set-to-fall-after-russia-related-charges",
+      "publishedAt": "2026-11-20T00:10:10+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -1.0,
+      "importance": 0.33,
+      "tags": [
+        "dividend",
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "90230ae0ac53",
+      "source": "Bloomberg Economics",
+      "title": "UK Consumers Become More Willing to Spend, GfK Survey Finds",
+      "summary": "British consumers regained their appetite for splashing out on things such as furniture and electronics in November, according to a survey that provides some relief for retailers ahead of crucial festive season.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/uk-consumers-become-more-willing-to-spend-gfk-survey-finds",
+      "publishedAt": "2026-11-20T00:01:00+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "d11e3933da0b",
+      "source": "Bloomberg Markets",
+      "title": "India’s Stock Rally Faces Valuation Test as Bond Allure Grows",
+      "summary": "India’s stock rebound is approaching a crucial valuation test as rising bond yields make sovereign debt an increasingly viable alternative to equities.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/india-s-stock-rally-faces-valuation-test-as-bond-allure-grows",
+      "publishedAt": "2026-11-20T00:00:00+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "4c98fc76b775",
+      "source": "Bloomberg Economics",
+      "title": "Thailand Opens Door to US Pork, Raising Risks for Farmers",
+      "summary": "Thailand crossed a former red line in its trade negotiations with the US, opening its pork market to American competition and adding pressure on a domestic industry already struggling with excess supply and weak prices.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-20/thailand-opens-door-to-us-pork-raising-risks-for-farmers",
+      "publishedAt": "2026-11-20T00:00:00+00:00",
       "sentiment": "negative",
       "sentimentScore": -0.33,
       "importance": 0.33,
@@ -88,18 +294,226 @@
       "translationStatus": "pending"
     },
     {
-      "id": "60a15b6fe972",
+      "id": "51490925894b",
       "source": "Bloomberg Markets",
-      "title": "Lina Khan’s Economic Playbook Shows in NYC Revenue-Share Deals",
-      "summary": "Lina Khan, the former US antitrust enforcer who Mayor Zohran Mamdani tapped for a top economic development role, is putting her stamp on New York City’s approach to stoking growth and hiring.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/lina-khan-s-economic-playbook-shows-in-nyc-revenue-share-deals",
-      "publishedAt": "2026-11-19T18:54:52+00:00",
+      "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "summary": "Gold fell for a fifth day — heading for the biggest weekly decline since March — as a hawkish Federal Reserve signaled more interest-rate hikes and a rout in AI stocks pushed investors to sell the metal to cover losses.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
+      "publishedAt": "2026-11-19T23:56:03+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -1.0,
+      "importance": 0.33,
+      "tags": [
+        "gold",
+        "macro_risk",
+        "market",
+        "us_broad",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "2a125ea3565f",
+      "source": "Bloomberg Economics",
+      "title": "Fed’s Paulson Says Clear Communication Can Guide Rates",
+      "summary": "Federal Reserve Bank of Philadelphia President Anna Paulson highlighted the importance of clarity in policymakers’ communications on the economy and, at times, their expectations for rates.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-s-paulson-says-clear-communication-can-guide-rates",
+      "publishedAt": "2026-11-19T23:40:00+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "ed407a6723d3",
+      "source": "Bloomberg Markets",
+      "title": "Anthropic IPO’s Australia Tranche Said About 10 Times Subscribed",
+      "summary": "Anthropic PBC drew orders for about 10 times the final allocations in the Australian tranche of its record-breaking US initial public offering, according to a person familiar with the matter.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/anthropic-ipo-raises-only-110-million-from-australian-investors",
+      "publishedAt": "2026-11-19T23:35:17+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
         "market",
         "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "aa246be3324a",
+      "source": "Bloomberg Markets",
+      "title": "Anthropic Becomes World’s 7th Most Valuable Company After IPO",
+      "summary": "Anthropic PBC’s blockbuster IPO lifted the company into the ranks of the most valuable in the world, with shares closing 17% from the offer price to give it a $1.8 trillion fully diluted market value.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/anthropic-becomes-world-s-7th-most-valuable-company-after-ipo",
+      "publishedAt": "2026-11-19T23:16:20+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "77a53c841b5c",
+      "source": "Bloomberg Markets",
+      "title": "Latest Oil Market News and Analysis for Nov. 20",
+      "summary": "Oil edged higher after a volatile session on Thursday, with futures on track for a third weekly decline as traders weigh the risk of renewed US strikes on Iran against ample supply.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/latest-oil-market-news-and-analysis-for-nov-20",
+      "publishedAt": "2026-11-19T23:05:51+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.33,
+      "tags": [
+        "commodity",
+        "geopolitical",
+        "market"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "332f6c7a19f1",
+      "source": "Bloomberg Markets",
+      "title": "Treasury Official Renews Warning on Wave of Tax-Saving Trades",
+      "summary": "A senior US Treasury official reiterated concerns Thursday about Wall Street’s tax-efficient investing boom, saying firms should win clients on the merits of their investments, not on how far they’ll go to minimize a tax bill.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/treasury-official-renews-warning-on-wave-of-tax-saving-trades",
+      "publishedAt": "2026-11-19T22:31:50+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "us_broad"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "eafb7e8cdbf8",
+      "source": "Bloomberg Economics",
+      "title": "Why China’s Export Machine Seems Unstoppable",
+      "summary": "In this Bloomberg Originals weekly documentary, we explore how&nbsp;the West’s tariffs and restrictions have failed to derail Beijing’s global trade march.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/why-china-s-export-machine-seems-unstoppable",
+      "publishedAt": "2026-11-19T22:13:35+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "de97c0c5b8db",
+      "source": "Bloomberg Markets",
+      "title": "Stocks Sell Off as AI Trade Falters, Bonds Gain: Markets Wrap",
+      "summary": "Global stocks were poised for their longest losing streak in more than three years as the artificial intelligence trade cratered after a bull run earlier this year, sending investors to the safety of haven assets such as Treasuries and the ",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
+      "publishedAt": "2026-11-19T22:03:40+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.33,
+      "tags": [
+        "fx",
+        "global_broad",
+        "market",
+        "us_broad",
+        "us_growth"
+      ],
+      "tickers": [],
+      "impact": "positive",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "08f58c798935",
+      "source": "Bloomberg Markets",
+      "title": "Shenkman, Blackstone, GDA Among Lenders to Take Over Vivid",
+      "summary": "A group of lenders including Blackstone Inc. and Shenkman Capital Management are set to take over Vivid Seats Inc. in a deal that would reduce the ticket reseller’s net debt by more than $200 million, according to people familiar with the m",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/blackstone-among-lenders-taking-over-ticket-reseller-vivid-seats",
+      "publishedAt": "2026-11-19T21:22:45+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "unknown"
+      ],
+      "tickers": [],
+      "impact": "neutral",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "75439665ef47",
+      "source": "Bloomberg Economics",
+      "title": "Greene Blames Loose BOE Policy, Not Bad Luck for Inflation Miss",
+      "summary": "Bank of England policymaker Megan Greene said the central bank can no longer blame bad luck for its struggle to return inflation to target, arguing interest rates haven’t done enough to contain price pressures in recent years.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/greene-blames-loose-boe-policy-not-bad-luck-for-inflation-miss",
+      "publishedAt": "2026-11-19T20:18:58+00:00",
+      "sentiment": "negative",
+      "sentimentScore": -0.33,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "rates"
+      ],
+      "tickers": [],
+      "impact": "negative",
+      "whyImportant": "短期の地合い把握に有用なため。",
+      "recommendation": "監視継続。次回更新時に再評価する。",
+      "translationStatus": "pending"
+    },
+    {
+      "id": "6ac67cb26007",
+      "source": "Bloomberg Markets",
+      "title": "Fed Tells Regional Staff to Expect Lower Pay Hikes in 2027",
+      "summary": "The Federal Reserve has warned employees at its regional outposts to expect lower pay increases next year, according to a memo viewed by Bloomberg News.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/fed-tells-regional-staff-to-expect-lower-pay-increases-in-2027",
+      "publishedAt": "2026-11-19T19:14:11+00:00",
+      "sentiment": "neutral",
+      "sentimentScore": 0.0,
+      "importance": 0.33,
+      "tags": [
+        "market",
+        "us_broad"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -128,57 +542,19 @@
       "translationStatus": "pending"
     },
     {
-      "id": "223726df5ada",
+      "id": "ea6490a14ffa",
       "source": "Bloomberg Markets",
-      "title": "Offshore Chinese Yuan Drops to Weakest Level in Over a Month",
-      "summary": "The offshore Chinese yuan declined to the weakest level in more than a month while the dollar rallied as risk appetite shrank.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/offshore-chinese-yuan-drops-to-weakest-level-in-over-a-month-mwnvjmz2",
-      "publishedAt": "2026-11-19T18:19:10+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "69182a5fb60c",
-      "source": "Bloomberg Markets",
-      "title": "BlackRock’s New Proposal Looks to Mix Ease of Trading With Private Market Access",
-      "summary": "The proposed fund structure brings together two things investors are obsessed with.",
-      "url": "https://www.bloomberg.com/news/newsletters/2026-11-19/blackrock-s-new-proposal-looks-to-mix-ease-of-trading-with-private-market-access",
-      "publishedAt": "2026-11-19T17:33:42+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "9d578aaa3ef6",
-      "source": "Bloomberg Markets",
-      "title": "BP Said to Weigh Divesting Its Key West Africa LNG Plant GTA",
-      "summary": "BP Plc has been considering divesting its majority stake and operatorship of its liquefied natural gas facility off the coast of West Africa, people familiar with the matter said, as chief executive officer Meg O’Neill aims to narrow the en",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/bp-said-to-weigh-divesting-its-key-west-africa-lng-plant-gta",
-      "publishedAt": "2026-11-19T17:20:54+00:00",
+      "title": "US Sour Crude’s War Premium Vanishes as Oil Supply Surges",
+      "summary": "The price of US sour oil has plunged, as a surge in crude supply from Venezuela, Canada and the Middle East gives refiners ample barrels to choose from.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-sour-crude-s-war-premium-vanishes-as-supply-surges",
+      "publishedAt": "2026-11-19T16:45:06+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
         "commodity",
+        "geopolitical",
+        "macro_risk",
         "market"
       ],
       "tickers": [],
@@ -188,70 +564,10 @@
       "translationStatus": "pending"
     },
     {
-      "id": "639890c98812",
-      "source": "Bloomberg Markets",
-      "title": "Anthropic's Blockbuster IPO Surpasses SpaceX Ahead of First Trade",
-      "summary": "Jonathan Ferro, Lisa Abramowicz and Annmarie Hordern speak daily with leaders and decision makers from Wall Street to Washington and beyond. No other program better positions investors and executives for the trading day than \"Bloomberg Surv",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-19/bloomberg-surveillance-11-19-2026-video",
-      "publishedAt": "2026-11-19T17:20:13+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "92ee34541c21",
-      "source": "Bloomberg Markets",
-      "title": "Alphabet Set to Raise $4.2 Billion From Latest Canada Bond Sale",
-      "summary": "Alphabet Inc. has launched a C$6 billion ($4.2 billion) sale of Canadian bonds, six months after its debut in the market.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/alphabet-to-raise-at-least-3-5-billion-with-canadian-debt-sale",
-      "publishedAt": "2026-11-19T16:16:50+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "abfb71af296f",
-      "source": "Bloomberg Markets",
-      "title": "AMD Falls on Hunterbrook Short Call That Cites China Risks",
-      "summary": "Advanced Micro Devices Inc. shares slid after Hunterbrook Capital said it shorted the stock, following a report by its media affiliate that the chipmaker is reliant on a potentially risky business in China.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/amd-slides-after-hunterbrook-shorts-stock-cites-circular-deals",
-      "publishedAt": "2026-11-19T16:12:28+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.2,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "c6747f4b7787",
+      "id": "89efbd85c07d",
       "source": "Bloomberg Economics",
-      "title": "Lula Forces Central Bank FX Intervention as Brazil Rout Worsens",
-      "summary": "Brazil’s central bank stepped into currency markets as the real plunged after President Luiz Inácio Lula da Silva said he was in no rush to announce a new finance minister, deepening the rout sparked by his re-election last month.",
+      "title": "Lula Forces Central Bank FX Intervention as Real Sells Off",
+      "summary": "Brazil’s central bank stepped into currency markets as the real plunged after President Luiz Inácio Lula da Silva said he was in no rush to announce a new finance minister, deepening the rout sparked by his reelection last month.",
       "url": "https://www.bloomberg.com/news/articles/2026-11-19/brazil-central-bank-steps-into-markets-as-fiscal-woes-hit-real",
       "publishedAt": "2026-11-19T15:51:36+00:00",
       "sentiment": "negative",
@@ -268,83 +584,23 @@
       "translationStatus": "pending"
     },
     {
-      "id": "5b1bf5e90685",
+      "id": "50259f04aa5f",
       "source": "Bloomberg Markets",
-      "title": "Tod’s Nears €400 Million Debt Refinancing Backed by Owners",
-      "summary": "Tod’s SpA is close to securing a €400 million ($439 million) debt refinancing backstopped by the founder’s family that would ease financial pressure on the Italian luxury group, according to people familiar with the matter.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/tod-s-nears-400-million-debt-refinance-backed-by-group-s-owners",
-      "publishedAt": "2026-11-19T15:50:42+00:00",
+      "title": "SpaceX Sells $32 Billion of AI Chip Debt at Yields Topping 8%",
+      "summary": "SpaceX sold $32 billion of bonds to fund its purchase of artificial intelligence chips on Thursday, in a complicated and relatively high-yielding transaction that may serve as a model for a wave of similar financings to come.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/spacex-eyes-at-least-32-billion-ai-chip-debt-sale-on-thursday",
+      "publishedAt": "2026-11-19T15:07:20+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.33,
       "tags": [
+        "jp_semiconductor",
         "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "504f1c266f62",
-      "source": "Bloomberg Markets",
-      "title": "Mexican Peso Rout Deepens as Banxico, Fed Policies Diverge",
-      "summary": "The Mexican peso sank past the 19-per-dollar mark to its lowest in over a year, as the prospect of further Federal Reserve interest-rate hikes intensified a selloff fueled by Mexico’s dovish monetary policy.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/mexican-peso-hits-17-month-low-as-fed-outlook-rattles-markets",
-      "publishedAt": "2026-11-19T15:34:06+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "fx",
-        "macro_risk",
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "c448a23f4078",
-      "source": "Bloomberg Markets",
-      "title": "Sanofi Weighs Takeover of US Drugmaker Insmed",
-      "summary": "Sanofi SA is weighing an acquisition of US drugmaker Insmed Inc., people familiar with the matter said, as the French pharmaceuticals company hunts for its next blockbuster treatment under a new CEO.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/sanofi-weighs-takeover-of-us-drugmaker-insmed",
-      "publishedAt": "2026-11-19T15:05:37+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "1a763323c42b",
-      "source": "Bloomberg Markets",
-      "title": "Anthropic Shares Jump 17% After $107.3 Billion IPO Breaks Record",
-      "summary": "Anthropic PBC shares pared earlier gains to trade 17% above their IPO price after the artificial intelligence lab’s blockbuster $107.3 billion debut broke SpaceX’s record for the biggest-ever offering.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/anthropic-poised-to-surge-after-107-3-billion-ipo-tops-spacex",
-      "publishedAt": "2026-11-19T14:52:54+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 1.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
+        "rates",
         "us_growth"
       ],
       "tickers": [],
-      "impact": "positive",
+      "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
       "translationStatus": "pending"
@@ -362,26 +618,6 @@
       "tags": [
         "market",
         "rates"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "7561f91e36f5",
-      "source": "Bloomberg Markets",
-      "title": "India Customs Dispute Holds Up $66 Million of Scotch Whisky",
-      "summary": "Indian customs authorities are holding up bulk Scotch whisky shipments worth more than £50 million ($65.8 million) at various ports over an import duty dispute, said a person familiar with the matter.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/india-customs-dispute-holds-up-66-million-of-scotch-whisky",
-      "publishedAt": "2026-11-19T13:45:34+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
       ],
       "tickers": [],
       "impact": "neutral",
@@ -470,9 +706,9 @@
       "translationStatus": "pending"
     },
     {
-      "id": "ada1a9796511",
+      "id": "fc43b7d2fd55",
       "source": "Bloomberg Economics",
-      "title": "IMF’s Chief Is Warning AI Correction Has ‘Little Bit More’ to Go",
+      "title": "IMF’s Chief Warns AI Correction Has ‘Little Bit More’ to Go",
       "summary": "The head of the International Monetary Fund said she expects “perhaps a little bit more” of a correction in financial markets related to AI, amid concerns the boom has been overdone and as the US seeks to crack down on the smuggling of high",
       "url": "https://www.bloomberg.com/news/articles/2026-11-19/imf-s-chief-is-warning-ai-correction-has-little-bit-more-to-go",
       "publishedAt": "2026-11-19T10:51:21+00:00",
@@ -551,46 +787,6 @@
       "translationStatus": "pending"
     },
     {
-      "id": "c1f176ad3ce7",
-      "source": "Bloomberg Markets",
-      "title": "US Stocks Drop for Sixth Day as Dow Jones Index Eyes Correction",
-      "summary": "US equity indexes extended losses to a sixth straight day as a rally in technology stocks fizzled following the stock-market debut of Anthropic PBC.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/us-stock-futures-jump-on-blockbuster-reception-to-anthropic-ipo",
-      "publishedAt": "2026-11-19T07:09:16+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.5,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_broad"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "b13338f64ccf",
-      "source": "Bloomberg Economics",
-      "title": "India Official Calls for Higher Wages to Spur Household Spending",
-      "summary": "Indian firms need to boost wages to underpin consumer demand and economic growth, at a time when private investment is gaining momentum, a top finance ministry official said.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/india-official-calls-for-higher-wages-to-spur-household-spending",
-      "publishedAt": "2026-11-19T06:25:43+00:00",
-      "sentiment": "positive",
-      "sentimentScore": 0.33,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "positive",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
       "id": "ee526ceac480",
       "source": "Bloomberg Economics",
       "title": "South Africa Seen Holding Rates for Now as Oil Eases But Could Hike in 2027",
@@ -612,99 +808,19 @@
       "translationStatus": "pending"
     },
     {
-      "id": "44ae43d55e94",
-      "source": "Bloomberg Economics",
-      "title": "Is China Winning the Artificial Intelligence Race That Matters?",
-      "summary": "Its cheaper models, embedded with China’s worldview, are spreading across the developing world and beyond, giving Beijing a long-term&nbsp;edge.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/is-china-winning-the-artificial-intelligence-race-that-matters",
-      "publishedAt": "2026-11-19T05:00:05+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "7445e3392f42",
-      "source": "Bloomberg Economics",
-      "title": "BOJ’s Ueda Unfazed by Consumption Drop, Stays Open to Rate Hike",
-      "summary": "Bank of Japan Governor Kazuo Ueda said he expects consumer spending to return to a rising trend, signaling that a recent economic contraction driven by weak consumption won’t dissuade the central bank from raising its benchmark interest rat",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/boj-s-ueda-unfazed-by-consumption-drop-stays-open-to-rate-hike",
-      "publishedAt": "2026-11-19T03:45:22+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -1.0,
-      "importance": 0.33,
-      "tags": [
-        "jp_broad",
-        "market",
-        "rates"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "a44605d9c716",
-      "source": "Bloomberg Economics",
-      "title": "Thailand Says US Agrees to Lower Forced-Labor Tariff to 10%",
-      "summary": "The US plans to cut an additional tariff on Thai goods to 10% from 12.5%, Thailand said, putting the country on par with some regional competitors.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/thailand-says-us-agrees-to-lower-forced-labor-tariff-to-10",
-      "publishedAt": "2026-11-19T03:38:03+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "macro_risk",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "de335aef99bc",
+      "id": "bbc7ff2c686c",
       "source": "Bloomberg Markets",
-      "title": "Blue Owl Plans $513 Million CMBS for Amazon-Leased Data Center",
-      "summary": "Blue Owl Capital Inc. is preparing to sell $513 million of commercial mortgage backed securities to fund the acquisition of a Northern Virginia data center that’s fully leased to Amazon.com Inc., according to people with knowledge of the ma",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/blue-owl-plans-513-million-cmbs-for-amazon-leased-data-center",
-      "publishedAt": "2026-11-19T00:54:52+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "us_growth"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "f7e99861b7ef",
-      "source": "Bloomberg Economics",
-      "title": "Australia’s Jobless Jump Prompts Traders to Price Rate Cuts",
-      "summary": "Australian unemployment climbed to a five-year high in October with the economy unexpectedly shedding jobs, sending the currency lower as traders boosted bets the Reserve Bank will pivot to interest-rate cuts next year.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-19/australian-unemployment-jumps-to-4-9-following-rba-rate-hikes",
-      "publishedAt": "2026-11-19T00:32:02+00:00",
+      "title": "China Sells $2 Billion Bonds at Same Yield as US Treasuries",
+      "summary": "China sold $2 billion of dollar-denominated sovereign bonds on Thursday priced at no premium to US Treasuries, as the offering drew strong demand.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/china-markets-up-to-2-billion-of-dollar-bonds-in-hong-kong",
+      "publishedAt": "2026-11-19T00:57:50+00:00",
       "sentiment": "positive",
-      "sentimentScore": 1.0,
+      "sentimentScore": 0.33,
       "importance": 0.33,
       "tags": [
         "fx",
-        "market"
+        "market",
+        "us_broad"
       ],
       "tickers": [],
       "impact": "positive",
@@ -713,35 +829,15 @@
       "translationStatus": "pending"
     },
     {
-      "id": "d2d40f94caa1",
-      "source": "Bloomberg Markets",
-      "title": "Skydance Skips FIFA World Cup Bid as Netflix, Fox Eye $4 Billion Deal",
-      "summary": "Skydance Corp. and Walt Disney Co.’s ESPN have declined to bid for the US media rights for the next FIFA Men’s World Cup tournament in what could be one of the costliest and competitive auctions in the global soccer event’s history, accordi",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-18/skydance-skips-fifa-world-cup-bid-as-netflix-fox-eye-4-billion-deal",
-      "publishedAt": "2026-11-18T22:52:49+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "e17670cf3105",
-      "source": "Bloomberg Markets",
-      "title": "Stocks Fall as Anthropic Debut Not an AI All-Clear: Markets Wrap",
-      "summary": "A rally in stocks fizzled out as Anthropic PBC’s solid market debut failed to sustain enthusiasm for the artificial-intelligence trade.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-18/stock-market-today-dow-s-p-live-updates",
-      "publishedAt": "2026-11-18T22:07:41+00:00",
+      "id": "d4253ba65aff",
+      "source": "NHK 経済",
+      "title": "高市首相動静 2026年11月19日",
+      "summary": "（高市首相動静 2026年11月19日）",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261120de78786",
+      "publishedAt": "2026-11-19T23:11:09+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
-      "importance": 0.33,
+      "importance": 0.25,
       "tags": [
         "market",
         "unknown"
@@ -750,67 +846,53 @@
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
+      "titleJa": "高市首相動静 2026年11月19日",
+      "summaryJa": "（高市首相動静 2026年11月19日）",
+      "translationStatus": "ja-original"
     },
     {
-      "id": "fd6f861598f1",
-      "source": "Bloomberg Economics",
-      "title": "AI Is Making China’s Jobs Slump Even Worse",
-      "summary": "A Bloomberg analysis finds a double-digit decline in hiring for jobs most exposed to the technology.",
-      "url": "https://www.bloomberg.com/graphics/2026-china-ai-jobs-slump/",
-      "publishedAt": "2026-11-18T22:00:03+00:00",
-      "sentiment": "negative",
-      "sentimentScore": -0.67,
-      "importance": 0.33,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "negative",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
-    },
-    {
-      "id": "5903c281c7b8",
-      "source": "Bloomberg Economics",
-      "title": "California Faces $2 Billion Deficit as Budget ‘Overextended’",
-      "summary": "California is on track for a $2 billion deficit in the next fiscal year, even as tax revenues exceed expectations, according to a forecast from the Legislative Analyst’s Office on Wednesday.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-18/california-faces-2-billion-deficit-as-budget-overextended",
-      "publishedAt": "2026-11-18T20:00:27+00:00",
+      "id": "9d68587509ca",
+      "source": "NHK 経済",
+      "title": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府",
+      "summary": "高市総理大臣は19日夜、アメリカのトランプ大統領と電話で会談し、アメリカと中国、ロシアの3か国の首脳会談などの内容について説明を受けました。政府は3か国の首脳会談の結果が国際情勢に与える影響を注視する…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261120de78749",
+      "publishedAt": "2026-11-19T23:04:33+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
-      "importance": 0.33,
+      "importance": 0.25,
       "tags": [
-        "market",
-        "unknown"
+        "geopolitical",
+        "market"
       ],
       "tickers": [],
       "impact": "neutral",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
+      "titleJa": "米中ロ首脳会談の影響注視 同盟国・同志国と連携強化 日本政府",
+      "summaryJa": "高市総理大臣は19日夜、アメリカのトランプ大統領と電話で会談し、アメリカと中国、ロシアの3か国の首脳会談などの内容について説明を受けました。政府は3か国の首脳会談の結果が国際情勢に与える影響を注視する…",
+      "translationStatus": "ja-original"
     },
     {
-      "id": "2daca3ada33e",
-      "source": "Bloomberg Economics",
-      "title": "Colombia Touts $43 Billion in Investments Amid Fiscal Strain",
-      "summary": "Colombia secured $43.2 billion in investment and financing commitments during a three-day push to attract foreign capital in New York, more than double the government’s initial target.",
-      "url": "https://www.bloomberg.com/news/articles/2026-11-18/colombia-touts-43-billion-investment-haul-amid-fiscal-strain",
-      "publishedAt": "2026-11-18T19:33:15+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
+      "id": "ce495c65373d",
+      "source": "NHK 経済",
+      "title": "消費税減税法案 支援金 所得下限56万円検討で公明の賛同期待も",
+      "summary": "食料品の消費税減税関連法案をめぐって、政府・与党は、所得に応じた支援金の支給が始まる年収を、公明党の主張に沿って56万円程度とする方向で検討しています。与党側は法案への賛同を引き出したいとしていますが…",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261120de78748",
+      "publishedAt": "2026-11-19T22:44:01+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.33,
+      "importance": 0.25,
       "tags": [
         "market",
         "unknown"
       ],
       "tickers": [],
-      "impact": "neutral",
+      "impact": "positive",
       "whyImportant": "短期の地合い把握に有用なため。",
       "recommendation": "監視継続。次回更新時に再評価する。",
-      "translationStatus": "pending"
+      "titleJa": "消費税減税法案 支援金 所得下限56万円検討で公明の賛同期待も",
+      "summaryJa": "食料品の消費税減税関連法案をめぐって、政府・与党は、所得に応じた支援金の支給が始まる年収を、公明党の主張に沿って56万円程度とする方向で検討しています。与党側は法案への賛同を引き出したいとしていますが…",
+      "translationStatus": "ja-original"
     },
     {
       "id": "14e2a8eb9ea8",
@@ -884,7 +966,7 @@
       "title": "来年度の税制改正 自民税調が議論開始 税収格差是正など論点に",
       "summary": "来年度の税制改正に向けて、自民党は税制調査会で本格的な議論を始めました。 論点の1つとなる東京と地方の税収格差の是正について、地方から選出されている議員が実現するよう求めたのに対し、東京選出の議員は…",
       "url": "https://news.web.nhk/newsweb/na/nd-20261119de78555",
-      "publishedAt": "2026-11-19T13:02:32+00:00",
+      "publishedAt": "2026-11-19T13:02:00+00:00",
       "sentiment": "neutral",
       "sentimentScore": 0.0,
       "importance": 0.25,
@@ -943,94 +1025,29 @@
       "titleJa": "関文科相パーティー 政府側が資料提示も 野党側は“不十分”",
       "summaryJa": "関文部科学大臣が開催した政治資金パーティーをめぐり、食料品の消費税減税関連法案を審議する参議院の特別委員会の理事会で、政府側が関連する資料を示したのに対し、野党側は不十分だと指摘し、引き続き協議するこ…",
       "translationStatus": "ja-original"
-    },
-    {
-      "id": "fc0d9519d92c",
-      "source": "NHK 経済",
-      "title": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を",
-      "summary": "アメリカのトランプ大統領、中国の習近平国家主席、ロシアのプーチン大統領による初めての3か国の首脳会談が中国の※深センで日本時間の19日夕方、行われました。 3か国の首脳は「平和宣言」を取りまとめ、核…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261119de78117",
-      "publishedAt": "2026-11-19T12:32:00+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "geopolitical",
-        "market"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "史上初 米中ロ首脳会談で「平和宣言」 核リスク低減へ対話を",
-      "summaryJa": "アメリカのトランプ大統領、中国の習近平国家主席、ロシアのプーチン大統領による初めての3か国の首脳会談が中国の※深センで日本時間の19日夕方、行われました。 3か国の首脳は「平和宣言」を取りまとめ、核…",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "64b536120d8c",
-      "source": "NHK 経済",
-      "title": "日印2＋2 自由で開かれたインド太平洋実現へ強力深化を確認",
-      "summary": "日本とインドの外務・防衛の閣僚協議、いわゆる「2プラス2」が、19日、東京で行われ、自由で開かれたインド太平洋の実現に向けて、安全保障・防衛協力を深化させていくことを確認しました。",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261119de78660",
-      "publishedAt": "2026-11-19T11:07:21+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "日印2＋2 自由で開かれたインド太平洋実現へ強力深化を確認",
-      "summaryJa": "日本とインドの外務・防衛の閣僚協議、いわゆる「2プラス2」が、19日、東京で行われ、自由で開かれたインド太平洋の実現に向けて、安全保障・防衛協力を深化させていくことを確認しました。",
-      "translationStatus": "ja-original"
-    },
-    {
-      "id": "470447e076fe",
-      "source": "NHK 経済",
-      "title": "関文科相の政治資金パーティーめぐり 与野党折り合わず",
-      "summary": "参議院文教科学委員会の理事懇談会が開かれ、野党側は、関文部科学大臣側が衆議院の内規で禁止されている議員会館内で開いた政治資金パーティーについて説明が不十分だとして詳細を示すよう求めたのに対し、与党側は…",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261119de78444",
-      "publishedAt": "2026-11-19T11:01:21+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.25,
-      "tags": [
-        "market",
-        "unknown"
-      ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
-      "titleJa": "関文科相の政治資金パーティーめぐり 与野党折り合わず",
-      "summaryJa": "参議院文教科学委員会の理事懇談会が開かれ、野党側は、関文部科学大臣側が衆議院の内規で禁止されている議員会館内で開いた政治資金パーティーについて説明が不十分だとして詳細を示すよう求めたのに対し、与党側は…",
-      "translationStatus": "ja-original"
     }
   ],
   "stockNews": [
     {
-      "id": "bc98144055f8",
+      "id": "cf19a5d72112",
       "source": "Bloomberg Markets",
-      "title": "Anthropic Leveraged ETF Race Heats Up",
-      "summary": "Bilal Little, global ETF strategist at Direxion, joins Scarlet Fu on a special edition of “Bloomberg Markets.” Providers have filed for more than 20 exchange-traded products to amplify daily moves on Anthropic, both on the upside and the do",
-      "url": "https://www.bloomberg.com/news/videos/2026-11-19/anthropic-leveraged-etf-race-heats-up-video",
-      "publishedAt": "2026-11-19T19:23:40+00:00",
-      "sentiment": "neutral",
-      "sentimentScore": 0.0,
-      "importance": 0.33,
+      "title": "Nintendo Gains as ‘Roaring Kitty’ Posts Mario Character on X",
+      "summary": "Nintendo Co.’s American depositary receipts soared Thursday after an account associated with Keith Gill, the online persona known as “Roaring Kitty,” posted an image of the firm’s mascot on X.",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-19/nintendo-jumps-after-roaring-kitty-posts-mario-character-on-x",
+      "publishedAt": "2026-11-19T17:15:50+00:00",
+      "sentiment": "positive",
+      "sentimentScore": 0.67,
+      "importance": 0.47,
       "tags": [
         "market",
-        "trust",
         "unknown"
       ],
-      "tickers": [],
-      "impact": "neutral",
-      "whyImportant": "短期の地合い把握に有用なため。",
-      "recommendation": "監視継続。次回更新時に再評価する。",
+      "tickers": [
+        "7974"
+      ],
+      "impact": "positive",
+      "whyImportant": "関連銘柄の前提確認に必要なため。",
+      "recommendation": "分割エントリー可能か、理想PF差分と合わせて確認する。",
       "translationStatus": "pending"
     }
   ],
@@ -1038,6 +1055,6 @@
     "totalCount": 49,
     "marketCount": 48,
     "stockCount": 1,
-    "duplicateRemoved": 0
+    "duplicateRemoved": 1
   }
 }
