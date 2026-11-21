@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-21T13:07:47.216551+09:00",
-  "sourceUpdatedAt": "2026-11-21T03:20:55+00:00",
+  "updatedAt": "2026-11-22T03:07:17.327199+09:00",
+  "sourceUpdatedAt": "2026-11-21T17:01:32+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,63 +17,76 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": -0.25,
-      "negativeCount": 1,
-      "positiveCount": 0,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
+      "positiveCount": 2,
       "neutralCount": 3,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
-      "topPositiveTitle": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+      "topNegativeTitle": "Goldman’s SpaceX Pitch Helps Solve AI Debt Puzzle: Credit Weekly",
+      "topPositiveTitle": "New US AI Chip Rules Against China Threaten Pain for Southeast Asia",
       "items": [
         {
-          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T22:08:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+          "title": "Goldman’s SpaceX Pitch Helps Solve AI Debt Puzzle: Credit Weekly",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T22:31:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trump-huang-should-return-to-nvidia-after-big-apology-video",
+          "publishedAt": "2026-11-21T15:31:22+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/goldman-s-spacex-pitch-helps-solve-ai-debt-puzzle-credit-weekly",
           "tags": [
             "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Euphoria Gives Way to Fear And ‘Face-Ripping Volatility’",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T21:52:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/wall-street-nears-breaking-point-as-fear-grips-global-markets",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market"
           ]
         },
         {
-          "title": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
-          "source": "Bloomberg Economics",
+          "title": "Wall Street Asks What Can Save AI Trade After Anthropic Wipeout",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T15:05:04+00:00",
-          "url": "https://www.bloomberg.com/news/features/2026-11-20/china-s-exports-of-robots-cars-semiconductors-make-life-hard-for-rivals",
+          "publishedAt": "2026-11-21T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/wall-street-asks-what-can-save-ai-trade-after-anthropic-wipeout",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic Makes Its Public Market Debut",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T12:59:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/anthropic-makes-its-public-market-debut-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic IPO Fails to Calm AI Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-21T13:43:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/anthropic-ipo-fails-to-calm-ai-jitters-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "New US AI Chip Rules Against China Threaten Pain for Southeast Asia",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-21T11:45:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-21/new-us-ai-chip-rules-against-china-threaten-pain-for-southeast-asia",
           "tags": [
             "jp_semiconductor",
             "market"
@@ -82,43 +95,16 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.777,
-      "negativeCount": 3,
+      "avgSentiment": -0.11,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 2,
       "sourceCount": 2,
       "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "S&P, Dow Slide Into Correction as Investors Dump Tech",
-      "topPositiveTitle": "Fed’s Paulson Argues for Deliberate Rate Hikes to Tame Inflation",
+      "topNegativeTitle": "Fed’s Paulson Argues for Deliberate Rate Hikes to Tame Inflation",
+      "topPositiveTitle": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
       "items": [
-        {
-          "title": "S&P, Dow Slide Into Correction as Investors Dump Tech",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T22:25:52+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/s-p-dow-slide-into-correction-as-investors-dump-tech-video",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T23:56:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
         {
           "title": "Fed’s Paulson Argues for Deliberate Rate Hikes to Tame Inflation",
           "source": "Bloomberg Economics",
@@ -130,85 +116,109 @@
             "market",
             "us_broad"
           ]
+        },
+        {
+          "title": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:04:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/-raise-taxes-cut-spending-bill-dudley-on-the-debt-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Wall Street Asks What Can Save AI Trade After Anthropic Wipeout",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/wall-street-asks-what-can-save-ai-trade-after-anthropic-wipeout",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.532,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
       "sourceCount": 1,
       "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
-      "topPositiveTitle": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+      "topNegativeTitle": "Odd Lots: How AI Reshaped Chinese Industrial Policy (Podcast)",
+      "topPositiveTitle": "Anthropic IPO Fails to Calm AI Jitters",
       "items": [
         {
-          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+          "title": "Odd Lots: How AI Reshaped Chinese Industrial Policy (Podcast)",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T22:08:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-21T09:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/audio/2026-11-21/odd-lots-how-ai-reshaped-chinese-industrial-policy-podcast",
           "tags": [
-            "jp_semiconductor",
-            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
+          "title": "Is AI a Bubble? History Offers Some Clues",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T23:56:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T15:09:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/is-ai-a-bubble-history-offers-some-clues-video",
           "tags": [
-            "gold",
-            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Wall Street Asks What Can Save AI Trade After Anthropic Wipeout",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/wall-street-asks-what-can-save-ai-trade-after-anthropic-wipeout",
+          "tags": [
+            "jp_semiconductor",
             "market",
             "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T17:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Has Worst Week Since 2020 on AI Drama: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+          "title": "Anthropic Makes Its Public Market Debut",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T22:31:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trump-huang-should-return-to-nvidia-after-big-apology-video",
+          "publishedAt": "2026-11-21T12:59:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/anthropic-makes-its-public-market-debut-video",
           "tags": [
             "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic IPO Fails to Calm AI Jitters",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-21T13:43:18+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/anthropic-ipo-fails-to-calm-ai-jitters-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
             "market",
             "us_growth"
           ]
@@ -228,32 +238,16 @@
       "items": []
     },
     "gold": {
-      "avgSentiment": -1.0,
-      "negativeCount": 1,
+      "avgSentiment": 0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
-      "items": [
-        {
-          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T23:56:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "reit": {
       "avgSentiment": 0,
@@ -280,72 +274,16 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.427,
-      "negativeCount": 5,
-      "positiveCount": 0,
-      "neutralCount": 2,
+      "avgSentiment": 0.096,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 4,
       "sourceCount": 3,
       "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
-      "topPositiveTitle": "AI Euphoria Gives Way to Fear And ‘Face-Ripping Volatility’",
+      "topNegativeTitle": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か",
+      "topPositiveTitle": "Putin Gains From Trump, Xi Summit Spotlight",
       "items": [
-        {
-          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-20T22:08:59+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
-          "tags": [
-            "jp_semiconductor",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T23:56:03+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/gold-set-for-worst-week-since-march-on-hawkish-fed-ai-selloff",
-          "tags": [
-            "gold",
-            "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T17:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nasdaq 100 Has Worst Week Since 2020 on AI Drama: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か",
           "source": "NHK 経済",
@@ -358,34 +296,73 @@
             "market"
           ],
           "titleJa": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か"
+        },
+        {
+          "title": "The 1982 War Still Haunts the Middle East",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T15:19:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/the-1982-war-still-haunts-the-middle-east-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump’s Putin Ties Draw Focus After Summit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/trump-s-putin-ties-draw-focus-after-summit-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:04:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/-raise-taxes-cut-spending-bill-dudley-on-the-debt-video",
+          "tags": [
+            "macro_risk",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "De Cos Awaits Europe’s Call as a Nemesis to the Bond Vigilantes",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T08:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/de-cos-awaits-europe-s-call-as-a-nemesis-to-the-bond-vigilantes",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.0,
-      "negativeCount": 1,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 2,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
+      "topNegativeTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
       "topPositiveTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
       "items": [
-        {
-          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T17:00:06+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ai-selloff-boosts-haven-demand-for-yen-franc-as-dollar-slips",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
         {
           "title": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
           "source": "NHK 経済",
@@ -402,38 +379,28 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.165,
-      "negativeCount": 1,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 2,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
-      "topPositiveTitle": "Romania Needs Further Deficit Cuts to Boost Confidence, IMF Says",
+      "topNegativeTitle": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
+      "topPositiveTitle": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
       "items": [
         {
-          "title": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T13:56:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/ecb-needs-december-rate-hike-into-restrictive-zone-nagel-says",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Romania Needs Further Deficit Cuts to Boost Confidence, IMF Says",
-          "source": "Bloomberg Economics",
+          "title": "'Raise Taxes, Cut Spending': Bill Dudley on the Debt",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T16:32:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/romania-needs-further-deficit-cuts-to-boost-confidence-imf-says",
+          "publishedAt": "2026-11-21T13:04:30+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/-raise-taxes-cut-spending-bill-dudley-on-the-debt-video",
           "tags": [
+            "macro_risk",
             "market",
-            "rates"
+            "rates",
+            "us_broad"
           ]
         }
       ]
@@ -442,38 +409,132 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
-      "topPositiveTitle": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
+      "topNegativeTitle": "Trump’s Putin Ties Draw Focus After Summit",
+      "topPositiveTitle": "Trump’s Putin Ties Draw Focus After Summit",
       "items": [
         {
-          "title": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
-          "source": "Bloomberg Economics",
+          "title": "Trump’s Putin Ties Draw Focus After Summit",
+          "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T09:50:05+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/euro-area-pay-growth-accelerated-only-slightly-in-third-quarter",
+          "publishedAt": "2026-11-21T13:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/trump-s-putin-ties-draw-focus-after-summit-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia Says Cargo Ship Attacked By Drones in Gulf of Finland",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T11:44:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/russia-says-cargo-ship-attacked-by-drones-in-gulf-of-finland",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "日本 ペルー首脳会談 重要鉱物の安定供給に向けた連携で一致",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T10:53:53+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261120de79377",
           "tags": [
             "commodity",
             "market"
-          ]
+          ],
+          "titleJa": "日本 ペルー首脳会談 重要鉱物の安定供給に向けた連携で一致"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.134,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 4,
+      "sourceCount": 1,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "The 1982 War Still Haunts the Middle East",
+      "topPositiveTitle": "Putin Gains From Trump, Xi Summit Spotlight",
+      "items": [
+        {
+          "title": "The 1982 War Still Haunts the Middle East",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T15:19:32+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/the-1982-war-still-haunts-the-middle-east-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump’s Putin Outreach Tests Ukraine Talks",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:56:40+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/trump-s-putin-outreach-tests-ukraine-talks-video",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Trump’s Putin Ties Draw Focus After Summit",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T13:05:13+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/trump-s-putin-ties-draw-focus-after-summit-video",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Russia Says Cargo Ship Attacked By Drones in Gulf of Finland",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-21T11:44:46+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-21/russia-says-cargo-ship-attacked-by-drones-in-gulf-of-finland",
+          "tags": [
+            "commodity",
+            "geopolitical",
+            "market"
+          ]
+        },
+        {
+          "title": "Putin Gains From Trump, Xi Summit Spotlight",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-21T13:12:23+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-21/putin-gains-from-trump-xi-summit-spotlight-video",
+          "tags": [
+            "geopolitical",
+            "macro_risk",
+            "market"
+          ]
+        }
+      ]
     }
   },
   "meta": {
