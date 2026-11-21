@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-21T04:11:31.741400+09:00",
-  "sourceUpdatedAt": "2026-11-20T18:53:00+00:00",
+  "updatedAt": "2026-11-21T13:07:47.216551+09:00",
+  "sourceUpdatedAt": "2026-11-21T03:20:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,16 +17,56 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
+      "avgSentiment": -0.25,
+      "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
-      "topPositiveTitle": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
+      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+      "topPositiveTitle": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
       "items": [
+        {
+          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T22:08:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T22:31:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trump-huang-should-return-to-nvidia-after-big-apology-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Euphoria Gives Way to Fear And ‘Face-Ripping Volatility’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T21:52:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-20/wall-street-nears-breaking-point-as-fear-grips-global-markets",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market"
+          ]
+        },
         {
           "title": "China’s Exports of Robots, Cars, Semiconductors Make Life Hard For Rivals",
           "source": "Bloomberg Economics",
@@ -42,18 +82,30 @@
       ]
     },
     "us_broad": {
-      "avgSentiment": -0.388,
+      "avgSentiment": -0.777,
       "negativeCount": 3,
       "positiveCount": 0,
-      "neutralCount": 3,
+      "neutralCount": 0,
       "sourceCount": 2,
-      "itemCount": 6,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
+      "topNegativeTitle": "S&P, Dow Slide Into Correction as Investors Dump Tech",
+      "topPositiveTitle": "Fed’s Paulson Argues for Deliberate Rate Hikes to Tame Inflation",
       "items": [
         {
-          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "title": "S&P, Dow Slide Into Correction as Investors Dump Tech",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T22:25:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/s-p-dow-slide-into-correction-as-investors-dump-tech-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -65,19 +117,6 @@
             "market",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "S&P 500 Falls 10% From Record to Enter Correction: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
           ]
         },
         {
@@ -91,50 +130,36 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T18:25:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/fed-s-cook-sees-growing-urgency-to-tackle-inflation-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Goldman Sees Inflation Cooling by the end of 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T16:57:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.415,
-      "negativeCount": 3,
+      "avgSentiment": -0.532,
+      "negativeCount": 4,
       "positiveCount": 0,
       "neutralCount": 1,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Treasuries Rally as AI Selloff Sends Investors to Haven Assets",
+      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+      "topPositiveTitle": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
       "items": [
         {
-          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T22:08:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -149,21 +174,7 @@
           ]
         },
         {
-          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T18:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
+          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -177,16 +188,28 @@
           ]
         },
         {
-          "title": "Treasuries Rally as AI Selloff Sends Investors to Haven Assets",
+          "title": "Nasdaq 100 Has Worst Week Since 2020 on AI Drama: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T04:33:23+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/treasuries-eye-longest-rally-in-five-months-on-haven-demand",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
             "macro_risk",
             "market",
-            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Trump Says Huang Should Return to Nvidia After ‘Big Apology’",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-20T22:31:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/trump-huang-should-return-to-nvidia-after-big-apology-video",
+          "tags": [
+            "jp_semiconductor",
+            "market",
             "us_growth"
           ]
         }
@@ -212,11 +235,11 @@
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topNegativeTitle": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
+      "topPositiveTitle": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
       "items": [
         {
-          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -257,18 +280,32 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.332,
-      "negativeCount": 7,
+      "avgSentiment": -0.427,
+      "negativeCount": 5,
       "positiveCount": 0,
-      "neutralCount": 4,
+      "neutralCount": 2,
       "sourceCount": 3,
-      "itemCount": 11,
+      "itemCount": 7,
       "isStale": false,
-      "topNegativeTitle": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
-      "topPositiveTitle": "Goldman Sees Inflation Cooling by the end of 2027",
+      "topNegativeTitle": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+      "topPositiveTitle": "AI Euphoria Gives Way to Fear And ‘Face-Ripping Volatility’",
       "items": [
         {
-          "title": "Gold Set for Worst Week Since March on Hawkish Fed, AI Selloff",
+          "title": "Nvidia Plunges as SEC Probe Deepens AI Market Selloff | Closing Bell",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-20T22:08:59+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-20/nvidia-plunges-on-sec-probe-closing-bell-video",
+          "tags": [
+            "jp_semiconductor",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Logs Worst Week Since March on Hawkish Fed, AI Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -1.0,
@@ -283,46 +320,7 @@
           ]
         },
         {
-          "title": "S&P 500 Falls 10% From Record to Enter Correction: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -1.0,
-          "publishedAt": "2026-11-19T22:03:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Argentina Hit Hard by Global Turmoil as Bonds Slip Into Distress",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T18:12:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/argentina-hit-hard-by-global-turmoil-as-bonds-slip-into-distress",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T18:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
-          "tags": [
-            "fx",
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
+          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -334,36 +332,48 @@
             "market",
             "us_growth"
           ]
-        }
-      ]
-    },
-    "fx": {
-      "avgSentiment": -0.11,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
-      "topPositiveTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
-      "items": [
+        },
         {
-          "title": "Morgan Stanley Sees Aussie Riding AI Storm to Outperform in 2027",
+          "title": "Nasdaq 100 Has Worst Week Since 2020 on AI Drama: Markets Wrap",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-20T18:06:59+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-20/morgan-stanley-sees-aussie-riding-ai-storm-to-outperform-in-2027",
+          "publishedAt": "2026-11-19T22:03:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-19/stock-market-today-dow-s-p-live-updates",
           "tags": [
-            "fx",
             "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "AI Selloff Boosts Haven Demand for Yen, Franc as Dollar Slips",
+          "title": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か",
+          "source": "NHK 経済",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-20T20:26:38+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261120de79444",
+          "tags": [
+            "macro_risk",
+            "market"
+          ],
+          "titleJa": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か"
+        }
+      ]
+    },
+    "fx": {
+      "avgSentiment": 0.0,
+      "negativeCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 2,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
+      "topPositiveTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
+      "items": [
+        {
+          "title": "AI Selloff Spurs Haven Demand for Yen, Franc as Dollar Slips",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
@@ -392,15 +402,15 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.066,
+      "avgSentiment": -0.165,
       "negativeCount": 1,
       "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 2,
-      "itemCount": 5,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
       "topNegativeTitle": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
-      "topPositiveTitle": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
+      "topPositiveTitle": "Romania Needs Further Deficit Cuts to Boost Confidence, IMF Says",
       "items": [
         {
           "title": "ECB Needs December Rate Hike Into Restrictive Zone, Nagel Says",
@@ -410,47 +420,6 @@
           "publishedAt": "2026-11-20T13:56:09+00:00",
           "url": "https://www.bloomberg.com/news/articles/2026-11-20/ecb-needs-december-rate-hike-into-restrictive-zone-nagel-says",
           "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Fed’s Cook Sees Growing Urgency to Tackle Inflation",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T18:25:07+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/fed-s-cook-sees-growing-urgency-to-tackle-inflation-video",
-          "tags": [
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Goldman Sees Inflation Cooling by the end of 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T16:57:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Volatility Surges Over AI Fears After Anthropic IPO",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T16:56:19+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/volatility-surges-over-ai-fears-after-anthropic-ipo-video",
-          "tags": [
-            "macro_risk",
             "market",
             "rates"
           ]
@@ -470,31 +439,16 @@
       ]
     },
     "commodity": {
-      "avgSentiment": 0.11,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 3,
+      "positiveCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Goldman Sees Inflation Cooling by the end of 2027",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 20",
+      "topNegativeTitle": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
+      "topPositiveTitle": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
       "items": [
-        {
-          "title": "Goldman Sees Inflation Cooling by the end of 2027",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T16:57:45+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-20/goldman-sees-inflation-cooling-by-the-end-of-2027-video",
-          "tags": [
-            "commodity",
-            "macro_risk",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
         {
           "title": "Euro-Area Pay Growth Accelerated Only Slightly in Third Quarter",
           "source": "Bloomberg Economics",
@@ -506,47 +460,20 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 20",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T23:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/latest-oil-market-news-and-analysis-for-nov-20",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0.33,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 20",
-      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 20",
-      "items": [
-        {
-          "title": "Latest Oil Market News and Analysis for Nov. 20",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-19T23:05:51+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-19/latest-oil-market-news-and-analysis-for-nov-20",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "market"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     }
   },
   "meta": {
