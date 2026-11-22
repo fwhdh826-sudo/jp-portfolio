@@ -3,11 +3,11 @@
     "version": "v13.3",
     "kind": "stock_scores_6axis",
     "source": "scoring_orchestrator + data/fundamentals.json + public/data/returns.json",
-    "generated_at": "2026-11-21T18:07:17.564919+00:00",
+    "generated_at": "2026-11-22T03:19:35.289073+00:00",
     "not_for_trading": true,
     "note": "partial-real hybrid / not full real / not full generated / volatility_252d derived from returns.json / momentum and passthrough technical-deferred neutral / financial-sector bounded distortion documented"
   },
-  "last_updated": "2026-11-21T18:07:17.564919+00:00",
+  "last_updated": "2026-11-22T03:19:35.289073+00:00",
   "tickers": [
     "6098.T",
     "8306.T",
@@ -103,7 +103,7 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.5234079977103991,
+              "raw_value": 0.5234079908071569,
               "normalized": 0.0,
               "description": "ボラティリティ 0.52 — 高ボラ（スコア0）"
             },
@@ -367,8 +367,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.33340507286172105,
-              "normalized": 33.31898542765579,
+              "raw_value": 0.3334050001054467,
+              "normalized": 33.318999978910654,
               "description": "ボラティリティ 0.33 — 標準水準（スコア33）"
             },
             {
@@ -895,8 +895,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.3332994526974405,
-              "normalized": 33.3401094605119,
+              "raw_value": 0.33329939601126946,
+              "normalized": 33.34012079774611,
               "description": "ボラティリティ 0.33 — 標準水準（スコア33）"
             },
             {
@@ -1159,8 +1159,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.2183962140835009,
-              "normalized": 56.32075718329982,
+              "raw_value": 0.21839624487627451,
+              "normalized": 56.3207510247451,
               "description": "ボラティリティ 0.22 — 標準水準（スコア56）"
             },
             {
@@ -3007,8 +3007,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.2127426140294133,
-              "normalized": 57.45147719411734,
+              "raw_value": 0.21274260995497338,
+              "normalized": 57.45147800900533,
               "description": "ボラティリティ 0.21 — 標準水準（スコア57）"
             },
             {
@@ -3535,8 +3535,8 @@
             {
               "name": "volatility_252d",
               "weight": 0.15,
-              "raw_value": 0.41172976291963675,
-              "normalized": 17.654047416072643,
+              "raw_value": 0.411729782998001,
+              "normalized": 17.6540434003998,
               "description": "ボラティリティ 0.41 — 高ボラ（スコア18）"
             },
             {
@@ -4259,7 +4259,7 @@
     "observation: momentum components and 4 passthrough (moat_score / earnings_stab / guidance / tam_expansion) are technical-deferred → scorer MISSING_RAW_VALUES neutral",
     "observation: financial-sector tickers may show bounded de_ratio/fcf_yield/equity_ratio distortion (documented hybrid limitation)",
     "observation: fundamentals snapshot generated_at=2026-05-19T16:52:29.781230+00:00",
-    "observation: returns snapshot generated_at=2026-11-21T18:07:04.271343"
+    "observation: returns snapshot generated_at=2026-11-22T03:19:14.371657"
   ],
   "status": "ok"
 }
