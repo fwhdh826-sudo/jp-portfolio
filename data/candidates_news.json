@@ -1,7 +1,7 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-23T03:36:17.586014+09:00",
-  "sourceUpdatedAt": "2026-11-22T17:27:24+00:00",
+  "updatedAt": "2026-11-23T10:58:39.991030+09:00",
+  "sourceUpdatedAt": "2026-11-23T01:05:30+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
@@ -17,51 +17,89 @@
       "items": []
     },
     "jp_semiconductor": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "us_broad": {
-      "avgSentiment": -0.2,
-      "negativeCount": 2,
-      "positiveCount": 0,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Fed’s Inflation Fight May Require More Hikes",
-      "topPositiveTitle": "Bessent Warns Fed Risks Overtightening as US Markets Swoon",
+      "topNegativeTitle": "South Korea’s Early Exports Gain After $1 Trillion Milestone",
+      "topPositiveTitle": "South Korea’s Early Exports Gain After $1 Trillion Milestone",
       "items": [
         {
-          "title": "Fed’s Inflation Fight May Require More Hikes",
+          "title": "South Korea’s Early Exports Gain After $1 Trillion Milestone",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-23T00:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-23/south-korea-s-early-exports-gain-after-1-trillion-milestone",
+          "tags": [
+            "jp_semiconductor",
+            "market",
+            "us_growth"
+          ]
+        }
+      ]
+    },
+    "us_broad": {
+      "avgSentiment": -0.187,
+      "negativeCount": 4,
+      "positiveCount": 0,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 6,
+      "isStale": false,
+      "topNegativeTitle": "Treasuries' Negative Correlation to Stocks Is Back: State Street",
+      "topPositiveTitle": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
+      "items": [
+        {
+          "title": "Treasuries' Negative Correlation to Stocks Is Back: State Street",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-22T14:19:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-22/fed-s-inflation-fight-may-require-more-hikes-video",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-23T00:30:45+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-23/why-treasuries-negative-correlation-to-stocks-is-back-video",
           "tags": [
-            "macro_risk",
             "market",
-            "rates",
             "us_broad"
           ]
         },
         {
-          "title": "Asia’s Stock Rescue Efforts Gather Pace After Wall Street Plunge",
+          "title": "Live: Asia-Pacific Stocks, Currencies React After Nasdaq, S&P 500 Selloff",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
           "sentimentScore": -0.33,
-          "publishedAt": "2026-11-22T11:06:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/china-lowers-margin-requirement-to-80-to-boost-stock-liquidity",
+          "publishedAt": "2026-11-22T22:56:32+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-11-22/asia-market-open",
           "tags": [
-            "geopolitical",
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Bond Market’s Go-To Trade for Fed Hikes Roiled by Stocks Retreat",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-22T20:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/bond-market-s-go-to-trade-for-fed-hikes-roiled-by-stocks-retreat",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Goldman Traders See Entry Point in US Stocks But Warn of Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-22T19:05:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/goldman-traders-see-entry-point-in-us-stocks-but-warn-of-risks",
+          "tags": [
+            "macro_risk",
             "market",
             "us_broad"
           ]
@@ -77,73 +115,90 @@
             "market",
             "us_broad"
           ]
-        },
-        {
-          "title": "Yardeni Cuts S&P 500 Target Again, Says Bear Market Is Unlikely",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T15:18:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/yardeni-cuts-s-p-500-target-again-says-bear-market-is-unlikely",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Strong Earnings Prove No Match for the Crumbling AI Trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/strong-earnings-prove-no-match-for-the-crumbling-ai-trade",
-          "tags": [
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
-      "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
-    },
-    "global_broad": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
+      "avgSentiment": 0.128,
+      "negativeCount": 2,
+      "positiveCount": 3,
       "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "Oil Shock Response Sets Emerging-Market Bond Winners and Losers",
-      "topPositiveTitle": "Oil Shock Response Sets Emerging-Market Bond Winners and Losers",
+      "topNegativeTitle": "US Stock Futures Bounce After Rout, Havens Drop: Markets Wrap",
+      "topPositiveTitle": "South Korea’s Early Exports Gain After $1 Trillion Milestone",
       "items": [
         {
-          "title": "Oil Shock Response Sets Emerging-Market Bond Winners and Losers",
+          "title": "US Stock Futures Bounce After Rout, Havens Drop: Markets Wrap",
           "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/oil-shock-response-sets-emerging-market-bond-winners-and-losers",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-11-22T22:02:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/asia-braces-for-more-volatility-after-us-selloff-markets-wrap",
           "tags": [
-            "commodity",
-            "global_broad",
-            "market"
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Live: Asia-Pacific Stocks, Currencies React After Nasdaq, S&P 500 Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-22T22:56:32+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-11-22/asia-market-open",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Copper Rises After Falling More Than 9% Last Week on AI Gloom",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-23T01:05:30+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-23/copper-rises-after-falling-more-than-9-last-week-on-ai-gloom",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Dip Buyers Hesitate to Step In as Nasdaq 100 Nears a Bear Market",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-22T20:31:44+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/dip-buyers-hesitate-to-step-in-as-nasdaq-100-nears-a-bear-market",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "US Stock Futures Gain in Volatile Trading After Tech-Driven Rout",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-11-22T23:04:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/stock-traders-brace-for-more-volatility-after-tech-driven-rout",
+          "tags": [
+            "macro_risk",
+            "market",
+            "us_growth"
           ]
         }
       ]
     },
-    "gold": {
+    "global_broad": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -154,6 +209,45 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
+    },
+    "gold": {
+      "avgSentiment": 0.435,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
+      "isStale": false,
+      "topNegativeTitle": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
+      "topPositiveTitle": "Gold Deluge Keeps China’s $1 Trillion Trade Surplus in Check",
+      "items": [
+        {
+          "title": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-23T00:28:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-23/gold-rebounds-as-traders-pare-bets-on-near-term-fed-rate-hikes",
+          "tags": [
+            "gold",
+            "market",
+            "rates",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Gold Deluge Keeps China’s $1 Trillion Trade Surplus in Check",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-22T23:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/gold-deluge-keeps-china-s-1-trillion-trade-surplus-in-check",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        }
+      ]
     },
     "reit": {
       "avgSentiment": 0,
@@ -180,53 +274,67 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": -0.237,
-      "negativeCount": 4,
-      "positiveCount": 0,
-      "neutralCount": 3,
+      "avgSentiment": -0.195,
+      "negativeCount": 5,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 8,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Inflation Fight May Require More Hikes",
-      "topPositiveTitle": "Yardeni Cuts S&P 500 Target Again, Says Bear Market Is Unlikely",
+      "topNegativeTitle": "Treasury Futures Fall as Rising Stocks Damp Demand for Havens",
+      "topPositiveTitle": "US Stock Futures Gain in Volatile Trading After Tech-Driven Rout",
       "items": [
         {
-          "title": "Fed’s Inflation Fight May Require More Hikes",
+          "title": "Treasury Futures Fall as Rising Stocks Damp Demand for Havens",
           "source": "Bloomberg Markets",
           "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-22T14:19:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-22/fed-s-inflation-fight-may-require-more-hikes-video",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-22T23:59:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/treasury-futures-fall-as-rising-stock-futures-damp-haven-demand",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "US Stock Futures Bounce After Rout, Havens Drop: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-11-22T22:02:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/asia-braces-for-more-volatility-after-us-selloff-markets-wrap",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Live: Asia-Pacific Stocks, Currencies React After Nasdaq, S&P 500 Selloff",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-22T22:56:32+00:00",
+          "url": "https://www.bloomberg.com/news/live-blog/2026-11-22/asia-market-open",
           "tags": [
             "macro_risk",
             "market",
-            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Goldman Traders See Entry Point in US Stocks But Warn of Risks",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-22T19:05:02+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/goldman-traders-see-entry-point-in-us-stocks-but-warn-of-risks",
+          "tags": [
+            "macro_risk",
+            "market",
             "us_broad"
-          ]
-        },
-        {
-          "title": "Investors Brave Stock Market ‘Fragility’ as AI Trade Falters",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-22T15:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/investors-brave-stock-market-fragility-as-ai-trade-falters",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Taiwan Mulls Lowering Margin Requirement to Support Stock Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-22T12:35:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/taiwan-mulls-lowering-margin-requirement-to-support-stock-market",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
           ]
         },
         {
@@ -241,33 +349,46 @@
             "market"
           ],
           "titleJa": "高市首相 ICCの赤根所長と来週面会へ 支持方針を伝達か"
-        },
-        {
-          "title": "Yardeni Cuts S&P 500 Target Again, Says Bear Market Is Unlikely",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T15:18:13+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/yardeni-cuts-s-p-500-target-again-says-bear-market-is-unlikely",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.023,
+      "negativeCount": 1,
       "positiveCount": 1,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
+      "topNegativeTitle": "US Stock Futures Bounce After Rout, Havens Drop: Markets Wrap",
       "topPositiveTitle": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
       "items": [
+        {
+          "title": "US Stock Futures Bounce After Rout, Havens Drop: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "negative",
+          "sentimentScore": -0.6,
+          "publishedAt": "2026-11-22T22:02:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/asia-braces-for-more-volatility-after-us-selloff-markets-wrap",
+          "tags": [
+            "fx",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Aussie Seen Rebounding Against Kiwi From Worst Month Since 2022",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-22T21:16:37+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/aussie-seen-rebounding-against-kiwi-from-worst-month-since-2022",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        },
         {
           "title": "小泉防衛相 自衛隊人的基盤強化に必要な防衛費確保したい考え",
           "source": "NHK 経済",
@@ -284,25 +405,25 @@
       ]
     },
     "rates": {
-      "avgSentiment": -0.67,
-      "negativeCount": 1,
+      "avgSentiment": 0.2,
+      "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
+      "neutralCount": 1,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Fed’s Inflation Fight May Require More Hikes",
-      "topPositiveTitle": "Fed’s Inflation Fight May Require More Hikes",
+      "topNegativeTitle": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
+      "topPositiveTitle": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
       "items": [
         {
-          "title": "Fed’s Inflation Fight May Require More Hikes",
+          "title": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-22T14:19:26+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-22/fed-s-inflation-fight-may-require-more-hikes-video",
+          "sentiment": "positive",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-23T00:28:03+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-23/gold-rebounds-as-traders-pare-bets-on-near-term-fed-rate-hikes",
           "tags": [
-            "macro_risk",
+            "gold",
             "market",
             "rates",
             "us_broad"
@@ -314,35 +435,22 @@
       "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 4,
-      "sourceCount": 3,
-      "itemCount": 4,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Governors Push States to Lead on AI",
-      "topPositiveTitle": "Governors Push States to Lead on AI",
+      "topNegativeTitle": "Latest Oil Market News and Analysis for Nov. 23",
+      "topPositiveTitle": "Latest Oil Market News and Analysis for Nov. 23",
       "items": [
         {
-          "title": "Governors Push States to Lead on AI",
+          "title": "Latest Oil Market News and Analysis for Nov. 23",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T13:32:30+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-22/governors-push-states-to-lead-on-ai-video",
+          "publishedAt": "2026-11-22T23:06:06+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-22/latest-oil-market-news-and-analysis-for-nov-23",
           "tags": [
             "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Shock Response Sets Emerging-Market Bond Winners and Losers",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T13:30:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/oil-shock-response-sets-emerging-market-bond-winners-and-losers",
-          "tags": [
-            "commodity",
-            "global_broad",
             "market"
           ]
         },
@@ -357,72 +465,20 @@
             "commodity",
             "market"
           ]
-        },
-        {
-          "title": "日本 ペルー首脳会談 重要鉱物の安定供給に向けた連携で一致",
-          "source": "NHK 経済",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-20T10:53:53+00:00",
-          "url": "https://news.web.nhk/newsweb/na/nd-20261120de79377",
-          "tags": [
-            "commodity",
-            "market"
-          ],
-          "titleJa": "日本 ペルー首脳会談 重要鉱物の安定供給に向けた連携で一致"
         }
       ]
     },
     "geopolitical": {
-      "avgSentiment": -0.083,
-      "negativeCount": 2,
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 1,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 4,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Taiwan Mulls Lowering Margin Requirement to Support Stock Market",
+      "topNegativeTitle": "Rahm Emanuel Says Trump Is Playing Into China’s Hands",
       "topPositiveTitle": "Rahm Emanuel Says Trump Is Playing Into China’s Hands",
       "items": [
-        {
-          "title": "Taiwan Mulls Lowering Margin Requirement to Support Stock Market",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-22T12:35:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/taiwan-mulls-lowering-margin-requirement-to-support-stock-market",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Asia’s Stock Rescue Efforts Gather Pace After Wall Street Plunge",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-22T11:06:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-22/china-lowers-margin-requirement-to-80-to-boost-stock-liquidity",
-          "tags": [
-            "geopolitical",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trump’s Asia Trip Leaves Key Issues Unresolved",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-22T12:39:41+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-22/trump-s-asia-trip-leaves-key-issues-unresolved-video",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
         {
           "title": "Rahm Emanuel Says Trump Is Playing Into China’s Hands",
           "source": "Bloomberg Markets",
