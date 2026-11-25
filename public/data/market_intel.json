@@ -1,33 +1,18 @@
 {
-  "fetched_at": "2026-11-22T18:36:00Z",
+  "fetched_at": "2026-11-25T20:32:31Z",
   "source": "yfinance_hybrid",
-  "vix": 35.89,
-  "nikkei_5d_return": -0.076963,
-  "nikkei_60ma": 64332.0,
-  "nikkei_200ma": 62265.0,
-  "sp500_dd_30d": -0.114874,
-  "usdjpy": 159.71,
-  "risk_level": "high",
+  "vix": 28.0,
+  "nikkei_5d_return": -0.017053,
+  "nikkei_60ma": 64217.3,
+  "nikkei_200ma": 62291.5,
+  "sp500_dd_30d": -0.076545,
+  "usdjpy": 159.2,
+  "risk_level": "medium",
   "signals": [
-    {
-      "tag": "VIX高",
-      "strength": "moderate",
-      "direction": "negative"
-    },
-    {
-      "tag": "リスク警戒",
-      "strength": "strong",
-      "direction": "negative"
-    },
     {
       "tag": "円安",
       "strength": "moderate",
       "direction": "positive"
-    },
-    {
-      "tag": "短期急落",
-      "strength": "strong",
-      "direction": "negative"
     },
     {
       "tag": "調整局面",
@@ -36,25 +21,19 @@
     }
   ],
   "narrative": {
-    "headline": "リスクレベル: 高リスク — VIX 35.9 / USD/JPY 159.7円",
+    "headline": "リスクレベル: 中程度リスク — VIX 28.0 / USD/JPY 159.2円",
     "body_lines": [
-      "VIX 35.9 / 日経5日 -7.7% / USD/JPY 159.7",
-      "リスクレベル: 高リスク",
-      "↓ VIX高（moderate）",
-      "↓ リスク警戒（strong）",
+      "VIX 28.0 / 日経5日 -1.7% / USD/JPY 159.2",
+      "リスクレベル: 中程度リスク",
       "↑ 円安（moderate）",
-      "↓ 短期急落（strong）",
       "↓ 調整局面（weak）"
     ],
     "keywords_summary": [
-      "VIX高",
-      "リスク警戒",
       "円安",
-      "短期急落",
       "調整局面"
     ],
-    "sentiment_label": "bearish",
-    "sentiment_score": 21.0,
+    "sentiment_label": "neutral",
+    "sentiment_score": 53.0,
     "method": "rule_based"
   },
   "sources_status": {
