@@ -1,10 +1,36 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-26T05:32:50.533113+09:00",
-  "sourceUpdatedAt": "2026-11-25T20:27:17+00:00",
+  "updatedAt": "2026-11-27T05:20:47.738017+09:00",
+  "sourceUpdatedAt": "2026-11-26T20:00:15+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
+      "avgSentiment": 1.0,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
+      "topPositiveTitle": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
+      "items": [
+        {
+          "title": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-26T09:07:17+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/boj-s-paper-gains-from-etfs-surge-as-takaichi-seeks-funding",
+          "tags": [
+            "jp_broad",
+            "market",
+            "trust"
+          ]
+        }
+      ]
+    },
+    "jp_semiconductor": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -16,241 +42,226 @@
       "topPositiveTitle": null,
       "items": []
     },
-    "jp_semiconductor": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 2,
-      "isStale": false,
-      "topNegativeTitle": "Stocks Continue Fall as Nvidia Reinstatement Rally Fades",
-      "topPositiveTitle": "Stocks Continue Fall as Nvidia Reinstatement Rally Fades",
-      "items": [
-        {
-          "title": "Stocks Continue Fall as Nvidia Reinstatement Rally Fades",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:49:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/stocks-continue-fall-as-nvidia-reinstatement-rally-fades",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia U-Turn Is Bad News For Anthropic, Says Parmy Olson",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:48:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/nvidia-u-turn-is-bad-news-for-anthropic-parmy-olson-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        }
-      ]
-    },
     "us_broad": {
-      "avgSentiment": -0.028,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 3,
-      "sourceCount": 2,
-      "itemCount": 6,
+      "avgSentiment": 0.39,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": "Nasdaq 100 Bounces Off Tech-Driven Lows as Dip Buyers Emerge",
-      "topPositiveTitle": "Sanofi’s $41B Insmed Deal Shows Cost of a Patent Cliff",
+      "topNegativeTitle": "Wall Street se vuelve más cauteloso con el carry trade",
+      "topPositiveTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
       "items": [
         {
-          "title": "Nasdaq 100 Bounces Off Tech-Driven Lows as Dip Buyers Emerge",
+          "title": "Wall Street se vuelve más cauteloso con el carry trade",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-25T07:51:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/us-stock-index-futures-slide-as-ai-worries-fuel-tech-losses",
-          "tags": [
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Pare AI-Driven Losses as Buyers Step In: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-24T22:09:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-24/asian-stocks-to-slide-as-ai-trade-doubts-resurface-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T16:29:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/wall-street-se-vuelve-mas-cauteloso-con-el-carry-trade-mwxrpht6",
           "tags": [
             "macro_risk",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Stocks Continue Fall as Nvidia Reinstatement Rally Fades",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:49:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/stocks-continue-fall-as-nvidia-reinstatement-rally-fades",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Fed Beige Book Shows Moderate Growth, Uptick in Wage Pressures",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:35:50+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/fed-beige-book-shows-moderate-growth-uptick-in-wage-pressures",
-          "tags": [
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "What the PCE Data Means for Fed Policy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T14:11:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/what-the-pce-data-means-for-fed-policy-video",
+          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-11-26T00:18:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
           "tags": [
-            "commodity",
+            "gold",
             "market",
-            "rates",
+            "us_broad",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-25T22:10:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-25/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "global_broad",
+            "market",
             "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": -0.168,
-      "negativeCount": 2,
+      "avgSentiment": 0.125,
+      "negativeCount": 0,
       "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Nasdaq 100 Bounces Off Tech-Driven Lows as Dip Buyers Emerge",
-      "topPositiveTitle": "Michael Burry Is More Long Than Short After Dumping Nasdaq Puts",
+      "topNegativeTitle": "BBVA Eyes Hedge for About $500 million in Data Center Loans",
+      "topPositiveTitle": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
       "items": [
         {
-          "title": "Nasdaq 100 Bounces Off Tech-Driven Lows as Dip Buyers Emerge",
+          "title": "BBVA Eyes Hedge for About $500 million in Data Center Loans",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.67,
-          "publishedAt": "2026-11-25T07:51:43+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/us-stock-index-futures-slide-as-ai-worries-fuel-tech-losses",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T12:27:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/bbva-weighs-srt-to-hedge-about-500-million-of-data-center-loans",
           "tags": [
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Pare AI-Driven Losses as Buyers Step In: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-24T22:09:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-24/asian-stocks-to-slide-as-ai-trade-doubts-resurface-markets-wrap",
+          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T11:59:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "AI Crisis Would Collide With Political Mire, Scope Ratings Says",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T10:27:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/ai-crisis-would-collide-with-political-mire-scope-ratings-says",
           "tags": [
             "macro_risk",
             "market",
-            "us_broad",
             "us_growth"
           ]
         },
         {
-          "title": "Stocks Continue Fall as Nvidia Reinstatement Rally Fades",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:49:18+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/stocks-continue-fall-as-nvidia-reinstatement-rally-fades",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_broad",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Nvidia U-Turn Is Bad News For Anthropic, Says Parmy Olson",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T19:48:58+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/nvidia-u-turn-is-bad-news-for-anthropic-parmy-olson-video",
-          "tags": [
-            "jp_semiconductor",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Michael Burry Is More Long Than Short After Dumping Nasdaq Puts",
+          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T17:18:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/michael-burry-is-more-long-than-short-after-dumping-nasdaq-puts",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-11-26T00:18:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
           "tags": [
-            "macro_risk",
+            "gold",
             "market",
+            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.67,
       "negativeCount": 0,
-      "positiveCount": 0,
+      "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+      "topPositiveTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+      "items": [
+        {
+          "title": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-25T22:10:42+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-25/stock-market-today-dow-s-p-live-updates",
+          "tags": [
+            "global_broad",
+            "market",
+            "us_broad"
+          ]
+        }
+      ]
     },
     "gold": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.167,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 2,
+      "sourceCount": 1,
+      "itemCount": 3,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "Kazakhstan Encouraged Local Banks to Finance Deal for Gold Miner",
+      "topPositiveTitle": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+      "items": [
+        {
+          "title": "Kazakhstan Encouraged Local Banks to Finance Deal for Gold Miner",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T17:35:40+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/kazakhstan-encouraged-local-banks-to-finance-deal-for-gold-miner",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Congo Gold Trader Plans Two Refineries with 68-Ton Capacity",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T16:15:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/congo-gold-trader-plans-two-refineries-with-68-ton-capacity",
+          "tags": [
+            "gold",
+            "market"
+          ]
+        },
+        {
+          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-11-26T00:18:09+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
+          "tags": [
+            "gold",
+            "market",
+            "us_broad",
+            "us_growth"
+          ]
+        }
+      ]
     },
     "reit": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "What JLL Sees This Holiday Season",
+      "topPositiveTitle": "What JLL Sees This Holiday Season",
+      "items": [
+        {
+          "title": "What JLL Sees This Holiday Season",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T15:25:16+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-26/what-jll-sees-this-holiday-season-video",
+          "tags": [
+            "market",
+            "reit"
+          ]
+        }
+      ]
     },
     "dividend": {
       "avgSentiment": 0,
@@ -265,85 +276,184 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.07,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 3,
+      "avgSentiment": 0.0,
+      "negativeCount": 0,
+      "positiveCount": 0,
+      "neutralCount": 4,
       "sourceCount": 2,
-      "itemCount": 7,
+      "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Stocks Pare AI-Driven Losses as Buyers Step In: Markets Wrap",
-      "topPositiveTitle": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
+      "topNegativeTitle": "Wall Street se vuelve más cauteloso con el carry trade",
+      "topPositiveTitle": "Wall Street se vuelve más cauteloso con el carry trade",
       "items": [
         {
-          "title": "Stocks Pare AI-Driven Losses as Buyers Step In: Markets Wrap",
+          "title": "Wall Street se vuelve más cauteloso con el carry trade",
           "source": "Bloomberg Markets",
-          "sentiment": "negative",
-          "sentimentScore": -0.5,
-          "publishedAt": "2026-11-24T22:09:18+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-24/asian-stocks-to-slide-as-ai-trade-doubts-resurface-markets-wrap",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T16:29:26+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/wall-street-se-vuelve-mas-cauteloso-con-el-carry-trade-mwxrpht6",
           "tags": [
             "macro_risk",
             "market",
-            "us_broad",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Trading partners respond to Trump tariff plans",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T12:00:01+00:00",
+          "url": "https://www.bloomberg.com/news/newsletters/2026-11-26/trading-partners-respond-to-trump-tariff-plans",
+          "tags": [
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T11:59:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
             "us_growth"
           ]
         },
         {
-          "title": "Russia October Inflation Hits One-Year High as War Escalates",
+          "title": "AI Crisis Would Collide With Political Mire, Scope Ratings Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T16:13:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/russian-inflation-hits-one-year-high-in-october-as-war-escalates",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Trump Tariff List: These Economies Hit by Targeted US Deal Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T14:39:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/us-proposes-excess-capacity-tariffs-full-list",
+          "publishedAt": "2026-11-26T10:27:19+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/ai-crisis-would-collide-with-political-mire-scope-ratings-says",
           "tags": [
             "macro_risk",
             "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Trump and data centers and aluminum",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-25/trump-and-data-centers-and-aluminum",
-          "tags": [
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T19:35:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/oil-flows-in-hormuz-strait-forever-altered-says-kloza-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
+            "us_growth"
           ]
         }
       ]
     },
     "fx": {
+      "avgSentiment": 0.33,
+      "negativeCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
+      "topPositiveTitle": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
+      "items": [
+        {
+          "title": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-26T12:15:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/brazil-consumer-prices-rise-less-than-forecast-by-all-analysts",
+          "tags": [
+            "fx",
+            "market"
+          ]
+        }
+      ]
+    },
+    "rates": {
+      "avgSentiment": -0.33,
+      "negativeCount": 1,
+      "positiveCount": 0,
+      "neutralCount": 0,
+      "sourceCount": 1,
+      "itemCount": 1,
+      "isStale": false,
+      "topNegativeTitle": "All of Canada’s Big Six Banks Now See December Rate Hike",
+      "topPositiveTitle": "All of Canada’s Big Six Banks Now See December Rate Hike",
+      "items": [
+        {
+          "title": "All of Canada’s Big Six Banks Now See December Rate Hike",
+          "source": "Bloomberg Economics",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-26T11:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/all-of-canada-s-big-six-banks-now-see-december-rate-hike",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        }
+      ]
+    },
+    "commodity": {
+      "avgSentiment": 0.19,
+      "negativeCount": 0,
+      "positiveCount": 2,
+      "neutralCount": 2,
+      "sourceCount": 2,
+      "itemCount": 4,
+      "isStale": false,
+      "topNegativeTitle": "Trans-Oil Warns of Going-Concern Risk Pending Debt Waiver",
+      "topPositiveTitle": "Copper Rebounds as Tech Rally Lifts Battered Industrial Metals",
+      "items": [
+        {
+          "title": "Trans-Oil Warns of Going-Concern Risk Pending Debt Waiver",
+          "source": "Bloomberg Markets",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T16:39:29+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/trans-oil-warns-of-going-concern-risk-pending-debt-waiver",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-26T11:59:54+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "tags": [
+            "commodity",
+            "macro_risk",
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Latest Oil Market News and Analysis for Nov. 26",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-25T23:03:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-25/latest-oil-market-news-and-analysis-for-nov-26",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        },
+        {
+          "title": "Copper Rebounds as Tech Rally Lifts Battered Industrial Metals",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.43,
+          "publishedAt": "2026-11-26T02:01:10+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/copper-rebounds-from-lowest-this-year-as-volatility-hits-metals",
+          "tags": [
+            "commodity",
+            "market"
+          ]
+        }
+      ]
+    },
+    "geopolitical": {
       "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
@@ -354,217 +464,6 @@
       "topNegativeTitle": null,
       "topPositiveTitle": null,
       "items": []
-    },
-    "rates": {
-      "avgSentiment": 0.002,
-      "negativeCount": 2,
-      "positiveCount": 1,
-      "neutralCount": 2,
-      "sourceCount": 1,
-      "itemCount": 5,
-      "isStale": false,
-      "topNegativeTitle": "Bank of England Rate-Setters Leave December Hike on the Table",
-      "topPositiveTitle": "New US Home Sales Reach Highest This Year, Topping Forecasts",
-      "items": [
-        {
-          "title": "Bank of England Rate-Setters Leave December Hike on the Table",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-25T16:49:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/bank-of-england-rate-setters-leave-december-hike-on-the-table",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "ECB Can’t Fall Behind Curve on Interest Rates, Kocher Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-25T10:58:52+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/ecb-can-t-fall-behind-curve-on-interest-rates-kocher-says",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "Trump Tariff List: These Economies Hit by Targeted US Deal Rates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T14:39:35+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/us-proposes-excess-capacity-tariffs-full-list",
-          "tags": [
-            "macro_risk",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "What the PCE Data Means for Fed Policy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T14:11:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/what-the-pce-data-means-for-fed-policy-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "New US Home Sales Reach Highest This Year, Topping Forecasts",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-25T15:02:41+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/new-us-home-sales-climb-to-highest-this-year-topping-forecasts",
-          "tags": [
-            "market",
-            "rates"
-          ]
-        }
-      ]
-    },
-    "commodity": {
-      "avgSentiment": 0.11,
-      "negativeCount": 1,
-      "positiveCount": 3,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 6,
-      "isStale": false,
-      "topNegativeTitle": "Bank of England Rate-Setters Leave December Hike on the Table",
-      "topPositiveTitle": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
-      "items": [
-        {
-          "title": "Bank of England Rate-Setters Leave December Hike on the Table",
-          "source": "Bloomberg Economics",
-          "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-25T16:49:25+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/bank-of-england-rate-setters-leave-december-hike-on-the-table",
-          "tags": [
-            "commodity",
-            "market",
-            "rates"
-          ]
-        },
-        {
-          "title": "What the PCE Data Means for Fed Policy",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T14:11:57+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/what-the-pce-data-means-for-fed-policy-video",
-          "tags": [
-            "commodity",
-            "market",
-            "rates",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Zable: Expect Consumer Resilience to Energy Price Shock",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T12:46:49+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/zable-expect-consumer-resilience-to-energy-price-shock-video",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T19:35:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/oil-flows-in-hormuz-strait-forever-altered-says-kloza-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Energy Bills Rise 26% as War Fuels Cost-of-Living Squeeze",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T07:04:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/uk-energy-bills-rise-26-with-war-fueling-cost-of-living-squeeze",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
-    },
-    "geopolitical": {
-      "avgSentiment": 0.22,
-      "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
-      "sourceCount": 2,
-      "itemCount": 3,
-      "isStale": false,
-      "topNegativeTitle": "Russia October Inflation Hits One-Year High as War Escalates",
-      "topPositiveTitle": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
-      "items": [
-        {
-          "title": "Russia October Inflation Hits One-Year High as War Escalates",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-25T16:13:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/russian-inflation-hits-one-year-high-in-october-as-war-escalates",
-          "tags": [
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "Oil Flows in Hormuz Strait 'Forever Altered,' Says Tom Kloza",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T19:35:11+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-25/oil-flows-in-hormuz-strait-forever-altered-says-kloza-video",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        },
-        {
-          "title": "UK Energy Bills Rise 26% as War Fuels Cost-of-Living Squeeze",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T07:04:01+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/uk-energy-bills-rise-26-with-war-fueling-cost-of-living-squeeze",
-          "tags": [
-            "commodity",
-            "geopolitical",
-            "macro_risk",
-            "market"
-          ]
-        }
-      ]
     }
   },
   "meta": {
