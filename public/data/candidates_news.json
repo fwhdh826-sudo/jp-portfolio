@@ -1,34 +1,20 @@
 {
   "schemaVersion": "candidates-news-1",
-  "updatedAt": "2026-11-27T05:20:47.738017+09:00",
-  "sourceUpdatedAt": "2026-11-26T20:00:15+00:00",
+  "updatedAt": "2026-11-28T05:06:58.746303+09:00",
+  "sourceUpdatedAt": "2026-11-27T20:00:55+00:00",
   "staleThresholdHours": 24,
   "assetClassNews": {
     "jp_broad": {
-      "avgSentiment": 1.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
-      "positiveCount": 1,
+      "positiveCount": 0,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
-      "topPositiveTitle": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
-      "items": [
-        {
-          "title": "BOJ’s Paper Gains From ETFs Surge as Takaichi Seeks Funding",
-          "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 1.0,
-          "publishedAt": "2026-11-26T09:07:17+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/boj-s-paper-gains-from-etfs-surge-as-takaichi-seeks-funding",
-          "tags": [
-            "jp_broad",
-            "market",
-            "trust"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "jp_semiconductor": {
       "avgSentiment": 0,
@@ -43,225 +29,234 @@
       "items": []
     },
     "us_broad": {
-      "avgSentiment": 0.39,
+      "avgSentiment": 0.506,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 1,
+      "positiveCount": 3,
+      "neutralCount": 2,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "Wall Street se vuelve más cauteloso con el carry trade",
-      "topPositiveTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+      "topNegativeTitle": "Trump’s AI Gambit Fuels Wild Thanksgiving Week on Wall Street",
+      "topPositiveTitle": "US Stocks Rebound as Traders Pile Into Battered Tech Shares",
       "items": [
         {
-          "title": "Wall Street se vuelve más cauteloso con el carry trade",
+          "title": "Trump’s AI Gambit Fuels Wild Thanksgiving Week on Wall Street",
           "source": "Bloomberg Markets",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T16:29:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/wall-street-se-vuelve-mas-cauteloso-con-el-carry-trade-mwxrpht6",
+          "publishedAt": "2026-11-27T18:43:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/trump-s-ai-gambit-fuels-wild-thanksgiving-week-on-wall-street",
           "tags": [
-            "macro_risk",
             "market",
             "us_broad"
           ]
         },
         {
-          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+          "title": "Treasuries Drop as Stock Rise Saps Demand for Haven Bonds",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-26T00:18:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
+          "sentimentScore": 0.2,
+          "publishedAt": "2026-11-27T02:43:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/treasuries-retreat-as-gains-in-equities-sap-demand-for-havens",
           "tags": [
-            "gold",
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "Traders Buy the Dip as Stocks Rise on Black Friday",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-27T17:36:52+00:00",
+          "url": "https://www.bloomberg.com/news/videos/2026-11-27/bloomberg-surveillance-11-27-2026-video",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "US Stocks Rebound as Traders Pile Into Battered Tech Shares",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-27T07:56:20+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/us-stocks-set-to-bounce-as-risk-appetite-returns-after-holiday",
+          "tags": [
+            "market",
+            "us_broad"
+          ]
+        },
+        {
+          "title": "S&P 500 Has Best Week Since April 2025 on AI Rally: Markets Wrap",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-26T21:59:57+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/asian-stock-futures-signal-gains-oil-climbs-again-markets-wrap",
+          "tags": [
             "market",
             "us_broad",
             "us_growth"
-          ]
-        },
-        {
-          "title": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-25T22:10:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/stock-market-today-dow-s-p-live-updates",
-          "tags": [
-            "global_broad",
-            "market",
-            "us_broad"
           ]
         }
       ]
     },
     "us_growth": {
-      "avgSentiment": 0.125,
+      "avgSentiment": 0.778,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 3,
+      "positiveCount": 5,
+      "neutralCount": 1,
       "sourceCount": 2,
-      "itemCount": 4,
+      "itemCount": 6,
       "isStale": false,
-      "topNegativeTitle": "BBVA Eyes Hedge for About $500 million in Data Center Loans",
-      "topPositiveTitle": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+      "topNegativeTitle": "European Workers’ AI Use on Par With That of US Peers, ECB Says",
+      "topPositiveTitle": "Anthropic Shares Jump After Volatile First Week Since IPO",
       "items": [
         {
-          "title": "BBVA Eyes Hedge for About $500 million in Data Center Loans",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T12:27:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/bbva-weighs-srt-to-hedge-about-500-million-of-data-center-loans",
-          "tags": [
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "title": "European Workers’ AI Use on Par With That of US Peers, ECB Says",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T11:59:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "publishedAt": "2026-11-27T10:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/european-workers-ai-use-on-par-with-that-of-us-peers-ecb-says",
           "tags": [
-            "commodity",
-            "macro_risk",
             "market",
             "us_growth"
           ]
         },
         {
-          "title": "AI Crisis Would Collide With Political Mire, Scope Ratings Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T10:27:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/ai-crisis-would-collide-with-political-mire-scope-ratings-says",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_growth"
-          ]
-        },
-        {
-          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+          "title": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-26T00:18:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-26T23:44:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/-dollar-storm-greenback-on-track-for-longest-winning-run-since-2024",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Anthropic Shares Jump After Volatile First Week Since IPO",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-27T16:49:08+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/anthropic-shares-jump-after-volatile-first-week-since-record-ipo",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Copper Surges Most in Seven Months as Risk Appetite Returns",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-27T03:33:07+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/copper-rebounds-from-11-month-low-on-return-of-risk-appetite",
+          "tags": [
+            "market",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Rises as Rebound in Tech Stocks Helps Revive Risk Appetite",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-26T23:53:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-steadies-as-fed-rate-path-and-ai-stocks-frame-volatile-week",
           "tags": [
             "gold",
             "market",
-            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "global_broad": {
-      "avgSentiment": 0.67,
+      "avgSentiment": 0.33,
       "negativeCount": 0,
       "positiveCount": 1,
       "neutralCount": 0,
       "sourceCount": 1,
       "itemCount": 1,
       "isStale": false,
-      "topNegativeTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
-      "topPositiveTitle": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+      "topNegativeTitle": "Emerging-Market Stocks Eye Best Week Since June on Tech Rebound",
+      "topPositiveTitle": "Emerging-Market Stocks Eye Best Week Since June on Tech Rebound",
       "items": [
         {
-          "title": "Global Stocks Climb as AI Trade Mounts a Comeback: Markets Wrap",
+          "title": "Emerging-Market Stocks Eye Best Week Since June on Tech Rebound",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.67,
-          "publishedAt": "2026-11-25T22:10:42+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/stock-market-today-dow-s-p-live-updates",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-27T03:33:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/em-asia-stocks-set-for-weekly-gain-as-markets-regain-footing",
           "tags": [
             "global_broad",
-            "market",
-            "us_broad"
+            "macro_risk",
+            "market"
           ]
         }
       ]
     },
     "gold": {
-      "avgSentiment": 0.167,
+      "avgSentiment": 0.835,
       "negativeCount": 0,
-      "positiveCount": 1,
-      "neutralCount": 2,
+      "positiveCount": 2,
+      "neutralCount": 0,
       "sourceCount": 1,
-      "itemCount": 3,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Kazakhstan Encouraged Local Banks to Finance Deal for Gold Miner",
-      "topPositiveTitle": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+      "topNegativeTitle": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
+      "topPositiveTitle": "Gold Rises as Rebound in Tech Stocks Helps Revive Risk Appetite",
       "items": [
         {
-          "title": "Kazakhstan Encouraged Local Banks to Finance Deal for Gold Miner",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T17:35:40+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/kazakhstan-encouraged-local-banks-to-finance-deal-for-gold-miner",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Congo Gold Trader Plans Two Refineries with 68-Ton Capacity",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T16:15:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/congo-gold-trader-plans-two-refineries-with-68-ton-capacity",
-          "tags": [
-            "gold",
-            "market"
-          ]
-        },
-        {
-          "title": "Gold Hovers Near 15-Month Low as Traders Eye Fed Path, AI Stocks",
+          "title": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
           "source": "Bloomberg Markets",
           "sentiment": "positive",
-          "sentimentScore": 0.5,
-          "publishedAt": "2026-11-26T00:18:09+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-edges-lower-as-us-inflation-data-fuels-bets-for-rate-hikes",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-26T23:44:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/-dollar-storm-greenback-on-track-for-longest-winning-run-since-2024",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_growth"
+          ]
+        },
+        {
+          "title": "Gold Rises as Rebound in Tech Stocks Helps Revive Risk Appetite",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 1.0,
+          "publishedAt": "2026-11-26T23:53:35+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/gold-steadies-as-fed-rate-path-and-ai-stocks-frame-volatile-week",
           "tags": [
             "gold",
             "market",
-            "us_broad",
             "us_growth"
           ]
         }
       ]
     },
     "reit": {
-      "avgSentiment": 0.0,
+      "avgSentiment": 0,
       "negativeCount": 0,
       "positiveCount": 0,
-      "neutralCount": 1,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "neutralCount": 0,
+      "sourceCount": 0,
+      "itemCount": 0,
       "isStale": false,
-      "topNegativeTitle": "What JLL Sees This Holiday Season",
-      "topPositiveTitle": "What JLL Sees This Holiday Season",
-      "items": [
-        {
-          "title": "What JLL Sees This Holiday Season",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T15:25:16+00:00",
-          "url": "https://www.bloomberg.com/news/videos/2026-11-26/what-jll-sees-this-holiday-season-video",
-          "tags": [
-            "market",
-            "reit"
-          ]
-        }
-      ]
+      "topNegativeTitle": null,
+      "topPositiveTitle": null,
+      "items": []
     },
     "dividend": {
       "avgSentiment": 0,
@@ -276,176 +271,217 @@
       "items": []
     },
     "macro_risk": {
-      "avgSentiment": 0.0,
-      "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 4,
+      "avgSentiment": 0.125,
+      "negativeCount": 1,
+      "positiveCount": 2,
+      "neutralCount": 1,
       "sourceCount": 2,
       "itemCount": 4,
       "isStale": false,
-      "topNegativeTitle": "Wall Street se vuelve más cauteloso con el carry trade",
-      "topPositiveTitle": "Wall Street se vuelve más cauteloso con el carry trade",
+      "topNegativeTitle": "Copper Price Volatility Clouds Peru’s El Niño Relief Spending",
+      "topPositiveTitle": "Brazil Markets Rally as Trabuco Pick Soothes Fiscal Fears",
       "items": [
         {
-          "title": "Wall Street se vuelve más cauteloso con el carry trade",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T16:29:26+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/wall-street-se-vuelve-mas-cauteloso-con-el-carry-trade-mwxrpht6",
-          "tags": [
-            "macro_risk",
-            "market",
-            "us_broad"
-          ]
-        },
-        {
-          "title": "Trading partners respond to Trump tariff plans",
+          "title": "Copper Price Volatility Clouds Peru’s El Niño Relief Spending",
           "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T12:00:01+00:00",
-          "url": "https://www.bloomberg.com/news/newsletters/2026-11-26/trading-partners-respond-to-trump-tariff-plans",
+          "sentiment": "negative",
+          "sentimentScore": -0.33,
+          "publishedAt": "2026-11-27T14:00:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/copper-price-volatility-clouds-peru-s-el-nino-relief-spending",
           "tags": [
             "macro_risk",
             "market"
           ]
         },
         {
-          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "title": "Vietnam Expects to Sign US Trade Deal to Limit Tariff Hit",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T11:59:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "publishedAt": "2026-11-27T06:44:25+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/vietnam-expects-to-sign-us-trade-deal-to-limit-tariff-hit",
           "tags": [
-            "commodity",
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         },
         {
-          "title": "AI Crisis Would Collide With Political Mire, Scope Ratings Says",
-          "source": "Bloomberg Economics",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T10:27:19+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/ai-crisis-would-collide-with-political-mire-scope-ratings-says",
+          "title": "Emerging-Market Stocks Eye Best Week Since June on Tech Rebound",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.33,
+          "publishedAt": "2026-11-27T03:33:48+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/em-asia-stocks-set-for-weekly-gain-as-markets-regain-footing",
+          "tags": [
+            "global_broad",
+            "macro_risk",
+            "market"
+          ]
+        },
+        {
+          "title": "Brazil Markets Rally as Trabuco Pick Soothes Fiscal Fears",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.5,
+          "publishedAt": "2026-11-27T01:08:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/brazil-assets-rally-after-lula-names-banker-luiz-carlos-trabuco-cappi-finance-minister",
           "tags": [
             "macro_risk",
-            "market",
-            "us_growth"
+            "market"
           ]
         }
       ]
     },
     "fx": {
-      "avgSentiment": 0.33,
-      "negativeCount": 0,
+      "avgSentiment": -0.165,
+      "negativeCount": 1,
       "positiveCount": 1,
       "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
-      "topPositiveTitle": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
+      "topNegativeTitle": "Zambia Pauses Rate Cuts as Kwacha Slide Threatens Inflation",
+      "topPositiveTitle": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
       "items": [
         {
-          "title": "Brazil Inflation Undershoots Forecasts in ‘Positive’ Print",
+          "title": "Zambia Pauses Rate Cuts as Kwacha Slide Threatens Inflation",
           "source": "Bloomberg Economics",
-          "sentiment": "positive",
-          "sentimentScore": 0.33,
-          "publishedAt": "2026-11-26T12:15:36+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/brazil-consumer-prices-rise-less-than-forecast-by-all-analysts",
+          "sentiment": "negative",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-27T09:25:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/zambia-s-central-bank-holds-key-rate-as-inflation-risk-grow",
           "tags": [
             "fx",
-            "market"
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-26T23:44:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/-dollar-storm-greenback-on-track-for-longest-winning-run-since-2024",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_growth"
           ]
         }
       ]
     },
     "rates": {
-      "avgSentiment": -0.33,
+      "avgSentiment": -0.066,
       "negativeCount": 1,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 1,
-      "itemCount": 1,
+      "positiveCount": 1,
+      "neutralCount": 3,
+      "sourceCount": 2,
+      "itemCount": 5,
       "isStale": false,
-      "topNegativeTitle": "All of Canada’s Big Six Banks Now See December Rate Hike",
-      "topPositiveTitle": "All of Canada’s Big Six Banks Now See December Rate Hike",
+      "topNegativeTitle": "Zambia Pauses Rate Cuts as Kwacha Slide Threatens Inflation",
+      "topPositiveTitle": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
       "items": [
         {
-          "title": "All of Canada’s Big Six Banks Now See December Rate Hike",
+          "title": "Zambia Pauses Rate Cuts as Kwacha Slide Threatens Inflation",
           "source": "Bloomberg Economics",
           "sentiment": "negative",
-          "sentimentScore": -0.33,
-          "publishedAt": "2026-11-26T11:00:00+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/all-of-canada-s-big-six-banks-now-see-december-rate-hike",
+          "sentimentScore": -1.0,
+          "publishedAt": "2026-11-27T09:25:36+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/zambia-s-central-bank-holds-key-rate-as-inflation-risk-grow",
+          "tags": [
+            "fx",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "ECB’s Nagel Signals Need for Another Rate Hike in December",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-27T13:31:56+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/ecb-s-nagel-signals-need-for-another-rate-hike-in-december",
           "tags": [
             "market",
             "rates"
+          ]
+        },
+        {
+          "title": "Nomura Now Sees India’s RBI Hiking by 50-Basis-Point in December",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-27T08:19:32+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/nomura-now-sees-india-s-rbi-hiking-by-50-basis-point-in-december",
+          "tags": [
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "Inflation Slows Much More Than Expected in France and Spain",
+          "source": "Bloomberg Economics",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-27T07:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/french-inflation-slows-much-more-than-expected-as-energy-eases",
+          "tags": [
+            "commodity",
+            "market",
+            "rates"
+          ]
+        },
+        {
+          "title": "‘Dollar Storm:’ Greenback on Track for Longest Winning Run Since 2024",
+          "source": "Bloomberg Markets",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-26T23:44:27+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-26/-dollar-storm-greenback-on-track-for-longest-winning-run-since-2024",
+          "tags": [
+            "fx",
+            "gold",
+            "market",
+            "rates",
+            "us_growth"
           ]
         }
       ]
     },
     "commodity": {
-      "avgSentiment": 0.19,
+      "avgSentiment": 0.165,
       "negativeCount": 0,
-      "positiveCount": 2,
-      "neutralCount": 2,
-      "sourceCount": 2,
-      "itemCount": 4,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 1,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": "Trans-Oil Warns of Going-Concern Risk Pending Debt Waiver",
-      "topPositiveTitle": "Copper Rebounds as Tech Rally Lifts Battered Industrial Metals",
+      "topNegativeTitle": "Inflation Slows Much More Than Expected in France and Spain",
+      "topPositiveTitle": "Shell’s Arc Deal Helps Lift Foreign Investment in Canada to Two-Year High",
       "items": [
         {
-          "title": "Trans-Oil Warns of Going-Concern Risk Pending Debt Waiver",
-          "source": "Bloomberg Markets",
-          "sentiment": "neutral",
-          "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T16:39:29+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/trans-oil-warns-of-going-concern-risk-pending-debt-waiver",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Lagarde Says AI Has Helped Europe Withstand Higher Energy Prices",
+          "title": "Inflation Slows Much More Than Expected in France and Spain",
           "source": "Bloomberg Economics",
           "sentiment": "neutral",
           "sentimentScore": 0.0,
-          "publishedAt": "2026-11-26T11:59:54+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/lagarde-says-ai-has-helped-europe-withstand-higher-energy-prices",
+          "publishedAt": "2026-11-27T07:45:00+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/french-inflation-slows-much-more-than-expected-as-energy-eases",
           "tags": [
             "commodity",
-            "macro_risk",
             "market",
-            "us_growth"
+            "rates"
           ]
         },
         {
-          "title": "Latest Oil Market News and Analysis for Nov. 26",
-          "source": "Bloomberg Markets",
+          "title": "Shell’s Arc Deal Helps Lift Foreign Investment in Canada to Two-Year High",
+          "source": "Bloomberg Economics",
           "sentiment": "positive",
           "sentimentScore": 0.33,
-          "publishedAt": "2026-11-25T23:03:15+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-25/latest-oil-market-news-and-analysis-for-nov-26",
-          "tags": [
-            "commodity",
-            "market"
-          ]
-        },
-        {
-          "title": "Copper Rebounds as Tech Rally Lifts Battered Industrial Metals",
-          "source": "Bloomberg Markets",
-          "sentiment": "positive",
-          "sentimentScore": 0.43,
-          "publishedAt": "2026-11-26T02:01:10+00:00",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-26/copper-rebounds-from-lowest-this-year-as-volatility-hits-metals",
+          "publishedAt": "2026-11-27T14:55:05+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/shell-s-arc-deal-helps-lift-foreign-investment-in-canada-to-two-year-high",
           "tags": [
             "commodity",
             "market"
@@ -454,16 +490,42 @@
       ]
     },
     "geopolitical": {
-      "avgSentiment": 0,
+      "avgSentiment": 0.335,
       "negativeCount": 0,
-      "positiveCount": 0,
-      "neutralCount": 0,
-      "sourceCount": 0,
-      "itemCount": 0,
+      "positiveCount": 1,
+      "neutralCount": 1,
+      "sourceCount": 2,
+      "itemCount": 2,
       "isStale": false,
-      "topNegativeTitle": null,
-      "topPositiveTitle": null,
-      "items": []
+      "topNegativeTitle": "山梨県議 ロシアが一方的に併合宣言のウクライナ東部を訪問",
+      "topPositiveTitle": "Taiwan Lifts 2027 Growth Outlook Despite Mounting AI Concern",
+      "items": [
+        {
+          "title": "山梨県議 ロシアが一方的に併合宣言のウクライナ東部を訪問",
+          "source": "NHK 経済",
+          "sentiment": "neutral",
+          "sentimentScore": 0.0,
+          "publishedAt": "2026-11-27T11:50:02+00:00",
+          "url": "https://news.web.nhk/newsweb/na/nd-20261127de82765",
+          "tags": [
+            "geopolitical",
+            "market"
+          ],
+          "titleJa": "山梨県議 ロシアが一方的に併合宣言のウクライナ東部を訪問"
+        },
+        {
+          "title": "Taiwan Lifts 2027 Growth Outlook Despite Mounting AI Concern",
+          "source": "Bloomberg Economics",
+          "sentiment": "positive",
+          "sentimentScore": 0.67,
+          "publishedAt": "2026-11-27T08:05:15+00:00",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-27/taiwan-lifts-2027-growth-outlook-despite-mounting-ai-concern",
+          "tags": [
+            "geopolitical",
+            "market"
+          ]
+        }
+      ]
     }
   },
   "meta": {
